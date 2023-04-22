@@ -1,18 +1,13 @@
 import React from 'react';
-// import clsx from 'clsx';
 import Translate from '@docusaurus/Translate'
-// import styles from './index.module.css';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-// import Link from '@docusaurus/Link';
-// import useBaseUrl from '@docusaurus/useBaseUrl'
-// import ThemedImage from '@theme/ThemedImage';
 import Feature from './feature';
 
 
 export default function FeaturesOpen() {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <div className="hero" style={{marginTop: '-8vh'}}>
+    <div className="hero" style={{marginTop: '-6vh'}}>
       <div className="container" >
         <Feature
           // imgUrl="img/Xu2.jpg"
@@ -29,12 +24,7 @@ export default function FeaturesOpen() {
               <p>
                 <Translate
                 >
-                  {/* {
-                    'SIMPO lets you focus on your model deducing and experimental datas, we\'ll do the computing:'
-                  } */}
                   { `${siteConfig.title} is an open-minded platform that provides OER for everyone:` }
-
-
                 </Translate>
               </p>
               <ul>
@@ -48,13 +38,9 @@ export default function FeaturesOpen() {
                 <li>
                   <Translate
                   >
-                     {/* HydroSim is an open-source, collaborative cross-platform application that provides OER for all the researchers and students. */}
+                    {/* HydroSim is an open-source, collaborative cross-platform application that provides OER for all the researchers and students. */}
 
                     { `${siteConfig.title} works on Windows, Linux, and Mac, it can leverage the power of supercomputers, as their systems are usually Linux-based.` }
-
-
-
-
 
                   </Translate>
                 </li>
@@ -62,18 +48,12 @@ export default function FeaturesOpen() {
                 <li>
                   <Translate
                   >
-
                     {/* { `${siteConfig.title} works on Windows, Linux, and Mac, it can leverage the power of supercomputers, as their systems are usually Linux-based.` } */}
+
                     Models, datasets and calculation results can be published in public version to share the research findings to the entire research community.
-
-
-
-
 
                   </Translate>
                 </li>
-
-
 
                 <li>
                   <Translate
@@ -84,9 +64,6 @@ export default function FeaturesOpen() {
                     {/* It works on Windows, Linux and Mac operating systems, which means it can make use of the computing power of supercomputers for model computation if necessary. Models, datasets and calculation project results can be published in public or private mode, making it easy to share the research findings to the entire research community. In addition, the source code of the core algorithms are open-sourced on Github (https://github.com/Jakkwj/sludge), providing transparency and allowing all researchers to scrutinize the correctness and accuracy of the source code. Furthermore, all researchers are encouraged to contribute their own code and to co-create and develop various model algorithms together through the Fork feature of Github. */}
 
                     { `${siteConfig.title} provides OER to all researchers and students. This endeavor aligns with the United Nations' Sustainable Development Goal 4: Quality Education.` }
-
-
-
 
 
                     {/* according to the input data, then users can edit and modify the data directly on the diagram. After inputting the model and data, simulation and evaluation can be started in just a few clicks. The platform will automatically draw a series of graphs of the calculation results according to the calculation engine, users can also export the result data for further processing. */}

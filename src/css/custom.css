@@ -45,6 +45,14 @@
   .hero {
     padding-top: 2em;
     padding-bottom: 2em;
+    /* display: inline; */
+    display: block;
+    /* width: 100%; */
+  }
+
+  .hero-image {
+    display: none;
+    /* visibility: none; */
   }
 }
 

@@ -17,8 +17,8 @@ export default function FeaturesTrackable() {
         <Feature
           reverse={true}
           // width='60%'
-          marginTop='-8vh'
-          imgUrl="img/matrix.png"
+          marginTop='2vh'
+          imgUrl="img/matrix2.png"
           // imgUrl="img/Xu.png"
           // imgUrl="img/tables.jpg"
           // imgUrl="img/Fig4.png"

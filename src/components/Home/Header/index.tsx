@@ -7,21 +7,22 @@ import ThemedImage from '@theme/ThemedImage';
 
 
 export default function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
-  return (
-    // <header className={clsx('hero hero--primary', styles.heroBanner)}>
-    <header className={clsx('hero noise-bg')}>
-    {/* // <header className="row noise-bg"> */}
-    {/* <div className="row noise-bg"> */}
 
-      <div className="col col--1 text-center"></div>
+  const {siteConfig} = useDocusaurusContext();
+
+  return (
+
+    <header className={clsx('hero noise-bg')}>
+
+      <div className="col col--1 text-center" style={{marginRight: '-2.2vw'}}>
+      </div>
 
       <div className="col col--6 text-center">
 
         {/* banner */}
-        <div className="container">
+        <div className="container" >
 
-          <div className="row" style={{marginTop: '-1vh', color: '#eee'}}>
+          <div className="row" style={{marginTop: '-1.5vh', color: '#eee'}}>
             {/* <img src="/img/SIMPO_logo.png" width='15%'/> */}
             <h1 style={{marginBottom: '0vh', color: '#eee'}} className="hero__title">{siteConfig.title}</h1>
 
@@ -60,14 +61,6 @@ export default function HomepageHeader() {
           </div>
 
         </div>
-
-        {/* <Link
-          className="button button--secondary button--xl"
-          to="/docs/intro"
-        //  className="dev-portal-signup dev-portal-link"
-        >
-          Client123
-        </Link> */}
 
         {/* bottom */}
         <div className="" style={{marginTop: '1vh'}}>
@@ -111,28 +104,21 @@ export default function HomepageHeader() {
 
       </div>
 
-      <div className="col">
-      {/* <img src="/img/Xu2.jpg" width='55%'/> */}
-      <ThemedImage
+      <div className="col hero-image" style={{marginRight: '-10vw'}}>  {/* 手机端将隐藏 */}
+        <ThemedImage
           sources={{
-            // light: '/img/hero-light.png',
-            // light: '/img/banner.png',
-            // light: 'img/gif/import_biomodel.gif',
-            light: '/img/banner2.png',
+            light: '/img/banner3.png',
             dark: '/img/hero-dark.png',
           }}
           alt="Preview of using SIMPO"
-          // width='55%'
           width='60%'
-          // className="max-w-[420px] lg:max-w-[560px]"
         />
       </div>
 
-      {/* <div className="col col--4">
-      3
-      </div> */}
+      {/* <div className="col  text-center" style={{ backgroundColor: 'white', marginTop: '10vw'}}>1      </div> */}
 
-    {/* </div> */}
+
     </header>
+
   );
 }
