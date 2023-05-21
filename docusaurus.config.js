@@ -6,7 +6,16 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const title = 'SIMPO'
 const urlConsole = 'http://111.230.245.215/dashboard/home'
 
-// let aa = localStorage.getItem('login') === 'true'
+/**
+ * 登录后台显示 Dashboard, 未登录时显示 Sign In 的功能实现参看: https://github.com/facebook/docusaurus/discussions/5307
+ * 1.手动 swizzle Root 组件
+ * 2.在其中添加 addEventListener 监听 iframe 加载的后台是否有 accessToken, 有则登录了
+ * 3.swizzle NavbarNavLink: yarn swizzle @docusaurus/theme-classic NavbarNavLink --wrap
+ * 4.在后台设一个专门的 ifsign 页面, postMessage 传递 accessToken
+ * 5.据此判断是否登录
+ * 6.注意 nginx 需要打开 X-Frame-Options
+ *
+ */
 
 const fs = require('fs');
 // const resourcesHTML = fs.readFileSync('./src/snippets/resources.html', 'utf-8');
@@ -22,7 +31,8 @@ const config = {
   tagline: 'A Scientific Computing SaaS Platform for Water and Wastewater Treatment Process Modeling',
   // tagline: 'A SaaS platform for wastewater treatment modeling',
 
-  favicon: 'img/favicon.ico',
+  // favicon: 'img/favicon.ico',
+  favicon: 'img/logo3.ico',
 
   // Set the production url of your site here
   // url: 'https://your-docusaurus-test-site.com',
@@ -150,13 +160,23 @@ const config = {
             position: 'right',
           },
           {
-            label: 'Tutorials',
+            // label: 'Tutorials',
+            // label: 'Documentation',
+            label: 'Docs',
             type: 'doc',
-            docId: 'intro',
+            docId: 'Introduction',
             position: 'left',
             // label: 'Guides',
 
           },
+          {
+            // to: 'https://hasura.io/changelog',
+            to: '/about',
+            label: "About",
+            position: 'left',
+          },
+
+
           // {
           //   label: 'Client',
           //   type: 'dropdown',
@@ -194,7 +214,12 @@ const config = {
           //   'aria-label': 'GitHub repository',
           // },
 
-          { href: `${urlConsole}`, label: true ? 'Dashboard' : 'Login', position: 'right'},
+          // { href: `${urlConsole}`, label: true ? 'Dashboard' : 'Login', position: 'right'},
+          // { href: `${urlConsole}`, label: true ? 'Sign In' : 'Dashboard', position: 'right'},
+          // { href: `${urlConsole}`, label: !!global.localStorage.getItem('accessToken') ? 'Dashboard' : 'Sign In', position: 'right'},
+          { href: `${urlConsole}`, label: 'Dashboard', position: 'right', docsPluginId: 'Dashboard'},
+          { href: `${urlConsole}`, label: 'Sign In', position: 'right', docsPluginId: 'SignIn'},
+
           // {
           //   href: 'https://github.com/facebook/docusaurus',
           //   label: 'GitHub',
@@ -246,7 +271,15 @@ const config = {
           //   ],
           // },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} ${title}, Inc. All rights reserved.`,
+        // logo: {
+        //   // alt: 'Meta 开源图标',
+        //   src: 'img/logo3.png',
+        //   width: 30,
+        //   height: 30,
+        // },
+
+        // copyright: `Copyright © ${new Date().getFullYear()} ${title}, Inc. All rights reserved.`,
+        copyright: `Copyright © ${new Date().getFullYear()} ${title}. All rights reserved.`,
         // Built with Docusaurus.
       },
       prism: {

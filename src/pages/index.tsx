@@ -11,6 +11,8 @@ import FeaturesEasyToUse from '@site/src/components/Home/Features/easyToUse';
 import FeaturesPowerful from '@site/src/components/Home/Features/powerful';
 import FeaturesOpen from '@site/src/components/Home/Features/open';
 import FeaturesTrackable from '@site/src/components/Home/Features/trackable';
+// import TeamJiangFeng from '@site/src/components/Home/Team/jiangfeng';
+
 import styles from './index.module.css';
 
 
@@ -28,7 +30,8 @@ export default function Home(): JSX.Element {
 
     <Layout
     // title={`Hello from ${siteConfig.title}`}
-    title={`${siteConfig.title}`}
+    // title={`${siteConfig.title}`}
+    title={'Home'}
     description="Description will go into a meta tag in <head />"
     >
       {/* noFooter */}
@@ -42,6 +45,7 @@ export default function Home(): JSX.Element {
         <FeaturesPowerful />
         <FeaturesOpen />
         <FeaturesTrackable />
+        {/* <TeamJiangFeng /> */}
 
       </main>
 

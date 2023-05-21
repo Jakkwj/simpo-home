@@ -14,7 +14,11 @@ export default function HomepageHeader() {
 
     <header className={clsx('hero noise-bg')}>
 
-      <div className="col col--1 text-center" style={{marginRight: '-2.2vw'}}>
+      {/* <div className="col col--1 text-center" style={{marginRight: '-2.2vw'}}>
+      </div> */}
+      {/* <div className="col col--1 text-center" style={{marginRight: '1.5vw'}}>
+      </div> */}
+      <div className="col col--1 text-center" style={{marginRight: '1.2vw'}}>
       </div>
 
       <div className="col col--6 text-center">
@@ -65,7 +69,7 @@ export default function HomepageHeader() {
         {/* bottom */}
         <div className="" style={{marginTop: '1vh'}}>
           <Link
-            href="docs/qucik_start"
+            href="docs/QucikStart"
             className="button button--secondary"
           >
             Quick Start
@@ -104,15 +108,18 @@ export default function HomepageHeader() {
 
       </div>
 
-      <div className="col hero-image" style={{marginRight: '-10vw'}}>  {/* 手机端将隐藏 */}
+      <div className="col hero-image" style={{marginRight: '0vw'}}>
+      {/* 手机端将隐藏 */}
+      {/* <div className="col hero-image" style={{marginRight: '-10vw'}}> */}
         <ThemedImage
           sources={{
             light: '/img/banner3.png',
             dark: '/img/hero-dark.png',
           }}
           alt="Preview of using SIMPO"
-          width='60%'
+          width='75%'
         />
+        {/* width='60%' */}
       </div>
 
       {/* <div className="col  text-center" style={{ backgroundColor: 'white', marginTop: '10vw'}}>1      </div> */}

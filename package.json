@@ -1,6 +1,6 @@
 {
-  "name": "sludge-home",
-  "version": "0.0.0",
+  "name": "simpo_home",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
