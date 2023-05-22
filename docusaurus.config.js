@@ -217,8 +217,9 @@ const config = {
           // { href: `${urlConsole}`, label: true ? 'Dashboard' : 'Login', position: 'right'},
           // { href: `${urlConsole}`, label: true ? 'Sign In' : 'Dashboard', position: 'right'},
           // { href: `${urlConsole}`, label: !!global.localStorage.getItem('accessToken') ? 'Dashboard' : 'Sign In', position: 'right'},
-          { href: `${urlConsole}`, label: 'Dashboard', position: 'right', docsPluginId: 'Dashboard'},
-          { href: `${urlConsole}`, label: 'Sign In', position: 'right', docsPluginId: 'SignIn'},
+
+          // { href: `${urlConsole}`, label: 'Dashboard', position: 'right', docspluginid: 'Dashboard'},
+          { href: `${urlConsole}`, label: 'Sign In', position: 'right', docspluginid: 'SignIn'},
 
           // {
           //   href: 'https://github.com/facebook/docusaurus',

@@ -40,13 +40,15 @@ But please remember to install the calcualtion client and sign in before anythin
 ## The Easiest Way
 <!-- , since  -->
 
+
 Sharing research findings is one of the key features of **SIMPO**, which makes cloning a **Project** from the public repository become the easiest way to do the whole thing. This action will clone the correspoding **BioMode** and **Dataset**, so you can just start the calculaiton and wait for the results after this cloning:
 - Clone a Public Project.
 - Check the calculation result (you can change some parameters and calcualtion again).
 
-
+<!-- /img/quick_start/TheEasiestWay/TheEasiestWay.gif -->
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/TheEasiestWay/TheEasiestWay.gif" width="80%"/>
+  <img src="https://sludge.readthedocs.io/en/latest/_images/TheEasiestWay.gif" width="80%"/>
+
   </div>
 
 <!-- <br /> -->
@@ -59,8 +61,10 @@ Sharing research findings is one of the key features of **SIMPO**, which makes c
 
 - Clone <a href="http://111.230.245.215/dashboard/biomodels/public/name/ASM3/id/45/did/41">ASM3</a> from the Public to Personal **BioModel** repository.
 
+<!-- /img/quick_start/ASM3/ASM3_1.gif -->
+
  <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/ASM3/ASM3_1.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_1.gif" width="80%"/>
   </div>
 
 <!-- <br /> -->
@@ -71,9 +75,10 @@ Sharing research findings is one of the key features of **SIMPO**, which makes c
   - 2 days calcluation time with 0.2 day interval.
   - Evaluation columns (in Project Detail Variable tab) of all Parameters of ASM3 would set to be "True".
 
-
- <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/ASM3/ASM3_2.gif" width="80%"/>
+ <!-- /img/quick_start/ASM3/ASM3_2.gif -->
+  <br />
+  <div align="center" style={{marginTop: "0vh"}}>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_2.gif" width="80%"/>
   </div>
 
 <!-- <br /> -->
@@ -82,15 +87,22 @@ Sharing research findings is one of the key features of **SIMPO**, which makes c
 - Then you can just start calculation.
   - Simulaiton:
   <!-- <br /> -->
+
+<!-- /img/quick_start/ASM3/ASM3_3.gif -->
+
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/ASM3/ASM3_3.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_3.gif" width="80%"/>
   </div>
 
   - Evaluation:
   <!-- <br /> -->
+
+<!-- /img/quick_start/ASM3/ASM3_4.gif -->
+
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/ASM3/ASM3_4.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_4.gif" width="80%"/>
   </div>
+  <br />
 
 
 :::important 60 seconds
@@ -120,4 +132,5 @@ After installing the client, clone a Project from the public Project repository 
 
 This action is dangerous
 ::: -->
+
 

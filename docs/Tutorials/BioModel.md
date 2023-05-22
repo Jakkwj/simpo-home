@@ -19,10 +19,11 @@ Create an empty BioModel, edit and parsed save the detial later to make it work.
 - Add new paramters.
 - Add new processes (in Matrix tab).
 
+<!-- /img/quick_start/step2/1.gif -->
 
   <br />
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/step2/1.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/1.gif" width="80%"/>
   </div>
 
 
@@ -31,28 +32,37 @@ Create an empty BioModel, edit and parsed save the detial later to make it work.
 If you don't specify a BioModel while creating a new Project, an empty BioModel will be crated accordingly.
 
 
-
 ### <a id="way_3"></a>3. Create from Template
-Create a BioModel from a: <a href="/template_file/BioModel.xlsx" target="_blank" download>template xlsx file</a>
+
+<!-- /template_file/BioModel.xlsx -->
+
+Create a BioModel from a: <a href="https://sludge.readthedocs.io/en/latest/_downloads/fe952779792f1eab732422dd1492e15f/BioModel.xlsx" target="_blank" download>BioModel template xlsx file</a>
+
+<!-- /img/quick_start/step2/2.gif -->
+
 
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/step2/2.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/2.gif" width="80%"/>
   </div>
 
 
 ### <a id="way_4"></a>4. Clone from Public BioModel
 Clone a BioModel from the public BioModel repository.
 
+<!-- /img/quick_start/step2/3.gif -->
+
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/step2/3.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/3.gif" width="80%"/>
   </div>
 
 
 ### <a id="way_5"></a>5. Clone from Public Project
 Clone a Project from the public Project repository would also clone the correspoding BioModel.
 
+
+<!-- /img/quick_start/step2/4.gif -->
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/step2/4.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/4.gif" width="80%"/>
   </div>
 
 

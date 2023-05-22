@@ -95,8 +95,13 @@ export default function HomepageHeader() {
 
             {/* <div class="dropdown-content"> */}
             <div className="dropdown-content">
-              <a href="/client/sludge_client_setup_0.2.0.exe" download>Windows</a>
-              <a href="/client/sludge_client_setup_0.2.0.sh" download>Ubuntu</a>
+              {/* <a href="/client/sludge_client_setup_0.2.0.exe" download>Windows</a>
+              <a href="/client/sludge_client_setup_0.2.0.sh" download>Ubuntu</a> */}
+
+              <a href="https://sludge.readthedocs.io/en/latest/_downloads/49e51d71c1843e69a4bcf2ab74ddf3b1/sludge_client_setup.exe" download>Windows</a>
+              <a href="https://sludge.readthedocs.io/en/latest/_downloads/defdf270ddacd4bb59b05d72e2c5ed66/sludge_client_setup.sh" download>Ubuntu</a>
+
+
               {/* <a href="#" style={{pointerEvents: 'none', cursor: 'default', color: 'gray'}} >Mac (pending...)</a> */}
               <a href="#" style={{cursor: 'default', color: 'gray'}} >Mac (pending...)</a>
             </div>
@@ -114,7 +119,8 @@ export default function HomepageHeader() {
         <ThemedImage
           sources={{
             light: '/img/banner3.png',
-            dark: '/img/hero-dark.png',
+            // dark: '/img/hero-dark.png',
+            dark: '/img/banner3.png',
           }}
           alt="Preview of using SIMPO"
           width='75%'

@@ -218,3 +218,9 @@ html[data-theme='dark'] .cncf-logo {
   /* background-color: #3e8e41; */
   background-color: #f9f9f9;
 }
+
+
+#iframeIfSign {
+  /* 隐藏 iframe */
+  display: none;
+}

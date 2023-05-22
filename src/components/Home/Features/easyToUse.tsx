@@ -38,7 +38,8 @@ export default function FeaturesEasyToUse() {
           reverse={false}
           width='90%'
           // imgUrl="img/Xu.png"
-          imgUrl="img/gif/import_biomodel.gif"
+          // imgUrl="img/gif/import_biomodel.gif"
+          imgUrl="https://sludge.readthedocs.io/en/latest/_images/TheEasiestWay.gif"
           title={<Translate id="home.easytouse">Easy to Use</Translate>}
           description={
             <>

@@ -8,6 +8,7 @@
 .history/
 .vscode/
 dev/
+.git/
 
 # Generated files
 .docusaurus

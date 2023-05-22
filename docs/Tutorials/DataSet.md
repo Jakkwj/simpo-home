@@ -28,10 +28,11 @@ Create an empty DataSet, edit and parsed save the detial later to make it work.
   - Add new tanks.
   - Optional: add new links (inflows, flows and connections). This is unnecessary if you only get independent tanks.
 
+<!-- /img/quick_start/step3/1.gif -->
 
   <br />
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/step3/1.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/11.gif" width="80%"/>
   </div>
 
 
@@ -42,30 +43,44 @@ If you don't specify a BioModel while creating a new Project, an empty BioModel 
 ### <a id="way_3"></a>3. Create from Preset
 Create a DataSet from a preset layout and/or target (from a BioModel).
 
+
+
+<!-- /img/quick_start/step3/2.gif -->
+
+
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/step3/2.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/21.gif" width="80%"/>
   </div>
 
 ### <a id="way_4"></a>4. Create from Template
-Create a DataSet from a: <a href="/template_file/DataSet.xlsx" target="_blank" download>template xlsx file</a>
+
+<!-- /template_file/DataSet.xlsx -->
+
+Create a DataSet from a: <a href="https://sludge.readthedocs.io/en/latest/_downloads/ce5b40856b1e6d339bc3e8055a65ed80/DataSet.xlsx" target="_blank" download>DataSet template xlsx file</a>
+
+<!-- /img/quick_start/step3/3.gif -->
 
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/step3/3.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/31.gif" width="80%"/>
   </div>
 
 ### <a id="way_5"></a>5. Clone from Public DataSet
 Clone a DataSet from the public DataSet repository.
 
+<!-- /img/quick_start/step3/4.gif -->
+
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/step3/4.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/41.gif" width="80%"/>
   </div>
 
 
 ### <a id="way_6"></a>6. Clone from Public Project
 Clone a Project from the public Project repository would also clone the correspoding Dataset.
 
+<!-- /img/quick_start/step3/5.gif -->
+
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="/img/quick_start/step3/5.gif" width="80%"/>
+    <img src="https://sludge.readthedocs.io/en/latest/_images/5.gif" width="80%"/>
   </div>
 
 

@@ -16,8 +16,9 @@ One need to download and install the calculation client, and then sign up and si
 
 ## <a id="Windows"></a>Windows
 
+<!-- /client/sludge_client_setup_0.2.0.exe -->
 
-- Download: <a href="/client/sludge_client_setup_0.2.0.exe" target="_blank" download>Windows</a>.
+- Download: <a href="https://sludge.readthedocs.io/en/latest/_downloads/49e51d71c1843e69a4bcf2ab74ddf3b1/sludge_client_setup.exe" target="_blank" download>Windows</a>.
 - Install the client.
 - Note:
   - This client will automatically run once you start calculating, you cannot run it by double click it.
@@ -28,7 +29,9 @@ One need to download and install the calculation client, and then sign up and si
 
 ### <a id="Ubuntu"></a>Ubuntu
 
-- Download: <a href="/client/sludge_client_setup_0.2.0.sh" target="_blank" download>Ubuntu</a>.
+<!-- /client/sludge_client_setup_0.2.0.sh -->
+
+- Download: <a href="https://sludge.readthedocs.io/en/latest/_downloads/defdf270ddacd4bb59b05d72e2c5ed66/sludge_client_setup.sh" target="_blank" download>Ubuntu</a>.
 - Run: <code>sudo chmod +x sludge_client_setup.sh && ./sludge_client_setup.sh</code> (will rename to simpo_client_setup later).
 
 
