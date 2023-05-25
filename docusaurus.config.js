@@ -105,14 +105,28 @@ const config = {
     ({
 
       zoom: {
-        selector: '.markdown :not(em) > img',
+        selector: '.markdown :not(em) > img', // 仅限 marddown 中的 img 点击放大
+        // selector: 'img', // 所有 img
+        background: {
+            // light: 'rgb(255, 255, 255)',
+            // light: "#ebedf0",
+            light: "#F5F5F5",
+            // light: "#EEEEEE",
+            // light: "#E0E0E0",
+            // light: "#BDBDBD",
+            dark: 'rgb(50, 50, 50)'
+          },
+
         config: {
           // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
-          background: {
-            light: 'rgb(255, 255, 255)',
-            // light: 'rgb(50, 50, 50)',
-            dark: 'rgb(50, 50, 50)'
-          }
+          // background: {
+          //   // light: 'rgb(255, 255, 255)',
+          //   light: "#00a400",
+          //   dark: 'rgb(50, 50, 50)'
+          // },
+          // background: "#00a400",
+          scrollOffset: 0, // The number of pixels to scroll to close the zoom
+          margin: 65,
         }
       },
 
