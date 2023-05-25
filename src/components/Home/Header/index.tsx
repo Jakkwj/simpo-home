@@ -98,8 +98,11 @@ export default function HomepageHeader() {
               {/* <a href="/client/sludge_client_setup_0.2.0.exe" download>Windows</a>
               <a href="/client/sludge_client_setup_0.2.0.sh" download>Ubuntu</a> */}
 
-              <a href="https://sludge.readthedocs.io/en/latest/_downloads/49e51d71c1843e69a4bcf2ab74ddf3b1/sludge_client_setup.exe" download>Windows</a>
-              <a href="https://sludge.readthedocs.io/en/latest/_downloads/defdf270ddacd4bb59b05d72e2c5ed66/sludge_client_setup.sh" download>Ubuntu</a>
+              {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/49e51d71c1843e69a4bcf2ab74ddf3b1/sludge_client_setup.exe" download>Windows</a> */}
+              {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/defdf270ddacd4bb59b05d72e2c5ed66/sludge_client_setup.sh" download>Ubuntu</a> */}
+
+              <a href="https://sludge.readthedocs.io/en/latest/_downloads/0ee7356b0a3ca65e90da9de1aa9f60f7/SimpoClient_installer_0.2.1.exe" download>Windows</a>
+              <a href="https://sludge.readthedocs.io/en/latest/_downloads/23620dc7572483958d72baa3ecbf35aa/SimpoClient_installer_0.2.1.sh" download>Ubuntu</a>
 
 
               {/* <a href="#" style={{pointerEvents: 'none', cursor: 'default', color: 'gray'}} >Mac (pending...)</a> */}

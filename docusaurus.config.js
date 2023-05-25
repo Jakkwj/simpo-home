@@ -97,11 +97,24 @@ const config = {
   plugins: [
     // '@docusaurus/theme-live-codeblock',
     // 'docusaurus-plugin-sass'
+    require.resolve("docusaurus-plugin-image-zoom")
   ],
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+
+      zoom: {
+        selector: '.markdown :not(em) > img',
+        config: {
+          // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
+          background: {
+            light: 'rgb(255, 255, 255)',
+            // light: 'rgb(50, 50, 50)',
+            dark: 'rgb(50, 50, 50)'
+          }
+        }
+      },
 
       colorMode: {
         disableSwitch: true,

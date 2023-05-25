@@ -7,8 +7,8 @@ sidebar_position: 2
 <!-- ## Getting Started -->
 The 3 essential elements of **SIMPO** are: **BioModel** (model), **DataSet** (data) and **Project** (solution).
 
-The steps of a complete calcualtion process are:
-- [Step 1](/docs/Tutorials/Installtion): install the calcualtion client on your computer, and then sign up and sign in to <a href="http://111.230.245.215/dashboard/home">Dashborad</a>.
+The steps of a complete calculation process are:
+- [Step 1](/docs/Tutorials/Installtion): install the calculation client on your computer, and then sign up and sign in to <a href="http://111.230.245.215/dashboard/home">Dashborad</a>.
 - [Step 2](/docs/Tutorials/BioModel): create a **BioModel**.
 - [Step 3](/docs/Tutorials/DataSet): create a **DataSet**.
 - [Step 4](/docs/Tutorials/Project): create a **Project** to combine **BioModel** and **DataSet**, and then select a calculation engine to solve them.
@@ -31,27 +31,36 @@ The steps of a complete calcualtion process are:
 <!-- However, it is not necessary to go throught all these 4 steps -->
 <!-- to start calculating in **SIMPO** -->
 By cloned a Public **Project**, we can just start calculating without go throught all these steps.
-But please remember to install the calcualtion client and sign in before anything.
+But please remember to install the calculation client and sign in before anything.
 
 :::
 
 -------
 
 ## The Easiest Way
+
 <!-- , since  -->
+<!-- so you can just start the calculaiton and wait for the results after this cloning: -->
 
 
-Sharing research findings is one of the key features of **SIMPO**, which makes cloning a **Project** from the public repository become the easiest way to do the whole thing. This action will clone the correspoding **BioMode** and **Dataset**, so you can just start the calculaiton and wait for the results after this cloning:
+Sharing research findings is one of the key features of **SIMPO**, which makes cloning a **Project** from the public repository become the easiest way to do the whole thing. This action will clone the correspoding **BioMode**, **Dataset** and calculation result.
 - Clone a Public Project.
-- Check the calculation result (you can change some parameters and calcualtion again).
+- Check the calculation result (you can change some parameters and calculation again).
 
 <!-- /img/quick_start/TheEasiestWay/TheEasiestWay.gif -->
   <div align="center" style={{marginTop: "0vh"}}>
-  <img src="https://sludge.readthedocs.io/en/latest/_images/TheEasiestWay.gif" width="80%"/>
-
+    <img src="https://sludge.readthedocs.io/en/latest/_images/TheEasiestWay.gif" width="80%"/>
   </div>
 
 <!-- <br /> -->
+
+<!-- <script>
+var img = document.querySelector("img");
+img.onmouseover = function () {img.style.cssText = "animation: bigger 2s"}
+
+
+</script> -->
+
 
 ------
 
@@ -69,7 +78,7 @@ Sharing research findings is one of the key features of **SIMPO**, which makes c
 
 <!-- <br /> -->
 
-- Create a new **Project** with a ASM3 **BioModel** and an empty **DataSet**, and you would get:
+- Create a new **Project** with a ASM3 **BioModel** and an empty **DataSet**, then you would get (these setting would be created by default, but you can definitely change them):
   - A CSRT tank with the Targets exact the same as the Components of ASM3.
   - All Targets initial values are set to be 200.
   - 2 days calcluation time with 0.2 day interval.
@@ -107,7 +116,7 @@ Sharing research findings is one of the key features of **SIMPO**, which makes c
 
 :::important 60 seconds
 
-<!-- to start calculating in **SIMPO**, one should Installing the calcualtion client, and sign in to <a href="http://111.230.245.215/dashboard/home">Dashborad</a>. -->
+<!-- to start calculating in **SIMPO**, one should Installing the calculation client, and sign in to <a href="http://111.230.245.215/dashboard/home">Dashborad</a>. -->
 <!-- No matter what, before anything -->
 
 Every calculation must be comfirmed inside **60 secconds**, or you have to stop it and restart a new one.

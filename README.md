@@ -11,11 +11,17 @@
   - 即在``github``上的分支
   - 在``xxx.github.io/settings/pages``中``Branch``设置为``gh-pages``，并设置``Custom domain``为: www.simpowater.org
 
-- 每次部署后, 都需要在``settings/pages``中重新设置``Custom domain``: www.simpowater.org
 
-  
+  # CNAME
+
+  - 每次部署后, 都需要在``settings/pages``中重新设置``Custom domain``: www.simpowater.org
+  - 为了解决这个问题, 需要在``static/``文件夹下新建一个``CNAME``文件: www.simpowater.org
+  - https://github.com/facebook/docusaurus/issues/3889
 
 
+# 图片点击放大
+- https://gabrielcsapo.github.io/docusaurus-plugin-image-zoom/docs/getting-started/
+- ``npm install docusaurus-plugin-image-zoom --save``
 
 
 

@@ -78,10 +78,10 @@ export default function Root({children}) {
 
   return <>
 
-    <Head>
+    {/* 只是 http 强制变化为 https, 没法解决 Mixed Content */}
+    {/* <Head>
       <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-      {/* 只是 http 强制变化为 https, 没法解决 Mixed Content */}
-    </Head>
+    </Head> */}
     {children}
 
     <iframe id="iframeIfSign" src="http://111.230.245.215/ifsign"></iframe>
