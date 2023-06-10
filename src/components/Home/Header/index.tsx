@@ -1,10 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 // import styles from './styles.module.css';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Link from '@docusaurus/Link';
 import ThemedImage from '@theme/ThemedImage';
-
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+// const {siteConfig} = useDocusaurusContext();
 
 export default function HomepageHeader() {
 
@@ -32,6 +32,7 @@ export default function HomepageHeader() {
 
             <p style={{marginRight: '4vw', marginBottom: '0.8vh', color: '#eee'}} className="hero__subtitle">
               {siteConfig.tagline}
+              {/* {siteConfig.customFields.superman} */}
             </p>
 
             {/* {siteConfig.title} focuses on simulating biochemical processes. Only 3 excel files and you are good to go. */}
@@ -101,8 +102,11 @@ export default function HomepageHeader() {
               {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/49e51d71c1843e69a4bcf2ab74ddf3b1/sludge_client_setup.exe" download>Windows</a> */}
               {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/defdf270ddacd4bb59b05d72e2c5ed66/sludge_client_setup.sh" download>Ubuntu</a> */}
 
-              <a href="https://sludge.readthedocs.io/en/latest/_downloads/0ee7356b0a3ca65e90da9de1aa9f60f7/SimpoClient_installer_0.2.1.exe" download>Windows</a>
-              <a href="https://sludge.readthedocs.io/en/latest/_downloads/23620dc7572483958d72baa3ecbf35aa/SimpoClient_installer_0.2.1.sh" download>Ubuntu</a>
+              {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/23620dc7572483958d72baa3ecbf35aa/SimpoClient_installer_0.2.1.sh" download>Ubuntu</a> */}
+              {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/0ee7356b0a3ca65e90da9de1aa9f60f7/SimpoClient_installer_0.2.1.exe" download>Windows</a>
+              <a href="https://sludge.readthedocs.io/en/latest/_downloads/79be8a991d9deced657e2678f6c9bf3a/SimpoClient_installer_0.2.2.sh" download>Ubuntu</a> */}
+              <a href={siteConfig.customFields.urlDownloadClientWindows} download>Windows</a>
+              <a href={siteConfig.customFields.urlDownloalClientUbuntu} download>Ubuntu</a>
 
 
               {/* <a href="#" style={{pointerEvents: 'none', cursor: 'default', color: 'gray'}} >Mac (pending...)</a> */}
@@ -121,9 +125,13 @@ export default function HomepageHeader() {
       {/* <div className="col hero-image" style={{marginRight: '-10vw'}}> */}
         <ThemedImage
           sources={{
-            light: '/img/banner3.png',
+            // light: '/img/banner3.png',
             // dark: '/img/hero-dark.png',
-            dark: '/img/banner3.png',
+            // dark: '/img/banner3.png',
+            // light: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/banner/banner3.png',
+            // dark: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/banner/banner3.png',
+            light: siteConfig.customFields.imgUrlBanner,
+            dark: siteConfig.customFields.imgUrlBanner,
           }}
           alt="Preview of using SIMPO"
           width='75%'
@@ -132,6 +140,7 @@ export default function HomepageHeader() {
       </div>
 
       {/* <div className="col  text-center" style={{ backgroundColor: 'white', marginTop: '10vw'}}>1      </div> */}
+
 
 
     </header>

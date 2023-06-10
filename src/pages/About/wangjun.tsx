@@ -24,7 +24,10 @@ export default function AboutJiangFeng() {
           reverse={true}
           width='70%'
           marginTop='0vh'
-          imgUrl="img/about/team/Jakk2b.jpg"
+          // imgUrl="img/about/team/Jakk2b.jpg"
+          // imgUrl="https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/about/team/Jakk2b.jpg"
+          imgUrl={siteConfig.customFields.imgUrlWangjun}
+
           title={<Translate id="about.wangjun">Jun Wang</Translate>}
           description={
             <>

@@ -18,7 +18,9 @@ export default function FeaturesTrackable() {
           reverse={true}
           // width='60%'
           marginTop='2vh'
-          imgUrl="img/matrix2.png"
+          // imgUrl="img/matrix2.png"
+          // imgUrl="https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/matrix2.png"
+          imgUrl={siteConfig.customFields.imgUrlTrackable}
           // imgUrl="img/Xu.png"
           // imgUrl="img/tables.jpg"
           // imgUrl="img/Fig4.png"

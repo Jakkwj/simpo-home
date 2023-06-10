@@ -2,7 +2,9 @@
 
 <!-- **SIMPO** -->
 
-- Clone **BioModel** <a href="http://111.230.245.215/dashboard/biomodels/public/name/ASM1/id/35/did/34">ASM1</a> from the Public to Personal repository.
+<!-- - Clone **BioModel** <a href="http://xx.xx.xx.xx/dashboard/biomodels/public/name/ASM1/id/35/did/34">ASM1</a> from the Public to Personal repository. -->
+
+- Clone **BioModel** <a href="http://dash.simpowater.org/dashboard/biomodels/public/name/ASM1/id/35/did/34">ASM1</a> from the Public to Personal repository.
 - Create a new **Project** with ASM1 **BioModel** and an empty **DataSet**, then you would get:
   - A CSRT tank with the Targets exact the same as the Components of ASM1.
   - All Targets initial values are set to be 200.

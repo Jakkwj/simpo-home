@@ -1,0 +1,41 @@
+import { Mermaid } from 'mdx-mermaid/Mermaid'
+
+<Mermaid chart={`gantt
+    dateFormat  YYYY-MM-DD
+    axisFormat  %Y-%m
+    tickInterval 6month
+    todayMarker on
+    title       Develop Timeline
+    excludes    weekends
+    section SIMPO
+    Core Function Development (Local)   :done, a1, 2018-01-01, 2021-01-01
+    Core Function Development (Web)     :done, a2, after a1, 2022-10-01
+    Core Function Stable                :milestone, ma2, after a2, 0d
+    Maintaining                         :active, after a2, 2027-10-01
+    section SIMPO Pro
+    Core Function Development (Local)   :done, b1, 2018-01-01, 2021-06-01
+    Core Function Development (Web)     :done, b2, after b1, 2022-12-01
+    Core Function Stable                :milestone, mb2, after b2, 0d
+    Maintaining                         :active, after b2, 2027-10-01
+    section SIMPO Dash
+    Core Function Development           :done, c1, 2018-10-01, 2023-01-01
+    Core Function Stable                :milestone, mc1, after c1, 0d
+    Maintaining                         :active, c11, after c1, 2027-10-01
+    Add FlowChart                       :crit, done, c12, after c1, 90d
+    Http to Https                       :done, c2, 2023-05-01, 2023-06-10
+    Add Estimaiton Engine               :crit, active, c3, after c2, 2023-08-01
+    Add Uncertainty Engine              :crit, c4, after c3, 2023-12-31
+    Standard Repositories               :crit, c5, after c4, 300d
+    Add AI Algorithm                    :crit, c6, after c4, 360d
+    Add CFD Algorithm                   :c7, after c6, 300d
+    Add 3D Digital Twin                 :c8, after c7, 300d
+    section SIMPO Client
+    Core Function Development           :done, d1, 2019-01-01, 2023-01-01
+    Core Function Stable                :milestone, md1, after d1, 0d
+    Maintaining                         :active, after d1, 2027-10-01
+`} />
+
+
+
+
+

@@ -123,10 +123,23 @@ html[data-theme='dark'] .header-github-link:before {
   background-color: transparent;
 }
 
-
+/*
 .noise-bg {
   background-image: url('/img/grid-light.svg'),
     url('/img/noise-light.png'),
+    linear-gradient(
+      to right,
+      #5e72e4,
+      #3b3b62
+    );
+  background-size: 48px 48px, 100% 100%, 100%;
+
+} */
+
+
+.noise-bg {
+  background-image: url('https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/banner/grid-light.svg'),
+    url('https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/banner/noise-light.png'),
     linear-gradient(
       to right,
       #5e72e4,

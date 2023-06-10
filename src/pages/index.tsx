@@ -7,10 +7,12 @@ import Translate from '@docusaurus/Translate'
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import Layout from '@theme/Layout';
 import HomepageHeader from '@site/src/components/Home/Header';
+import Roadmap from '@site/src/components/Home/Roadmap';
 import FeaturesEasyToUse from '@site/src/components/Home/Features/easyToUse';
 import FeaturesPowerful from '@site/src/components/Home/Features/powerful';
 import FeaturesOpen from '@site/src/components/Home/Features/open';
 import FeaturesTrackable from '@site/src/components/Home/Features/trackable';
+// src/components/Home/Roadmap/index.mdx
 // import TeamJiangFeng from '@site/src/components/Home/Team/jiangfeng';
 
 import styles from './index.module.css';
@@ -45,6 +47,7 @@ export default function Home(): JSX.Element {
         <FeaturesPowerful />
         <FeaturesOpen />
         <FeaturesTrackable />
+        <Roadmap />
         {/* <TeamJiangFeng /> */}
 
       </main>

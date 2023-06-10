@@ -19,7 +19,9 @@ export default function FeaturesPowerful() {
           width='100%'
           marginTop='2vh'
           // imgUrl="img/matrix.png"
-          imgUrl="img/Xu.png"
+          // imgUrl="img/Xu.png"
+          // imgUrl="https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/Xu.png"
+          imgUrl={siteConfig.customFields.imgUrlPowerful}
           // imgUrl="img/Fig6.png"
           title={<Translate id="home.easytouse">Powerful and Flexible</Translate>}
           description={

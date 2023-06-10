@@ -16,7 +16,9 @@ export default function FeaturesOpen() {
           width='90%'
           // imgUrl="img/tables.jpg"
           // imgUrl="img/Fig5.png"
-          imgUrl="img/Fig6.png"
+          // imgUrl="img/Fig6.png"
+          // imgUrl="https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/Fig6.png"
+          imgUrl={siteConfig.customFields.imgUrlOpen}
           // imgUrl="img/gif/import_biomodel.gif"
           title={<Translate id="home.easytouse">Open-Minded</Translate>}
           description={

@@ -4,7 +4,8 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const title = 'SIMPO'
-const urlConsole = 'http://111.230.245.215/dashboard/home'
+// const urlConsole = 'https://dashboard.simpowater.org/dashboard/home'
+const urlConsole = 'https://dash.simpowater.org/dashboard/home'
 
 /**
  * 登录后台显示 Dashboard, 未登录时显示 Sign In 的功能实现参看: https://github.com/facebook/docusaurus/discussions/5307
@@ -25,14 +26,71 @@ const fs = require('fs');
 
 
 const config = {
+
+  customFields: {
+    // global variable
+    imgUrlBanner: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/banner/banner3.png',
+
+    imgUrlPowerful: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/Xu.png',
+    imgUrlOpen: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/Fig6.png',
+    imgUrlTrackable: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/matrix2.png',
+
+    imgUrlIntroduction_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/intro/Fig5__Sim_Targets__.png',
+    imgUrlIntroduction_2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/intro/Project__Eva_UncertaintyPCDF__(59).png',
+
+    imgUrlJiangfeng: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/about/team/jiangfeng.jpg',
+    imgUrlWangjun: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/about/team/Jakk2b.jpg',
+
+    imgUrlTheEasiestWay: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/TheEasiestWay/TheEasiestWay.gif',
+
+    imgUrlASM3_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/ASM3/ASM3_1.gif',
+    imgUrlASM3_2: "https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/ASM3/ASM3_2.gif",
+    imgUrlASM3_3: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/ASM3/ASM3_3.gif',
+    imgUrlASM3_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/ASM3/ASM3_4.gif',
+
+    imgUrlBioModel_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/biomodel/1.gif',
+    imgUrlBioModel_2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/biomodel/2.gif',
+    imgUrlBioModel_3: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/biomodel/3.gif',
+    imgUrlBioModel_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/biomodel/4.gif',
+
+    imgUrlDataSet_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/dataset/1.gif',
+    imgUrlDataSet_2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/dataset/2.gif',
+    imgUrlDataSet_3: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/dataset/3.gif',
+    imgUrlDataSet_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/dataset/4.gif',
+    imgUrlDataSet_5: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/dataset/4.gif',
+
+    imgUrlProject_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/project/1.gif',
+    imgUrlProject_2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/project/2.gif',
+    imgUrlProject_3: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/project/3.gif',
+    imgUrlProject_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/project/4.gif',
+
+
+    urlDashHome: 'https://dash.simpowater.org/dashboard/home',
+
+    urlDashASM3: 'https://dash.simpowater.org/dashboard/biomodels/public/name/ASM3/id/45/did/41',
+
+    urlDownloadClientWindows: 'https://sludge.readthedocs.io/en/latest/_downloads/4269e5ad1fd14053bd80f03977e51dad/SimpoClient_installer.exe',
+    urlDownloalClientUbuntu: 'https://sludge.readthedocs.io/en/latest/_downloads/4fffe0f55f67f1c6b7eb94ec4fb6013f/SimpoClient_installer.sh',
+
+    urlDownloadUrlplateBioModel: 'https://sludge.readthedocs.io/en/latest/_downloads/fe952779792f1eab732422dd1492e15f/BioModel.xlsx',
+    urlDownloadUrlplateDataSet: 'https://sludge.readthedocs.io/en/latest/_downloads/ce5b40856b1e6d339bc3e8055a65ed80/DataSet.xlsx',
+    urlDownloadUrlplateProject: 'https://sludge.readthedocs.io/en/latest/_downloads/cdbae577b8f73a4be69004f393d76da6/Solution.xlsx',
+
+    iframeIfSignSrc: 'https://dash.simpowater.org/ifsign',
+
+  },
+
+
   title: title,
   // tagline: 'A Scientific Computing SaaS Platform',
   // tagline: 'A Simulation SaaS Platform for Water and Wastewater Treatment Process Modeling',
   tagline: 'A Scientific Computing SaaS Platform for Water and Wastewater Treatment Process Modeling',
   // tagline: 'A SaaS platform for wastewater treatment modeling',
 
+
   // favicon: 'img/favicon.ico',
-  favicon: 'img/logo3.ico',
+  // favicon: 'img/logo3.ico',
+  favicon: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/ico/logo3.ico',
 
   // Set the production url of your site here
   // url: 'https://your-docusaurus-test-site.com',
@@ -146,7 +204,8 @@ const config = {
       },
 
       // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      // image: 'img/docusaurus-social-card.jpg',
+      image: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/logo3.png',
       // algolia: {
       //   // If Algolia did not provide you any appId, use 'BH4D9OD16A'
       //   appId: 'NS6GBGYACO',
@@ -167,7 +226,8 @@ const config = {
           alt: 'Logo',
           // src: 'img/logo.svg',
           // src: 'img/logo.png',
-          src: 'img/logo3.png',
+          // src: 'img/logo3.png',
+          src: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/logo3.png',
         },
         items: [
           // {
@@ -246,6 +306,8 @@ const config = {
           // { href: `${urlConsole}`, label: !!global.localStorage.getItem('accessToken') ? 'Dashboard' : 'Sign In', position: 'right'},
 
           // { href: `${urlConsole}`, label: 'Dashboard', position: 'right', docspluginid: 'Dashboard'},
+          // { href: `${urlConsole}`, label: 'Sign In', position: 'right', docspluginid: 'SignIn'},
+          { href: `${urlConsole}`, label: 'Dashboard', position: 'right', docspluginid: 'Dashboard'},
           { href: `${urlConsole}`, label: 'Sign In', position: 'right', docspluginid: 'SignIn'},
 
           // {
@@ -315,6 +377,14 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
+
+  markdown: { // 加入 mermaid https://docusaurus.io/zh-CN/docs/markdown-features/diagrams
+    // yarn add @docusaurus/theme-mermaid@next  # 通过 @ next 选择正确的版本 2.4.0
+    // yarn add mdx-mermaid mermaid  # markdown in mdx
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
+
 };
 
 module.exports = config;

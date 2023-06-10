@@ -1,6 +1,4 @@
----
-sidebar_position: 2
----
+import config from '@generated/docusaurus.config'
 
 # Qucik Start
 
@@ -8,7 +6,8 @@ sidebar_position: 2
 The 3 essential elements of **SIMPO** are: **BioModel** (model), **DataSet** (data) and **Project** (solution).
 
 The steps of a complete calculation process are:
-- [Step 1](/docs/Tutorials/Installtion): install the calculation client on your computer, and then sign up and sign in to <a href="http://111.230.245.215/dashboard/home">Dashborad</a>.
+<!-- - [Step 1](/docs/Tutorials/Installtion): install the calculation client on your computer, and then sign up and sign in to <a href="http://xx.xx.xxxx.xxx/dashboard/home">Dashborad</a>. -->
+- [Step 1](/docs/Tutorials/Installtion): install the calculation client on your computer, and then sign up and sign in to <a href={config.customFields.urlDashHome}>Dashborad</a>.
 - [Step 2](/docs/Tutorials/BioModel): create a **BioModel**.
 - [Step 3](/docs/Tutorials/DataSet): create a **DataSet**.
 - [Step 4](/docs/Tutorials/Project): create a **Project** to combine **BioModel** and **DataSet**, and then select a calculation engine to solve them.
@@ -48,8 +47,10 @@ Sharing research findings is one of the key features of **SIMPO**, which makes c
 - Check the calculation result (you can change some parameters and calculation again).
 
 <!-- /img/quick_start/TheEasiestWay/TheEasiestWay.gif -->
+<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/TheEasiestWay.gif" width="80%"/> -->
+
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="https://sludge.readthedocs.io/en/latest/_images/TheEasiestWay.gif" width="80%"/>
+    <img src={config.customFields.imgUrlTheEasiestWay} width="80%"/>
   </div>
 
 <!-- <br /> -->
@@ -68,12 +69,14 @@ img.onmouseover = function () {img.style.cssText = "animation: bigger 2s"}
 
 **SIMPO** gets lots of public classical models, we can just clone and play with them. Let's take ASM3 as a simple example.
 
-- Clone <a href="http://111.230.245.215/dashboard/biomodels/public/name/ASM3/id/45/did/41">ASM3</a> from the Public to Personal **BioModel** repository.
-
+<!-- - Clone <a href="http://xx.xx.xxxx.xxx/dashboard/biomodels/public/name/ASM3/id/45/did/41">ASM3</a> from the Public to Personal **BioModel** repository. -->
+- Clone <a href={config.customFields.urlDashASM3}>ASM3</a> from the Public to Personal **BioModel** repository.
+-
 <!-- /img/quick_start/ASM3/ASM3_1.gif -->
+<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_1.gif" width="80%"/> -->
 
  <div align="center" style={{marginTop: "0vh"}}>
-    <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_1.gif" width="80%"/>
+    <img src={config.customFields.imgUrlASM3_1} width="80%"/>
   </div>
 
 <!-- <br /> -->
@@ -84,10 +87,12 @@ img.onmouseover = function () {img.style.cssText = "animation: bigger 2s"}
   - 2 days calcluation time with 0.2 day interval.
   - Evaluation columns (in Project Detail Variable tab) of all Parameters of ASM3 would set to be "True".
 
- <!-- /img/quick_start/ASM3/ASM3_2.gif -->
+<!-- /img/quick_start/ASM3/ASM3_2.gif -->
+<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_2.gif" width="80%"/> -->
+
   <br />
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_2.gif" width="80%"/>
+    <img src={config.customFields.imgUrlASM3_2} width="80%"/>
   </div>
 
 <!-- <br /> -->
@@ -98,25 +103,27 @@ img.onmouseover = function () {img.style.cssText = "animation: bigger 2s"}
   <!-- <br /> -->
 
 <!-- /img/quick_start/ASM3/ASM3_3.gif -->
+<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_3.gif" width="80%"/> -->
 
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_3.gif" width="80%"/>
+    <img src={config.customFields.imgUrlASM3_3} width="80%"/>
   </div>
 
   - Evaluation:
   <!-- <br /> -->
 
 <!-- /img/quick_start/ASM3/ASM3_4.gif -->
+<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_4.gif" width="80%"/> -->
 
   <div align="center" style={{marginTop: "0vh"}}>
-    <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_4.gif" width="80%"/>
+    <img src={config.customFields.imgUrlASM3_4} width="80%"/>
   </div>
   <br />
 
 
 :::important 60 seconds
 
-<!-- to start calculating in **SIMPO**, one should Installing the calculation client, and sign in to <a href="http://111.230.245.215/dashboard/home">Dashborad</a>. -->
+<!-- to start calculating in **SIMPO**, one should Installing the calculation client, and sign in to <a href="http://xx.xx.xxxx.xxx/dashboard/home">Dashborad</a>. -->
 <!-- No matter what, before anything -->
 
 Every calculation must be comfirmed inside **60 secconds**, or you have to stop it and restart a new one.

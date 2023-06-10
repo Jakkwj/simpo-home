@@ -1,8 +1,8 @@
 // import React, { useEffect, useRef, nextTick } from 'react';
 import React from 'react';
 import NavbarNavLink from '@theme-original/NavbarItem/NavbarNavLink';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
+// import BrowserOnly from '@docusaurus/BrowserOnly';
 // import useIsBrowser from '@docusaurus/useIsBrowser';
 
 
@@ -20,12 +20,23 @@ const navDisplay = (docspluginid) => {
 
   // TODO: 2023.05.22 后台升级后再打开以下代码
   // if (docspluginid === 'Dashboard' && (localStorage.getItem('ifSign') !== 'true' || localStorage.getItem('ifSign') === null)) {
-  if (docspluginid === 'Dashboard') {
+
+
+  // if (docspluginid === 'Dashboard') {
+  //   return null;
+  // }
+  // if (docspluginid === 'SignIn' && localStorage.getItem('ifSign') === 'true') {
+  //   return null;
+  // }
+
+  if (
+    (docspluginid === 'Dashboard' && localStorage.getItem('ifSign') !== 'true') ||
+    (docspluginid === 'SignIn' && localStorage.getItem('ifSign') === 'true')
+  ) {
     return null;
   }
-  if (docspluginid === 'SignIn' && localStorage.getItem('ifSign') === 'true') {
-    return null;
-  }
+  return 'keep';
+
 }
 
 export default function NavbarNavLinkWrapper(props) {

@@ -78,13 +78,22 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'SIMPO Dashboard',
+          label: 'SIMPO Dash',
           items: [
-            'ChangeLog/SIMPO Dashboard/2023',
-            'ChangeLog/SIMPO Dashboard/2022',
-            'ChangeLog/SIMPO Dashboard/2021'
+            'ChangeLog/SIMPO Dash/2023',
+            'ChangeLog/SIMPO Dash/2022',
+            'ChangeLog/SIMPO Dash/2021'
           ]
         },
+
+        {
+          type: 'category',
+          label: 'SIMPO Client',
+          items: [
+            'ChangeLog/SIMPO Client/2023',
+          ]
+        },
+
         {
           type: 'category',
           label: 'SIMPO',
@@ -94,6 +103,7 @@ const sidebars = {
             'ChangeLog/SIMPO/2021'
           ]
         },
+
         {
           type: 'category',
           label: 'SIMPO Pro',

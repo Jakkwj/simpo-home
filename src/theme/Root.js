@@ -1,9 +1,11 @@
 // import React, {useEffect, useState} from 'react';
+// import useIsBrowser from '@docusaurus/useIsBrowser';
 import React from 'react';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import Head from '@docusaurus/Head';
-// import useIsBrowser from '@docusaurus/useIsBrowser';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+
 
 
 const addIframeListener = () => {
@@ -19,7 +21,7 @@ const addIframeListener = () => {
     }
   );
   // let iframe = document.createElement("iframe");
-  // iframe.src = "http://111.230.245.215/ifsign";
+  // iframe.src = "https://dash.simpowater.org/ifsign";
   // iframe.style="display: none;" // 隐藏
   // document.body.appendChild(iframe);
 
@@ -34,6 +36,9 @@ export default function Root({children}) {
    * 搬去 https 后需要移除
    *
    */
+
+  const {siteConfig} = useDocusaurusContext();
+
 
   //
     // const isBrowser = useIsBrowser();
@@ -66,7 +71,7 @@ export default function Root({children}) {
   //     //   }
   //     // );
   //     // let iframe = document.createElement("iframe");
-  //     // iframe.src = "http://111.230.245.215/ifsign";
+  //     // iframe.src = "https://dash.simpowater.org/ifsign";
   //     // iframe.style="display: none;"
   //     // document.body.appendChild(iframe);
   //   }}
@@ -84,7 +89,9 @@ export default function Root({children}) {
     </Head> */}
     {children}
 
-    <iframe id="iframeIfSign" src="http://111.230.245.215/ifsign"></iframe>
+    {/* <iframe id="iframeIfSign" src="http://dash.simpowater.org/ifsign"></iframe> */}
+    {/* <iframe id="iframeIfSign" src="https://dash.simpowater.org/ifsign"></iframe> */}
+    <iframe id="iframeIfSign" src={siteConfig.customFields.iframeIfSignSrc}></iframe>
 
   </>;
 }
