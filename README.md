@@ -12,7 +12,7 @@
   - 在``xxx.github.io/settings/pages``中``Branch``设置为``gh-pages``，并设置``Custom domain``为: www.simpowater.org
 
 
-  # CNAME
+# CNAME
 
   - 每次部署后, 都需要在``settings/pages``中重新设置``Custom domain``: www.simpowater.org
   - 为了解决这个问题, 需要在``static/``文件夹下新建一个``CNAME``文件: www.simpowater.org
@@ -24,6 +24,10 @@
 - ``npm install docusaurus-plugin-image-zoom --save``
 
 
+# Mermaid
+ - 加入 mermaid https://docusaurus.io/zh-CN/docs/markdown-features/diagrams
+   - yarn add @docusaurus/theme-mermaid@next  # 通过 @ next 选择正确的版本 2.4.0
+ - [mermaid in mdx](https://github.com/sjwall/mdx-mermaid): yarn add mdx-mermaid mermaid  #
 
 # Website
 

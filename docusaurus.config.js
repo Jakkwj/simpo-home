@@ -94,7 +94,8 @@ const config = {
 
   // Set the production url of your site here
   // url: 'https://your-docusaurus-test-site.com',
-  url: 'https://jakkwj.github.io',
+  // url: 'https://jakkwj.github.io',
+  url: 'https://www.simpowater.org',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -104,7 +105,8 @@ const config = {
   // organizationName: title, // Usually your GitHub org/user name.
   // projectName: 'Sludge', // Usually your repo name.
   organizationName: 'Jakkwj', // Usually your GitHub org/user name.
-  projectName: 'jakkwj.github.io', // Usually your repo name.
+  // projectName: 'jakkwj.github.io', // Usually your repo name.
+  projectName: 'simpo_home', // Usually your repo name.
   trailingSlash: false,
   deploymentBranch: 'gh-pages',
 
@@ -119,6 +121,20 @@ const config = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
+    // locales: ['en', 'zh-Hans'], // zh-Hans 简体中文
+
+
+    // locales: ['en', 'zh-Hans', 'fa'],
+    // localeConfigs: {
+    //   en: {
+    //     htmlLang: 'en-GB',
+    //   },
+    //   // 如果你不需要覆盖默认值，你可以忽略这个语言（比如 zh-Hans）
+    //   fa: {
+    //     direction: 'rtl',
+    //   },
+    // },
+
   },
 
   presets: [
@@ -213,12 +229,12 @@ const config = {
       //   apiKey: '8f0f11e3241b59574c5dd32af09acdc8',
       //   indexName: 'hasura-graphql',
       //   // Optional: see doc section below
-      //   // contextualSearch: true,
+      //   contextualSearch: true,
       //   // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
       //   // externalUrlRegex: 'external\\.com|domain\\.com',
       //   // Optional: Algolia search parameters
       //   // searchParameters: {},
-      // },
+      // // },
       navbar: {
         hideOnScroll: true,
         title: title,
@@ -294,12 +310,12 @@ const config = {
 
 
           // {to: '/blog', label: 'Blog', position: 'left'},
-          // {
-          //   href: 'https://github.com/jakkwj/sludge',
-          //   position: 'right',
-          //   className: 'header-github-link',
-          //   'aria-label': 'GitHub repository',
-          // },
+          {
+            href: 'https://github.com/jakkwj/simpo_home',
+            position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository',
+          },
 
           // { href: `${urlConsole}`, label: true ? 'Dashboard' : 'Login', position: 'right'},
           // { href: `${urlConsole}`, label: true ? 'Sign In' : 'Dashboard', position: 'right'},
@@ -380,7 +396,7 @@ const config = {
 
   markdown: { // 加入 mermaid https://docusaurus.io/zh-CN/docs/markdown-features/diagrams
     // yarn add @docusaurus/theme-mermaid@next  # 通过 @ next 选择正确的版本 2.4.0
-    // yarn add mdx-mermaid mermaid  # markdown in mdx
+    // yarn add mdx-mermaid mermaid  # mermaid in mdx
     mermaid: true,
   },
   themes: ['@docusaurus/theme-mermaid'],
