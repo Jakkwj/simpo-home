@@ -23,35 +23,37 @@ export default function FeaturesPowerful() {
           // imgUrl="https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/Xu.png"
           imgUrl={siteConfig.customFields.imgUrlPowerful}
           // imgUrl="img/Fig6.png"
-          title={<Translate id="home.easytouse">Powerful and Flexible</Translate>}
+          title={<Translate id="home.powerful">Powerful and Flexible</Translate>}
           description={
             <>
               <p>
+
+              {/* {
+                'All the models and datas are easy to share and track.'
+              } */}
+              {/* {siteConfig.title} */}
                 <Translate
-                  // id="home.easytouse.1"
+                  // id="home.powerful.1"
                   // values={{
                   //   minikube: <Link to="https://minikube.sigs.k8s.io/">minikube</Link>,
                   //   kind: <Link to="https://kind.sigs.k8s.io/">kind</Link>,
                   // }}
                 >
-                  {/* {
-                    'All the models and datas are easy to share and track.'
-                  } */}
-                  { `${siteConfig.title} provides various calculation engines and functions:` }
+                  { `Provides various calculation engines and functions:` }
 
                 </Translate>
               </p>
               <ul>
                 <li>
                     <Translate
-                      // id="home.easytouse.3"
+                      // id="home.powerful.3"
                     >
                       Calculation engines includes: simulation, sensitivity analysis, uncertainty analysis and parameter estimation.
                     </Translate>
                   </li>
                 <li>
                   <Translate
-                    // id="home.easytouse.2"
+                    // id="home.powerful.2"
                   >
                   {/* Modles and datas can be reused and shared to the community. */}
                   {/* The two essential components of HydroSim are BioModel (models) and DataSet (data). These components can be combined in an arbitrary way, which makes HydroSim highly composable. For example, to find out the optimal model for a given dataset, one can easily switch between different models (e.g. ASM1, 2 or 3) for calculations to compare various model structures. And vice verse, one can switch between different datasets for the same model to calculate, making it quickly and easily to evaluate a model's robustness and generalizability. */}
@@ -64,7 +66,7 @@ export default function FeaturesPowerful() {
                 </li>
                 <li>
                   <Translate
-                    // id="home.easytouse.3"
+                    // id="home.powerful.3"
                   >
                   {/* All the algorithms are open source, the modle&apos;s structure and the data authenticity can be tracked effectively. */}
                   Models and data can be released in multiple versions, making it easy to determine the optimal model structure and parameter.

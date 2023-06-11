@@ -26,7 +26,7 @@ export default function FeaturesTrackable() {
           // imgUrl="img/Fig4.png"
           // imgUrl="img/Fig5.png"
           // imgUrl="img/Fig6.png"
-          title={<Translate id="home.easytouse">Trackable</Translate>}
+          title={<Translate id="home.trackable">Trackable</Translate>}
           description={
             <>
               <p>
@@ -50,7 +50,7 @@ export default function FeaturesTrackable() {
 
                     {/* This also provides great convenience to reviewers, */}
 
-                    { `All model submissions can be calculated and published publicly on ${siteConfig.title}, thereby precluding the possibility of algorithmic cheating.` }
+                    { `All model submissions can be calculated and published publicly, thereby precluding the possibility of algorithmic cheating.` }
 
 
 

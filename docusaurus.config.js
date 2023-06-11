@@ -120,7 +120,8 @@ const config = {
   // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'zh'], // zh-Hans 简体中文
+    // locales: ['en'],
     // locales: ['en', 'zh-Hans'], // zh-Hans 简体中文
 
 
@@ -143,6 +144,10 @@ const config = {
       '@docusaurus/preset-classic',
       // '@docusaurus/preset-live-codeblock',
 
+
+
+
+
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
@@ -164,6 +169,14 @@ const config = {
           customCss: require.resolve('./src/css/custom.css'),
           // customCss: require.resolve('./src/css/custom.scss'),
         },
+
+        sitemap: {
+          changefreq: 'weekly',
+          priority: 0.5,
+          ignorePatterns: ['/tags/**'],
+          filename: 'sitemap.xml',
+        },
+
       }),
     ],
   ],
@@ -222,19 +235,21 @@ const config = {
       // Replace with your project's social card
       // image: 'img/docusaurus-social-card.jpg',
       image: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/logo3.png',
+
       // algolia: {
       //   // If Algolia did not provide you any appId, use 'BH4D9OD16A'
-      //   appId: 'NS6GBGYACO',
-      //   // Public API key: it is safe to commit it
-      //   apiKey: '8f0f11e3241b59574c5dd32af09acdc8',
-      //   indexName: 'hasura-graphql',
+      //   appId: '75074RMMKU',
+      //   // Public API key: it is safe to commit it, Search-Only API Key
+      //   apiKey: '76b6fd295e53f4d5eca66a67b7d9dc44',
+      //   indexName: 'simpo_home',  // must the same as Algolia index name
       //   // Optional: see doc section below
       //   contextualSearch: true,
       //   // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
       //   // externalUrlRegex: 'external\\.com|domain\\.com',
       //   // Optional: Algolia search parameters
       //   // searchParameters: {},
-      // // },
+      // },
+
       navbar: {
         hideOnScroll: true,
         title: title,

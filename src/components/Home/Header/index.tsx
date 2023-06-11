@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import ThemedImage from '@theme/ThemedImage';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import Translate, {translate} from '@docusaurus/Translate';
 // const {siteConfig} = useDocusaurusContext();
 
 export default function HomepageHeader() {
@@ -28,31 +29,10 @@ export default function HomepageHeader() {
 
           <div className="row" style={{marginTop: '-1.5vh', color: '#eee'}}>
             {/* <img src="/img/SIMPO_logo.png" width='15%'/> */}
+
             <h1 style={{marginBottom: '0vh', color: '#eee'}} className="hero__title">{siteConfig.title}</h1>
 
-            <p style={{marginRight: '4vw', marginBottom: '0.8vh', color: '#eee'}} className="hero__subtitle">
-              {siteConfig.tagline}
-              {/* {siteConfig.customFields.superman} */}
-            </p>
 
-            {/* {siteConfig.title} focuses on simulating biochemical processes. Only 3 excel files and you are good to go. */}
-            {/* <font color='white'> */}
-            <p style={{color: '#eee'}} className="">
-              {/* {siteConfig.title} is a simulation platform online for water and wastewater treatment process modeling. */}
-              {/* {siteConfig.title} is a cloud computing platform that uses software as a service (SaaS) */}
-              {/* to ease mechanistic learning and model development. */}
-              {/* {siteConfig.title} offers a user-friendly experience without compromising power and flexibility, making it a modern, cloud-based platform for information-sharing and co-creation. */}
-              {siteConfig.title} combines user-friendliness with power and flexibility, it is an open-minded modern cloud-based platform for water and wastewater treatment process modeling. {siteConfig.title} aims to lower the learning and research barriers for modelling, improve development efficiency, provide scientific algorithms and evaluation methods, and ultimately achieve a sustainable intelligent big data platform for co-creation, sharing and providing Open Educational Resources (OER) for all.
-
-              {/* Its aim is to create a lower threshold for study and research of modelling, enhance development efficiency, provide scientific evaluation algorithm for models, and ultimately achieve an intelligent big data platform. */}
-
-              {/* Additionally, this platform provides Open Educational Resources (OER) to all researchers and students, particularly in areas with scarce educational resources, such as third-world countries. This endeavor aligns with the United Nations&apos; Sustainable Development Goal 4: Quality  Education. */}
-
-              {/* SaaS computing platform for calculating the matrix like biochemical models (such as activated sludge models 1, 2 and 3). The aim of {siteConfig.title} is to help people to build and calculate their own model easily. */}
-
-              {/* Lets build model together. */}
-              {/* The input of the whole process are only 3 excel xlsx files. By this way, you can check and make your own biological model conveniently. */}
-            </p>
             {/* </font> */}
               {/* <h1 className="mb-6 font-jakarta text-4xl font-bold lg:text-6xl">
               Build with Dyte
@@ -65,6 +45,28 @@ export default function HomepageHeader() {
             </p> */}
           </div>
 
+          <div className="row" style={{marginTop: '0vh', color: '#eee'}}>
+
+            <p style={{marginRight: '10vw', marginBottom: '0.8vh', color: '#eee'}} className="hero__subtitle">
+            <Translate id="tagline">
+              {/* {siteConfig.tagline} */}
+              A Scientific Computing SaaS Platform for Water and Wastewater Treatment Process Modeling
+            </Translate>
+              {/* {siteConfig.customFields.superman} */}
+            </p>
+
+          </div>
+
+          <div className="row" style={{marginTop: '0vh', color: '#eee'}}>
+
+            <p style={{color: '#eee'}} className="">
+
+              {siteConfig.title} <Translate>combines user-friendliness with power and flexibility, it is an open-minded modern cloud-based platform for water and wastewater treatment process modeling.</Translate> {siteConfig.title} <Translate>aims to lower the learning and research barriers for modelling, improve development efficiency, provide scientific algorithms and evaluation methods, and ultimately achieve a sustainable intelligent big data platform for co-creation, sharing and providing Open Educational Resources (OER) for all.</Translate>
+
+            </p>
+
+          </div>
+
         </div>
 
         {/* bottom */}
@@ -73,7 +75,7 @@ export default function HomepageHeader() {
             href="docs/QucikStart"
             className="button button--secondary"
           >
-            Quick Start
+            <Translate>Quick Start</Translate>
             {/* Get Started */}
           </Link>
           <Link> &nbsp; </Link>
@@ -91,7 +93,7 @@ export default function HomepageHeader() {
             >
           {/* <div className="dropdown"> */}
             {/* <button class="dropbtn">Dropdown</button> */}
-            Client &nbsp; &gt;
+            <Translate>Client</Translate> &nbsp; &gt;
             {/* ▼ */}
 
             {/* <div class="dropdown-content"> */}

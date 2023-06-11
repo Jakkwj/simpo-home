@@ -24,10 +24,28 @@
 - ``npm install docusaurus-plugin-image-zoom --save``
 
 
+
+
 # Mermaid
  - 加入 mermaid https://docusaurus.io/zh-CN/docs/markdown-features/diagrams
    - yarn add @docusaurus/theme-mermaid@next  # 通过 @ next 选择正确的版本 2.4.0
  - [mermaid in mdx](https://github.com/sjwall/mdx-mermaid): yarn add mdx-mermaid mermaid  #
+
+# Algolia docsearch
+- https://docusaurus.io/docs/search
+- 申请后, 需要等待审核
+
+# 多语言
+- https://docusaurus.io/docs/i18n/tutorial
+- 生成翻译文档: ``yarn write-translations --locale zh``
+- 生成``md``:
+  ```bash
+  mkdir -p i18n/zh/docusaurus-plugin-content-docs/current
+  cp -r docs/** i18n/zh/docusaurus-plugin-content-docs/current
+  ```
+- 启动语言服务器: ``yarn start --locale zh``
+
+--------
 
 # Website
 

@@ -1,0 +1,8 @@
+{
+  "label": "Change Log",
+  "position": 10,
+  "link": {
+    "type": "generated-index",
+    "description": "Change log of the core source code of SIMPO"
+  }
+}
