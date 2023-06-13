@@ -45,6 +45,19 @@
   ```
 - 启动语言服务器: ``yarn start --locale zh``
 
+
+# 强制删除某次``github``提交
+- https://stackoverflow.com/questions/448919/how-can-i-remove-a-commit-on-github
+```bash
+# 获取某次提交的 hash
+git log
+# 删除这之前的提交
+git reset --hard 71c27777543ccfcb0376dcdd8f6777df055ef479
+# 强制推送一次
+git push --force
+```
+
+
 --------
 
 # Website

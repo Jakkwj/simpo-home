@@ -236,19 +236,20 @@ const config = {
       // image: 'img/docusaurus-social-card.jpg',
       image: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/logo3.png',
 
-      // algolia: {
-      //   // If Algolia did not provide you any appId, use 'BH4D9OD16A'
-      //   appId: '75074RMMKU',
-      //   // Public API key: it is safe to commit it, Search-Only API Key
-      //   apiKey: '76b6fd295e53f4d5eca66a67b7d9dc44',
-      //   indexName: 'simpo_home',  // must the same as Algolia index name
-      //   // Optional: see doc section below
-      //   contextualSearch: true,
-      //   // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
-      //   // externalUrlRegex: 'external\\.com|domain\\.com',
-      //   // Optional: Algolia search parameters
-      //   // searchParameters: {},
-      // },
+      algolia: {
+        // If Algolia did not provide you any appId, use 'BH4D9OD16A'
+        appId: '11LZNE9YBJ',
+        // Public API key: it is safe to commit it
+        apiKey: '841fa2f7f6ced4b0b5f3743465da2ff8', // Search-Only API Key
+        // apiKey: '641c7fdb7f7c5cbc823ca21c58f155d0', // email key
+        indexName: 'simpowater',  // must the same as Algolia index name
+        // Optional: see doc section below
+        contextualSearch: false, // 必须为false, 否则无法访问
+        // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+        // externalUrlRegex: 'external\\.com|domain\\.com',
+        // Optional: Algolia search parameters
+        // searchParameters: {},
+      },
 
       navbar: {
         hideOnScroll: true,
