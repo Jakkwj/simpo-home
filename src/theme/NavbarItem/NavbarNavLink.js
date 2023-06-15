@@ -29,8 +29,20 @@ const navDisplay = (docspluginid) => {
   //   return null;
   // }
 
+  // if (
+  //   (docspluginid === 'Dashboard' && localStorage.getItem('ifSign') !== 'true') ||
+  //   (docspluginid === 'SignIn' && localStorage.getItem('ifSign') === 'true')
+  // ) {
+  // console.log(docspluginid, localStorage.getItem('ifSign'));
+  // console.log(document.getElementById("iframeIfSign"));
   if (
-    (docspluginid === 'Dashboard' && localStorage.getItem('ifSign') !== 'true') ||
+    (
+      docspluginid === 'Dashboard' && (
+        localStorage.getItem('ifSign') !== 'true' ||
+        localStorage.getItem('ifSign') === null ||
+        document.getElementById("iframeIfSign") === null
+        )
+    ) ||
     (docspluginid === 'SignIn' && localStorage.getItem('ifSign') === 'true')
   ) {
     return null;
