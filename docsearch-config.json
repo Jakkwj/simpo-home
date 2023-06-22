@@ -1,7 +1,7 @@
 {
   "index_name": "simpowater",
   "start_urls": [
-    "https://www.simpowater.org/"
+    "https://www.simpowater.org/docs"
   ],
   "sitemap_urls": [
     "https://www.simpowater.org/sitemap.xml"
