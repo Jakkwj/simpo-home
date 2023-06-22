@@ -34,8 +34,49 @@
 # Algolia docsearch
 - https://docusaurus.io/docs/search
 - 申请后, 需要等待审核
+- https://zhuanlan.zhihu.com/p/625637978
+## Github Action 自动在push后爬取
+- 需要在根目录中添加``docsearch-config.json``: https://github.com/algolia/docsearch-configs/blob/master/configs/docusaurus-2.json
+- ``ALGOLIA_APP_ID``和``ALGOLIA_API_KEY``在``https://crawler.algolia.com``后台获取
+
+```bash
+name: 索引爬虫 docsearch-scraper
+
+on:
+  push:
+    branches: [master]
+  # pull_request:
+  #  branches: [master]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sleep for 10 seconds
+        run: sleep 10s
+        shell: bash
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Run scraper
+        env:
+          APPLICATION_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+        run: |
+          CONFIG="$(cat docsearch-config.json)"
+          docker run -i --rm \
+                  -e APPLICATION_ID=$APPLICATION_ID \
+                  -e API_KEY=$API_KEY \
+                  -e CONFIG="${CONFIG}" \
+                  algolia/docsearch-scraper
+```
+
+
 
 # 多语言
+
 - https://docusaurus.io/docs/i18n/tutorial
 - 生成翻译文档: ``yarn write-translations --locale zh``
 - 生成``md``:
