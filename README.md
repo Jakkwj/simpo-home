@@ -36,8 +36,11 @@
 - 申请后, 需要等待审核
 - https://zhuanlan.zhihu.com/p/625637978
 ## Github Action 自动在push后爬取
-- 需要在根目录中添加``docsearch-config.json``: https://github.com/algolia/docsearch-configs/blob/master/configs/docusaurus-2.json
-- ``ALGOLIA_APP_ID``和``ALGOLIA_API_KEY``在``https://crawler.algolia.com``后台获取
+- 在根目录中添加``docsearch-config.json``: https://github.com/algolia/docsearch-configs/blob/master/configs/docusaurus-2.json
+- 在根目录中``.github/workflows/algolia-docsearch-scraper.yml``
+  - ``ALGOLIA_APP_ID``和``ALGOLIA_API_KEY``在``https://crawler.algolia.com``后台获取
+  - 具体内容见下:
+
 
 ```bash
 name: algolia-docsearch-scraper
