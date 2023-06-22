@@ -65,6 +65,13 @@ const config = {
     imgUrlProject_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/project/4.gif',
 
 
+    imgUrlCaseStudyAQUASIMT2P17_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/1.jpg',
+    imgUrlCaseStudyAQUASIMT2P17_2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/2.jpg',
+    imgUrlCaseStudyAQUASIMT2P17_3: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/3.jpg',
+    imgUrlCaseStudyAQUASIMT2P17_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/4.jpg',
+    imgUrlCaseStudyAQUASIMT2P17_5: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/5.jpg',
+
+
     urlDashHome: 'https://dash.simpowater.org/dashboard/home',
 
     urlDashASM3: 'https://dash.simpowater.org/dashboard/biomodels/public/name/ASM3/id/45/did/41',

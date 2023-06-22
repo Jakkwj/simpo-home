@@ -5,19 +5,19 @@ import TabItem from '@theme/TabItem';
 
 # Installtion
 
-As a cross-platform web-based platform, **SIMPO** works on Windows, Linux, and Mac (Pending) operating
-systems. Therefore, it can leverage the power of supercomputers, as their systems are usually
-Linux-based.
 
-To calculate a project, you need to download and install the calculation client, and then sign up and sign in to <a href={config.customFields.urlDashHome}>Dashborad</a>.
+To calculate a **SIMPO** project, you need to download and install the calculation client, and then sign up and sign in to <a href={config.customFields.urlDashHome}>Dashborad</a>.
 
 
-:::info Note
-You will not be able to run calculations if you don't install the client, but you can still sign in and use the other functions (i.e. editting you own repositories, browsing and cloning the public repositories).
-
+:::info The latest version
+The latest version is 0.0.2.9, release in 2023.06.22. For more details please refer to: <a href="/docs/ChangeLog/SIMPO Client/2023">Client Change Log</a>.
 
 :::
 
+
+As a cross-platform web-based platform, **SIMPO** works on Windows, Linux, and Mac (Pending) operating
+systems. Therefore, it can leverage the power of supercomputers, as their systems are usually
+Linux-based.
 
 <Tabs>
 
@@ -53,10 +53,10 @@ You will not be able to run calculations if you don't install the client, but yo
 
   <ul>
     <li>
-      Download: <a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>Ubuntu</a>.
+      Download: <a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>Ubuntu</a>, then run: <code>chmod +x SimpoClient_installer.sh && sudo ./SimpoClient_installer.sh</code>.
     </li>
     <li>
-      Run: <code>chmod +x SimpoClient_installer.sh && sudo ./SimpoClient_installer.sh</code>.
+      Uninstall: <code>cd /opt/SimpoClient/ && sudo ./uninstall.sh</code>.
     </li>
     <li>
       Note:
@@ -83,6 +83,12 @@ You will not be able to run calculations if you don't install the client, but yo
 
 </Tabs>
 
-When you are running a calcualtion task, the client will stay in the system tray (note Ubuntu 16/18 won't). You can right click the client icon and get some relevant informations. For instance, log file becomes very important if your calcualtion goes wrong, click **Log** and open the ``run.log`` to see what happened.
+
+:::tip Tip
+You will not be able to run calculations if you don't install the client, but you can still sign in and use the other functions (i.e. editting you own repositories, browsing and cloning the public repositories).
 
 
+:::
+
+
+While you are running a calcualtion task, the client will stay in the system tray (note Ubuntu 16/18 won't). You can right click the client icon and get some relevant informations. For instance, log file becomes very important if your calcualtion goes wrong, click **Log** and open the ``run.log`` to see what happened.

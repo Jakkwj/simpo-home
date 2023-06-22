@@ -29,8 +29,7 @@ const sidebars = {
         // "type": "generated-index",
         // "description": "Tutorials of SIMPO."
         type: 'doc',
-        id: 'Tutorials/Tutorials',
-
+        id: 'Tutorials/Tutorials', // Tutorials/Tutorials.mdx
 
       },
       items: [
@@ -43,11 +42,13 @@ const sidebars = {
       //     type: 'category',
       //     label: 'Case Study',
       //     "link": {
-      //       "type": "generated-index",
-      //       "description": "Case Study of SIMPO."
+      //       // "type": "generated-index",
+      //       // "description": "Case Study of SIMPO."
+      //       type: 'doc',
+      //       id: 'Case Study',
       // },
       //     items: [
-      //       'Tutorials/Case Study/ASM1',
+      //       'Case Study/ASM1',
       //     ]
       //   },
 
@@ -74,6 +75,33 @@ const sidebars = {
 
       ],
     },
+
+    {
+      type: 'category',
+      label: 'Case Study',
+      "link": {
+        "type": "generated-index",
+        "description": "Case Study of SIMPO."
+        // type: 'doc',
+        // id: 'Case Study',
+  },
+      items: [
+        // 'Case Study/ASM1',
+
+        {
+          type: 'category',
+          label: 'AQUASIM',
+          items: [
+            'CaseStudy/AQUASIM/T2P17',
+          ]
+        },
+
+
+
+
+      ]
+    },
+
     {
       type: 'category',
       label: 'Change Log',

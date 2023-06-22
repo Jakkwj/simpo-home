@@ -10,3 +10,10 @@
   - All Targets initial values are set to be 200.
   - Calcluation time sets to be 2 days and in 0.1 day interval.
 - Then you can just start Simulation and Evaluation.
+
+
+
+dyphora.aqu
+AQUASIM files of additional examples:
+examples.zip
+https://www.eawag.ch/en/department/siam/software/
