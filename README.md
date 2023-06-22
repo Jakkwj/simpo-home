@@ -40,7 +40,7 @@
 - ``ALGOLIA_APP_ID``和``ALGOLIA_API_KEY``在``https://crawler.algolia.com``后台获取
 
 ```bash
-name: 索引爬虫 docsearch-scraper
+name: algolia-docsearch-scraper
 
 on:
   push:
