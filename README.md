@@ -35,6 +35,8 @@
 - https://docusaurus.io/docs/search
 - 申请后, 需要等待审核
 - https://zhuanlan.zhihu.com/p/625637978
+- https://oreo.life/en/blog/2023-02-12-crawl-website-using-github-actions/
+  - https://crawler.algolia.com/admin/user/settings/ 获取``Crawler User ID``和``Crawler API Key``.
 ## Github Action 自动在push后爬取
 - 在根目录中添加``docsearch-config.json``: https://github.com/algolia/docsearch-configs/blob/master/configs/docusaurus-2.json
 - 在根目录中``.github/workflows/algolia-docsearch-scraper.yml``
@@ -77,6 +79,30 @@ jobs:
 ```
 
 
+```bash
+name: Crawl
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Algolia Crawler Automatic Crawl
+        uses: algolia/algoliasearch-crawler-github-actions@v1.1.0
+        with:
+          crawler-user-id: ${{ secrets.CRAWLER_USER_ID }}
+          crawler-api-key: ${{ secrets.CRAWLER_API_KEY }}
+          github-token: ${{ github.token }}
+          crawler-name: 'simpowater'
+          algolia-app-id: ${{ secrets.ALGOLIA_APP_ID }}
+          algolia-api-key: ${{ secrets.ALGOLIA_SEARCH_API_KEY }}
+          site-url: 'https://www.simpowater.org/docs'
+
+```
 
 # 多语言
 
