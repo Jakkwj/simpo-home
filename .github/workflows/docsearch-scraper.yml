@@ -21,7 +21,7 @@ jobs:
       - name: Run scraper
         env:
           APPLICATION_ID: ${{ secrets.ALGOLIA_APP_ID }}
-          API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          API_KEY: ${{ secrets.ALGOLIA_WRITE_API_KEY }}
         run: |
           CONFIG="$(cat docsearch-config.json)"
           docker run -i --rm \
