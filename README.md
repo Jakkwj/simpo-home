@@ -35,49 +35,14 @@
 - https://docusaurus.io/docs/search
 - 申请后, 需要等待审核
 - https://zhuanlan.zhihu.com/p/625637978
+- - 
+  
+
+## Github Action 自动在push后爬取
+
 - https://oreo.life/en/blog/2023-02-12-crawl-website-using-github-actions/
   - https://crawler.algolia.com/admin/user/settings/ 获取``Crawler User ID``和``Crawler API Key``.
-## Github Action 自动在push后爬取
-- 在根目录中添加``docsearch-config.json``: https://github.com/algolia/docsearch-configs/blob/master/configs/docusaurus-2.json
-- 在根目录中``.github/workflows/algolia-docsearch-scraper.yml``
-  - ``ALGOLIA_APP_ID``和``ALGOLIA_API_KEY``在``https://crawler.algolia.com``后台获取
-  - 具体内容见下:
-
-
-```bash
-name: algolia-docsearch-scraper
-
-on:
-  push:
-    branches: [master]
-  # pull_request:
-  #  branches: [master]
-
-jobs:
-  scan:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Sleep for 10 seconds
-        run: sleep 10s
-        shell: bash
-
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Run scraper
-        env:
-          APPLICATION_ID: ${{ secrets.ALGOLIA_APP_ID }}
-          API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-        run: |
-          CONFIG="$(cat docsearch-config.json)"
-          docker run -i --rm \
-                  -e APPLICATION_ID=$APPLICATION_ID \
-                  -e API_KEY=$API_KEY \
-                  -e CONFIG="${CONFIG}" \
-                  algolia/docsearch-scraper
-```
-
+  - ``algolia-api-key``用的是``SEARCH_API_KEY``
 
 ```bash
 name: Crawl
@@ -103,6 +68,46 @@ jobs:
           site-url: 'https://www.simpowater.org/docs'
 
 ```
+
+- 以下方式作废：
+- ~~在根目录中添加``docsearch-config.json``: https://github.com/algolia/docsearch-configs/blob/master/configs/docusaurus-2.json~~
+- ~~在根目录中``.github/workflows/algolia-docsearch-scraper.yml``~~
+  - ~~``ALGOLIA_APP_ID``和``ALGOLIA_API_KEY``在``https://crawler.algolia.com``后台获取~~
+  - ~~具体内容见下:~~
+```bash
+# 以下 action 脚本作废
+name: algolia-docsearch-scraper
+
+on:
+  push:
+    branches: [master]
+
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sleep for 10 seconds
+        run: sleep 10s
+        shell: bash
+    
+      - name: Checkout repo
+        uses: actions/checkout@v3
+    
+      - name: Run scraper
+        env:
+          APPLICATION_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+        run: |
+          CONFIG="$(cat docsearch-config.json)"
+          docker run -i --rm \
+                  -e APPLICATION_ID=$APPLICATION_ID \
+                  -e API_KEY=$API_KEY \
+                  -e CONFIG="${CONFIG}" \
+                  algolia/docsearch-scraper
+```
+
 
 # 多语言
 
