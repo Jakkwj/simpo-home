@@ -343,6 +343,7 @@ const config = {
             position: 'right',
             className: 'header-github-link',
             'aria-label': 'GitHub repository',
+            docspluginid: 'GitHub'
           },
 
           // { href: `${urlConsole}`, label: true ? 'Dashboard' : 'Login', position: 'right'},

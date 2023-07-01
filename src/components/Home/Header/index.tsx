@@ -86,7 +86,10 @@ export default function HomepageHeader() {
             Client
           </Link>
           */}
-          <Link
+
+
+          {/* <Link */}
+          <div
               // href="/getting-started"
               className="button button--secondary dropdown"
               // onclick="myFunction()"
@@ -115,8 +118,8 @@ export default function HomepageHeader() {
               <a href="#" style={{cursor: 'default', color: 'gray'}} >Mac (pending...)</a>
             </div>
 
-          {/* </div> */}
-          </Link>
+          </div>
+          {/* </Link> */}
         </div>
 
 

@@ -93,19 +93,24 @@ export default function About(): JSX.Element {
           <p>While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:</p>
           <ul>
           <li>
-          <p>Email address</p>
+          {/* <p>Email address</p> */}
+          Email address
           </li>
           <li>
-          <p>First name and last name</p>
+          {/* <p>First name and last name</p> */}
+          First name and last name
           </li>
           <li>
-          <p>Phone number</p>
+          {/* <p>Phone number</p> */}
+          Phone number
           </li>
           <li>
-          <p>Address, State, Province, ZIP/Postal code, City</p>
+          {/* <p>Address, State, Province, ZIP/Postal code, City</p> */}
+          Address, State, Province, ZIP/Postal code, City
           </li>
           <li>
-          <p>Usage Data</p>
+          {/* <p>Usage Data</p> */}
+          Usage Data
           </li>
           </ul>
           <h3>Usage Data</h3>
@@ -233,7 +238,35 @@ export default function About(): JSX.Element {
           <ul>
           <li>By email: <a href="mailto: support@simpowater.org">support@simpowater.org</a></li>
           </ul>
+
+          <p>
+              <b>
+                <h2>
+                  PLEASE NOTE:
+                </h2>
+              </b>
+                <ul>
+                  <li>
+                    <p>
+                      WE DO NOT SELL YOUR PERSONAL INFORMATION, NOR DO WE INTEND TO DO SO.
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      IF YOU RELEASE YOUR BIOMODEL/DATASET/PROJECT TO PUBLIC VERSION, THESE REPOSITORY WILL BECOME AVAILABLE TO ALL OF THE OTHER SIMPO'S USERS, THEY CAN COPY AND CLONE THESE REPOSITORY TO MAKE THEIR OWN VERSION.
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      IF YOU USE OUR CLOUD PLATFORM AND/OR SERVICES, YOU HAVE AGREED TO AND ACCEPTED ALL OF THE TERMS AND CONDITIONS DESCRIBED IN THIS POLICY AND <a href="/Legal/terms">TERMS OF SERVICE</a>, OR ANY OTHER AGREEMENT THAT YOU HAVE ENTERED INTO WITH                   SIMPO. IF YOU DO NOT AGREE WITH THE TERMS OF THIS POLICY AND OUR <a href="/Legal/terms">TERMS OF SERVICE</a>, OR ANY OTHER AGREEMENT THAT YOU HAVE ENTERED INTO WITH SIMPO, PLEASE DO NOT ACCESS OR USE SIMPO CLOUD PLATFORM.
+                    </p>
+                  </li>
+                </ul>
+
+              {/* </b> */}
+            </p>
         </p>
+
 
 
 

@@ -4,6 +4,7 @@ import NavbarNavLink from '@theme-original/NavbarItem/NavbarNavLink';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 // import BrowserOnly from '@docusaurus/BrowserOnly';
 // import useIsBrowser from '@docusaurus/useIsBrowser';
+// import {useLocation} from '@docusaurus/router';
 
 
 const navDisplay = (docspluginid) => {
@@ -15,6 +16,8 @@ const navDisplay = (docspluginid) => {
    * 估计后端需要搬去 https 才能实现本功能...
    *
    */
+
+
 
   // if (docspluginid === 'Dashboard' && (localStorage.getItem('ifSign') !== 'true' || document.getElementById("iframeIfSign") === null)) {
 
@@ -53,7 +56,12 @@ const navDisplay = (docspluginid) => {
 
 export default function NavbarNavLinkWrapper(props) {
 
+  // console.log(props)
   const { docspluginid } = props;
+  // const { className } = props;
+  // const location = useLocation();
+  // console.log(location.pathname)
+  // console.log(className, docspluginid, location.pathname.includes('/docs'))
 
   // <BrowserOnly>
   //   {() => { // 编译时必须打开, 否则无法识别 localStorage

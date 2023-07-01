@@ -107,23 +107,45 @@ export default function About(): JSX.Element {
 
             <p>
               <b>
-                PLEASE NOTE THAT: WE CANNOT GUARANTEE THE UNINTERRUPTED
-                OPERATION OF OUR SOFTWARE OR THAT IT WILL BE ERROR-FREE. WE
-                ARE CONTINUOUSLY DEVELOPING AND IMPROVING OUR PRODUCT, AND
-                SOME FEATURES MAY NOT WORK AS INTENDED. ADDITIONALLY,
-                INFORMATION LOSS MAY OCCUR, AND WE ARE NOT RESPONSIBLE FOR
-                ANY RESULTING DAMAGES.
-                IF YOU ACCESS SIMPO PLATFORM/SERVICES, YOU HAVE AGREED TO AND ACCEPTED THE PRACTICES DESCRIBED IN THIS TERMS OF SERVICE AND PRIVACY POLICY. IF YOU DO NOT AGREE WITH THESE TERMS AND OUR PRIVACY POLICY, YOU MUST NOT ACCESS SIMPO PLATFORM/SERVICES.
-                {/* IF YOU ACCESS SIMPO PLATFORM/SERVICES, YOU HAVE AGREED TO AND ACCEPTED THE PRACTICES DESCRIBED IN THIS TERMS OF SERVICE, PRIVACY POLICY, AND WEBSITE TERMS OF USE.IF YOU DO NOT AGREE WITH THESE TERMS, OUR PRIVACY POLICY, WEBSITE TERMS OF USE, YOU MUST NOT ACCESS SIMPO PLATFORM/SERVICES. */}
-
+                <h2>
+                  PLEASE NOTE:
+                </h2>
               </b>
+
+                <ul>
+                  {/* <li>
+                    IF YOU RELEASE YOUR BIOMODEL/DATASET/PROJECT TO PUBLIC VERSION, THESE REPOSITORY WILL BECOME AVAILABLE TO ALL OF THE OTHER SIMPO'S USERS, THEY CAN COPY AND CLONE THESE REPOSITORY TO MAKE THEIR OWN VERSION.
+                  </li> */}
+                  <li>
+                    <p>
+                    WE CANNOT GUARANTEE THE UNINTERRUPTED
+                    OPERATION OF OUR SOFTWARE OR THAT IT WILL BE ERROR-FREE. WE
+                    ARE CONTINUOUSLY DEVELOPING AND IMPROVING OUR PRODUCT, AND
+                    SOME FEATURES MAY NOT WORK AS INTENDED. ADDITIONALLY,
+                    INFORMATION LOSS MAY OCCUR, AND WE ARE NOT RESPONSIBLE FOR
+                    ANY RESULTING DAMAGES.
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                    IF YOU ACCESS SIMPO PLATFORM/SERVICES, YOU HAVE AGREED TO AND ACCEPTED THE PRACTICES DESCRIBED IN THIS TERMS OF SERVICE AND <a href="/Legal/privacy">PRIVACY POLICY</a>. IF YOU DO NOT AGREE WITH THESE TERMS AND OUR <a href="/Legal/privacy">PRIVACY POLICY</a>, YOU MUST NOT ACCESS SIMPO PLATFORM/SERVICES.
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                    PLEASE CONFIRM THAT YOU HAVE READ AND UNDERSTOOD THE ABOVE TERMS AND CONDITIONS AND AGREE TO ABIDE BY THIS AGREEMENT.
+                    </p>
+                  </li>
+                </ul>
+
+              {/* </b> */}
             </p>
 
 
-            <p>
+            {/* <p>
               Please confirm that you have read and understood the above
               terms and conditions and agree to abide by this agreement.
-            </p>
+            </p> */}
 
           </p>
 
