@@ -58,17 +58,17 @@ const sidebars = {
         //   type: 'category',
         //   label: 'SIMPO Pro',
         //   items: [
-        //     'ChangeLog/SIMPO Pro/2023',
-        //     'ChangeLog/SIMPO Pro/2022',
+        //     'Changelog/SIMPO Pro/2023',
+        //     'Changelog/SIMPO Pro/2022',
         //   ]
         // },
         // {
         //   type: 'category',
         //   label: 'SIMPO Dashboard',
         //   items: [
-        //     'ChangeLog/SIMPO Dashboard/2023',
-        //     'ChangeLog/SIMPO Dashboard/2022',
-        //     'ChangeLog/SIMPO Dashboard/2021'
+        //     'Changelog/SIMPO Dashboard/2023',
+        //     'Changelog/SIMPO Dashboard/2022',
+        //     'Changelog/SIMPO Dashboard/2021'
         //   ]
         // },
 
@@ -104,12 +104,12 @@ const sidebars = {
 
     {
       type: 'category',
-      label: 'Change Log',
+      label: 'Changelog',
       "link": {
         "type": "generated-index",
-        "description": "Change log of the core source code of SIMPO."
+        "description": "Changelog of the core source code of SIMPO."
         // type: 'doc',
-        // id: 'ChangeLog/index',
+        // id: 'Changelog/index',
       },
       items: [
 
@@ -117,9 +117,9 @@ const sidebars = {
           type: 'category',
           label: 'SIMPO Dash',
           items: [
-            'ChangeLog/SIMPO Dash/2023',
-            'ChangeLog/SIMPO Dash/2022',
-            'ChangeLog/SIMPO Dash/2021'
+            'Changelog/SIMPO Dash/2023',
+            'Changelog/SIMPO Dash/2022',
+            'Changelog/SIMPO Dash/2021'
           ]
         },
 
@@ -127,7 +127,7 @@ const sidebars = {
           type: 'category',
           label: 'SIMPO Client',
           items: [
-            'ChangeLog/SIMPO Client/2023',
+            'Changelog/SIMPO Client/2023',
           ]
         },
 
@@ -135,9 +135,9 @@ const sidebars = {
           type: 'category',
           label: 'SIMPO',
           items: [
-            'ChangeLog/SIMPO/2023',
-            'ChangeLog/SIMPO/2022',
-            'ChangeLog/SIMPO/2021'
+            'Changelog/SIMPO/2023',
+            'Changelog/SIMPO/2022',
+            'Changelog/SIMPO/2021'
           ]
         },
 
@@ -145,21 +145,21 @@ const sidebars = {
           type: 'category',
           label: 'SIMPO Pro',
           items: [
-            'ChangeLog/SIMPO Pro/2023',
-            'ChangeLog/SIMPO Pro/2022',
+            'Changelog/SIMPO Pro/2023',
+            'Changelog/SIMPO Pro/2022',
           ]
         },
 
 
         // {
         //   type: 'doc',
-        //   id: 'ChangeLog/SIMPO/2023',
+        //   id: 'Changelog/SIMPO/2023',
         // },
       ],
     },
     // {
     //   type: 'category',
-    //   label: 'ChangeLog',
+    //   label: 'Changelog',
     //   items: ['tutorial-basics/create-a-document'],
     // },
   ],

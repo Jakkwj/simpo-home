@@ -5,7 +5,10 @@ const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const title = 'SIMPO'
 // const urlConsole = 'https://dashboard.simpowater.org/dashboard/home'
+
+const urlHome = 'https://www.simpowater.org'
 const urlConsole = 'https://dash.simpowater.org/dashboard/home'
+const urlLogo = 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/logo3.png'
 
 /**
  * 登录后台显示 Dashboard, 未登录时显示 Sign In 的功能实现参看: https://github.com/facebook/docusaurus/discussions/5307
@@ -102,7 +105,8 @@ const config = {
   // Set the production url of your site here
   // url: 'https://your-docusaurus-test-site.com',
   // url: 'https://jakkwj.github.io',
-  url: 'https://www.simpowater.org',
+  url: urlHome,
+  // 'https://www.simpowater.org',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -241,7 +245,8 @@ const config = {
 
       // Replace with your project's social card
       // image: 'img/docusaurus-social-card.jpg',
-      image: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/logo3.png',
+      image: urlLogo,
+      // 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/logo3.png',
 
       algolia: {
         // If Algolia did not provide you any appId, use 'BH4D9OD16A'
@@ -356,9 +361,88 @@ const config = {
           // },
         ],
       },
+
+
+
       footer: {
         style: 'dark',
+        // style: 'light',
+
+        // logo: {
+        //   // alt: 'Meta 开源图标',
+        //   src: 'img/logo3.png',
+        //   width: 30,
+        //   height: 30,
+        // },
+
+
         links: [
+
+          {
+              // title: 'SIMPO',
+              items: [
+                // {
+                //   label: 'Tutorial',
+                //   to: '/docs/intro',
+                // },
+                // {
+                //   html: `
+                //       <a href="https://www.netlify.com" target="_blank" rel="noreferrer noopener" aria-label="Deploys by Netlify">
+                //         <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
+                //       </a>
+                //     `,
+                // },
+                {
+                  html: `
+                      <a href="${urlHome}">
+                        <img src="${urlLogo}" alt="SIMPO" width="40" height="40" />
+                      </a>
+                    `,
+                },
+
+              ],
+            },
+
+             {
+              title: 'Learn',
+              items: [
+                // {
+                //   label: 'Introduction',
+                //   to: '/docs/intro',
+                // },
+                {
+                  label: 'Installation',
+                  to: '/docs/Tutorials/Installtion',
+                },
+
+                {
+                  label: 'Case Study',
+                  to: '/docs/category/case-study',
+                },
+
+              ],
+            },
+
+
+
+            {
+              title: 'Legal',
+              items: [
+                {
+                  // label: 'Terms of Service',
+                  label: 'Terms',
+                  to: '/Legal/terms',
+                },
+                {
+                  // label: 'Privacy Policy',
+                  label: 'Privacy',
+                  to: '/Legal/privacy',
+                },
+
+              ],
+            },
+
+
           // {
           //   title: 'Docs',
           //   items: [
@@ -386,26 +470,44 @@ const config = {
           //     },
           //   ],
           // },
-          // {
-          //   title: 'More',
-          //   items: [
-          //     {
-          //       label: 'Blog',
-          //       to: '/blog',
-          //     },
-          //     {
-          //       label: 'GitHub',
-          //       href: 'https://github.com/facebook/docusaurus',
-          //     },
-          //   ],
-          // },
+
+          {
+            title: 'Support',
+            items: [
+              {
+                // label: 'Contact Us',
+                label: 'Contact',
+                to: '/support/contact',
+              },
+
+            ],
+          },
+          {
+            title: 'More',
+            items: [
+              // {
+              //   label: 'Blog',
+              //   to: '/blog',
+              // },
+              {
+                label: 'Changelog',
+                to: '/docs/category/changelog',
+              },
+              {
+                label: 'GitHub',
+                href: 'https://github.com/jakkwj/simpo_home',
+              },
+            ],
+          },
         ],
-        // logo: {
+
+        //  logo: {
         //   // alt: 'Meta 开源图标',
         //   src: 'img/logo3.png',
         //   width: 30,
         //   height: 30,
         // },
+
 
         // copyright: `Copyright © ${new Date().getFullYear()} ${title}, Inc. All rights reserved.`,
         copyright: `Copyright © ${new Date().getFullYear()} ${title}. All rights reserved.`,
