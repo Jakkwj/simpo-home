@@ -74,6 +74,10 @@ const config = {
     imgUrlCaseStudyAQUASIMT2P17_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/4.jpg',
     imgUrlCaseStudyAQUASIMT2P17_5: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/5.jpg',
 
+    imgUrlCaseStudyBWTEE2_3_4Batch: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/BWTEE/2_3_4Batch/1.jpg',
+
+
+
 
     urlDashHome: 'https://dash.simpowater.org/dashboard/home',
 
@@ -432,12 +436,12 @@ const config = {
                 {
                   // label: 'Terms of Service',
                   label: 'Terms',
-                  to: '/Legal/terms',
+                  to: '/legal/terms',
                 },
                 {
                   // label: 'Privacy Policy',
                   label: 'Privacy',
-                  to: '/Legal/privacy',
+                  to: '/legal/privacy',
                 },
 
               ],

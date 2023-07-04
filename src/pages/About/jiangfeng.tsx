@@ -41,10 +41,11 @@ export default function AboutJiangFeng() {
                   {/* { 'Co-founder of SIMPO. Professor of Sun Yat-Sen University. 主要从事市政排水、污水处理、重金属污染与废气污染控制技术的教学科研工作，重点关注环境中含硫物质生物化学转化的科学问题及其应用技术。' } */}
 
                   {/* { 'Co-founder of SIMPO. Professor of Sun Yat-Sen University. Mainly engaged in teaching and research in municipal drainage, wastewater treatment, heavy metal pollution and waste gas pollution control technology, focusing on scientific issues of biochemical transformation of sulfur-containing substances in the environment and its applied technology.' } */}
-
-                  { 'Professor in the School of Environmental Science and Engineering at Sun Yat-sen University. Email: Jiangf58@mail.sysu.edu.cn.' }
+                  { 'Professor in the School of Environmental Science and Engineering at Sun Yat-sen University. Email: ' }
 
                 </Translate>
+                <a href="mailto: Jiangf58@mail.sysu.edu.cn">Jiangf58@mail.sysu.edu.cn</a>
+                <Translate>.</Translate>
               </p>
               {/* <ul>
                 <li>

@@ -30,5 +30,25 @@
   "sidebar.docs.category.SIMPO Pro": {
     "message": "SIMPO Pro",
     "description": "The label for category SIMPO Pro in sidebar docs"
+  },
+  "sidebar.docs.category.Case Study": {
+    "message": "Case Study",
+    "description": "The label for category Case Study in sidebar docs"
+  },
+  "sidebar.docs.category.Case Study.link.generated-index.description": {
+    "message": "Case Study of SIMPO.",
+    "description": "The generated-index page description for category Case Study in sidebar docs"
+  },
+  "sidebar.docs.category.AQUASIM": {
+    "message": "AQUASIM",
+    "description": "The label for category AQUASIM in sidebar docs"
+  },
+  "sidebar.docs.category.Changelog": {
+    "message": "Changelog",
+    "description": "The label for category Changelog in sidebar docs"
+  },
+  "sidebar.docs.category.Changelog.link.generated-index.description": {
+    "message": "Changelog of the core source code of SIMPO.",
+    "description": "The generated-index page description for category Changelog in sidebar docs"
   }
 }

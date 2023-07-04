@@ -128,7 +128,7 @@ export default function About(): JSX.Element {
                   </li>
                   <li>
                     <p>
-                    IF YOU ACCESS SIMPO PLATFORM/SERVICES, YOU HAVE AGREED TO AND ACCEPTED THE PRACTICES DESCRIBED IN THIS TERMS OF SERVICE AND <a href="/Legal/privacy">PRIVACY POLICY</a>. IF YOU DO NOT AGREE WITH THESE TERMS AND OUR <a href="/Legal/privacy">PRIVACY POLICY</a>, YOU MUST NOT ACCESS SIMPO PLATFORM/SERVICES.
+                    IF YOU ACCESS SIMPO PLATFORM/SERVICES, YOU HAVE AGREED TO AND ACCEPTED THE PRACTICES DESCRIBED IN THIS TERMS OF SERVICE AND <a href="/legal/privacy">PRIVACY POLICY</a>. IF YOU DO NOT AGREE WITH THESE TERMS AND OUR <a href="/legal/privacy">PRIVACY POLICY</a>, YOU MUST NOT ACCESS SIMPO PLATFORM/SERVICES.
                     </p>
                   </li>
                   <li>

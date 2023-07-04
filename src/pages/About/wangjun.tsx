@@ -40,10 +40,13 @@ export default function AboutJiangFeng() {
 
                   {/* { 'Co-founder of SIMPO. Ph.D. in Environmental Science of Sun Yat-sen University, specializing in numerical simulation and algorithm research of wastewater treatment, artificial intelligence and big data, etc. Published 4 SCI papers, 1 software copyright, 4 standards and 3 patents.' } */}
 
-                  { 'Ph.D. in Environmental Science.' }
+                  { 'Ph.D. in Environmental Science. Email: ' }
 
 
                 </Translate>
+
+                <a href="mailto: support@simpowater.org">support@simpowater.org</a>
+                <Translate>.</Translate>
               </p>
               {/* <ul>
                 <li>

@@ -96,6 +96,14 @@ const sidebars = {
           ]
         },
 
+        {
+          type: 'category',
+          label: 'Biological Wastewater Treatment: Examples and Exercises',
+          items: [
+            'CaseStudy/Biological Wastewater Treatment: Examples and Exercises/BWTEE 2.3.4',
+          ]
+        },
+
 
 
 
