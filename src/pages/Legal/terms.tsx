@@ -97,8 +97,20 @@ export default function About(): JSX.Element {
                 to local law and jurisdiction, and the local court has
                 jurisdiction.
               </p>
+
+
               <p>
-                10. <b>Other</b>: we have the right to modify this agreement at any
+                10. <b>Responsibility of Website Visitors</b>: we has not reviewed, and cannot review, all of the material, including computer software, posted to the Website, and cannot therefore be responsible for that material's content, use or effects. By operating the Website, we does not represent or imply that it endorses the material there posted, or that it believes such material to be accurate, useful or non-harmful. You are responsible for taking precautions as necessary to protect yourself and your computer systems from viruses, worms, Trojan horses, and other harmful or destructive content. The Website may contain content that is offensive, indecent, or otherwise objectionable, as well as content containing technical inaccuracies, typographical mistakes, and other errors. The Website may also contain material that violates the privacy or publicity rights, or infringes the intellectual property and other proprietary rights, of third parties, or the downloading, copying or use of which is subject to additional terms and conditions, stated or unstated. We disclaims any responsibility for any harm resulting from the use by visitors of the Website, or from any downloading by those visitors of content there posted.
+              </p>
+
+              <p>
+                11. <b>Limitation of Liability</b>: the materials at this site are provided "as is" without any express or implied warranty of any kind including warranties of merchantability, noninfringement of intellectual property, or fitness for any particular purpose. We don't make any warranty that the Website will be error free or that access thereto will be continuous or uninterrupted. In no event shall or its agents or officers be liable for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information, injury or death) arising out of the use of or inability to use the materials, even if has been advised of the possibility of such loss or damages.
+              </p>
+
+
+
+              <p>
+                12. <b>Other</b>: we have the right to modify this agreement at any
                 time and will first announce the modified agreement on the
                 platform. By continuing to use our services, you agree to the
                 amended agreement.
@@ -113,14 +125,18 @@ export default function About(): JSX.Element {
               </b>
 
                 <ul>
+
+
+
                   {/* <li>
                     IF YOU RELEASE YOUR BIOMODEL/DATASET/PROJECT TO PUBLIC VERSION, THESE REPOSITORY WILL BECOME AVAILABLE TO ALL OF THE OTHER SIMPO'S USERS, THEY CAN COPY AND CLONE THESE REPOSITORY TO MAKE THEIR OWN VERSION.
                   </li> */}
+
+                    {/* WE CANNOT GUARANTEE THE UNINTERRUPTED */}
+                    {/* OPERATION OF OUR SOFTWARE OR THAT IT WILL BE ERROR-FREE. */}
                   <li>
                     <p>
-                    WE CANNOT GUARANTEE THE UNINTERRUPTED
-                    OPERATION OF OUR SOFTWARE OR THAT IT WILL BE ERROR-FREE. WE
-                    ARE CONTINUOUSLY DEVELOPING AND IMPROVING OUR PRODUCT, AND
+                    WE ARE CONTINUOUSLY DEVELOPING AND IMPROVING OUR PRODUCT, AND
                     SOME FEATURES MAY NOT WORK AS INTENDED. ADDITIONALLY,
                     INFORMATION LOSS MAY OCCUR, AND WE ARE NOT RESPONSIBLE FOR
                     ANY RESULTING DAMAGES.

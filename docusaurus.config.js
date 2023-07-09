@@ -76,6 +76,10 @@ const config = {
 
     imgUrlCaseStudyBWTEE2_3_4Batch: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/BWTEE/2_3_4Batch/1.jpg',
 
+    imgUrlCaseStudyBWTEE2_3_4Chemostat: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/BWTEE/2_3_4Chemostat/1.jpg',
+    imgUrlCaseStudyBWTEE2_3_4O2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/BWTEE/2_3_4Chemostat/2.jpg',
+    imgUrlCaseStudyBWTEE2_3_4DHO: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/BWTEE/2_3_4Chemostat/3.jpg',
+
 
 
 
