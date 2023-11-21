@@ -35,8 +35,8 @@
 - https://docusaurus.io/docs/search
 - 申请后, 需要等待审核
 - https://zhuanlan.zhihu.com/p/625637978
-- - 
-  
+- -
+
 
 ## Github Action 自动在push后爬取
 
@@ -91,10 +91,10 @@ jobs:
       - name: Sleep for 10 seconds
         run: sleep 10s
         shell: bash
-    
+
       - name: Checkout repo
         uses: actions/checkout@v3
-    
+
       - name: Run scraper
         env:
           APPLICATION_ID: ${{ secrets.ALGOLIA_APP_ID }}
@@ -152,6 +152,8 @@ $ yarn start
 ```
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+
+如果失败, 重新运行``yarn install``一次
 
 ### Build
 
