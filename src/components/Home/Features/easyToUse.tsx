@@ -42,6 +42,7 @@ export default function FeaturesEasyToUse() {
           // imgUrl="https://sludge.readthedocs.io/en/latest/_images/TheEasiestWay.gif"
           // https://github.com/Jakkwj/simpo_resource/blob/master/simpo_resource/source/_static/images/quick_start/TheEasiestWay/TheEasiestWay.gif
           // imgUrl="https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/TheEasiestWay/TheEasiestWay.gif"
+
           imgUrl={siteConfig.customFields.imgUrlTheEasiestWay}
           title={<Translate id="home.easytouse">Easy to Use</Translate>}
           description={

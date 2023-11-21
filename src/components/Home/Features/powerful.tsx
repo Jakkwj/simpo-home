@@ -16,11 +16,12 @@ export default function FeaturesPowerful() {
       <div className="container" >
         <Feature
           reverse={true}
-          width='100%'
+          width='80%'
           marginTop='2vh'
           // imgUrl="img/matrix.png"
           // imgUrl="img/Xu.png"
           // imgUrl="https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/Xu.png"
+          // imgUrl="img/2.png"
           imgUrl={siteConfig.customFields.imgUrlPowerful}
           // imgUrl="img/Fig6.png"
           title={<Translate id="home.powerful">Powerful and Flexible</Translate>}
