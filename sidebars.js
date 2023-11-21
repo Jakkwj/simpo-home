@@ -123,19 +123,19 @@ const sidebars = {
 
         {
           type: 'category',
-          label: 'SIMPO Dash',
+          label: 'SIMPO Client',
           items: [
-            'Changelog/SIMPO Dash/2023',
-            'Changelog/SIMPO Dash/2022',
-            'Changelog/SIMPO Dash/2021'
+            'Changelog/SIMPO Client/2023',
           ]
         },
 
         {
           type: 'category',
-          label: 'SIMPO Client',
+          label: 'SIMPO Dash',
           items: [
-            'Changelog/SIMPO Client/2023',
+            'Changelog/SIMPO Dash/2023',
+            'Changelog/SIMPO Dash/2022',
+            'Changelog/SIMPO Dash/2021'
           ]
         },
 
