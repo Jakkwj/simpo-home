@@ -1,10 +1,11 @@
-import { Mermaid } from 'mdx-mermaid/Mermaid'
-    // section SIMPO Client
-    // Core Function Development           :done, d1, 2019-01-01, 2023-01-01
-    // Core Function Stable                :milestone, md1, after d1, 0d
-    // Maintaining                         :active, after d1, 2028-10-01
+import { Mermaid } from "mdx-mermaid/Mermaid";
+// section SIMPO Client
+// Core Function Development           :done, d1, 2019-01-01, 2023-01-01
+// Core Function Stable                :milestone, md1, after d1, 0d
+// Maintaining                         :active, after d1, 2028-10-01
 
-<Mermaid chart={`gantt
+<Mermaid
+  chart={`gantt
     dateFormat  YYYY-MM-DD
     axisFormat  %Y-%m
     tickInterval 6month
@@ -26,8 +27,8 @@ import { Mermaid } from 'mdx-mermaid/Mermaid'
     Basic Function Stable                   :crit, milestone, mc1, after c1, 0d
     DataSet FlowChart                       :crit, done, c12, after c1, 90d
     Http to Https                           :done, c2, 2023-05-01, 2023-06-10
-    Estimaiton Engine                       :crit, active, c3, after c2, 2023-11-30
-    Uncertainty Engine                      :crit, c4, after c3, 2024-02-28
+    Estimaiton Engine                       :crit, active, c3, after c2, 2023-12-31
+    Uncertainty Engine                      :crit, active, c4, after c2, 2023-12-31
     BioModel Composition                    :c4a, after c4, 30d
     Steady State                            :c4b, after c4, 30d
     Discussion Board                        :c4b1, after c4, 30d
@@ -41,10 +42,5 @@ import { Mermaid } from 'mdx-mermaid/Mermaid'
     CFD Algorithm                           :c7, after c6, 300d
     3D Digital Twin                         :c8, after c7, 300d
     GPU capacity                            :c9, after c7, 300d
-`} />
-
-
-
-
-
-
+`}
+/>
