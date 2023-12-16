@@ -4,16 +4,16 @@ import TabItem from "@theme/TabItem";
 
 # Installtion
 
+As a cross-platform web-based platform, **SIMPO** works on Windows, Linux, and Mac (Pending) operating
+systems. Therefore, it can leverage the power of supercomputers, as their systems are usually
+Linux-based.
+
 To calculate a **SIMPO** project, you need to download and install the calculation client, and then sign up and sign in to <a href={config.customFields.urlDashHome}>Dashborad</a>.
 
 :::info The latest version
 The latest version is 0.0.3.3, release in 2023.12.12. For more details please refer to: <a href="/docs/Changelog/SIMPO Client/2023">Client Changelog</a>.
 
 :::
-
-As a cross-platform web-based platform, **SIMPO** works on Windows, Linux, and Mac (Pending) operating
-systems. Therefore, it can leverage the power of supercomputers, as their systems are usually
-Linux-based.
 
 <Tabs>
 
@@ -27,15 +27,7 @@ Linux-based.
       Uninstall: click the <code>Uninstall SimpoClient</code> in startup menu, or click <code>C:\Program Files\SimpoClient\unins000.exe</code>.
     </li>
     <li>
-      Note:
-        <ul>
-          <li>
-            This client will automatically run once you start calculating, you cannot run it by double click it.
-          </li>
-          <li>
-            <b>DON'T</b> change the installtion path, which is: <code>C:\Program Files\SimpoClient</code>.
-          </li>
-        </ul>
+      Available: <b>Windows 10</b> (and above).
     </li>
 
   </ul>
@@ -63,17 +55,9 @@ Linux-based.
     Uninstall: <code>cd /opt/SimpoClient/ && sudo ./uninstall.sh</code>.
   </li>
   <li>
-    Note: Now <b>Ubuntu 20</b> is supported.
+    Available: <b>Ubuntu 20</b> (and above).
   </li>
 </ul>
-{/* <ul>
-          <li>
-            Now <b>Ubuntu 20</b> is supported.
-          </li>
-        </ul> */}
-{/* <li>
-    Ubuntu 20 can use system tray while Ubuntu 16 and 18 can not.
-  </li> */}
 
   </TabItem>
 
@@ -92,6 +76,8 @@ You will not be able to run calculations if you don't install the client, but yo
 
 :::
 
-{/* While you are running a calcualtion task, the client will stay in the system tray (note Ubuntu 16/18 won't). You can right click the client icon and get some relevant informations. For instance, log file becomes very important if your calcualtion goes wrong, click **Log** and open the ``run.log`` to see what happened. */}
-
 While you are running a calcualtion task, the client will stay in the system tray. You can right click the client icon and get some relevant informations. For instance, log file becomes very important if your calcualtion goes wrong, click **Log** and open the `run.log` to see what happened.
+
+:::warning NOTE
+The client will automatically run once you start calculating, you <b>cannot run it by double click it</b>.
+:::
