@@ -10,8 +10,14 @@ Linux-based.
 
 To calculate a **SIMPO** project, you need to download and install the calculation client, and then sign up and sign in to <a href={config.customFields.urlDashHome}>Dashborad</a>.
 
-:::info The latest version
-The latest version is 0.0.3.3, release in 2023.12.12. For more details please refer to: <a href="/docs/Changelog/SIMPO Client/2023">Client Changelog</a>.
+:::warning NOTE
+The client will automatically run once you start calculating, you <b>cannot run it by double click it</b>.
+:::
+
+While running a calcualtion task, the client will stay in the system tray. Right click the client icon can get relevant informations. For instance, log file becomes very important if your calcualtion goes wrong, click **Log** and open the `run.log` to see what happened.
+
+:::tip Tip
+You will not be able to run calculations if you don't install the client, but you can still sign in and use the other functions (i.e. editting you own repositories, browsing and cloning the public repositories).
 
 :::
 
@@ -70,14 +76,3 @@ The latest version is 0.0.3.3, release in 2023.12.12. For more details please re
   </TabItem>
 
 </Tabs>
-
-:::tip Tip
-You will not be able to run calculations if you don't install the client, but you can still sign in and use the other functions (i.e. editting you own repositories, browsing and cloning the public repositories).
-
-:::
-
-While you are running a calcualtion task, the client will stay in the system tray. You can right click the client icon and get some relevant informations. For instance, log file becomes very important if your calcualtion goes wrong, click **Log** and open the `run.log` to see what happened.
-
-:::warning NOTE
-The client will automatically run once you start calculating, you <b>cannot run it by double click it</b>.
-:::
