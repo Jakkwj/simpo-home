@@ -133,6 +133,7 @@ const sidebars = {
           type: 'category',
           label: 'SIMPO Dash',
           items: [
+            'Changelog/SIMPO Dash/2024',
             'Changelog/SIMPO Dash/2023',
             'Changelog/SIMPO Dash/2022',
             'Changelog/SIMPO Dash/2021'
@@ -143,6 +144,7 @@ const sidebars = {
           type: 'category',
           label: 'SIMPO',
           items: [
+            'Changelog/SIMPO/2024',
             'Changelog/SIMPO/2023',
             'Changelog/SIMPO/2022',
             'Changelog/SIMPO/2021'
@@ -153,6 +155,7 @@ const sidebars = {
           type: 'category',
           label: 'SIMPO Pro',
           items: [
+            'Changelog/SIMPO Pro/2024',
             'Changelog/SIMPO Pro/2023',
             'Changelog/SIMPO Pro/2022',
           ]
