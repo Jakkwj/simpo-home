@@ -22,5 +22,9 @@
   "item.label.Sign In": {
     "message": "登录",
     "description": "Navbar item with label Sign In"
+  },
+  "item.label.Library": {
+    "message": "资料库",
+    "description": "Navbar item with label Library"
   }
 }

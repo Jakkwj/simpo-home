@@ -178,11 +178,11 @@ const config = {
         },
         blog: false,
         // blog: {
-          // showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          // editUrl:
-          //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+        //   showReadingTime: true,
+        //   // Please change this to your repo.
+        //   // Remove this to remove the "edit this page" links.
+        //   editUrl:
+        //     'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         // },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -203,7 +203,20 @@ const config = {
   plugins: [
     // '@docusaurus/theme-live-codeblock',
     // 'docusaurus-plugin-sass'
-    require.resolve("docusaurus-plugin-image-zoom")
+    require.resolve("docusaurus-plugin-image-zoom"),
+
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'library',
+        path: 'library',
+        routeBasePath: 'library',
+        // sidebarPath: './sidebarsLibrary.js',
+        sidebarPath: require.resolve('./sidebarsLibrary.js'),
+        // ... other options
+      },
+    ],
+
   ],
 
   themeConfig:
@@ -307,6 +320,12 @@ const config = {
             position: 'left',
             // label: 'Guides',
 
+          },
+          {
+            label: 'Library',
+            to: 'library',
+            position: 'left',
+            // label: 'Guides',
           },
           {
             // to: 'https://hasura.io/changelog',

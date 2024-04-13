@@ -50,5 +50,9 @@
   "sidebar.docs.category.Changelog.link.generated-index.description": {
     "message": "Changelog of the core source code of SIMPO.",
     "description": "The generated-index page description for category Changelog in sidebar docs"
+  },
+  "sidebar.docs.category.Biological Wastewater Treatment: Examples and Exercises": {
+    "message": "Biological Wastewater Treatment: Examples and Exercises",
+    "description": "The label for category Biological Wastewater Treatment: Examples and Exercises in sidebar docs"
   }
 }
