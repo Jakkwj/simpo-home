@@ -25,22 +25,27 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
     section SIMPO Dash
     Web Frontend/Backend Core Function      :crit, done, c1, 2018-10-01, 2023-01-01
     Basic Function Stable                   :crit, milestone, mc1, after c1, 0d
-    DataSet FlowChart                       :crit, done, c12, after c1, 90d
+    FlowChart                               :crit, done, c12, after c1, 90d
     Http to Https                           :done, c2, 2023-05-01, 2023-06-10
-    Estimaiton Engine                       :crit, active, c3, after c2, 2023-12-31
-    Uncertainty Engine                      :crit, active, c4, after c2, 2023-12-31
-    BioModel Composition                    :c4a, after c4, 30d
-    Steady State                            :c4b, after c4, 30d
-    Discussion Board                        :c4b1, after c4, 30d
-    PlugFlow Reactor Type                   :c4c, after c4b, 60d
-    BioFilm Reactor Type                    :c4d, after c4c, 90d
-    Sewer Reactor Type                      :c4e, after c4d, 90d
+    Estimaiton Engine                       :crit, done, c3, after c2, 2023-12-31
+    Uncertainty Engine                      :crit, done, c4, after c2, 2023-12-31
+    FlowChart Upgrade                       :done, c40, after c4, 2024-04-23
+    AGI Support                             :active, c40a, after c40, 30d
+    Estimaiton Plotting                     :c4a01, after c40a, 30d
+    Uncertainty Plotting                    :c4a02, after c40a, 30d
+    BioModel Composition                    :c4a, after c4a02, 30d
+    Steady State                            :c4b, after c4a, 30d
+    PlugFlow Reactor                        :c4c, after c4b, 60d
+    BioFilm Reactor                         :c4d, after c4c, 90d
+    Sewer Reactor                           :c4e, after c4d, 90d
     Enhanced Function Stable                :milestone, mc2, after c4e, 0d
-    Standard Repositories                   :crit, c5, after c4b, 300d
+    Real-Time Support                       :c5a, after c4e, 300d
+    Standard Repositories                   :crit, c5, after c4e, 300d
     AI Algorithm                            :crit, c6, after c4e, 360d
     Mechanism + Blackbox Model              :crit, milestone, mc3, after c6, 0d
     CFD Algorithm                           :c7, after c6, 300d
-    3D Digital Twin                         :c8, after c7, 300d
-    GPU capacity                            :c9, after c7, 300d
+    3D Digital Twin                         :c8, after c6, 300d
+    GPU capacity                            :c9, after c6, 300d
+    Discussion Board                        :c10, after c6, 300d
 `}
 />

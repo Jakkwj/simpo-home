@@ -170,7 +170,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve('./sidebarsDocs.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
@@ -205,17 +205,37 @@ const config = {
     // 'docusaurus-plugin-sass'
     require.resolve("docusaurus-plugin-image-zoom"),
 
+    // [
+    //   '@docusaurus/plugin-content-docs',
+    //   {
+    //     id: 'library',
+    //     path: 'library',
+    //     routeBasePath: 'library',
+    //     // sidebarPath: './sidebarsLibrary.js',
+    //     sidebarPath: require.resolve('./sidebarsLibrary.js'),
+    //     // ... other options
+    //   },
+    // ],
     [
       '@docusaurus/plugin-content-docs',
       {
         id: 'library',
         path: 'library',
         routeBasePath: 'library',
-        // sidebarPath: './sidebarsLibrary.js',
         sidebarPath: require.resolve('./sidebarsLibrary.js'),
-        // ... other options
       },
     ],
+
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'changelog',
+        path: 'changelog',
+        routeBasePath: 'changelog',
+        sidebarPath: require.resolve('./sidebarsChangelog.js'),
+      },
+    ],
+
 
   ],
 
@@ -316,7 +336,9 @@ const config = {
             // label: 'Documentation',
             label: 'Docs',
             type: 'doc',
-            docId: 'Introduction',
+            // docId: 'Introduction',
+            docId: 'QucikStart',
+            // to: 'docs',
             position: 'left',
             // label: 'Guides',
 
@@ -324,6 +346,12 @@ const config = {
           {
             label: 'Library',
             to: 'library',
+            position: 'left',
+            // label: 'Guides',
+          },
+           {
+            label: 'Changelog',
+            to: 'changelog',
             position: 'left',
             // label: 'Guides',
           },
@@ -519,7 +547,8 @@ const config = {
               // },
               {
                 label: 'Changelog',
-                to: '/docs/category/changelog',
+                // to: '/docs/category/changelog',
+                to: '/changelog',
               },
               {
                 label: 'GitHub',

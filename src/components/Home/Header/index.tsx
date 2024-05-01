@@ -72,7 +72,7 @@ export default function HomepageHeader() {
         {/* bottom */}
         <div className="" style={{marginTop: '1vh'}}>
           <Link
-            href="docs/QucikStart"
+            href="docs"
             className="button button--secondary"
           >
             <Translate>Quick Start</Translate>

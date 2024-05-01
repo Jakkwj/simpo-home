@@ -24,58 +24,102 @@ const sidebars = {
 
     {
       type: 'category',
-      label: 'Papers',
-      "link": {
-        "type": "generated-index",
-        "description": "Use AGI (such as: Kimi) to understand papers."
-        // type: 'doc',
-        // id: 'Changelog/index',
-      },
+      label: '2016',
+      collapsible: true,
+      collapsed: false, // 默认展开, 后续多了在折叠
       items: [
 
-        // {
-        //   type: 'category',
-        //   label: '2017',
-        //   items: [
-        //     'Papers/2017/aa',
-
-        //   ]
-        // },
-        {
-          type: 'category',
-          label: '2016',
-          items: [
-            'Papers/2016/WaterResearch',
-
-          ]
-        },
-
-        {
-          type: 'category',
-          label: '2005',
-          items: [
-            'Papers/2005/WaterResearch',
-
-          ]
-        },
-
-        {
-          type: 'category',
-          label: '2001',
-          items: [
-            'Papers/2001/WaterResearch',
-
-          ]
-        },
-
-
-
-
-
-
+        '2016/WaterResearch',
 
       ],
     },
+
+    {
+      type: 'category',
+      label: '2005',
+      collapsible: true,
+      collapsed: false, // 默认展开
+
+      items: [
+
+        '2005/WaterResearch',
+
+      ],
+    },
+
+    {
+      type: 'category',
+      label: '2001',
+      collapsible: true,
+      collapsed: false, // 默认展开
+
+      items: [
+
+        '2001/WaterResearch',
+
+      ],
+    },
+
+
+
+    // {
+    //   type: 'category',
+    //   label: 'Papers',
+    //   // "link": {
+    //   //   "type": "generated-index",
+    //   //   "description": "Use AGI (such as: Kimi) to understand papers."
+    //   //   // type: 'doc',
+    //   //   // id: 'Changelog/index',
+    //   // },
+    //   items: [
+
+    //     '2016/WaterResearch',
+    //     '2005/WaterResearch',
+    //     '2001/WaterResearch',
+
+    //     // {
+    //     //   type: 'category',
+    //     //   label: '2017',
+    //     //   items: [
+    //     //     'Papers/2017/aa',
+
+    //     //   ]
+    //     // },
+    //     // {
+    //     //   type: 'category',
+    //     //   label: '2016',
+    //     //   items: [
+    //     //     'Papers/2016/WaterResearch',
+
+    //     //   ]
+    //     // },
+
+    //     // {
+    //     //   type: 'category',
+    //     //   label: '2005',
+    //     //   items: [
+    //     //     'Papers/2005/WaterResearch',
+
+    //     //   ]
+    //     // },
+
+    //     // {
+    //     //   type: 'category',
+    //     //   label: '2001',
+    //     //   items: [
+    //     //     'Papers/2001/WaterResearch',
+
+    //     //   ]
+    //     // },
+
+
+
+
+
+
+
+    //   ],
+    // },
 
   ],
 

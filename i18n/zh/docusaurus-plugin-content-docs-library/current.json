@@ -14,5 +14,13 @@
   "sidebar.docs.category.2016": {
     "message": "2016",
     "description": "The label for category 2016 in sidebar docs"
+  },
+  "sidebar.docs.category.2005": {
+    "message": "2005",
+    "description": "The label for category 2005 in sidebar docs"
+  },
+  "sidebar.docs.category.2001": {
+    "message": "2001",
+    "description": "The label for category 2001 in sidebar docs"
   }
 }

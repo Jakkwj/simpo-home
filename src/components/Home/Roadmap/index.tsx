@@ -13,7 +13,7 @@ export default function FeaturesOpen() {
     <div className="hero" style={{marginTop: '-6vh'}}>
       <div className="container text-center" >
         <h1 className="text-center">Roadmap</h1>
-        This is the raodmap of <b>SIMPO</b>. For more details please refer to: <a href="docs/category/changelog">Changelog</a>.
+        This is the raodmap of <b>SIMPO</b>. For more details please refer to: <a href="changelog">Changelog</a>.
 
        {/* <TimeLine name="TimeLine" /> */}
 

@@ -26,5 +26,9 @@
   "item.label.Library": {
     "message": "资料库",
     "description": "Navbar item with label Library"
+  },
+  "item.label.Changelog": {
+    "message": "更新日志",
+    "description": "Navbar item with label Changelog"
   }
 }
