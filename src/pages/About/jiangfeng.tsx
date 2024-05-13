@@ -20,7 +20,8 @@ export default function AboutJiangFeng() {
       <div className="container" >
 
       {/* <h1 style={{marginTop: '0vh', marginBottom: '-3vh', textAlign: 'center'}} className="hero__title">About The Team</h1> */}
-      <h1 style={{marginTop: '0vh', marginBottom: '-3vh', textAlign: 'center'}} className="hero__title">About The Team</h1>
+      {/* <h1 style={{marginTop: '0vh', marginBottom: '-3vh', textAlign: 'center'}} className="hero__title">About The Team</h1> */}
+      {/* <h1 style={{marginTop: '0vh', marginBottom: '-3vh', textAlign: 'left'}} className="hero__title">Development Team</h1> */}
 
 
         <Feature

@@ -12,7 +12,7 @@ export default function AboutJiangFeng() {
 
     // className="hero"
     <div
-      style={{marginTop: '-6vh', marginBottom: '0vh'}}
+      style={{marginTop: '-4vh', marginBottom: '0vh'}}
       // style={{background: '#3b3b62', color: '#eee'}}
       // style={{background: 'linear-gradient(to right, #5e72e4, #3b3b62)', color: '#eee'}}
     >

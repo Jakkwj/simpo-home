@@ -514,5 +514,20 @@
   "theme.SearchModal.placeholder": {
     "message": "搜索文档",
     "description": "The placeholder of the input of the DocSearch pop-up modal"
+  },
+  "about.lihao": {
+    "message": "李灏"
+  },
+  "Ph.D. candidate in Environmental Science. Email: ": {
+    "message": "环境科学在读博士。Email："
+  },
+  "About The Team": {
+    "message": "关于团队"
+  },
+  "Developer Team": {
+    "message": "开发者团队"
+  },
+  "Supporter Team": {
+    "message": "支持者团队"
   }
 }

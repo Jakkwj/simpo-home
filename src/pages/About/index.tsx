@@ -13,6 +13,7 @@ import HomepageHeader from '@site/src/components/Home/Header';
 // import FeaturesTrackable from '@site/src/components/Home/Features/trackable';
 import AboutJiangFeng from '@site/src/pages/About/jiangfeng';
 import AboutWangJun from '@site/src/pages/About/wangjun';
+import AboutLiHao from '@site/src/pages/About/lihao';
 // import AboutWuKe from '@site/src/pages/About/wuke';
 // import AboutHuangZhaoWei from './huangzhaowei';
 // import AboutShiYongFeng from './shiyongfeng';
@@ -43,10 +44,32 @@ export default function About(): JSX.Element {
 
       {/* <HomepageHeader /> */}
 
+
       <main>
 
+        <h1 style={{ marginTop: '3vh', marginBottom: '-3vh', textAlign: 'center' }} className="hero__title">
+          <Translate>
+            {'About The Team'}
+          </Translate>
+        </h1>
+
+        <h1 style={{ marginTop: '3vh', marginBottom: '-4vh', marginLeft: '15vw', textAlign: 'left' }}>
+          <Translate>
+            {'Developer Team'}
+          </Translate>
+        </h1>
+
         <AboutJiangFeng />
+
         <AboutWangJun />
+
+        <h1 style={{ marginTop: '3vh', marginBottom: '-4vh', marginLeft: '15vw', textAlign: 'left' }}>
+          <Translate>
+            {'Supporter Team'}
+          </Translate>
+        </h1>
+
+        <AboutLiHao />
         {/* <AboutWuKe />
         <AboutHuangZhaoWei />
         <AboutShiYongFeng /> */}

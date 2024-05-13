@@ -18,5 +18,9 @@
   "sidebar.docs.category.SIMPO Client": {
     "message": "SIMPO Client",
     "description": "The label for category SIMPO Client in sidebar docs"
+  },
+  "sidebar.docs.category.Earlier": {
+    "message": "Earlier",
+    "description": "The label for category Earlier in sidebar docs"
   }
 }

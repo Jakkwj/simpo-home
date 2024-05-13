@@ -43,6 +43,7 @@ const config = {
 
     imgUrlJiangfeng: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/about/team/jiangfeng.jpg',
     imgUrlWangjun: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/about/team/Jakk2b.jpg',
+    imgUrlLihao: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/about/team/lihao.jpg',
 
     imgUrlTheEasiestWay: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/TheEasiestWay/TheEasiestWay.gif',
 
