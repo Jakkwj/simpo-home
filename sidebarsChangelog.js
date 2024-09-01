@@ -33,6 +33,33 @@ const sidebars = {
 
     {
       type: 'category',
+      label: 'SIMPO Backend',
+      collapsible: true,
+      collapsed: false, // 默认展开, 后续多了在折叠
+      items: [
+        'SIMPO Backend/2024',
+
+        // {
+        //   type: 'category',
+        //   label: 'Earlier',
+        //   collapsible: true,
+        //   collapsed: true, // 默认折叠
+        //   items: [
+        //     'SIMPO/Earlier/2023',
+        //     'SIMPO/Earlier/2022',
+        //     'SIMPO/Earlier/2021',
+        //   ],
+        // },
+
+        // 'SIMPO/2023',
+        // 'SIMPO/2022',
+        // 'SIMPO/2021',
+      ],
+
+    },
+
+    {
+      type: 'category',
       label: 'SIMPO',
       collapsible: true,
       collapsed: false, // 默认展开, 后续多了在折叠
