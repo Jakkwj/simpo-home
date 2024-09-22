@@ -88,8 +88,8 @@ const config = {
 
     urlDashASM3: 'https://dash.simpowater.org/dashboard/biomodels/public/name/ASM3/id/45/did/41',
 
-    urlDownloadClientWindows: 'https://sludge.readthedocs.io/en/latest/_downloads/4269e5ad1fd14053bd80f03977e51dad/SimpoClient_installer.exe',
-    urlDownloalClientUbuntu: 'https://sludge.readthedocs.io/en/latest/_downloads/4fffe0f55f67f1c6b7eb94ec4fb6013f/SimpoClient_installer.sh',
+    urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-resource/releases/download/0.5.0/SimpoClient_installer.exe',
+    urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-resource/releases/download/0.5.0/SimpoClient_installer.sh',
 
     urlDownloadUrlplateBioModel: 'https://sludge.readthedocs.io/en/latest/_downloads/fe952779792f1eab732422dd1492e15f/BioModel.xlsx',
     urlDownloadUrlplateDataSet: 'https://sludge.readthedocs.io/en/latest/_downloads/ce5b40856b1e6d339bc3e8055a65ed80/DataSet.xlsx',
@@ -99,6 +99,9 @@ const config = {
 
   },
 
+  // urlDownloadClientWindows: 'https://sludge.readthedocs.io/en/latest/_downloads/4269e5ad1fd14053bd80f03977e51dad/SimpoClient_installer.exe',
+  // urlDownloalClientUbuntu: 'https://sludge.readthedocs.io/en/latest/_downloads/4fffe0f55f67f1c6b7eb94ec4fb6013f/SimpoClient_installer.sh',
+  //
 
   title: title,
   // tagline: 'A Scientific Computing SaaS Platform',
