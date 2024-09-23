@@ -1,11 +1,11 @@
 # Dependencies
 /node_modules
-home/node_modules/
+#home/node_modules/
 
 
 # Production
 /build
-home/build/
+#home/build/
 
 # local
 .history/
@@ -17,8 +17,8 @@ resource/
 # Generated files
 .docusaurus
 .cache-loader
-home/.docusaurus
-home/.cache-loader
+# home/.docusaurus
+# home/.cache-loader
 
 # Misc
 .DS_Store
@@ -26,16 +26,16 @@ home/.cache-loader
 .env.development.local
 .env.test.local
 .env.production.local
-home/.DS_Store
-home/.env.local
-home/.env.development.local
-home/.env.test.local
-home/.env.production.local
+# home/.DS_Store
+# home/.env.local
+# home/.env.development.local
+# home/.env.test.local
+# home/.env.production.local
 
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-home/npm-debug.log*
-home/yarn-debug.log*
-home/yarn-error.log*
+# home/npm-debug.log*
+# home/yarn-debug.log*
+# home/yarn-error.log*
