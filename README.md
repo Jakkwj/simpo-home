@@ -18,6 +18,8 @@
 - 为了解决这个问题, 需要在`static/`文件夹下新建一个`CNAME`文件: www.simpowater.org
 - https://github.com/facebook/docusaurus/issues/3889
 
+- 
+
 # 图片点击放大
 
 - https://gabrielcsapo.github.io/docusaurus-plugin-image-zoom/docs/getting-started/

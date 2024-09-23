@@ -8,7 +8,7 @@ const title = 'SIMPO'
 
 const urlHome = 'https://www.simpowater.org'
 const urlConsole = 'https://dash.simpowater.org/dashboard/home'
-const urlLogo = 'https://i.postimg.cc/rsPqvJNJ/logo3.png'
+const urlLogo = 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/logo3.png'
 
 /**
  * 登录后台显示 Dashboard, 未登录时显示 Sign In 的功能实现参看: https://github.com/facebook/docusaurus/discussions/5307
@@ -32,53 +32,60 @@ const config = {
 
   customFields: {
     // global variable
-    imgUrlBanner: 'https://i.postimg.cc/3w15s1Kv/banner3.png',
+    // imgUrlBanner: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/banner/banner3.png',
+    imgUrlBanner: 'https://pic.imgdb.cn/item/66f15e3ef21886ccc0d05531.png',
+
+    // imgUrlPowerful: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/Xu.png',
+    // imgUrlPowerful: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/Powerful.png',
     imgUrlPowerful: 'https://i.postimg.cc/8CRPjLTp/Powerful.png',
+
+    // imgUrlOpen: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/Fig6.png',
     imgUrlOpen: 'https://i.postimg.cc/dthsGbJS/Fig6.png',
+    // imgUrlTrackable: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/matrix2.png',
     imgUrlTrackable: 'https://i.postimg.cc/85TkWsCh/matrix2.png',
 
-    imgUrlIntroduction_1: 'https://i.postimg.cc/kgNkSsRp/Fig5-Sim-Targets.png',
-    imgUrlIntroduction_2: 'https://i.postimg.cc/8zg2s9cv/Project-Eva-Uncertainty-PCDF-59.png',
+    imgUrlIntroduction_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/intro/Fig5__Sim_Targets__.png',
+    imgUrlIntroduction_2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/intro/Project__Eva_UncertaintyPCDF__(59).png',
 
-    imgUrlJiangfeng: 'https://i.postimg.cc/CKmXPKNC/jiangfeng.jpg',
-    imgUrlWangjun: 'https://i.postimg.cc/sXx8tR6k/Jakk2b.jpg',
-    imgUrlLihao: 'https://i.postimg.cc/YSpTzF1q/lihao.jpg',
+    imgUrlJiangfeng: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/about/team/jiangfeng.jpg',
+    imgUrlWangjun: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/about/team/Jakk2b.jpg',
+    imgUrlLihao: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/about/team/lihao.jpg',
 
-    imgUrlTheEasiestWay: 'https://i.postimg.cc/bvV8GgKj/The-Easiest-Way.gif',
+    imgUrlTheEasiestWay: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/TheEasiestWay/TheEasiestWay.gif',
 
-    imgUrlASM3_1: 'https://i.postimg.cc/mkJGdrTp/ASM3-1.gif',
-    imgUrlASM3_2: "https://i.postimg.cc/DfMFfx1Q/ASM3-2.gif",
-    imgUrlASM3_3: 'https://i.postimg.cc/SRJh79bz/ASM3-3.gif',
-    imgUrlASM3_4: 'https://i.postimg.cc/xCsQzRh2/ASM3-4.gif',
+    imgUrlASM3_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/ASM3/ASM3_1.gif',
+    imgUrlASM3_2: "https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/ASM3/ASM3_2.gif",
+    imgUrlASM3_3: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/ASM3/ASM3_3.gif',
+    imgUrlASM3_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/quick_start/ASM3/ASM3_4.gif',
 
-    imgUrlBioModel_1: 'https://i.postimg.cc/ZRq8Hb7d/biomodel-1.gif',
-    imgUrlBioModel_2: 'https://i.postimg.cc/25GdnbwY/biomodel-2.gif',
-    imgUrlBioModel_3: 'https://i.postimg.cc/pLDJX15p/biomodel-3.gif',
-    imgUrlBioModel_4: 'https://i.postimg.cc/TPfqyqnQ/biomodel-4.gif',
+    imgUrlBioModel_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/biomodel/1.gif',
+    imgUrlBioModel_2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/biomodel/2.gif',
+    imgUrlBioModel_3: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/biomodel/3.gif',
+    imgUrlBioModel_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/biomodel/4.gif',
 
-    imgUrlDataSet_1: 'https://i.postimg.cc/KY2QPyhP/dataset-1.gif',
-    imgUrlDataSet_2: 'https://i.postimg.cc/4xtBHxq4/dataset-2.gif',
-    imgUrlDataSet_3: 'https://i.postimg.cc/fT18b9Hg/dataset-3.gif',
-    imgUrlDataSet_4: 'https://i.postimg.cc/WpW9QK0V/dataset-4.gif',
-    imgUrlDataSet_5: 'https://i.postimg.cc/7Y5BDVN2/dataset-5.gif',
+    imgUrlDataSet_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/dataset/1.gif',
+    imgUrlDataSet_2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/dataset/2.gif',
+    imgUrlDataSet_3: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/dataset/3.gif',
+    imgUrlDataSet_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/dataset/4.gif',
+    imgUrlDataSet_5: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/dataset/4.gif',
 
-    imgUrlProject_1: 'https://i.postimg.cc/RVYDn80d/project-1.gif',
-    imgUrlProject_2: 'https://i.postimg.cc/SxztLr2h/project-2.gif',
-    imgUrlProject_3: 'https://i.postimg.cc/MKHLHxzX/project-3.gif',
-    imgUrlProject_4: 'https://i.postimg.cc/FK5CTL3J/project-4.gif',
+    imgUrlProject_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/project/1.gif',
+    imgUrlProject_2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/project/2.gif',
+    imgUrlProject_3: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/project/3.gif',
+    imgUrlProject_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/tutorials/project/4.gif',
 
 
-    imgUrlCaseStudyAQUASIMT2P17_1: 'https://i.postimg.cc/8k48stWX/T2P17-1.jpg',
-    imgUrlCaseStudyAQUASIMT2P17_2: 'https://i.postimg.cc/BQnrFHBS/T2P17-2.jpg',
-    imgUrlCaseStudyAQUASIMT2P17_3: 'https://i.postimg.cc/QxYRJCfp/T2P17-3.jpg',
-    imgUrlCaseStudyAQUASIMT2P17_4: 'https://i.postimg.cc/3xPVz65N/T2P17-4.jpg',
-    imgUrlCaseStudyAQUASIMT2P17_5: 'https://i.postimg.cc/RZ32smY2/T2P17-5.jpg',
+    imgUrlCaseStudyAQUASIMT2P17_1: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/1.jpg',
+    imgUrlCaseStudyAQUASIMT2P17_2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/2.jpg',
+    imgUrlCaseStudyAQUASIMT2P17_3: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/3.jpg',
+    imgUrlCaseStudyAQUASIMT2P17_4: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/4.jpg',
+    imgUrlCaseStudyAQUASIMT2P17_5: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/AQUASIM/T2P17/5.jpg',
 
-    imgUrlCaseStudyBWTEE2_3_4Batch: 'https://i.postimg.cc/YSYZ73M3/2-3-4-Batch-1.jpg',
+    imgUrlCaseStudyBWTEE2_3_4Batch: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/BWTEE/2_3_4Batch/1.jpg',
 
-    imgUrlCaseStudyBWTEE2_3_4Chemostat: 'https://i.postimg.cc/7hYWgr7s/2-3-4-Chemostat-1.jpg',
-    imgUrlCaseStudyBWTEE2_3_4O2: 'https://i.postimg.cc/76NRGZCJ/2-3-4-Chemostat-2.jpg',
-    imgUrlCaseStudyBWTEE2_3_4DHO: 'https://i.postimg.cc/zBNMGgf1/2-3-4-Chemostat-3.jpg',
+    imgUrlCaseStudyBWTEE2_3_4Chemostat: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/BWTEE/2_3_4Chemostat/1.jpg',
+    imgUrlCaseStudyBWTEE2_3_4O2: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/BWTEE/2_3_4Chemostat/2.jpg',
+    imgUrlCaseStudyBWTEE2_3_4DHO: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/case_study/BWTEE/2_3_4Chemostat/3.jpg',
 
 
 
@@ -90,12 +97,9 @@ const config = {
     urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-resource/releases/download/v0.5.0/SimpoClient_installer.exe',
     urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-resource/releases/download/v0.5.0/SimpoClient_installer.sh',
 
-    // urlDownloadUrlplateBioModel: 'https://sludge.readthedocs.io/en/latest/_downloads/fe952779792f1eab732422dd1492e15f/BioModel.xlsx',
-    // urlDownloadUrlplateDataSet: 'https://sludge.readthedocs.io/en/latest/_downloads/ce5b40856b1e6d339bc3e8055a65ed80/DataSet.xlsx',
-    // urlDownloadUrlplateProject: 'https://sludge.readthedocs.io/en/latest/_downloads/cdbae577b8f73a4be69004f393d76da6/Solution.xlsx',
-    urlDownloadUrlplateBioModel: 'https://github.com/Jakkwj/simpo-home/releases/download/template/BioModel.xlsx',
-    urlDownloadUrlplateDataSet: 'https://github.com/Jakkwj/simpo-home/releases/download/template/DataSet.xlsx',
-    urlDownloadUrlplateProject: 'https://github.com/Jakkwj/simpo-home/releases/download/template/Solution.xlsx',
+    urlDownloadUrlplateBioModel: 'https://sludge.readthedocs.io/en/latest/_downloads/fe952779792f1eab732422dd1492e15f/BioModel.xlsx',
+    urlDownloadUrlplateDataSet: 'https://sludge.readthedocs.io/en/latest/_downloads/ce5b40856b1e6d339bc3e8055a65ed80/DataSet.xlsx',
+    urlDownloadUrlplateProject: 'https://sludge.readthedocs.io/en/latest/_downloads/cdbae577b8f73a4be69004f393d76da6/Solution.xlsx',
 
     iframeIfSignSrc: 'https://dash.simpowater.org/ifsign',
 
@@ -112,8 +116,9 @@ const config = {
   // tagline: 'A SaaS platform for wastewater treatment modeling',
 
 
-  favicon: 'img/logo3.ico',
-  // favicon: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/ico/logo3.ico',
+  // favicon: 'img/favicon.ico',
+  // favicon: 'img/logo3.ico',
+  favicon: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/ico/logo3.ico',
 
   // Set the production url of your site here
   // url: 'https://your-docusaurus-test-site.com',
@@ -292,7 +297,7 @@ const config = {
       // Replace with your project's social card
       // image: 'img/docusaurus-social-card.jpg',
       image: urlLogo,
-      // 'https://i.postimg.cc/rsPqvJNJ/logo3.png',
+      // 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/logo3.png',
 
       algolia: {
         // If Algolia did not provide you any appId, use 'BH4D9OD16A'
@@ -317,7 +322,7 @@ const config = {
           // src: 'img/logo.svg',
           // src: 'img/logo.png',
           // src: 'img/logo3.png',
-          src: 'https://i.postimg.cc/rsPqvJNJ/logo3.png',
+          src: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/logo3.png',
         },
         items: [
           // {
