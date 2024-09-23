@@ -9,6 +9,7 @@
 .vscode/
 dev/
 .git/
+resource/
 
 # Generated files
 .docusaurus
