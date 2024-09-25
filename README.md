@@ -43,6 +43,7 @@
 - https://oreo.life/en/blog/2023-02-12-crawl-website-using-github-actions/
   - https://crawler.algolia.com/admin/user/settings/ 获取`Crawler User ID`和`Crawler API Key`.
   - `algolia-api-key`用的是`SEARCH_API_KEY`
+- `.github/workflows/docsearch-scraper.yml`:
 
 ```bash
 name: Crawl
@@ -57,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Algolia Crawler Automatic Crawl
-        uses: algolia/algoliasearch-crawler-github-actions@v1.1.0
+        uses: algolia/algoliasearch-crawler-github-actions@v1.1.10
         with:
           crawler-user-id: ${{ secrets.CRAWLER_USER_ID }}
           crawler-api-key: ${{ secrets.CRAWLER_API_KEY }}
@@ -69,6 +70,10 @@ jobs:
 
 ```
 
+- 注意: `algoliasearch-crawler-github-actions`版本升级：
+  - 这里查询新版：https://github.com/algolia/algoliasearch-crawler-github-actions/releases
+
+- 
 - 以下方式作废：
 - ~~在根目录中添加`docsearch-config.json`: https://github.com/algolia/docsearch-configs/blob/master/configs/docusaurus-2.json~~
 - ~~在根目录中`.github/workflows/algolia-docsearch-scraper.yml`~~
@@ -108,6 +113,15 @@ jobs:
                   -e CONFIG="${CONFIG}" \
                   algolia/docsearch-scraper
 ```
+
+## 问题：
+
+- DocSearch Error: 400: Bad Request {"code":"invalid_action","message":"This action cannot be executed on a blocked crawler"}
+  - https://support.algolia.com/hc/en-us/articles/12151775552017-DocSearch-Error-400-Bad-Request-code-invalid-action-message-This-action-cannot-be-executed-on-a-blocked-crawler#:~:text=When%20using%20the%20API%20of%20the%20Crawler%20and,and%20then%20the%20API%20will%20accept%20requests%20again.
+  - When using the API of the Crawler and you find the Crawler is blocked, you can take a look at the frontend for more information: [Crawler Admin Console](https://crawler.algolia.com/admin/users/login)
+  - To fix the issue, you need to unblock the Crawler by clicking the `Cancel` button from the UI, and then the API will accept requests again.
+
+ 
 
 # 多语言
 
