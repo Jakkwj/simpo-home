@@ -120,6 +120,12 @@ jobs:
   - https://support.algolia.com/hc/en-us/articles/12151775552017-DocSearch-Error-400-Bad-Request-code-invalid-action-message-This-action-cannot-be-executed-on-a-blocked-crawler#:~:text=When%20using%20the%20API%20of%20the%20Crawler%20and,and%20then%20the%20API%20will%20accept%20requests%20again.
   - When using the API of the Crawler and you find the Crawler is blocked, you can take a look at the frontend for more information: [Crawler Admin Console](https://crawler.algolia.com/admin/users/login)
   - To fix the issue, you need to unblock the Crawler by clicking the `Cancel` button from the UI, and then the API will accept requests again.
+  
+  ```bash
+  safetyChecks: { beforeIndexPublishing: { maxLostRecordsPercentage: 100 } },
+  ```
+  
+  - `Editor`: `safetyChecks: { beforeIndexPublishing: { maxLostRecordsPercentage: 100 } }`
 
  
 
