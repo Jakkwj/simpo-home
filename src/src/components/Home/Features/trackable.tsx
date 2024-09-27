@@ -4,7 +4,8 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Feature from './feature';
 
 
-export default function FeaturesTrackable())t();
+export default function FeaturesTrackable() {
+  const {siteConfig} = useDocusaurusContext();
   return (
     <div
       className="hero"
