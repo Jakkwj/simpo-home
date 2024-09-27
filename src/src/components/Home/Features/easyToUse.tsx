@@ -57,7 +57,7 @@ export default function FeaturesEasyToUse() {
                   //   kind: <Link to="https://kind.sigs.k8s.io/">kind</Link>,
                   // }}
                 >
-                  { `Lets you focus on your model deducing and experimental datas, we\'ll do the computing:` }
+                  { `Let you focus on your model deducing and experimental datas, we\'ll do the computing:` }
 
 
                 </Translate>

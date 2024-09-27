@@ -4,8 +4,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Feature from './feature';
 
 
-export default function FeaturesTrackable() {
-  const {siteConfig} = useDocusaurusContext();
+export default function FeaturesTrackable())t();
   return (
     <div
       className="hero"
@@ -32,7 +31,7 @@ export default function FeaturesTrackable() {
               <p>
                 <Translate
                 >
-                  { `Not way to cheat:` }
+                  { `No way to cheat:` }
 
                 </Translate>
               </p>

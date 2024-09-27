@@ -1,3 +1,10 @@
+# 升级
+
+- 按文档修改`package.json`: https://docusaurus.nodejs.cn/docs/migration/v3
+- 删除 `package-lock.json`
+- 运行 `yarn intall`
+- `yarn upgrade @docusaurus/core@latest @docusaurus/preset-classic@latest @docusaurus/theme-mermaid@latest @docusaurus/module-type-aliases@latest @docusaurus/types@latest @docusaurus/tsconfig@latest`
+
 # 部署
 
 - 每次部署都会 clone 一次，非常的慢，需要[设置 npm 和 yarn 的代理和 registry](https://zhuanlan.zhihu.com/p/272474048)
@@ -18,7 +25,7 @@
 - 为了解决这个问题, 需要在`static/`文件夹下新建一个`CNAME`文件: www.simpowater.org
 - https://github.com/facebook/docusaurus/issues/3889
 
-- 
+-
 
 # 图片点击放大
 
@@ -71,9 +78,10 @@ jobs:
 ```
 
 - 注意: `algoliasearch-crawler-github-actions`版本升级：
+
   - 这里查询新版：https://github.com/algolia/algoliasearch-crawler-github-actions/releases
 
-- 
+-
 - 以下方式作废：
 - ~~在根目录中添加`docsearch-config.json`: https://github.com/algolia/docsearch-configs/blob/master/configs/docusaurus-2.json~~
 - ~~在根目录中`.github/workflows/algolia-docsearch-scraper.yml`~~
@@ -117,17 +125,16 @@ jobs:
 ## 问题：
 
 - DocSearch Error: 400: Bad Request {"code":"invalid_action","message":"This action cannot be executed on a blocked crawler"}
+
   - https://support.algolia.com/hc/en-us/articles/12151775552017-DocSearch-Error-400-Bad-Request-code-invalid-action-message-This-action-cannot-be-executed-on-a-blocked-crawler#:~:text=When%20using%20the%20API%20of%20the%20Crawler%20and,and%20then%20the%20API%20will%20accept%20requests%20again.
   - When using the API of the Crawler and you find the Crawler is blocked, you can take a look at the frontend for more information: [Crawler Admin Console](https://crawler.algolia.com/admin/users/login)
   - To fix the issue, you need to unblock the Crawler by clicking the `Cancel` button from the UI, and then the API will accept requests again.
-  
+
   ```bash
   safetyChecks: { beforeIndexPublishing: { maxLostRecordsPercentage: 100 } },
   ```
-  
-  - `Editor`: `safetyChecks: { beforeIndexPublishing: { maxLostRecordsPercentage: 100 } }`
 
- 
+  - `Editor`: `safetyChecks: { beforeIndexPublishing: { maxLostRecordsPercentage: 100 } }`
 
 # 多语言
 

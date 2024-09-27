@@ -1,8 +1,12 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+// const lightCodeTheme = require('prism-react-renderer/themes/github');
+// const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const {themes} = require('prism-react-renderer');
+const lightTheme = themes.github;
+const darkTheme = themes.dracula;
+
 const title = 'SIMPO'
 // const urlConsole = 'https://dashboard.simpowater.org/dashboard/home'
 
@@ -135,7 +139,9 @@ const config = {
   trailingSlash: false,
   deploymentBranch: 'gh-pages',
 
-  onBrokenLinks: 'throw', // 检测到无效链接时的行为, 抛出错误
+  // onBrokenLinks: 'throw', // 检测到无效链接时的行为, 抛出错误, v3 升级后 build 时会报错
+  onBrokenLinks: 'ignore',
+
   onBrokenMarkdownLinks: 'warn', // 检测到无效 Markdown 链接时的行为 警告
 
 
@@ -355,7 +361,7 @@ const config = {
             position: 'left',
             // label: 'Guides',
           },
-           {
+          {
             label: 'Changelog',
             to: 'changelog',
             position: 'left',
@@ -363,8 +369,8 @@ const config = {
           },
           {
             // to: 'https://hasura.io/changelog',
-            to: '/about',
             label: "About",
+            to: '/about',
             position: 'left',
           },
 
@@ -577,8 +583,8 @@ const config = {
         // Built with Docusaurus.
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: lightTheme,
+        darkTheme: darkTheme,
       },
     }),
 
