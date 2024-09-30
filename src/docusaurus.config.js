@@ -85,14 +85,12 @@ const config = {
     imgUrlCaseStudyBWTEE2_3_4DHO: 'https://i.postimg.cc/zBNMGgf1/2-3-4-Chemostat-3.jpg',
 
 
-
-
     urlDashHome: 'https://dash.simpowater.org/dashboard/home',
 
     urlDashASM3: 'https://dash.simpowater.org/dashboard/biomodels/public/name/ASM3/id/45/did/41',
 
-    urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-resource/releases/download/v0.5.0/SimpoClient_installer.exe',
-    urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-resource/releases/download/v0.5.0/SimpoClient_installer.sh',
+    urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.5.1/SimpoClient_installer.exe',
+    urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.5.1/SimpoClient_installer.sh',
 
     // urlDownloadUrlplateBioModel: 'https://sludge.readthedocs.io/en/latest/_downloads/fe952779792f1eab732422dd1492e15f/BioModel.xlsx',
     // urlDownloadUrlplateDataSet: 'https://sludge.readthedocs.io/en/latest/_downloads/ce5b40856b1e6d339bc3e8055a65ed80/DataSet.xlsx',
