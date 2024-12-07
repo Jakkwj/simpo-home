@@ -23,9 +23,9 @@
     "message": "登录",
     "description": "Navbar item with label Sign In"
   },
-  "item.label.Library": {
+  "item.label.Resource": {
     "message": "资料库",
-    "description": "Navbar item with label Library"
+    "description": "Navbar item with label Resource"
   },
   "item.label.Changelog": {
     "message": "更新日志",

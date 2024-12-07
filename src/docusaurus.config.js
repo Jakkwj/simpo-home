@@ -228,11 +228,17 @@ const config = {
     // ],
     [
       '@docusaurus/plugin-content-docs',
-      {
-        id: 'library',
-        path: 'library',
-        routeBasePath: 'library',
-        sidebarPath: require.resolve('./sidebarsLibrary.js'),
+      // {
+      //   id: 'library',
+      //   path: 'library',
+      //   routeBasePath: 'library',
+      //   sidebarPath: require.resolve('./sidebarsLibrary.js'),
+      // },
+       {
+        id: 'resource',
+        path: 'resource',
+        routeBasePath: 'resource',
+        sidebarPath: require.resolve('./sidebarsResource.js'),
       },
     ],
 
@@ -353,9 +359,15 @@ const config = {
             // label: 'Guides',
 
           },
+          // {
+          //   label: 'Library',
+          //   to: 'library',
+          //   position: 'left',
+          //   // label: 'Guides',
+          // },
           {
-            label: 'Library',
-            to: 'library',
+            label: 'Resource',
+            to: 'resource',
             position: 'left',
             // label: 'Guides',
           },
