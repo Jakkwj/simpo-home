@@ -1,3 +1,11 @@
+
+
+
+
+
+
+![Static Badge](https://img.shields.io/badge/version-v0.7.0-blue)
+
 # 升级
 
 - 按文档修改`package.json`: https://docusaurus.nodejs.cn/docs/migration/v3
