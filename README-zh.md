@@ -2,10 +2,14 @@
 
 [English](https://github.com/Jakkwj/simpo-home) |[简体中文](https://github.com/Jakkwj/simpo-home/blob/master/README-zh.md)
 
+<center> 
 # Simpo Home Page
+</center>
 
+<center> 
 ![Static Badge](https://img.shields.io/badge/SimpoClient-v0.7.0-blue)
-
+</center>
+ 
 - 本[主页](https://www.simpowater.org/)使用[Docusaurus](https://docusaurus.io/)构建。
 - 安装：`yarn`。
 - 本地开发：`yarn start`。
