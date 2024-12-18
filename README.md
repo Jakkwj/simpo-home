@@ -2,13 +2,13 @@
 
 [English](https://github.com/Jakkwj/simpo-home) |[简体中文](https://github.com/Jakkwj/simpo-home/blob/master/README-zh.md)
 
-<center> 
-# Simpo Home Page
-</center>
 
-<center> 
-![Static Badge](https://img.shields.io/badge/SimpoClient-v0.7.0-blue)
-</center>
+# <p align="center">Simpo Home Page</p>
+
+
+<center> Simpo Home Page</center>
+
+<p align="center">![Static Badge](https://img.shields.io/badge/SimpoClient-v0.7.0-blue)</p>
  
 
 - This [home page](https://www.simpowater.org/) is built with [Docusaurus](https://docusaurus.io/).
