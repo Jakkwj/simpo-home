@@ -32,15 +32,16 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
     FlowChart Upgrade                       :done, c40, after c4, 2024-04-23
     AI (Kimi) Support                       :done, c40kimi, after c40, 2024-06-23
     BioModel Composition                    :done, c4aComposition, after c40kimi, 2024-12-18
-    Estimaiton Plotting                     :c4a01, after c4aComposition, 60d
-    Uncertainty Plotting                    :c4a02, after c4aComposition, 60d
-    PlugFlow Reactor                        :c4c, after c4b, 60d
+    pH Calculation                          :active, c4apH, after c4aComposition, 30d
+    Estimaiton Plotting                     :c4a01, after c4apH, 60d
+    Uncertainty Plotting                    :c4a02, after c4apH, 60d
+    PlugFlow Reactor                        :c4c, after c4a02, 60d
     BioFilm Reactor                         :c4d, after c4c, 90d
     Sewer Reactor                           :c4e, after c4d, 90d
     Enhanced Function Stable                :milestone, mc2, after c4e, 0d
     Real-Time Support                       :c5a, after c4e, 300d
     Standard Repositories                   :crit, c5, after c4e, 300d
-    Steady State                            :c4b, after c4a, 30d
+    Steady State                            :c4StedayState, after c5, 120d
     AI Algorithm                            :crit, c6, after c4e, 360d
     Mechanism + Blackbox Model              :crit, milestone, mc3, after c6, 0d
     CFD Algorithm                           :c7, after c6, 300d
