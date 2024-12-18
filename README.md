@@ -5,11 +5,11 @@
 
 # <p align="center">Simpo Home Page</p>
 
+<div align="center">
 
-<center> Simpo Home Page</center>
+![Static Badge](https://img.shields.io/badge/SimpoClient-v0.7.0-blue)
 
-<p align="center">![Static Badge](https://img.shields.io/badge/SimpoClient-v0.7.0-blue)</p>
- 
+</div>
 
 - This [home page](https://www.simpowater.org/) is built with [Docusaurus](https://docusaurus.io/).
 - Installation: `yarn`.
