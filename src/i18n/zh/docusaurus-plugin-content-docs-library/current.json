@@ -8,7 +8,7 @@
     "description": "The label for category Papers in sidebar docs"
   },
   "sidebar.docs.category.Papers.link.generated-index.description": {
-    "message": "使用AGI（比如：Kimi）理解论文。",
+    "message": "使用AI（比如：Kimi）理解论文。",
     "description": "The generated-index page description for category Papers in sidebar docs"
   },
   "sidebar.docs.category.2016": {

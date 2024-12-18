@@ -67,7 +67,7 @@ const sidebars = {
     //   label: 'Papers',
     //   // "link": {
     //   //   "type": "generated-index",
-    //   //   "description": "Use AGI (such as: Kimi) to understand papers."
+    //   //   "description": "Use AI (such as: Kimi) to understand papers."
     //   //   // type: 'doc',
     //   //   // id: 'Changelog/index',
     //   // },
