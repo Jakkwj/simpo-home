@@ -110,12 +110,16 @@ export default function HomepageHeader() {
               {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/23620dc7572483958d72baa3ecbf35aa/SimpoClient_installer_0.2.1.sh" download>Ubuntu</a> */}
               {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/0ee7356b0a3ca65e90da9de1aa9f60f7/SimpoClient_installer_0.2.1.exe" download>Windows</a>
               <a href="https://sludge.readthedocs.io/en/latest/_downloads/79be8a991d9deced657e2678f6c9bf3a/SimpoClient_installer_0.2.2.sh" download>Ubuntu</a> */}
-              <a href={siteConfig.customFields.urlDownloadClientWindows} download>Windows</a>
-              <a href={siteConfig.customFields.urlDownloalClientUbuntu} download>Ubuntu</a>
+              <a href={siteConfig.customFields.urlDownloadClientWindows as string} download>Windows</a>
+              {/* <hr /> */}
+               <a href={siteConfig.customFields.urlDownloalBaidu as string} target="_blank" rel="noopener noreferrer">Windows (Netdisk)</a>
+              <a href={siteConfig.customFields.urlDownloalClientUbuntu as string} download>Ubuntu</a>
 
 
               {/* <a href="#" style={{pointerEvents: 'none', cursor: 'default', color: 'gray'}} >Mac (pending...)</a> */}
               <a href="#" style={{cursor: 'default', color: 'gray'}} >Mac (pending...)</a>
+
+
             </div>
 
           </div>

@@ -92,6 +92,7 @@ const config = {
 
     urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.7.0/SimpoClient_installer.exe',
     urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.7.0/SimpoClient_installer.sh',
+    urlDownloalBaidu: 'https://pan.baidu.com/s/1N89lx1xbCvoIwvbc-Qdl8g?pwd=spwt',
 
     // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.6.0/SimpoClient_installer.exe',
     // urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.6.0/SimpoClient_installer.sh',
