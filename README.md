@@ -1,7 +1,4 @@
-
-
 [English](https://github.com/Jakkwj/simpo-home) |[简体中文](https://github.com/Jakkwj/simpo-home/blob/master/README-zh.md)
-
 
 # <p align="center">Simpo Home Page</p>
 
@@ -17,7 +14,7 @@
 
 ## Resource
 
-- Join us in building and enhancing [paper resource](https://www.simpowater.org/resource) with the help of powerful **AI tools**  (such as: [Kimi](https://kimi.moonshot.cn)). Your contributions can significantly enhance and expand the collection, making it more valuable for the entire community.
+- Join us in building and enhancing [Paper Resource](https://www.simpowater.org/resource) with the help of powerful **AI tools** (such as: [Kimi](https://kimi.moonshot.cn)). Your contributions can significantly enhance and expand the collection, making it more valuable for the entire community.
 - Currently, for each paper, we will pose the following questions to [Kimi](https://kimi.moonshot.cn):
   - What problem does this paper attempt to solve?
   - What are the relevant studies?
@@ -25,6 +22,3 @@
   - What experiments were done for the paper?
   - What are the points that can be explored further?
   - Summarize the main points of the paper.
-
-
-
