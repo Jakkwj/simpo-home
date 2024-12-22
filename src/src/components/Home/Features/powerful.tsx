@@ -9,6 +9,7 @@ export default function FeaturesPowerful() {
   return (
     <div
       className="hero"
+      // style={{marginTop: '-10vh'}}
       style={{marginTop: '-10vh'}}
       // style={{background: '#3b3b62', color: '#eee'}}
       // style={{background: 'linear-gradient(to right, #5e72e4, #3b3b62)', color: '#eee'}}
@@ -17,12 +18,13 @@ export default function FeaturesPowerful() {
         <Feature
           reverse={true}
           width='80%'
-          marginTop='2vh'
+          // marginTop='2vh'
+          marginTop='2.6vh'
           // imgUrl="img/matrix.png"
           // imgUrl="img/Xu.png"
           // imgUrl="https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/Xu.png"
           // imgUrl="img/2.png"
-          imgUrl={siteConfig.customFields.imgUrlPowerful}
+          imgUrl={siteConfig.customFields.imgUrlPowerful as string}
           // imgUrl="img/Fig6.png"
           title={<Translate id="home.powerful">Powerful and Flexible</Translate>}
           description={

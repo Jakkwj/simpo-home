@@ -12,6 +12,7 @@ import FeaturesEasyToUse from '@site/src/components/Home/Features/easyToUse';
 import FeaturesPowerful from '@site/src/components/Home/Features/powerful';
 import FeaturesOpen from '@site/src/components/Home/Features/open';
 import FeaturesTrackable from '@site/src/components/Home/Features/trackable';
+import FeaturesCollaboration from '@site/src/components/Home/Features/collaboration';
 // src/components/Home/Roadmap/index.mdx
 // import TeamJiangFeng from '@site/src/components/Home/Team/jiangfeng';
 
@@ -47,6 +48,7 @@ export default function Home(): JSX.Element {
         <FeaturesPowerful />
         <FeaturesOpen />
         <FeaturesTrackable />
+        <FeaturesCollaboration />
         <Roadmap />
         {/* <TeamJiangFeng /> */}
 

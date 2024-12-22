@@ -17,7 +17,7 @@ export default function FeaturesTrackable() {
         <Feature
           reverse={true}
           // width='60%'
-          marginTop='2vh'
+          marginTop='2.6vh'
           // imgUrl="img/matrix2.png"
           // imgUrl="https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/main/matrix2.png"
           imgUrl={siteConfig.customFields.imgUrlTrackable}

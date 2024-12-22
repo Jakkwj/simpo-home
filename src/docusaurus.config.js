@@ -37,9 +37,12 @@ const config = {
   customFields: {
     // global variable
     imgUrlBanner: 'https://i.postimg.cc/3w15s1Kv/banner3.png',
-    imgUrlPowerful: 'https://i.postimg.cc/8CRPjLTp/Powerful.png',
+    // imgUrlPowerful: 'https://i.postimg.cc/8CRPjLTp/Powerful.png',
+    // imgUrlPowerful: 'https://i.postimg.cc/XY3TRNyp/Powerful2.png',
+    imgUrlPowerful: 'https://i.postimg.cc/XqTqxG2H/Powerful2b.png',
     imgUrlOpen: 'https://i.postimg.cc/dthsGbJS/Fig6.png',
     imgUrlTrackable: 'https://i.postimg.cc/85TkWsCh/matrix2.png',
+    imgUrlResource: 'https://i.postimg.cc/FHPRnBnk/resource.png',
 
     imgUrlIntroduction_1: 'https://i.postimg.cc/kgNkSsRp/Fig5-Sim-Targets.png',
     imgUrlIntroduction_2: 'https://i.postimg.cc/8zg2s9cv/Project-Eva-Uncertainty-PCDF-59.png',
@@ -266,6 +269,10 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
 
+      metadata: [
+        {name: 'keywords', content: 'water, wastewater, treatment, modeling'},
+      ],
+
       zoom: {
         selector: '.markdown :not(em) > img', // 仅限 marddown 中的 img 点击放大
         // selector: 'img', // 所有 img
@@ -311,6 +318,19 @@ const config = {
       // image: 'img/docusaurus-social-card.jpg',
       image: urlLogo,
       // 'https://i.postimg.cc/rsPqvJNJ/logo3.png',
+
+      announcementBar: {
+        id: 'announcementBar',
+        content:
+          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2024">Simpo Client v0.7.0</a> has been released!</strong>',
+        isCloseable: true,
+        // backgroundColor: '#5e72e4',
+        // textColor: '#ffffff',
+        backgroundColor: '#eee',
+        textColor: '#5e72e4',
+        // backgroundColor: '#ffffff',
+        // textColor: '#5e72e4',
+      },
 
       algolia: {
         // If Algolia did not provide you any appId, use 'BH4D9OD16A'
