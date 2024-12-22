@@ -22,5 +22,9 @@
   "sidebar.docs.category.Earlier": {
     "message": "Earlier",
     "description": "The label for category Earlier in sidebar docs"
+  },
+  "sidebar.docs.category.SIMPO Backend": {
+    "message": "SIMPO Backend",
+    "description": "The label for category SIMPO Backend in sidebar docs"
   }
 }

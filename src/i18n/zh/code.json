@@ -529,5 +529,64 @@
   },
   "Supporter Team": {
     "message": "支持者团队"
+  },
+  "home.collaboration": {
+    "message": "欢迎共创"
+  },
+  "Join us in building and enhancing ": {
+    "message": "加入我们使用强大的AI工具来构建和增强 "
+  },
+  " with the help of powerful AI tools. Your contributions can significantly enhance and expand the collection, making it more valuable for the entire community.\n                  ": {
+    "message": "。您的贡献可以显著提升和扩展资源库，使其对整个社区更有价值。\n                  "
+  },
+  "We appreciate your support and collaboration, fork and pull request are welcome in: ": {
+    "message": "我们感谢您的支持与合作，欢迎在以下地址进行 fork 和 pull："
+  },
+  "No way to cheat:": {
+    "message": "避免作弊："
+  },
+  "theme.docs.DocCard.categoryDescription.plurals": {
+    "message": "{count} 个项目",
+    "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "theme.admonition.warning": {
+    "message": "注意",
+    "description": "The default label used for the Warning admonition (:::warning)"
+  },
+  "theme.DocSidebarItem.expandCategoryAriaLabel": {
+    "message": "展开侧边栏分类 '{label}'",
+    "description": "The ARIA label to expand the sidebar category"
+  },
+  "theme.DocSidebarItem.collapseCategoryAriaLabel": {
+    "message": "折叠侧边栏分类 '{label}'",
+    "description": "The ARIA label to collapse the sidebar category"
+  },
+  "theme.blog.author.pageTitle": {
+    "message": "{authorName} - {nPosts}",
+    "description": "The title of the page for a blog author"
+  },
+  "theme.blog.authorsList.pageTitle": {
+    "message": "Authors",
+    "description": "The title of the authors page"
+  },
+  "theme.blog.authorsList.viewAll": {
+    "message": "View All Authors",
+    "description": "The label of the link targeting the blog authors page"
+  },
+  "theme.contentVisibility.unlistedBanner.title": {
+    "message": "未列出页",
+    "description": "The unlisted content banner title"
+  },
+  "theme.contentVisibility.unlistedBanner.message": {
+    "message": "此页面未列出。搜索引擎不会对其索引，只有拥有直接链接的用户才能访问。",
+    "description": "The unlisted content banner message"
+  },
+  "theme.contentVisibility.draftBanner.title": {
+    "message": "Draft page",
+    "description": "The draft content banner title"
+  },
+  "theme.contentVisibility.draftBanner.message": {
+    "message": "This page is a draft. It will only be visible in dev and be excluded from the production build.",
+    "description": "The draft content banner message"
   }
 }

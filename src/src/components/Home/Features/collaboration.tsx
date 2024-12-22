@@ -48,7 +48,7 @@ export default function FeaturesOpen() {
                   >
                     { `We appreciate your support and collaboration, fork and pull request are welcome in: ` }
                   </Translate>
-                  <a href="https://github.com/Jakkwj/simpo-home">https://github.com/Jakkwj/simpo-home</a>
+                  <a href="https://github.com/Jakkwj/simpo-home">simpo-home</a>
                 </li>
 
               </ul>
