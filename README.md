@@ -15,11 +15,11 @@
 ## Resource
 
 - Join us in building and enhancing [Paper Resource](https://www.simpowater.org/resource) with the help of powerful **AI tools** (such as: [Kimi](https://kimi.moonshot.cn)). Your contributions can significantly enhance and expand the collection, making it more valuable for the entire community.
-- We appreciate your support and collaboration, fork and pull request are welcome in.
+- We appreciate your support and collaboration, fork and pull request are welcome.
 
 ### 1. Fork
 
-- Fork this repository: [simpo-home](https://github.com/Jakkwj/simpo-home)
+- Fork this repository: [simpo-home](https://github.com/Jakkwj/simpo-home).
 
 ### 2. Find the folder
 
@@ -41,4 +41,4 @@
 
 ### 4. Pull
 
-- Make a pull request to this repository: [simpo-home](https://github.com/Jakkwj/simpo-home)
+- Make a pull request to this repository: [simpo-home](https://github.com/Jakkwj/simpo-home).
