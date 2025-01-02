@@ -8,10 +8,10 @@ if [ "$1" == "proxy" ]; then  # ./deploy.sh proxy 运行时
     yarn config set https-proxy $proxy_ip
 fi
 
-# git add -A && git commit -m "updated" && git push -u origin master
-git push -u origin master
+git add -A && git commit -m "fixed fullscreen bug of DataSet in Project" && git push -u origin master
+# git push -u origin master
 
-# USE_SSH=true yarn deploy  # 自动部署到 github page
+USE_SSH=true yarn deploy  # 自动部署到 github page
 
 if [ "$1" == "proxy" ]; then
     git config --global --unset http.proxy  # 取消 git 代理
