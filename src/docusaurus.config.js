@@ -42,7 +42,8 @@ const config = {
     imgUrlPowerful: 'https://i.postimg.cc/XqTqxG2H/Powerful2b.png',
     imgUrlOpen: 'https://i.postimg.cc/dthsGbJS/Fig6.png',
     imgUrlTrackable: 'https://i.postimg.cc/85TkWsCh/matrix2.png',
-    imgUrlResource: 'https://i.postimg.cc/FHPRnBnk/resource.png',
+    // imgUrlResource: 'https://i.postimg.cc/FHPRnBnk/resource.png',
+    imgUrlResource: 'https://i.postimg.cc/HL2FXpF6/resource.png',
 
     imgUrlIntroduction_1: 'https://i.postimg.cc/kgNkSsRp/Fig5-Sim-Targets.png',
     imgUrlIntroduction_2: 'https://i.postimg.cc/8zg2s9cv/Project-Eva-Uncertainty-PCDF-59.png',

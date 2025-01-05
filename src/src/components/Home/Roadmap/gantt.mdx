@@ -4,6 +4,7 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
 // Core Function Stable                :milestone, md1, after d1, 0d
 // Maintaining                         :active, after d1, 2028-10-01
 // pH Calculation                          :active, c4apH, after c4aComposition, 30d
+// Standard Repositories                   :crit, c5, after c4a03, 360d
 
 <Mermaid
   chart={`gantt
@@ -23,8 +24,24 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
     Uncertainty Engine                      :crit, done, b1b, after b1a, 2020-01-01
     Estimation Engine                       :crit, done, b1c, after b1b, 2021-01-01
     Connected to Simpo Dash                 :done, b2, after b1c, 2022-12-01
+
     pH Calculation                          :crit, active, b3, after c4apH, 30d
     SEC-UA                                  :crit, b4, after c4a02, 30d
+    Automatic Evaluation                    :crit, c4a03, after c4a02, 90d
+    Standardized Repositories               :c5Repositories, after c4a03, 30d
+    Standardized Rate                       :crit, c5Rate, after c5Repositories, 30d
+    Automatic Construct BioModel            :crit, c5, after c5Rate, 30d
+
+    GPU capacity                            :c9, after c5, 300d
+    AI Algorithm                            :crit, c6, after c9, 300d
+    Mechanism + Blackbox Model              :crit, milestone, mc3, after c6, 0d
+    PlugFlow Reactor                        :c4c, after c6, 60d
+    BioFilm Reactor                         :c4d, after c4c, 90d
+    Sewer Reactor                           :c4e, after c4d, 90d
+    Real-Time Support                       :c5a, after c4e, 300d
+    Steady State                            :c4StedayState, after c4e, 120d
+    CFD Algorithm                           :c7, after c4StedayState, 300d
+
     section SIMPO Dash
     Web Frontend/Backend Core Function      :crit, done, c1, 2018-10-01, 2023-01-01
     Basic Function Stable                   :crit, milestone, mc1, after c1, 0d
@@ -35,21 +52,13 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
     FlowChart Upgrade                       :done, c40, after c4, 2024-04-23
     AI (Kimi) Support                       :done, c40kimi, after c40, 2024-06-23
     BioModel Composition                    :done, c4aComposition, after c40kimi, 2024-12-18
+
     Estimaiton Plotting                     :crit, c4a01, after b3, 60d
     Uncertainty Plotting                    :crit, c4a02, after b3, 60d
-    Automatic Evaluation                    :crit, c4a03, after c4a02, 90d
-    PlugFlow Reactor                        :c4c, after c4a03, 60d
-    BioFilm Reactor                         :c4d, after c4c, 90d
-    Sewer Reactor                           :c4e, after c4d, 90d
-    Enhanced Function Stable                :milestone, mc2, after c4e, 0d
-    Real-Time Support                       :c5a, after c4e, 300d
-    Standard Repositories                   :crit, c5, after c4e, 300d
-    Steady State                            :c4StedayState, after c5, 120d
-    AI Algorithm                            :crit, c6, after c4e, 360d
-    Mechanism + Blackbox Model              :crit, milestone, mc3, after c6, 0d
-    CFD Algorithm                           :c7, after c6, 300d
-    3D Digital Twin                         :c8, after c6, 300d
-    GPU capacity                            :c9, after c6, 300d
-    Discussion Board                        :c10, after c6, 300d
+    Enhanced Function Stable                :crit, milestone, mc2, after c4a02, 0d
+
+
+    3D Digital Twin                         :c8, after c7, 300d
+    Discussion Board                        :c10, after c7, 300d
 `}
 />
