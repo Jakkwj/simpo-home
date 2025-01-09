@@ -38,19 +38,17 @@ const sidebars = {
       collapsible: true,
       collapsed: false, // 默认展开, 后续多了在折叠
       items: [
-        'SIMPO Backend/2024',
+        'SIMPO Backend/2025',
 
-        // {
-        //   type: 'category',
-        //   label: 'Earlier',
-        //   collapsible: true,
-        //   collapsed: true, // 默认折叠
-        //   items: [
-        //     'SIMPO/Earlier/2023',
-        //     'SIMPO/Earlier/2022',
-        //     'SIMPO/Earlier/2021',
-        //   ],
-        // },
+        {
+          type: 'category',
+          label: 'Earlier',
+          collapsible: true,
+          collapsed: true, // 默认折叠
+          items: [
+            'SIMPO Backend/Earlier/2024',
+          ],
+        },
 
         // 'SIMPO/2023',
         // 'SIMPO/2022',
@@ -93,7 +91,7 @@ const sidebars = {
       collapsible: true,
       collapsed: false, // 默认展开, 后续多了在折叠
       items: [
-        'SIMPO Pro/2024',
+        'SIMPO Pro/2025',
 
         {
           type: 'category',
@@ -101,6 +99,7 @@ const sidebars = {
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [
+            'SIMPO Pro/Earlier/2024',
             'SIMPO Pro/Earlier/2023',
             'SIMPO Pro/Earlier/2022',
           ],
@@ -125,7 +124,7 @@ const sidebars = {
       //   // id: 'Changelog/index',
       //  },
 
-       items: [
+      items: [
         'SIMPO Client/2024',
         // 'SIMPO Client/2023',
 

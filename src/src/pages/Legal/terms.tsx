@@ -104,7 +104,7 @@ export default function About(): JSX.Element {
               </p>
 
               <p>
-                11. <b>Limitation of Liability</b>: the materials at this site are provided "as is" without any express or implied warranty of any kind including warranties of merchantability, noninfringement of intellectual property, or fitness for any particular purpose. We don't make any warranty that the Website will be error free or that access thereto will be continuous or uninterrupted. In no event shall or its agents or officers be liable for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information, injury or death) arising out of the use of or inability to use the materials, even if has been advised of the possibility of such loss or damages.
+                11. <b>Limitation of Liability</b>: the materials at this site are provided "as is" without any express or implied warranty of any kind including warranties of merchantability, noninfringement of intellectual property, or fitness for any particular purpose. We don't make any warranty that the Website and our software will be error free or that access thereto will be continuous or uninterrupted. In no event shall or its agents or officers be liable for any damages whatsoever (including, without limitation, damages for loss of profits, business interruption, loss of information, injury or death) arising out of the use of or inability to use the materials and our software, even if has been advised of the possibility of such loss or damages.
               </p>
 
 
