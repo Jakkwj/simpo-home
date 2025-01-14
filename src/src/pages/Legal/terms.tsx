@@ -39,9 +39,11 @@ export default function About(): JSX.Element {
           <p className="hero__title" style={{marginTop: '2.8vh', marginBottom: '6vh', paddingLeft: '18vw', paddingRight: '18vw', textAlign: 'left', fontSize: '110%'}}>
 
             <p>
-              Welcome to our cloud computing platform. To use our services,
+              <Translate>
+                {`Welcome to our cloud computing platform. To use our services,
               you must agree to the following terms and conditions. Please
-              read and understand this agreement:
+              read and understand this agreement:`}
+              </Translate>
             </p>
 
             <p>

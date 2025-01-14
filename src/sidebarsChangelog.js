@@ -125,15 +125,14 @@ const sidebars = {
       //  },
 
       items: [
-        'SIMPO Client/2024',
-        // 'SIMPO Client/2023',
-
+        'SIMPO Client/2054',
         {
           type: 'category',
           label: 'Earlier',
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [
+            'SIMPO Client/Earlier/2024',
             'SIMPO Client/Earlier/2023',
           ],
         },

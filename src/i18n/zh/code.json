@@ -588,5 +588,8 @@
   "theme.contentVisibility.draftBanner.message": {
     "message": "This page is a draft. It will only be visible in dev and be excluded from the production build.",
     "description": "The draft content banner message"
+  },
+  "Welcome to our cloud computing platform. To use our services,\n              you must agree to the following terms and conditions. Please\n              read and understand this agreement:": {
+    "message": "Welcome to our cloud computing platform. To use our services,\n              you must agree to the following terms and conditions. Please\n              read and understand this agreement:"
   }
 }
