@@ -125,7 +125,7 @@ const sidebars = {
       //  },
 
       items: [
-        'SIMPO Client/2054',
+        'SIMPO Client/2025',
         {
           type: 'category',
           label: 'Earlier',
