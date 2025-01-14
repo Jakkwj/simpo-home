@@ -323,7 +323,7 @@ const config = {
       announcementBar: {
         id: 'announcementBar',
         content:
-          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2024">Simpo Client v0.8.0</a> has been released!</strong>',
+          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2025">Simpo Client v0.8.0</a> has been released!</strong>',
         isCloseable: true,
         // backgroundColor: '#5e72e4',
         // textColor: '#ffffff',
