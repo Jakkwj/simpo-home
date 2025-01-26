@@ -4,7 +4,7 @@
 
 <div align="center">
 
-![Static Badge](https://img.shields.io/badge/SimpoClient-v0.9.0-blue)
+![Static Badge](https://img.shields.io/badge/SimpoClient-v0.9.1-blue)
 
 </div>
 
