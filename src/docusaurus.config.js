@@ -95,8 +95,8 @@ const config = {
     urlDashASM3: 'https://dash.simpowater.org/dashboard/biomodels/public/name/ASM3/id/45/did/41',
 
 
-    urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.9.2/SimpoClient_installer.exe',
-    urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.9.2/SimpoClient_installer.sh',
+    urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.10.0/SimpoClient_installer.exe',
+    urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.10.0/SimpoClient_installer.sh',
     // urlDownloalBaidu: 'https://pan.baidu.com/s/1N89lx1xbCvoIwvbc-Qdl8g?pwd=spwt',
     urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp',
     // urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp#list/path=%2Fsharelink1245391030-65267744155022%2Fwindows&parentPath=%2Fsharelink1245391030-65267744155022',
@@ -324,7 +324,7 @@ const config = {
       announcementBar: {
         id: 'announcementBar',
         content:
-          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2025">Simpo Client v0.9.2</a> has been released!</strong>',
+          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2025">Simpo Client v0.10.0</a> has been released!</strong>',
         isCloseable: true,
         // backgroundColor: '#5e72e4',
         // textColor: '#ffffff',

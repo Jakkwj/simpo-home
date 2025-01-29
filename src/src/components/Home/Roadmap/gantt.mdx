@@ -25,10 +25,12 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
     Estimation Engine                       :crit, done, b1c, after b1b, 2021-01-01
     Connected to Simpo Dash                 :done, b2, after b1c, 2022-12-01
 
-    pH Calculation                          :crit, active, b3, after c4apH, 30d
-    SEC-UA                                  :crit, b4, after c4a02, 30d
-    Automatic Evaluation                    :crit, c4a03, after c4a02, 90d
-    10 Layer Settling Reactor               :crit, c4a04, after c4a03, 60d
+    pH Calculation                          :crit, active, b3, after c4a02, 30d
+    SEC-UA                                  :crit, b4, after b3, 30d
+    10 Layer Settling Reactor               :crit, c4a03, after b4, 90d
+    Enhanced Function Stable                :crit, milestone, mc2, after c4a03, 0d
+
+    Automatic Evaluation                    :crit, c4a04, after c4a03, 60d
     Standardized Repositories               :c5Repositories, after c4a04, 30d
     Standardized Rate                       :crit, c5Rate, after c5Repositories, 30d
     Automatic Construct BioModel            :crit, c5, after c5Rate, 30d
@@ -54,9 +56,8 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
     AI (Kimi) Support                       :done, c40kimi, after c40, 2024-06-23
     BioModel Composition                    :done, c4aComposition, after c40kimi, 2024-12-18
 
-    Estimaiton Plotting                     :crit, c4a01, after b3, 60d
-    Uncertainty Plotting                    :crit, c4a02, after b3, 60d
-    Enhanced Function Stable                :crit, milestone, mc2, after c4a02, 0d
+    Estimaiton Plotting                     :crit, done, c4a01, after c4aComposition, 2025-01-30
+    Uncertainty Plotting                    :crit, done, c4a02, after c4aComposition, 2025-01-30
 
 
     3D Digital Twin                         :c8, after c7, 300d
