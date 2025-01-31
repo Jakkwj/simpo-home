@@ -46,12 +46,23 @@ You will not be able to run calculations if you don't install the client, but yo
 
 <ul>
   <li>
-    Download:
+    Download the client:
     <a
       href={config.customFields.urlDownloalClientUbuntu}
       target="_blank"
       download
-    >Ubuntu</a>, then run: <code>sudo bash SimpoClient_installer.sh</code>.
+    >Ubuntu</a>, then run:
+
+    <ul>
+      <li>
+        Install without proxy:  <code>sudo bash SimpoClient_installer.sh</code>.
+      </li>
+      <li>
+        Change your own proxy address in the end to install with proxy: <code>sudo bash SimpoClient_installer.sh http://127.0.0.1:37799</code>.
+      </li>
+
+    </ul>
+
   </li>
   <li>
     Uninstall: <code>cd /opt/SimpoClient/ && sudo ./uninstall.sh</code>.
