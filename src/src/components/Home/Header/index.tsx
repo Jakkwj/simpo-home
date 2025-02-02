@@ -112,8 +112,8 @@ export default function HomepageHeader() {
               <a href="https://sludge.readthedocs.io/en/latest/_downloads/79be8a991d9deced657e2678f6c9bf3a/SimpoClient_installer_0.2.2.sh" download>Ubuntu</a> */}
               <a href={siteConfig.customFields.urlDownloadClientWindows as string} download>Windows</a>
               {/* <hr /> */}
-               <a href={siteConfig.customFields.urlDownloalNetdisk as string} target="_blank" rel="noopener noreferrer">Windows (Netdisk)</a>
               <a href={siteConfig.customFields.urlDownloalClientUbuntu as string} download>Ubuntu</a>
+               <a href={siteConfig.customFields.urlDownloalNetdisk as string} target="_blank" rel="noopener noreferrer">Windows/Ubuntu (Netdisk)</a>
 
 
               {/* <a href="#" style={{pointerEvents: 'none', cursor: 'default', color: 'gray'}} >Mac (pending...)</a> */}
