@@ -27,7 +27,7 @@ You will not be able to run calculations if you don't install the client, but yo
 
   <ul>
     <li>
-      Download and install the client: <a href={config.customFields.urlDownloadClientWindows} target="_blank" download>Windows</a>.
+      Download and install the client in: <a href={config.customFields.urlDownloadClientWindows} target="_blank" download>Windows</a> or <a href={config.customFields.urlDownloalNetdisk} target="_blank" download>Windows (Netdist)</a>.
     </li>
     <li>
       Uninstall: click the <code>Uninstall SimpoClient</code> in startup menu, or click <code>C:\Program Files\SimpoClient\unins000.exe</code>.
@@ -51,19 +51,12 @@ You will not be able to run calculations if you don't install the client, but yo
     <ul>
 
       <li>
-        Download the <a href={config.customFields.urlDownloalNetdisk} target="_blank" download>SimpoClient.dist.tar.xz</a> and <a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>SimpoClient_installer.sh</a>, then put them in the same directory, then run: <code>sudo bash SimpoClient_installer.sh</code>.
+      Download the client in: <a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>Ubuntu</a> or <a href={config.customFields.urlDownloalNetdisk} target="_blank" download>Ubuntu (Netdist)</a>.
+
+
       </li>
       <li>
-        Or you can just downloand <a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>SimpoClient_installer.sh</a>:
-        <ul>
-          <li>
-            then run: <code>sudo bash SimpoClient_installer.sh</code>, this will download the latest version automatically without proxy.
-          </li>
-
-          <li>
-            Or run: <code>sudo bash SimpoClient_installer.sh http://127.0.0.1:37799</code>, this will download the latest version automatically with proxy, note you must have a proxy server running and chnage the `http://127.0.0.1:37799` to your own proxy address.
-          </li>
-          </ul>
+        then run: <code>sudo dpkg -i SimpoClient_0.11.0_amd64.deb</code>.
 
       </li>
 
@@ -72,7 +65,7 @@ You will not be able to run calculations if you don't install the client, but yo
 
   </li>
   <li>
-    Uninstall: <code>cd /opt/SimpoClient/ && sudo ./uninstall.sh</code>.
+    Uninstall: <code>sudo dpkg -r SimpoClient</code> or  <code>sudo bash /opt/SimpoClient//uninstall.sh</code>.
   </li>
   <li>
     Available: <b>Ubuntu 20</b> (and above).

@@ -95,8 +95,12 @@ const config = {
     urlDashASM3: 'https://dash.simpowater.org/dashboard/biomodels/public/name/ASM3/id/45/did/41',
 
 
-    urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.0/SimpoClient_installer.exe',
-    urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.0/SimpoClient_installer.sh',
+    // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.0/SimpoClient_installer.exe',
+    // urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.0/SimpoClient_installer.sh',
+
+    urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.0/SimpoClient_0.11.0.exe',
+    urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.0/SimpoClient_0.11.0_amd64.deb',
+
     // urlDownloalBaidu: 'https://pan.baidu.com/s/1N89lx1xbCvoIwvbc-Qdl8g?pwd=spwt',
     // urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp',
     urlDownloalNetdisk: 'https://pan.baidu.com/s/1dV37ANzonYqQKorJkyX5Ig?pwd=simp',
