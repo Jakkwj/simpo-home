@@ -95,11 +95,11 @@ const config = {
     urlDashASM3: 'https://dash.simpowater.org/dashboard/biomodels/public/name/ASM3/id/45/did/41',
 
 
-    // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.1/SimpoClient_installer.exe',
-    // urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.1/SimpoClient_installer.sh',
+    // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.2/SimpoClient_installer.exe',
+    // urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.2/SimpoClient_installer.sh',
 
-    urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.1/SimpoClient_0.11.1.exe',
-    urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.1/SimpoClient_0.11.1_amd64.deb',
+    urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.2/SimpoClient_0.11.2.exe',
+    urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.2/SimpoClient_0.11.2_amd64.deb',
 
     // urlDownloalBaidu: 'https://pan.baidu.com/s/1N89lx1xbCvoIwvbc-Qdl8g?pwd=spwt',
     // urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp',
@@ -329,7 +329,7 @@ const config = {
       announcementBar: {
         id: 'announcementBar',
         content:
-          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2025">Simpo Client v0.11.1</a> has been released!</strong>',
+          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2025">Simpo Client v0.11.2</a> has been released!</strong>',
         isCloseable: true,
         // backgroundColor: '#5e72e4',
         // textColor: '#ffffff',
