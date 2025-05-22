@@ -14,6 +14,8 @@ import HomepageHeader from '@site/src/components/Home/Header';
 import AboutJiangFeng from '@site/src/pages/About/jiangfeng';
 import AboutWangJun from '@site/src/pages/About/wangjun';
 import AboutLiHao from '@site/src/pages/About/lihao';
+import AboutHuangzhaowei from '@site/src/pages/About/huangzhaowei';
+
 // import AboutWuKe from '@site/src/pages/About/wuke';
 // import AboutHuangZhaoWei from './huangzhaowei';
 // import AboutShiYongFeng from './shiyongfeng';
@@ -62,6 +64,8 @@ export default function About(): JSX.Element {
         <AboutJiangFeng />
 
         <AboutWangJun />
+
+        <AboutHuangzhaowei />
 
         <h1 style={{ marginTop: '3vh', marginBottom: '-4vh', marginLeft: '15vw', textAlign: 'left' }}>
           <Translate>

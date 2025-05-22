@@ -116,6 +116,9 @@ export default function FeaturesEasyToUse() {
         />
 
       </div>
+
+
+
     </div>
   );
 }
