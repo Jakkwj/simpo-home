@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksimpo_home=self.webpackChunksimpo_home||[]).push([[5668],{9076:e=>{e.exports=JSON.parse('{"name":"docusaurus-plugin-content-docs","id":"changelog"}')}}]);
