@@ -656,9 +656,10 @@ const config = {
   },
   themes: ['@docusaurus/theme-mermaid'],
 
-  stylesheets: [
-    'antd/dist/antd.css', // 或者 antd/dist/antd.min.css
-  ],
+  // <head link>
+  // stylesheets: [
+  //   'antd/dist/antd.css', // 或者 antd/dist/antd.min.css
+  // ],
 
 };
 
