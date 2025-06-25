@@ -20,8 +20,9 @@ export default function Efficiency() {
           <>
             <ul>
               <li>
+                <strong>SIMPO </strong>
                 <Translate>
-                  SIMPO adopts self-adjusting solvers to ensure computational
+                  adopts self-adjusting solvers to ensure computational
                   efficiency without affecting accuracy, which is evaluated by
                   weighted Nash Sutcliffe efficiency (WNSE).
                 </Translate>

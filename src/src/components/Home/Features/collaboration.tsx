@@ -21,11 +21,12 @@ export default function Collaboration() {
           <>
             <ul>
               <li>
+                <strong>SIMPO </strong>
                 <Translate>
-                  SIMPO supports version-controlled models, data and results
-                  sharing, provides public/private repositories, and advocates a
-                  new type of peer review workflow for modelling papers, in line
-                  with the principles of open science.
+                  supports version-controlled models, data and results sharing,
+                  provides public/private repositories, and advocates a new type
+                  of peer review workflow for modelling papers, in line with the
+                  principles of open science.
                 </Translate>
               </li>
             </ul>

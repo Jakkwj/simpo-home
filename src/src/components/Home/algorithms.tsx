@@ -132,7 +132,8 @@ export default function Algorithms() {
         <h1 className="text-center">Algorithms</h1>
 
         <p>
-          <Translate>The core algorithms implemented in SIMPO:</Translate>
+          <Translate>The core algorithms implemented in </Translate>
+          <strong>SIMPO</strong>:
         </p>
 
         <div
@@ -167,10 +168,11 @@ export default function Algorithms() {
             </div>
 
             <p>
+              <strong>SIMPO </strong>
               <Translate>
-                SIMPO provides accurate and efficient ODE solvers, negative
-                value response strategy to cater to diverse modelling needs. The
-                WNSE is employed as the goodness-of-fit criterion for model
+                provides accurate and efficient ODE solvers, negative value
+                response strategy to cater to diverse modelling needs. The WNSE
+                is employed as the goodness-of-fit criterion for model
                 evaluation.
               </Translate>
             </p>
