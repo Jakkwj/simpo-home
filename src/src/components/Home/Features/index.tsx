@@ -49,42 +49,42 @@ export default function Features() {
           <h1 className="text-center">
             <Translate>Features</Translate>
           </h1>
-          <p>
-            <ul>
-              <li style={{ marginBottom: "0.5rem" }}>
-                <strong>SIMPO </strong>
-                <Translate>
-                  is initiated by JiangLab (a research team in the School of
-                  Environmental Science and Engineering, Sun Yat-sen University,
-                  China). It is an intelligent SaaS platform specifically
-                  designed for wastewater treatment modelling.
-                </Translate>
-              </li>
+          {/* <p> */}
+          <ul>
+            <li style={{ marginBottom: "0.5rem" }}>
+              <strong>SIMPO </strong>
+              <Translate>
+                is initiated by JiangLab (a research team in the School of
+                Environmental Science and Engineering, Sun Yat-sen University,
+                China). It is an intelligent SaaS platform specifically designed
+                for wastewater treatment modelling.
+              </Translate>
+            </li>
 
-              <li style={{ marginBottom: "0.5rem" }}>
-                <strong>SIMPO </strong>
-                <Translate>
-                  integrates advanced algorithms with robust error-proofing
-                  mechanisms, offering a powerful, user-friendly, free-of-charge
-                  and collaborative tool for model development, simulation and
-                  evaluation. It significantly reduced the learning threshold,
-                  enabling researchers to efficiently construct, simulate, and
-                  validate models. Its open nature and collaborative features
-                  further enhanced accessibility and innovation, making SIMPO a
-                  transformative tool for advancing environmental engineering
-                  research.
-                </Translate>
-              </li>
+            <li style={{ marginBottom: "0.5rem" }}>
+              <strong>SIMPO </strong>
+              <Translate>
+                integrates advanced algorithms with robust error-proofing
+                mechanisms, offering a powerful, user-friendly, free-of-charge
+                and collaborative tool for model development, simulation and
+                evaluation. It significantly reduced the learning threshold,
+                enabling researchers to efficiently construct, simulate, and
+                validate models. Its open nature and collaborative features
+                further enhanced accessibility and innovation, making SIMPO a
+                transformative tool for advancing environmental engineering
+                research.
+              </Translate>
+            </li>
 
-              <li style={{ marginBottom: "0.5rem" }}>
-                <strong>SIMPO</strong>
-                <Translate>
-                  's innovations address critical limitations of traditional
-                  platforms:
-                </Translate>
-              </li>
-            </ul>
-          </p>
+            <li style={{ marginBottom: "0.5rem" }}>
+              <strong>SIMPO</strong>
+              <Translate>
+                's innovations address critical limitations of traditional
+                platforms:
+              </Translate>
+            </li>
+          </ul>
+          {/* </p> */}
           <div
             className="custom-tabs-container"
             // style={{ paddingBottom: "0vh", paddingTop: "0vh" }}
