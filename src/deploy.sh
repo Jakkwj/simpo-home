@@ -1,7 +1,8 @@
 #!/bin/bash
 
 if [ "$1" == "proxy" ]; then  # ./deploy.sh proxy 运行时
-    proxy_ip='http://127.0.0.1:37799'
+    # proxy_ip='http://127.0.0.1:37799'
+    proxy_ip='http://127.0.0.1:7890'
     git config --global http.proxy $proxy_ip  # 设置 git 代理
     git config --global https.proxy $proxy_ip
     yarn config set proxy $proxy_ip  # 设置 yarn 代理

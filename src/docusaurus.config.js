@@ -36,6 +36,8 @@ const config = {
 
   customFields: {
     // global variable
+
+    imgUrlLogo: urlLogo,
     imgUrlBanner: 'https://i.postimg.cc/3w15s1Kv/banner3.png',
     // imgUrlPowerful: 'https://i.postimg.cc/8CRPjLTp/Powerful.png',
     // imgUrlPowerful: 'https://i.postimg.cc/XY3TRNyp/Powerful2.png',
@@ -45,6 +47,16 @@ const config = {
     imgUrlTrackable: 'https://i.postimg.cc/85TkWsCh/matrix2.png',
     // imgUrlResource: 'https://i.postimg.cc/FHPRnBnk/resource.png',
     imgUrlResource: 'https://i.postimg.cc/HL2FXpF6/resource.png',
+
+    imgUrlFeature_2: 'https://i.postimg.cc/cHN584Qz/Figure-6a.png',
+    imgUrlFeature_3: 'https://i.postimg.cc/prSfzqwd/Figure-7c.png',
+    imgUrlFeature_4: 'https://i.postimg.cc/Z5XVNK8S/Advanced.gif',
+    imgUrlFeature_5: 'https://i.postimg.cc/Gp2K6TbG/Collaboration.gif',
+
+    imgUrlAlgorithm_1: 'https://i.postimg.cc/T3MbB4cx/Figure-32-The-simulation-result-with-the-optimum-using-GA-method-in-SIMPO.png',
+    imgUrlAlgorithm_2: 'https://i.postimg.cc/QxW5431S/Figure-11bb.png',
+    imgUrlAlgorithm_3: 'https://i.postimg.cc/W4sk1qKf/Figure-14c.png',
+    imgUrlAlgorithm_4: 'https://i.postimg.cc/T3VbxJkD/Figure-14bb.png',
 
     imgUrlIntroduction_1: 'https://i.postimg.cc/kgNkSsRp/Fig5-Sim-Targets.png',
     imgUrlIntroduction_2: 'https://i.postimg.cc/8zg2s9cv/Project-Eva-Uncertainty-PCDF-59.png',
@@ -105,6 +117,9 @@ const config = {
     // urlDownloalBaidu: 'https://pan.baidu.com/s/1N89lx1xbCvoIwvbc-Qdl8g?pwd=spwt',
     // urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp',
     urlDownloalNetdisk: 'https://pan.baidu.com/s/1dV37ANzonYqQKorJkyX5Ig?pwd=simp',
+
+    urlDownloalNetdiskWindows: 'https://pan.baidu.com/s/1dV37ANzonYqQKorJkyX5Ig?pwd=simp#list/path=%2FSimpoClient%2Fwindows',
+    urlDownloalNetdiskUbuntu: 'https://pan.baidu.com/s/1dV37ANzonYqQKorJkyX5Ig?pwd=simp#list/path=%2FSimpoClient%2Flinux',
     // urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp#list/path=%2Fsharelink1245391030-65267744155022%2Fwindows&parentPath=%2Fsharelink1245391030-65267744155022',
 
     // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.6.0/SimpoClient_installer.exe',
@@ -201,16 +216,15 @@ const config = {
           sidebarPath: require.resolve('./sidebarsDocs.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          // editUrl:
+          //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: false,
         // blog: {
         //   showReadingTime: true,
         //   // Please change this to your repo.
         //   // Remove this to remove the "edit this page" links.
-        //   editUrl:
-        //     'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+        //   // editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         // },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -231,6 +245,8 @@ const config = {
   plugins: [
     // '@docusaurus/theme-live-codeblock',
     // 'docusaurus-plugin-sass'
+    // require.resolve("docusaurus-tailwindcss"), // 添加这一行
+    "docusaurus-tailwindcss",
     require.resolve("docusaurus-plugin-image-zoom"),
 
     // [
@@ -252,7 +268,7 @@ const config = {
       //   routeBasePath: 'library',
       //   sidebarPath: require.resolve('./sidebarsLibrary.js'),
       // },
-       {
+      {
         id: 'resource',
         path: 'resource',
         routeBasePath: 'resource',
@@ -639,6 +655,10 @@ const config = {
     mermaid: true,
   },
   themes: ['@docusaurus/theme-mermaid'],
+
+  stylesheets: [
+    'antd/dist/antd.css', // 或者 antd/dist/antd.min.css
+  ],
 
 };
 

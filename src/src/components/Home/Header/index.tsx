@@ -1,158 +1,269 @@
-import React from 'react';
-import clsx from 'clsx';
+import React from "react";
+import clsx from "clsx";
 // import styles from './styles.module.css';
-import Link from '@docusaurus/Link';
-import ThemedImage from '@theme/ThemedImage';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Translate, {translate} from '@docusaurus/Translate';
-// const {siteConfig} = useDocusaurusContext();
+import Link from "@docusaurus/Link";
+import ThemedImage from "@theme/ThemedImage";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import Translate, { translate } from "@docusaurus/Translate";
+import type { MenuProps } from "antd";
+import { Button, Dropdown, Tooltip, Space } from "antd";
+import { DownOutlined, CaretRightOutlined } from "@ant-design/icons";
 
 export default function HomepageHeader() {
-
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <a
+          href={siteConfig.customFields.urlDownloadClientWindows as string}
+          style={{
+            textDecoration: "none",
+            // color: "var(--ifm-color-primary)",
+            fontWeight: 400,
+          }}
+          download
+        >
+          Windows
+        </a>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <a
+          href={siteConfig.customFields.urlDownloalClientUbuntu as string}
+          style={{
+            textDecoration: "none",
+            // color: "var(--ifm-color-primary)",
+            fontWeight: 400,
+          }}
+          download
+        >
+          Ubuntu
+        </a>
+      ),
+    },
+    {
+      key: "3",
+      disabled: true,
+      label: (
+        <a
+          href="#"
+          style={{
+            cursor: "default",
+            color: "gray",
+            textDecoration: "none",
+            // color: "var(--ifm-color-primary)",
+            fontWeight: 400,
+          }}
+        >
+          Mac (pending...)
+        </a>
+      ),
+    },
+    {
+      key: "4",
+      children: [
+        {
+          key: "4-1",
+          label: (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={siteConfig.customFields.urlDownloalNetdiskWindows as string}
+              style={{
+                textDecoration: "none",
+                // color: "var(--ifm-color-primary)",
+                fontWeight: 400,
+              }}
+            >
+              Windows &nbsp;&nbsp;
+            </a>
+          ),
+        },
+        {
+          key: "4-2",
+          label: (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={siteConfig.customFields.urlDownloalNetdiskUbuntu as string}
+              style={{
+                textDecoration: "none",
+                // color: "var(--ifm-color-primary)",
+                fontWeight: 400,
+              }}
+            >
+              Ubuntu &nbsp;&nbsp;
+            </a>
+          ),
+        },
+      ],
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={siteConfig.customFields.urlDownloalNetdiskUbuntu as string}
+          style={{
+            textDecoration: "none",
+            // color: "var(--ifm-color-primary)",
+            fontWeight: 400,
+          }}
+        >
+          Netdisk
+        </a>
+      ),
+    },
+  ];
 
   return (
-
-    <header className={clsx('hero noise-bg')}>
-
-      {/* <div className="col col--1 text-center" style={{marginRight: '-2.2vw'}}>
-      </div> */}
-      {/* <div className="col col--1 text-center" style={{marginRight: '1.5vw'}}>
-      </div> */}
-      <div className="col col--1 text-center" style={{marginRight: '1.2vw'}}>
-      </div>
-
-      <div className="col col--6 text-center">
-
-        {/* banner */}
-        <div className="container" >
-
-          <div className="row" style={{marginTop: '-1.5vh', color: '#eee'}}>
-            {/* <img src="/img/SIMPO_logo.png" width='15%'/> */}
-
-            <h1 style={{marginBottom: '0vh', color: '#eee'}} className="hero__title">{siteConfig.title}</h1>
-
-
-            {/* </font> */}
-              {/* <h1 className="mb-6 font-jakarta text-4xl font-bold lg:text-6xl">
-              Build with Dyte
-            </h1>
-            <p className="text-sm text-text-400 lg:max-w-lg lg:text-base">
-              At Dyte, we&apos;re building the future of real-time communication.
-              Integrate high-quality, programmable, and customizable live video
-              and voice into your web, mobile, and desktop applications with just
-              a few lines of code.
-            </p> */}
-          </div>
-
-          <div className="row" style={{marginTop: '0vh', color: '#eee'}}>
-
-            <p style={{marginRight: '10vw', marginBottom: '0.8vh', color: '#eee'}} className="hero__subtitle">
-            <Translate id="tagline">
-              {/* {siteConfig.tagline} */}
-              A Scientific Computing SaaS Platform for Water and Wastewater Treatment Process Modeling
-            </Translate>
-              {/* {siteConfig.customFields.superman} */}
-            </p>
-
-          </div>
-
-          <div className="row" style={{marginTop: '0vh', color: '#eee'}}>
-
-            <p style={{color: '#eee'}} className="">
-
-              {siteConfig.title} <Translate>combines user-friendliness with power and flexibility, it is an open-minded modern cloud-based platform for water and wastewater treatment process modeling.</Translate> {siteConfig.title} <Translate>aims to lower the learning and research barriers for modelling, improve development efficiency, provide scientific algorithms and evaluation methods, and ultimately achieve a sustainable intelligent big data platform for co-creation, sharing and providing Open Educational Resources (OER) for all.</Translate>
-
-            </p>
-
-          </div>
-
-        </div>
-
-        {/* bottom */}
-        <div className="" style={{marginTop: '1vh'}}>
-          <Link
-            href="docs"
-            className="button button--secondary"
-          >
-            <Translate>Quick Start</Translate>
-            {/* Get Started */}
-          </Link>
-          <Link> &nbsp; </Link>
-          {/* <Link
-            href="/getting-started"
-            className="button button--secondary rounded-sm border border-solid border-primary bg-primary/10 px-12 py-2.5 text-center font-semibold text-primary hover:text-primary dark:border-primary-100 dark:text-primary-100"
-          >
-            Client
-          </Link>
-          */}
-
-
-          {/* <Link */}
+    <div className="hero tw-bg-white tw-py-16">
+      <div className="tw-container tw-mx-auto tw-px-4">
+        <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-8 tw-items-center">
           <div
-              // href="/getting-started"
-              className="button button--secondary dropdown"
-              // onclick="myFunction()"
-            >
-          {/* <div className="dropdown"> */}
-            {/* <button class="dropbtn">Dropdown</button> */}
-            <Translate>Client</Translate> &nbsp; &gt;
-            {/* ▼ */}
-
-            {/* <div class="dropdown-content"> */}
-            <div className="dropdown-content">
-              {/* <a href="/client/sludge_client_setup_0.2.0.exe" download>Windows</a>
-              <a href="/client/sludge_client_setup_0.2.0.sh" download>Ubuntu</a> */}
-
-              {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/49e51d71c1843e69a4bcf2ab74ddf3b1/sludge_client_setup.exe" download>Windows</a> */}
-              {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/defdf270ddacd4bb59b05d72e2c5ed66/sludge_client_setup.sh" download>Ubuntu</a> */}
-
-              {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/23620dc7572483958d72baa3ecbf35aa/SimpoClient_installer_0.2.1.sh" download>Ubuntu</a> */}
-              {/* <a href="https://sludge.readthedocs.io/en/latest/_downloads/0ee7356b0a3ca65e90da9de1aa9f60f7/SimpoClient_installer_0.2.1.exe" download>Windows</a>
-              <a href="https://sludge.readthedocs.io/en/latest/_downloads/79be8a991d9deced657e2678f6c9bf3a/SimpoClient_installer_0.2.2.sh" download>Ubuntu</a> */}
-              <a href={siteConfig.customFields.urlDownloadClientWindows as string} download>Windows</a>
-              {/* <hr /> */}
-              <a href={siteConfig.customFields.urlDownloalClientUbuntu as string} download>Ubuntu</a>
-               <a href={siteConfig.customFields.urlDownloalNetdisk as string} target="_blank" rel="noopener noreferrer">Windows/Ubuntu (Netdisk)</a>
-
-
-              {/* <a href="#" style={{pointerEvents: 'none', cursor: 'default', color: 'gray'}} >Mac (pending...)</a> */}
-              <a href="#" style={{cursor: 'default', color: 'gray'}} >Mac (pending...)</a>
-
-
+            className="tw-text-left"
+            style={{
+              // marginTop: "1rem",
+              marginLeft: "10%",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <img
+                // src="/img/hero.png" // 替换为您的图片路径
+                src={siteConfig.customFields.imgUrlLogo as string}
+                alt="Preview of using SIMPO"
+                width="9%"
+                // style={{
+                //   borderRadius: "10px",
+                //   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                //   marginTop: "2rem",
+                //   marginLeft: "10%",
+                // }}
+              />
+              <Link> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </Link>
+              <h1
+                className="hero__title fade-in-up"
+                style={{ marginTop: "1.8rem", marginBottom: "2.2rem" }}
+              >
+                {siteConfig.title}
+              </h1>
             </div>
+            <p
+              className="hero__subtitle fade-in-up"
+              style={{ marginBottom: "2.2rem" }}
+            >
+              <Translate id="tagline">
+                {/* {siteConfig.tagline} */}A Scientific Computing SaaS Platform
+                for Water and Wastewater Treatment Process Modelling
+                {/* A next-generation platform aimed at simplifying and promoting wastewater treatment modelling */}
+              </Translate>
+            </p>
+            <div className="tw-flex tw-flex-wrap tw-gap-4">
+              <div
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  justifyContent: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <Link className="refine-button" to="/docs">
+                  <Translate>Quick Start</Translate>
+                </Link>
+              </div>
 
+              {/* <CaretRightOutlined
+                    style={{ fontSize: "16px", color: "#08c" }}
+                  /> */}
+              {/* <Button
+                href="docs"
+                className="refine-button"
+                size="large"
+                style={{
+                  padding: "1.6rem",
+                }}
+              >
+                <strong
+                  style={{
+                    fontSize: "1.0rem",
+                  }}
+                >
+                  <Translate>Quick Start</Translate>
+                </strong>
+              </Button> */}
+              {/* <Link> &nbsp; &nbsp; </Link> */}
+              {/*
+              <Link
+                className="refine-button refine-button--secondary"
+                to="/contact"
+              >
+                client
+              </Link> */}
+
+              <Dropdown
+                // className="dropdown-content"
+                menu={{ items }}
+                placement="bottomLeft"
+                trigger={["click"]}
+              >
+                <Button
+                  // className="refine-button refine-button--secondary"
+                  // className="refine-button"
+                  size="large"
+                  style={{
+                    // width: "20%",
+                    padding: "1.3rem",
+                    color: "var(--ifm-color-primary)",
+                    borderColor: "var(--ifm-color-primary)",
+                    fontWeight: 600,
+                  }}
+                >
+                  {/* <a onClick={(e) => e.preventDefault()}> */}
+                  {/* &nbsp; */}
+                  {/* <Space> */}
+                  <span
+                    style={{
+                      fontSize: "1.0rem",
+                    }}
+                  >
+                    <Translate>Installtion</Translate>
+                  </span>
+                  {/* </Space> */}
+                  {/* → */}
+                  {/* ▼ */}
+                  {/* &nbsp; */}
+                  <DownOutlined
+                    style={{
+                      color: "var(--ifm-color-primary)",
+                      // color: "white",
+                    }}
+                  />
+                  {/* &nbsp; */}
+                  {/* </a> */}
+                </Button>
+              </Dropdown>
+            </div>
           </div>
-          {/* </Link> */}
+
+          {/* 右侧：图片 */}
+          <div className="tw-flex tw-justify-left">
+            <img
+              // src="/img/hero.png" // 替换为您的图片路径
+              src={siteConfig.customFields.imgUrlBanner as string}
+              alt="Preview of using SIMPO"
+              width="80%"
+              style={{
+                borderRadius: "10px",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                marginTop: "2.8rem",
+                marginLeft: "10%",
+              }}
+            />
+            {/* className="tw-rounded-lg tw-shadow-lg" */}
+          </div>
         </div>
-
-
       </div>
-
-      <div className="col hero-image" style={{marginRight: '0vw'}}>
-      {/* 手机端将隐藏 */}
-      {/* <div className="col hero-image" style={{marginRight: '-10vw'}}> */}
-        <ThemedImage
-          sources={{
-            // light: '/img/banner3.png',
-            // dark: '/img/hero-dark.png',
-            // dark: '/img/banner3.png',
-            // light: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/banner/banner3.png',
-            // dark: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/banner/banner3.png',
-            light: siteConfig.customFields.imgUrlBanner,
-            dark: siteConfig.customFields.imgUrlBanner,
-          }}
-          alt="Preview of using SIMPO"
-          width='75%'
-        />
-        {/* width='60%' */}
-      </div>
-
-      {/* <div className="col  text-center" style={{ backgroundColor: 'white', marginTop: '10vw'}}>1      </div> */}
-
-
-
-    </header>
-
+    </div>
   );
 }
