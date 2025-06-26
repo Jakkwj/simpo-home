@@ -41,7 +41,7 @@ export default function FeaturesEasyToUse() {
         width="80%"
         imgUrl={siteConfig.customFields.imgUrlTheEasiestWay as string}
         title={
-          <Translate id="home.easytouse">
+          <Translate>
             {/* Easy to Use */}
             Interaction and visualization of GUI provide a user-friendly
             modelling approach:
@@ -59,7 +59,7 @@ export default function FeaturesEasyToUse() {
 
                 {/* To facilitate the study, research and development of wastewater treatment mathematical modelling, HydroSim platform provides various calculation engines for simulation, sensitivity analysis, uncertainty analysis and parameter estimation. */}
                 {/* can be import directly */}
-                <Translate id="home.easytouse.2">
+                <Translate>
                   {/* Through the user-friendly front-end interface, model building
                   can be done quickly without any programming. */}
                   Intuitive tools, such as candidate boxes and color coding,
@@ -73,7 +73,7 @@ export default function FeaturesEasyToUse() {
 
                 {/* The 3 essential elements of SIMPO are: BioModel (model), DataSet (data) and Project (solution), which makes
                   SIMPO is highly composable: one can arbitrary combine the modles and datas only if the model&apos;s components are the same as the data&apos;s targets. */}
-                <Translate id="home.easytouse.3">
+                <Translate>
                   {/* The input of models and data can be accomplished through: 1)
                   importing xlsx files, 2) copying public models/data, or 3)
                   creating new ones directly. */}

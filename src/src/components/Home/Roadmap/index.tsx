@@ -26,9 +26,16 @@ export default function FeaturesOpen() {
             paddingRight: "18vw",
           }}
         /> */}
-        <h1 className="text-center">Roadmap</h1>
-        This is the raodmap of <b>SIMPO</b>. For more details please refer to:{" "}
-        <a href="changelog">Changelog</a>.{/* <TimeLine name="TimeLine" /> */}
+        <h1 className="text-center">
+          <Translate>Roadmap</Translate>
+        </h1>
+        <Translate>This is the raodmap of</Translate>
+        <b>SIMPO</b>
+        <Translate>. For more details please refer to: </Translate>
+        <a href="changelog">
+          <Translate>Changelog</Translate>
+        </a>
+        .{/* <TimeLine name="TimeLine" /> */}
         <Gantt name="Gantt" />
         {/* {isDesktop ? <Gantt name="Gantt" /> : <span></span>} */}
       </div>

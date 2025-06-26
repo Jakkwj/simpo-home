@@ -143,7 +143,8 @@ const config = {
   title: title,
   // tagline: 'A Scientific Computing SaaS Platform',
   // tagline: 'A Simulation SaaS Platform for Water and Wastewater Treatment Process Modeling',
-  tagline: 'A Scientific Computing SaaS Platform for Water and Wastewater Treatment Process Modeling',
+  // tagline: 'A Scientific Computing SaaS Platform for Water and Wastewater Treatment Process Modelling',
+  tagline: 'A Scientific Computing SaaS Platform for Wastewater Treatment Process Modelling',
   // tagline: 'A SaaS platform for wastewater treatment modeling',
 
 

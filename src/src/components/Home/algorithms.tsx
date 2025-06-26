@@ -129,11 +129,13 @@ export default function Algorithms() {
         className="tw-container tw-mx-auto tw-px-14"
         style={{ width: "100%" }}
       >
-        <h1 className="text-center">Algorithms</h1>
+        <h1 className="text-center">
+          <Translate>Algorithms</Translate>
+        </h1>
 
         <p>
-          <Translate>The core algorithms implemented in </Translate>
-          <strong>SIMPO</strong>:
+          <strong>SIMPO</strong>
+          <Translate>'s core algorithms:</Translate>
         </p>
 
         <div

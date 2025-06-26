@@ -37,9 +37,11 @@ export default function Simple() {
               </li>
 
               <li>
-                The automatic drawing display helps users quickly,
-                comprehensively, and intuitively understand the simulation and
-                evaluation results.
+                <Translate>
+                  The automatic drawing display helps users quickly,
+                  comprehensively, and intuitively understand the simulation and
+                  evaluation results.
+                </Translate>
               </li>
             </ul>
           </>

@@ -155,8 +155,9 @@ export default function HomepageHeader() {
                 style={{ marginBottom: "2.2rem" }}
               >
                 <Translate id="tagline">
-                  {/* {siteConfig.tagline} */}A Scientific Computing SaaS
-                  Platform for Water and Wastewater Treatment Process Modelling
+                  {siteConfig.tagline}
+                  {/* A Scientific Computing SaaS */}
+                  {/* Platform for Water and Wastewater Treatment Process Modelling */}
                   {/* A next-generation platform aimed at simplifying and promoting wastewater treatment modelling */}
                 </Translate>
               </p>

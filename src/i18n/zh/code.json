@@ -39,13 +39,13 @@
     "message": "模型， 数据和计算结果能发布成公开版本，从而将研究成果分享给整个研究社区。"
   },
   "Calculation engines includes: simulation, sensitivity analysis, uncertainty analysis and parameter estimation.": {
-    "message": "Calculation engines includes: simulation, sensitivity analysis, uncertainty analysis and parameter estimation."
+    "message": "计算引擎包括：模拟、敏感性分析、不确定性分析和参数估计。"
   },
   "Models and data can be combined in any way users see fit, so it's very easy to identify the optimal model for a given dataset and evaluate a model's robustness and generalizability.": {
-    "message": "Models and data can be combined in any way users see fit, so it's very easy to identify the optimal model for a given dataset and evaluate a model's robustness and generalizability."
+    "message": "模型和数据可以以用户认为合适的任何方式进行组合，因此很容易为给定的数据集确定最佳模型，并评估模型的稳健性和普适性。"
   },
   "Models and data can be released in multiple versions, making it easy to determine the optimal model structure and parameter.": {
-    "message": "Models and data can be released in multiple versions, making it easy to determine the optimal model structure and parameter."
+    "message": "模型和数据可以发布多个版本，便于确定最佳模型结构和参数。"
   },
   "Not way to cheat:": {
     "message": "避免作弊："
@@ -346,7 +346,7 @@
     "message": "可追随"
   },
   "tagline": {
-    "message": "水和污水处理过程数值模拟专业科学计算SaaS平台"
+    "message": "污水处理工艺模型模拟SaaS平台"
   },
   "home.easytouse.1": {
     "message": "让您专注模型推导和实验数据，我们将处理计算过程："
@@ -590,6 +590,126 @@
     "description": "The draft content banner message"
   },
   "Welcome to our cloud computing platform. To use our services,\n              you must agree to the following terms and conditions. Please\n              read and understand this agreement:": {
-    "message": "Welcome to our cloud computing platform. To use our services,\n              you must agree to the following terms and conditions. Please\n              read and understand this agreement:"
+    "message": "欢迎使用我们的云计算平台。使用我们的服务,\n              您必须同意以下条款和条件。请\n              阅读并理解本协议："
+  },
+  "Algorithms": {
+    "message": "算法"
+  },
+  "'s core algorithms:": {
+    "message": "的核心算法："
+  },
+  "Simulation": {
+    "message": "Simulation"
+  },
+  "provides accurate and efficient ODE solvers, negative value response strategy to cater to diverse modelling needs. The WNSE is employed as the goodness-of-fit criterion for model evaluation.": {
+    "message": "提供精确高效的ODE求解器和负值响应策略，以满足不同的建模需求。WNSE被用作模型评估的拟合优度标准。"
+  },
+  "Sensitivity": {
+    "message": "Sensitivity"
+  },
+  "Sensitivity analysis identifies the most sensitive parameters that have the greatest impact on outcomes, and improve computational efficiency by reducing the number of parameters.": {
+    "message": "敏感性分析可确定对结果影响最大的敏感参数，并通过减少参数数量提高计算效率。"
+  },
+  "Uncertainty": {
+    "message": "Uncertainty"
+  },
+  "Uncertainty assessment evaluates the uncertainty, distributions and equifinality of parameters, determine the predicted range distribution of model outputs, and refine the range of parameter values.": {
+    "message": "不确定性评估对参数的不确定性、分布和异参同效性进行评价，确定模型输出的预测范围分布，并缩小参数值的取值范围。"
+  },
+  "Estimation": {
+    "message": "Estimation"
+  },
+  "Parameter estimation, which is performed using Genetic Algorithms (GA), obtains the local optimal solutions of the parameters by approximating the maximum value of the WNSE.": {
+    "message": "参数估计采用遗传算法（GA），通过逼近 WNSE 的最大值来获得参数的局部最优解。"
+  },
+  "Let's build and use the ": {
+    "message": "让我们一起构建并使用"
+  },
+  "Paper Resource": {
+    "message": "论文资源库"
+  },
+  "together.": {
+    "message": "。"
+  },
+  "Master in Engineering (Environmental) from University University of New South Wales, focusing on standard research, business intelligence and enterprise information system development.": {
+    "message": "Master in Engineering (Environmental) from University University of New South Wales, focusing on standard research, business intelligence and enterprise information system development."
+  },
+  "Installtion": {
+    "message": "安装"
+  },
+  "Advanced evaluation algorithms bring comprehensive and systematic understanding of models:": {
+    "message": "先进的评估算法可全面系统地了解模型："
+  },
+  "Sensitivity analysis identifies sensitive parameters and their correlations, reducing the number of parameters to enhance computational efficiency.": {
+    "message": "灵敏度分析可确定敏感参数及其相关性，从而减少参数数量，提高计算效率"
+  },
+  "Uncertainty assessment evaluates the uncertainty of each parameter, determines the predicted range of model outputs, and refines parameter ranges for more accurate simulations.": {
+    "message": "不确定性评估对每个参数的不确定性进行评估，确定模型输出的预测范围，并完善参数范围，以进行更精确的模拟。"
+  },
+  "Parameter estimation identifies the local optima of parameters that best fit the measured data, ensuring robust and reliable model calibration.": {
+    "message": "参数估计可以确定最适合测量数据的局部最优参数，确保模型校准的稳健性和可靠性。"
+  },
+  "Collaborative science facilitates the dissemination, exchange, and development of models:": {
+    "message": "合作科学促进了模型的传播、交流和发展："
+  },
+  "supports version-controlled models, data and results sharing, provides public/private repositories, and advocates a new type of peer review workflow for modelling papers, in line with the principles of open science.": {
+    "message": "支持模型、数据的版本控制和结果共享，提供公共/私有存储库，并倡导符合开放科学原则的新型建模论文同行评审工作流程。"
+  },
+  "Dynamic algorithm ensures the accuracy and efficiency of modelling:": {
+    "message": "动态算法确保建模的准确与效率："
+  },
+  "adopts self-adjusting solvers to ensure computational efficiency without affecting accuracy, which is evaluated by weighted Nash Sutcliffe efficiency (WNSE).": {
+    "message": "采用自调整求解器，在不影响精度的情况下确保计算效率，计算效率用加权纳什系数（WNSE）来评估。"
+  },
+  "Dynamic real time step size optimization can alleviate common pitfalls such as negative concentration, which is a frequent problem in traditional tools.": {
+    "message": "动态实时步长优化可以减少传统工具中经常出现的负浓度问题"
+  },
+  "Features": {
+    "message": "特点"
+  },
+  "is initiated by JiangLab (a research team in the School of Environmental Science and Engineering, Sun Yat-sen University, China). It is an intelligent SaaS platform specifically designed for wastewater treatment modelling.": {
+    "message": "由JiangLab（中山大学环境科学与工程研究团队）发起，是一个专为污水处理建模设计的智能SaaS平台。"
+  },
+  "integrates advanced algorithms with error-proofing mechanisms, offering a user-friendly interface to lower the learning curve for model development, simulation and evaluation. Its open and collaborative features enhance accessibility and innovation, making it a transformative tool for environmental engineering research.": {
+    "message": "集成了先进的算法和防错机制，提供友好的用户界面，降低了模型开发、模拟和评估的难度。其开放性和协作性特点提高了可访问性和创新性，使其成为环境工程研究的变革性工具。"
+  },
+  "'s innovations address critical limitations of traditional platforms:": {
+    "message": " 的创新地解决了传统平台的关键限制："
+  },
+  "Automatic error-proofing and intuitive display help to quickly identify errors:": {
+    "message": "自动防错和直观显示有助于快速定位错误："
+  },
+  "Balance checking can help users review the rationality of stoichiometry matrices from a theoretical perspective.": {
+    "message": "平衡检查可帮助用户从理论角度审查化学计量矩阵的合理性。"
+  },
+  "NSE intuitively reflects the goodness-of-fit of various variables, and the automated and interactive display of results exposes the problem of certain variables being obscured by graphical scales.": {
+    "message": "NSE直观地反映了各种变量的拟合程度，自动和交互式显示结果暴露了某些变量被图形标度所掩盖的问题。"
+  },
+  "Interaction and visualization of GUI provide a user-friendly modelling approach:": {
+    "message": "图形用户界面的交互性和可视化提供了方便用户的建模方法："
+  },
+  "Intuitive tools, such as candidate boxes and color coding, visually assist in correctly inputting variables and parameters in a complex matrix.": {
+    "message": "直观的工具，如候选框和颜色编码，可直观地帮助在复杂的矩阵中正确输入变量和参数。"
+  },
+  "The drag-and-drop GUI simplifies the design of complex wastewater treatment processes to the point of simply adding and connecting tanks on a webpage.": {
+    "message": "拖拽式图形用户界面简化了复杂的污水处理流程设计，只需在网页上添加和连接即可。"
+  },
+  "The automatic drawing display helps users quickly, comprehensively, and intuitively understand the simulation and evaluation results.": {
+    "message": "自动绘图显示功能可帮助用户快速、全面、直观地了解模拟和评估结果。"
+  },
+  "Let's build and use the": {
+    "message": "Let's build and use the"
+  },
+  "Roadmap": {
+    "message": "路线图"
+  },
+  "This is the raodmap of": {
+    "message": "这是"
+  },
+  ". For more details please refer to: ": {
+    "message": "的路线图。 更多信息请查看："
+  },
+  "Changelog": {
+    "message": "更新日志。"
   }
 }

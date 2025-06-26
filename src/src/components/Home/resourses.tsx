@@ -54,7 +54,7 @@ export default function Resourses() {
                   <Translate>{`Join us in building and enhancing `}</Translate>
 
                   <a href="https://www.simpowater.org/resource">
-                    Paper Resource
+                    <Translate>Paper Resource</Translate>
                   </a>
 
                   <Translate>
