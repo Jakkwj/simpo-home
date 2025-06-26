@@ -3,12 +3,12 @@ import Translate from "@docusaurus/Translate";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import {
-  DownOutlined,
-  TabletFilled,
-  FundFilled,
-  SlidersFilled,
-  DatabaseFilled,
-} from "@ant-design/icons";
+  AiFillTablet,
+  AiFillFund,
+  AiFillSliders,
+  AiFillDatabase,
+} from "react-icons/ai";
+
 // import Algorithm from "@site/src/components/Home/Algorithms/Algorithm";
 
 type AlgorithmItem = {
@@ -157,7 +157,7 @@ export default function Algorithms() {
                 marginTop: "0.5rem",
               }}
             >
-              <TabletFilled style={{ fontSize: "16px", color: "#5e72e4" }} />
+              <AiFillTablet style={{ fontSize: "16px", color: "#5e72e4" }} />
               <Link> &nbsp;&nbsp; </Link>
               <h3
                 className="hero__title fade-in-up"
@@ -191,7 +191,7 @@ export default function Algorithms() {
                 marginTop: "0.5rem",
               }}
             >
-              <SlidersFilled style={{ fontSize: "16px", color: "#087ce8" }} />
+              <AiFillSliders style={{ fontSize: "16px", color: "#087ce8" }} />
               <Link> &nbsp;&nbsp; </Link>
               <h3
                 className="hero__title_blue fade-in-up"
@@ -225,7 +225,7 @@ export default function Algorithms() {
                 marginTop: "0.5rem",
               }}
             >
-              <FundFilled style={{ fontSize: "16px", color: "#62aa57" }} />
+              <AiFillFund style={{ fontSize: "16px", color: "#62aa57" }} />
               <Link> &nbsp;&nbsp; </Link>
               <h3
                 className="hero__title_green fade-in-up"
@@ -258,7 +258,7 @@ export default function Algorithms() {
                 marginTop: "0.5rem",
               }}
             >
-              <DatabaseFilled style={{ fontSize: "16px", color: "#aa5757" }} />
+              <AiFillDatabase style={{ fontSize: "16px", color: "#aa5757" }} />
               <Link> &nbsp;&nbsp; </Link>
               <h3
                 className="hero__title_red fade-in-up"

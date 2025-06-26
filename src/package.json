@@ -15,7 +15,6 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@ant-design/icons": "5.x",
     "@docusaurus/core": "^3.5.2",
     "@docusaurus/preset-classic": "^3.5.2",
     "@docusaurus/theme-mermaid": "^3.5.2",
@@ -28,7 +27,8 @@
     "prism-react-renderer": "^2.1.0",
     "react": "^18.2.0",
     "react-device-detect": "^2.2.3",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.5.2",

@@ -64,14 +64,11 @@ export default function Features() {
             <li style={{ marginBottom: "0.5rem" }}>
               <strong>SIMPO </strong>
               <Translate>
-                integrates advanced algorithms with robust error-proofing
-                mechanisms, offering a powerful, user-friendly, free-of-charge
-                and collaborative tool for model development, simulation and
-                evaluation. It significantly reduced the learning threshold,
-                enabling researchers to efficiently construct, simulate, and
-                validate models. Its open nature and collaborative features
-                further enhanced accessibility and innovation, making SIMPO a
-                transformative tool for advancing environmental engineering
+                integrates advanced algorithms with error-proofing mechanisms,
+                offering a user-friendly interface to lower the learning curve
+                for model development, simulation and evaluation. Its open and
+                collaborative features enhance accessibility and innovation,
+                making it a transformative tool for environmental engineering
                 research.
               </Translate>
             </li>

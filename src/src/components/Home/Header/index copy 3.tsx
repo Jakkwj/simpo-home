@@ -7,7 +7,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Translate, { translate } from "@docusaurus/Translate";
 import type { MenuProps } from "antd";
 import { Button, Dropdown, Tooltip, Space } from "antd";
-import { AiOutlineDown } from "react-icons/ai";
+import { DownOutlined, CaretRightOutlined } from "@ant-design/icons";
 
 export default function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -216,6 +216,52 @@ export default function HomepageHeader() {
                   //   fontSize: "1.0rem",
                   // }}
                 >
+                  <Button
+                    // className="refine-button refine-button--secondary"
+                    // className="refine-button"
+                    size="large"
+                    style={{
+                      // width: "20%",
+                      padding: "1.3rem",
+                      color: "var(--ifm-color-primary)",
+                      borderColor: "var(--ifm-color-primary)",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {/* <a onClick={(e) => e.preventDefault()}> */}
+                    {/* &nbsp; */}
+                    {/* <Space> */}
+                    <span>
+                      <Translate>Installtion</Translate>
+                    </span>
+                    {/* </Space> */}
+                    {/* → */}
+                    {/* ▼ */}
+                    {/* &nbsp; */}
+                    <DownOutlined
+                      style={{
+                        color: "var(--ifm-color-primary)",
+                        // color: "white",
+                      }}
+                    />
+                    {/* &nbsp; */}
+                    {/* </a> */}
+                  </Button>
+                </Dropdown>
+
+                <Dropdown
+                  // className="dropdown-button"
+                  menu={{ items }}
+                  placement="bottomLeft"
+                  trigger={["click"]}
+                  // style={{
+                  //   padding: "1.3rem",
+                  //   color: "var(--ifm-color-primary)",
+                  //   borderColor: "var(--ifm-color-primary)",
+                  //   fontWeight: 600,
+                  //   fontSize: "1.0rem",
+                  // }}
+                >
                   <button
                     // className="refine-button refine-button--secondary"
                     className="refine-button2"
@@ -238,16 +284,15 @@ export default function HomepageHeader() {
                     <span>
                       <Translate>Installtion</Translate>
                     </span>
-                    {/* <DownOutlined
+
+                    <DownOutlined
                       style={{
                         color: "var(--ifm-color-primary)",
+                        // color: "white",
                       }}
-                    /> */}
+                    />
                     {/* &nbsp; */}
                     {/* </a> */}
-                    {/* <FaHome /> */}
-                    {/* <MdHome /> */}
-                    <AiOutlineDown />
                   </button>
                 </Dropdown>
               </div>

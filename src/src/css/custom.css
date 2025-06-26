@@ -287,8 +287,8 @@ html[data-theme='dark'] .cncf-logo {
 
 
 /* 按钮样式 */
-.refine-button {
-  /* background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); */
+/* background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); */
+/* .refine-button {
   background: var(--ifm-color-secondary);
   color: black;
   border: none;
@@ -299,7 +299,7 @@ html[data-theme='dark'] .cncf-logo {
   gap: 0.5rem;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
-}
+} */
 /* display: inline-block; */
 /* font-weight: 500; */
 /* display: inline-flex; */
@@ -314,19 +314,9 @@ html[data-theme='dark'] .cncf-logo {
 
 
 
-.refine-button:link {
-  text-decoration: none;
-  /* border-radius: 18px; */
-  /* padding: 12px 16px; */
-  /* display: block; */
-  /* transition: opacity 0.1s ease-in-out, visibility 0.1s ease-in-out; */
 
-  /* 缩短 duration */
-  /* transition: opacity 1.5s ease, transform 1.5s ease; */
-  /* Transition for opacity and transform */
-  /* transform: translateY(-10px); */
-  /* Start slightly above */
-}
+
+
 
 /* Change color of dropdown links on hover */
 /* .ant-btn:hover {
@@ -642,11 +632,13 @@ html[data-theme='dark'] .cncf-logo {
 .refine-button {
   /* background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); */
   /* background: var(--gradient-bg-banner); */
+
   background: var(--ifm-color-primary);
   color: white;
   border: none;
   /* border-radius: 12px; */
   /* padding: 0.75rem 1.5rem; */
+  border-radius: 10px;
   padding-right: 1.45rem;
   padding-left: 1.45rem;
   padding-top: 0.55rem;
@@ -669,6 +661,20 @@ html[data-theme='dark'] .cncf-logo {
   text-decoration: none;
 }
 
+.refine-button:link {
+  text-decoration: none;
+  /* border-radius: 18px; */
+  /* padding: 12px 16px; */
+  /* display: block; */
+  /* transition: opacity 0.1s ease-in-out, visibility 0.1s ease-in-out; */
+
+  /* 缩短 duration */
+  /* transition: opacity 1.5s ease, transform 1.5s ease; */
+  /* Transition for opacity and transform */
+  /* transform: translateY(-10px); */
+  /* Start slightly above */
+}
+
 .refine-button--secondary {
   /* background: var(--refine-card-bg); */
   /* background:red; */
@@ -687,6 +693,44 @@ html[data-theme='dark'] .cncf-logo {
   color: red;
 }
 
+/* 按钮样式 */
+.refine-button2 {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  text-align: center;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  user-select: none;
+  touch-action: manipulation;
+  border-radius: 8px;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+  background: #ffffff;
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+  color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  font-weight: 600;
+  font-size: 1.0rem;
+  transition: all 0.3s ease;
+}
+
+
+.refine-button2:link {
+  text-decoration: none;
+
+}
+
+/* .refine-button2:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px -3px rgba(59, 130, 246, 0.4);
+  color: white;
+  text-decoration: none;
+} */
 
 /* 网格布局 */
 /* .refine-grid {
@@ -825,4 +869,13 @@ html[data-theme='dark'] .cncf-logo {
   margin-bottom: 0;
   position: relative;
   z-index: 1;
+}
+
+
+.dropdown-button {
+  padding: 1.3rem;
+  color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  font-weight: 600;
+  font-size: 1.0rem;
 }
