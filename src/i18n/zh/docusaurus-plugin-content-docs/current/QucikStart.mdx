@@ -3,122 +3,72 @@
 slug: /
 ---
 
+
 import config from '@generated/docusaurus.config'
 
-# 快速入门
+# 快速开始
 
-<!-- ## Getting Started -->
-The 3 essential elements of **SIMPO** are: **BioModel** (model), **DataSet** (data) and **Project** (solution).
+**SIMPO**的3个核心元素是：**BioModel** （模型）, **DataSet** （数据）和 **Project** （解法）。
 
-The steps of a complete calculation process are:
-<!-- - [Step 1](/docs/Tutorials/Installtion): install the calculation client on your computer, and then sign up and sign in to <a href="http://xx.xx.xxxx.xxx/dashboard/home">Dashborad</a>. -->
-- [Step 1](/docs/Tutorials/Installtion): install the calculation client on your computer, and then sign up and sign in to <a href={config.customFields.urlDashHome}>Dashborad</a>.
-- [Step 2](/docs/Tutorials/BioModel): create a **BioModel**.
-- [Step 3](/docs/Tutorials/DataSet): create a **DataSet**.
-- [Step 4](/docs/Tutorials/Project): create a **Project** to combine **BioModel** and **DataSet**, and then select a calculation engine to solve them.
- <!-- (Simulaiton/Sensitivity/Uncertainty/Estimation) to solve them. -->
+完整计算过程的步骤如下：
+
+- [步骤1](/docs/Tutorials/Installtion): 在你的计算机上安装计算客户端，然后注册并登录 <a href={config.customFields.urlDashHome}>Dashborad</a>。
+- [步骤2](/docs/Tutorials/BioModel): 创建一个 **BioModel**。
+- [步骤3](/docs/Tutorials/DataSet): 创建一个 **DataSet**。
+- [步骤4](/docs/Tutorials/Project): 创建一个 **Project**，将 **BioModel** 和 **DataSet** 组合在一起，然后选择一个计算引擎来求解。
 
 
-<!-- <a href="/docs/Tutorials/BioModel">**BioModel**</a>. -->
+:::tip 克隆即可开始
 
-<!-- Since sharing research findings is -->
-<!-- **SIMPO** is designed to esay to share -->
-
-<!-- However, we can just start calculating by cloned a Public **Project** (without go throught all these 4 steps). -->
-<!-- to start calculating  -->
-<!-- it is not necessary to to . -->
-<!--
-<!--  "attention", "caution", "danger", "error", "hint", "important", "note", "tip", "warning" -->
-
-:::tip Complete but not required
-
-<!-- However, it is not necessary to go throught all these 4 steps -->
-<!-- to start calculating in **SIMPO** -->
-By cloned a Public **Project**, we can just start calculating without go throught all these steps.
-But please remember to install the calculation client and sign in before anything.
+通过克隆公共 **Project**，我们就可以直接开始计算，而无需经过上述这些步骤。但请记住，在此之前先安装计算客户端并登录。
 
 :::
 
 -------
 
-## The Easiest Way
+## 最简单的方式
 
-<!-- , since  -->
-<!-- so you can just start the calculaiton and wait for the results after this cloning: -->
-
-
-Sharing research findings is one of the key features of **SIMPO**, which makes cloning a **Project** from the public repository become the easiest way to do the whole thing. This action will clone the correspoding **BioMode**, **Dataset** and calculation result.
-- Clone a Public Project.
-- Check the calculation result (you can change some parameters and calculation again).
-
-<!-- /img/quick_start/TheEasiestWay/TheEasiestWay.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/TheEasiestWay.gif" width="80%"/> -->
+共享研究成果是 **SIMPO** 的主要功能之一，因此从公共资源库中克隆一个**项目**是最简单的方法。该操作将克隆相应的 **BioMode**、**Dataset** 和计算结果。
+- 克隆一个公共项目。
+- 检查计算结果（您可以更改某些参数并重新计算）。
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlTheEasiestWay} width="80%"/>
   </div>
 
-<!-- <br /> -->
-
-<!-- <script>
-var img = document.querySelector("img");
-img.onmouseover = function () {img.style.cssText = "animation: bigger 2s"}
-
-
-</script> -->
-
 
 ------
 
-## Play with ASM3
+## 尝试ASM3
 
-**SIMPO** gets lots of public classical models, we can just clone and play with them. Let's take ASM3 as a simple example.
+**SIMPO** 有很多公开的经典模型，我们可以克隆并使用它们。这里我们以ASM3为一个简单的例子。
 
-<!-- - Clone <a href="http://xx.xx.xxxx.xxx/dashboard/biomodels/public/name/ASM3/id/45/did/41">ASM3</a> from the Public to Personal **BioModel** repository. -->
-- Clone <a href={config.customFields.urlDashASM3}>ASM3</a> from the Public to Personal **BioModel** repository.
--
-<!-- /img/quick_start/ASM3/ASM3_1.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_1.gif" width="80%"/> -->
+- 从公共资源库克隆 <a href={config.customFields.urlDashASM3}>ASM3</a> 到个人 **BioModel** 资源库。
 
- <div align="center" style={{marginTop: "0vh"}}>
+  <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlASM3_1} width="80%"/>
   </div>
 
-<!-- <br /> -->
+- 创建一个新的**项目**，包含一个 ASM3 **生物模型**和一个空的**数据集**，然后你会得到（这些设置是默认创建的，但是当然您可以更改它们）：
 
-- Create a new **Project** with a ASM3 **BioModel** and an empty **DataSet**, then you would get (these setting would be created by default, but you can definitely change them):
-  - A CSTR tank with the Targets exact the same as the Components of ASM3.
-  - All Targets initial values are set to be 200.
-  - 2 days calcluation time with 0.2 day interval.
-  - Evaluation columns (in Project Detail Variable tab) of all Parameters of ASM3 would set to be "True".
-
-<!-- /img/quick_start/ASM3/ASM3_2.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_2.gif" width="80%"/> -->
+  - 一个 CSTR 反应器，其 Targets 与 ASM3 的 Components 完全相同。
+  - 所有 Targets 的初始值均设定为 200。
+  - 计算时长为 2 天，间隔为 0.2 天。
+  - ASM3 的所有 Parameters 的 Evaluation 列（在 Project Detail Variable 选项卡中）均设为 “True”。
 
   <br />
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlASM3_2} width="80%"/>
   </div>
 
-<!-- <br /> -->
-
-
-- Then you can just start calculation.
-  - Simulaiton:
-  <!-- <br /> -->
-
-<!-- /img/quick_start/ASM3/ASM3_3.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_3.gif" width="80%"/> -->
+- 然后您就可以开始计算了。
+  - 模拟（Simulaiton）：
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlASM3_3} width="80%"/>
   </div>
 
-  - Evaluation:
-  <!-- <br /> -->
-
-<!-- /img/quick_start/ASM3/ASM3_4.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/ASM3_4.gif" width="80%"/> -->
+  - 评估（Evaluation）：
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlASM3_4} width="80%"/>
@@ -126,32 +76,11 @@ img.onmouseover = function () {img.style.cssText = "animation: bigger 2s"}
   <br />
 
 
-:::important 60 seconds
+:::important 60 秒
 
-<!-- to start calculating in **SIMPO**, one should Installing the calculation client, and sign in to <a href="http://xx.xx.xxxx.xxx/dashboard/home">Dashborad</a>. -->
-<!-- No matter what, before anything -->
-
-Every calculation must be comfirmed inside **60 secconds**, or you have to stop it and restart a new one.
-<!-- otherwise “error” will appear. -->
-
-<!-- calculation_token 有效期 60s, 必须在这之内开始计算, 否则需要重新开始计算 -->
+所有的计算都必须在**60秒**内完成，否则您必须停止并重新启动一个新的计算。
 
 :::
 
-
-<!--  "attention", "caution", "danger", "error", "hint", "important", "note", "tip", "warning" -->
-<!--
-:::tip The Quickest Way
-
-After installing the client, clone a Project from the public Project repository is the easiest way to do the whole thing. Since this action will also clone the correspoding BioModel and Dataset, you can just start the calculaiton and wait for the results after this cloning.
-
-:::
-
-------- -->
-
-<!-- :::danger Take care
-
-This action is dangerous
-::: -->
 
 

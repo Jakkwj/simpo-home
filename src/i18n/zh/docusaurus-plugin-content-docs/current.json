@@ -4,7 +4,7 @@
     "description": "The label for version current"
   },
   "sidebar.docs.category.Tutorials": {
-    "message": "教程",
+    "message": "使用指南",
     "description": "The label for category Tutorials in sidebar docs"
   },
   "sidebar.docs.category.Change Log": {
@@ -32,11 +32,11 @@
     "description": "The label for category SIMPO Pro in sidebar docs"
   },
   "sidebar.docs.category.Case Study": {
-    "message": "Case Study",
+    "message": "案例研究",
     "description": "The label for category Case Study in sidebar docs"
   },
   "sidebar.docs.category.Case Study.link.generated-index.description": {
-    "message": "Case Study of SIMPO.",
+    "message": "SIMPO的案例研究。",
     "description": "The generated-index page description for category Case Study in sidebar docs"
   },
   "sidebar.docs.category.AQUASIM": {

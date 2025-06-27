@@ -1,69 +1,88 @@
-import config from '@generated/docusaurus.config'
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 安装
+
+作为一个跨平台的网络平台，**SIMPO** 可在 Windows、Linux 和 Mac（待定）操作系统上运行
+。因此，它可以利用超级计算机的强大性能，因为它们的系统通常是基于 Linux 的。
+
+要计算 **SIMPO** 项目，您需要下载并安装计算客户端，然后注册并登录到 <a href={config.customFields.urlDashHome}>Dashborad</a>。
+
+:::warning 注意
+
+计算开始后，客户端将自动运行，请<b>不要双击运行客户端</b>。
+
+:::
 
 
-# Installtion
+在运行计算任务时，客户端会停留在系统托盘中。右键点击客户端图标可以获取相关信息。例如，如果计算出错了，日志文件将就变得非常重要，点击 **Log**，打开 `run.log` 查看错误。
 
-As a cross-platform web-based platform, **SIMPO** works on Windows, Linux, and Mac (Pending) operating
-systems. Therefore, it can leverage the power of supercomputers, as their systems are usually
-Linux-based.
+:::tip 提示
 
-One need to download and install the calculation client, and then sign up and sign in to <a href={config.customFields.urlDashHome}>Dashborad</a> and start using it.
+如果不安装客户端，计算将无法运行，但您仍可登录并使用其他功能（如编辑自己的私有库、浏览和克隆公共库）。
+
+:::
 
 <Tabs>
 
   <TabItem value="windows" label="Windows" default>
 
-
   <ul>
     <li>
-      Download and install the client: <a href={config.customFields.urlDownloadClientWindows} target="_blank" download>Windows</a>.
+      下载和安装客户端：<a href={config.customFields.urlDownloadClientWindows} target="_blank" download>Windows</a> or <a href={config.customFields.urlDownloalNetdiskWindows} target="_blank" download>Windows (Netdist)</a>.
     </li>
     <li>
-      Note:
-        <ul>
-          <li>
-            This client will automatically run once you start calculating, you cannot run it by double click it.
-          </li>
-          <li>
-            DON'T change the installtion path, which is: <code>C:\Program Files\SimpoClient</code>.
-          </li>
-        </ul>
+      卸载: 在开始菜单点击 <code>Uninstall SimpoClient</code>，或者点击运行 <code>C:\Program Files\SimpoClient\unins000.exe</code>。
     </li>
+    <li>
+      可用版本：<b>Windows 10</b> 及以上版本。
+    </li>
+
   </ul>
 
   </TabItem>
 
   <TabItem value="linux" label="Linux">
 
-  ### Ubuntu
+### Ubuntu
 
-  <ul>
-    <li>
-      Download: <a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>Ubuntu</a>.
-    </li>
-    <li>
-      Run: <code>chmod +x SimpoClient_installer.sh && sudo ./SimpoClient_installer.sh</code>.
-    </li>
-    <li>
-      Now Ubuntu 16, Ubuntu 18 and Ubuntu20 are supported.
-    </li>
-  </ul>
+<ul>
+  <li>
+    安装：
+
+    <ul>
+
+      <li>
+      下载客户端：<a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>Ubuntu</a> or <a href={config.customFields.urlDownloalNetdiskUbuntu} target="_blank" download>Ubuntu (Netdist)</a>.
+
+
+      </li>
+      <li>
+        运行：<code>sudo dpkg -i SimpoClient_0.11.5_amd64.deb</code>。
+
+      </li>
+
+
+    </ul>
+
+  </li>
+  <li>
+    卸载：<code>sudo dpkg -r SimpoClient</code> 或者 <code>sudo bash /opt/SimpoClient//uninstall.sh</code>。
+  </li>
+  <li>
+    支持系统：<b>Ubuntu 20</b> 及以上版本。
+  </li>
+</ul>
 
   </TabItem>
 
   <TabItem value="mac" label="Mac">
 
-  <ul>
-    <li>Pending...</li>
-  </ul>
+<ul>
+  <li>待定...</li>
+</ul>
 
   </TabItem>
 
 </Tabs>
-
-
-
-
-

@@ -423,6 +423,12 @@ const config = {
             position: 'left',
             // label: 'Guides',
           },
+          // {
+          //   label: 'Blog',
+          //   to: 'blog',
+          //   position: 'left',
+          //   // label: 'Guides',
+          // },
           {
             label: 'Changelog',
             to: 'changelog',
@@ -466,7 +472,7 @@ const config = {
           },
 
 
-          // {to: '/blog', label: 'Blog', position: 'left'},
+
           {
             href: 'https://github.com/jakkwj/simpo_home',
             position: 'right',
@@ -533,7 +539,7 @@ const config = {
               ],
             },
 
-             {
+            {
               title: 'Learn',
               items: [
                 // {
@@ -615,10 +621,10 @@ const config = {
           {
             title: 'More',
             items: [
-              // {
-              //   label: 'Blog',
-              //   to: '/blog',
-              // },
+              {
+                label: 'Blog',
+                to: '/blog',
+              },
               {
                 label: 'Changelog',
                 // to: '/docs/category/changelog',
@@ -642,6 +648,7 @@ const config = {
 
         // copyright: `Copyright © ${new Date().getFullYear()} ${title}, Inc. All rights reserved.`,
         copyright: `Copyright © ${new Date().getFullYear()} ${title}. All rights reserved.`,
+
         // Built with Docusaurus.
       },
       prism: {

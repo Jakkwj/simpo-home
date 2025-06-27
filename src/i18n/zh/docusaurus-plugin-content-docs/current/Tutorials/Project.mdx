@@ -2,24 +2,19 @@ import config from '@generated/docusaurus.config'
 
 # Project
 
-<!-- As the final essential element of SIMPO,  -->
-Project is the place to combine BioModel and DataSet, and then solve them (Simulation and Evaluation).
+Project 是将 BioModel 和 DataSet 结合在一起并进行求解（模拟和评估）的地方。
 
+## <a id="Create"></a>新建
 
-## <a id="Create"></a>Create
+创建 Project 有几种方法（从下面的 3 种方法中选择一种）：
 
-<!-- You must specify a BioModel and a Dataset to combine them while creating a Project. -->
-There are a few ways to create a Project (choose 1 from 3 in below):
+### <a id="way_1"></a>1. 空白新建
 
+创建一个空的 Project，编辑并解析保存后使其生效。
 
-### <a id="way_1"></a>1. Create from Empty
-Create an empty Project, edit and parsed save the detial later to make it work.
-  - If you don't specify a BioModel/Dataset, an empty BioModel/Dataset will be crated accordingly.
-  - If the BioModel's components are all the same as the DataSet's targets, the Project's detial will be created automatically.
-  - Otherwise, you must specify the conversion between the BioModel's components and the DataSet's targets.
-
-<!-- /img/quick_start/step4/1.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/12.gif" width="80%"/> -->
+  - 如果您没有指定 BioModel/DataSet，将相应地创建一个空的 BioModel/DataSet。
+  - 如果 BioModel 的 components 与 DataSet 的 targets 完全相同，则 Project 的 detial 将自动生成。
+  - 否则，您必须指定 BioModel 的 components 与 DataSet 的 targets 之间的转换关系。
 
   <br />
   <div align="center" style={{marginTop: "0vh"}}>
@@ -27,25 +22,17 @@ Create an empty Project, edit and parsed save the detial later to make it work.
   </div>
 
 
-### <a id="way_2"></a>2. Create from Template
+### <a id="way_2"></a>2. 从模板导入
 
-<!-- /template_file/Solution.xlsx -->
-
-Create a Project from a: <a href={config.customFields.urlDownloadUrlplateProject} target="_blank" download>Project template xlsx file</a>
-
-<!-- /img/quick_start/step4/2.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/22.gif" width="80%"/> -->
+从模板导入一个 Project：<a href={config.customFields.urlDownloadUrlplateProject} target="_blank" download>Project template xlsx file</a>
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlProject_2} width="80%"/>
   </div>
 
+### <a id="way_3"></a>3. 从公共 Project 库克隆新建
 
-### <a id="way_3"></a>3. Clone from Public Project
-Clone a Project from the public Project repository.
-
-<!-- /img/quick_start/step4/3.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/32.gif" width="80%"/> -->
+从公共 Project 库克隆一个 Project。
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlProject_3} width="80%"/>
@@ -53,20 +40,22 @@ Clone a Project from the public Project repository.
 
 -----
 
-## <a id="Create"></a>Solve
+## <a id="Solve"></a>求解
 
-The simulation and evaluation can be initiated with just a few clicks:
-- Select a calcualtion engine: Simulaiton, Sensitivity, Uncertainty or Estimation.
-- Hit the START button and wait for the results, **SIMPO** will plot everything after the calcualtion process is done.
+模拟和评估只需几次鼠标点击即可启动：
+  - 选择计算引擎：Simulaiton, Sensitivity, Uncertainty 或 Estimation。
+  - 点击 START 按钮并等待结果，SIMPO 将在计算过程完成后绘制所有内容。
 
-<!-- /img/quick_start/step5/1.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/13.gif" width="80%"/> -->
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlProject_4} width="80%"/>
   </div>
 
 
-## <a id="Edit"></a>Edit
+## <a id="Edit"></a>编辑
+在 Project 中，您可以直接编辑对应的 BioModel 和 DataSet，然后在 Solution 标签页中编辑求解参数。在 Calculation 标签页中点击 START 按钮开始计算后，即可得到计算结果。
 
-## <a id="Release"></a>Release
+
+## <a id="Release"></a>发布
+
+在 Version 选项卡中可以发布不同的版本，每个版本都有一个版本号。
