@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksimpo_home=self.webpackChunksimpo_home||[]).push([[7472],{5513:e=>{e.exports=JSON.parse('{"title":"\u6700\u8fd1\u7684\u53d1\u5e03","items":[{"title":"SIMPO\u7b80\u4ecb","permalink":"/zh/blog/the-introduction-of-SIMPO","unlisted":false,"date":"2025-06-28T00:00:00.000Z"}]}')}}]);

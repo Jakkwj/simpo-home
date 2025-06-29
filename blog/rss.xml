@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>SIMPO Blog</title>
+        <link>https://www.simpowater.org/blog</link>
+        <description>SIMPO Blog</description>
+        <lastBuildDate>Sat, 28 Jun 2025 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[The Introduction of SIMPO]]></title>
+            <link>https://www.simpowater.org/blog/the-introduction-of-SIMPO</link>
+            <guid>https://www.simpowater.org/blog/the-introduction-of-SIMPO</guid>
+            <pubDate>Sat, 28 Jun 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Since 1987, the International Association on Water Quality (IAWQ) working group released a series of mathematical models for wastewater treatment processes (such as ASM1, ASM2, ASM2d, ASM3, and ADM1), which established a general framework for the removal of pollutants like organic matter, nitrogen, and phosphorus. These models have become powerful tools for the research and practice of wastewater treatment processes.]]></description>
+            <content:encoded><![CDATA[<p>Since 1987, the International Association on Water Quality (IAWQ) working group released a series of mathematical models for wastewater treatment processes (such as ASM1, ASM2, ASM2d, ASM3, and ADM1), which established a general framework for the removal of pollutants like organic matter, nitrogen, and phosphorus. These models have become powerful tools for the research and practice of wastewater treatment processes.</p>
+<p>However, as research deepens, the scope of wastewater treatment process modeling has expanded to include various complex processes (such as nitrous oxide emissions, and sulfur autotrophic denitrification). Although these expansions have increased the applicability of the models, they have also introduced exponentially growing complexity. The biochemical stoichiometry matrix has become increasingly large, the number of model components and parameters has increased, and the computational demands have risen, creating significant obstacles for researchers and engineers.</p>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"></path></svg></span>󠀠</div><div class="admonitionContent_BuS1"><ul>
+<li><strong>SIMPO</strong> is initiated by JiangLab (a research team in the School of Environmental Science and Engineering, Sun Yat-sen University, China). It is an intelligent computing SaaS platform specifically designed for wastewater treatment process modelling.</li>
+</ul></div></div>
+<p>To address these challenges and opportunities, we developed <strong>SIMPO</strong> (Simplified Intelligent Modelling Platform Online，<a href="https://www.simpowater.org/" target="_blank" rel="noopener noreferrer">https://www.simpowater.org</a>), a next-generation platform aimed at simplifying and promoting wastewater treatment modelling. <strong>SIMPO</strong> offers an intuitive drag-and-drop user interface, adaptive algorithms, and collaborative tools, bridging the gap between complex modeling capabilities and practical accessibility, enabling users to easily handle traditional ASM models and various modern cutting-edge models.</p>
+<p><strong>SIMPO</strong>'s innovations address critical limitations of traditional platforms:</p>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://i.postimg.cc/bvV8GgKj/The-Easiest-Way.gif" width="100%"></div>
+<p>1、<strong>Interaction and visualization of GUI provide a user-friendly modelling approach</strong></p>
+<ul>
+<li>Intuitive tools, such as candidate boxes and color coding, visually assist in correctly inputting variables and parameters in a complex matrix.</li>
+<li>The drag-and-drop GUI simplifies the design of complex wastewater treatment processes to the point of simply adding and connecting tanks on a webpage.</li>
+<li>The automatic drawing display helps users quickly, comprehensively, and intuitively understand the simulation and evaluation results.</li>
+</ul>
+<p>2、<strong>Dynamic algorithm ensures the accuracy and efficiency of modelling</strong></p>
+<ul>
+<li>SIMPO adopts self-adjusting solvers to ensure computational efficiency without affecting accuracy, which is evaluated by weighted Nash Sutcliffe efficiency (WNSE).</li>
+<li>Dynamic real time step size optimization can alleviate common pitfalls such as negative concentration, which is a frequent problem in traditional tools.</li>
+</ul>
+<p>3、<strong>Automatic error-proofing and intuitive display help to quickly identify errors</strong></p>
+<ul>
+<li>Balance checking can help users review the rationality of stoichiometry matrices from a theoretical perspective.</li>
+<li>NSE intuitively reflects the goodness-of-fit of various variables, and the automated and interactive display of results exposes the problem of certain variables being obscured by graphical scales.</li>
+</ul>
+<p>4、<strong>Advanced evaluation algorithms bring comprehensive and systematic understanding of models</strong></p>
+<ul>
+<li>Sensitivity analysis identifies sensitive parameters and their correlations, reducing the number of parameters to enhance computational efficiency.</li>
+<li>Uncertainty assessment evaluates the uncertainty of each parameter, determines the predicted range of model outputs, and refines parameter ranges for more accurate simulations.</li>
+<li>Parameter estimation identifies the local optima of parameters that best fit the measured data, ensuring robust and reliable model calibration.</li>
+</ul>
+<p>5、<strong>Collaborative science facilitates the dissemination, exchange, and development of models</strong></p>
+<ul>
+<li>SIMPO supports version-controlled models, data and results sharing, provides public/private repositories, and advocates a new type of peer review workflow for modelling papers, in line with the principles of open science.</li>
+</ul>]]></content:encoded>
+        </item>
+    </channel>
+</rss>
