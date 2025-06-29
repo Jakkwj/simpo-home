@@ -48,7 +48,7 @@
     "description": "The label of footer link with label=GitHub linking to https://github.com/jakkwj/simpo_home"
   },
   "link.item.label.Blog": {
-    "message": "Blog",
+    "message": "博客",
     "description": "The label of footer link with label=Blog linking to /blog"
   }
 }

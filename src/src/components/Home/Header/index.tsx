@@ -127,6 +127,7 @@ export default function HomepageHeader() {
               style={{
                 // marginTop: "1rem",
                 marginLeft: "10%",
+                // background: "transparent",
               }}
             >
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -145,7 +146,11 @@ export default function HomepageHeader() {
                 <Link> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </Link>
                 <h1
                   className="hero__title fade-in-up"
-                  style={{ marginTop: "1.8rem", marginBottom: "2.2rem" }}
+                  style={{
+                    marginTop: "1.8rem",
+                    marginBottom: "2.2rem",
+                    // color: "transparent",
+                  }}
                 >
                   {siteConfig.title}
                 </h1>
