@@ -346,7 +346,7 @@
     "message": "可追随"
   },
   "tagline": {
-    "message": "污水处理工艺模型模拟SaaS平台"
+    "message": "污水处理工艺模型智能计算SaaS平台"
   },
   "home.easytouse.1": {
     "message": "让您专注模型推导和实验数据，我们将处理计算过程："
@@ -641,7 +641,7 @@
     "message": "先进的评估算法可全面系统地了解模型："
   },
   "Sensitivity analysis identifies sensitive parameters and their correlations, reducing the number of parameters to enhance computational efficiency.": {
-    "message": "灵敏度分析可确定敏感参数及其相关性，从而减少参数数量，提高计算效率"
+    "message": "灵敏度分析可确定敏感参数及其相关性，从而减少参数数量，提高计算效率。"
   },
   "Uncertainty assessment evaluates the uncertainty of each parameter, determines the predicted range of model outputs, and refines parameter ranges for more accurate simulations.": {
     "message": "不确定性评估对每个参数的不确定性进行评估，确定模型输出的预测范围，并完善参数范围，以进行更精确的模拟。"
@@ -662,19 +662,19 @@
     "message": "采用自调整求解器，在不影响精度的情况下确保计算效率，计算效率用加权纳什系数（WNSE）来评估。"
   },
   "Dynamic real time step size optimization can alleviate common pitfalls such as negative concentration, which is a frequent problem in traditional tools.": {
-    "message": "动态实时步长优化可以减少传统工具中经常出现的负浓度问题"
+    "message": "动态实时步长优化可以减少传统工具中经常出现的负浓度问题。"
   },
   "Features": {
     "message": "特点"
   },
-  "is initiated by JiangLab (a research team in the School of Environmental Science and Engineering, Sun Yat-sen University, China). It is an intelligent SaaS platform specifically designed for wastewater treatment modelling.": {
-    "message": "由JiangLab（中山大学环境科学与工程研究团队）发起，是一个专为污水处理建模设计的智能SaaS平台。"
+  "is initiated by JiangLab (a research team in the School of Environmental Science and Engineering, Sun Yat-sen University, China). It is an intelligent computing SaaS platform specifically designed for wastewater treatment process modelling.": {
+    "message": "由JiangLab（中山大学环境科学与工程学院）发起，是一个专为污水处理工艺建模设计的智能计算SaaS平台。"
   },
   "integrates advanced algorithms with error-proofing mechanisms, offering a user-friendly interface to lower the learning curve for model development, simulation and evaluation. Its open and collaborative features enhance accessibility and innovation, making it a transformative tool for environmental engineering research.": {
     "message": "集成了先进的算法和防错机制，提供友好的用户界面，降低了模型开发、模拟和评估的难度。其开放性和协作性特点提高了可访问性和创新性，使其成为环境工程研究的变革性工具。"
   },
   "'s innovations address critical limitations of traditional platforms:": {
-    "message": " 的创新地解决了传统平台的关键限制："
+    "message": " 创新地解决了传统计算工具的关键限制："
   },
   "Automatic error-proofing and intuitive display help to quickly identify errors:": {
     "message": "自动防错和直观显示有助于快速定位错误："

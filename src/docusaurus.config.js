@@ -144,7 +144,9 @@ const config = {
   // tagline: 'A Scientific Computing SaaS Platform',
   // tagline: 'A Simulation SaaS Platform for Water and Wastewater Treatment Process Modeling',
   // tagline: 'A Scientific Computing SaaS Platform for Water and Wastewater Treatment Process Modelling',
-  tagline: 'A Scientific Computing SaaS Platform for Wastewater Treatment Process Modelling',
+  // tagline: 'A Scientific Computing SaaS Platform for Wastewater Treatment Process Modelling',
+  tagline: 'An Intelligent Computing SaaS Platform for Wastewater Treatment Process Modelling',
+  // tagline: 'An Intelligent Computing SaaS Platform Specifically designed for wastewater treatment process modelling',
   // tagline: 'A SaaS platform for wastewater treatment modeling',
 
 
@@ -220,13 +222,13 @@ const config = {
           // editUrl:
           //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
-        blog: false,
-        // blog: {
-        //   showReadingTime: true,
-        //   // Please change this to your repo.
-        //   // Remove this to remove the "edit this page" links.
-        //   // editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        // },
+        // blog: false,
+        blog: {
+          showReadingTime: true,
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          // editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+        },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
           // customCss: require.resolve('./src/css/custom.scss'),
@@ -423,12 +425,12 @@ const config = {
             position: 'left',
             // label: 'Guides',
           },
-          // {
-          //   label: 'Blog',
-          //   to: 'blog',
-          //   position: 'left',
-          //   // label: 'Guides',
-          // },
+          {
+            label: 'Blog',
+            to: 'blog',
+            position: 'left',
+            // label: 'Guides',
+          },
           {
             label: 'Changelog',
             to: 'changelog',

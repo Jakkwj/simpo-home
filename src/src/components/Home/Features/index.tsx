@@ -56,8 +56,9 @@ export default function Features() {
               <Translate>
                 is initiated by JiangLab (a research team in the School of
                 Environmental Science and Engineering, Sun Yat-sen University,
-                China). It is an intelligent SaaS platform specifically designed
-                for wastewater treatment modelling.
+                China). It is an intelligent computing SaaS platform
+                specifically designed for wastewater treatment process
+                modelling.
               </Translate>
             </li>
 

@@ -1,0 +1,57 @@
+---
+slug: the-introduction-of-SIMPO
+title: The Introduction of SIMPO
+# authors: [Jun]
+# tags: [docusaurus]
+# slug: the-beginning-of-SIMPO
+# title: The beginning of SIMPO
+---
+import config from '@generated/docusaurus.config'
+
+
+Since 1987, the International Association on Water Quality (IAWQ) working group released a series of mathematical models for wastewater treatment processes (such as ASM1, ASM2, ASM2d, ASM3, and ADM1), which established a general framework for the removal of pollutants like organic matter, nitrogen, and phosphorus. These models have become powerful tools for the research and practice of wastewater treatment processes.
+
+However, as research deepens, the scope of wastewater treatment process modeling has expanded to include various complex processes (such as nitrous oxide emissions, and sulfur autotrophic denitrification). Although these expansions have increased the applicability of the models, they have also introduced exponentially growing complexity. The biochemical stoichiometry matrix has become increasingly large, the number of model components and parameters has increased, and the computational demands have risen, creating significant obstacles for researchers and engineers.
+
+
+:::tip 󠀠
+
+- **SIMPO** is initiated by JiangLab (a research team in the School of Environmental Science and Engineering, Sun Yat-sen University, China). It is an intelligent computing SaaS platform specifically designed for wastewater treatment process modelling.
+
+:::
+
+
+
+To address these challenges and opportunities, we developed **SIMPO** (Simplified Intelligent Modelling Platform Online，[https://www.simpowater.org](https://www.simpowater.org)), a next-generation platform aimed at simplifying and promoting wastewater treatment modelling. **SIMPO** offers an intuitive drag-and-drop user interface, adaptive algorithms, and collaborative tools, bridging the gap between complex modeling capabilities and practical accessibility, enabling users to easily handle traditional ASM models and various modern cutting-edge models.
+
+
+**SIMPO**'s innovations address critical limitations of traditional platforms:
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+  <img src={config.customFields.imgUrlTheEasiestWay}  width="100%"/>
+</div>
+
+1、**Interaction and visualization of GUI provide a user-friendly modelling approach**
+- Intuitive tools, such as candidate boxes and color coding, visually assist in correctly inputting variables and parameters in a complex matrix.
+- The drag-and-drop GUI simplifies the design of complex wastewater treatment processes to the point of simply adding and connecting tanks on a webpage.
+- The automatic drawing display helps users quickly, comprehensively, and intuitively understand the simulation and evaluation results.
+
+2、**Dynamic algorithm ensures the accuracy and efficiency of modelling**
+- SIMPO adopts self-adjusting solvers to ensure computational efficiency without affecting accuracy, which is evaluated by weighted Nash Sutcliffe efficiency (WNSE).
+- Dynamic real time step size optimization can alleviate common pitfalls such as negative concentration, which is a frequent problem in traditional tools.
+
+
+3、**Automatic error-proofing and intuitive display help to quickly identify errors**
+- Balance checking can help users review the rationality of stoichiometry matrices from a theoretical perspective.
+- NSE intuitively reflects the goodness-of-fit of various variables, and the automated and interactive display of results exposes the problem of certain variables being obscured by graphical scales.
+
+
+4、**Advanced evaluation algorithms bring comprehensive and systematic understanding of models**
+- Sensitivity analysis identifies sensitive parameters and their correlations, reducing the number of parameters to enhance computational efficiency.
+- Uncertainty assessment evaluates the uncertainty of each parameter, determines the predicted range of model outputs, and refines parameter ranges for more accurate simulations.
+- Parameter estimation identifies the local optima of parameters that best fit the measured data, ensuring robust and reliable model calibration.
+
+
+
+5、**Collaborative science facilitates the dissemination, exchange, and development of models**
+- SIMPO supports version-controlled models, data and results sharing, provides public/private repositories, and advocates a new type of peer review workflow for modelling papers, in line with the principles of open science.

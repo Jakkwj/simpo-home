@@ -32,7 +32,7 @@
     "description": "Navbar item with label Changelog"
   },
   "item.label.Blog": {
-    "message": "Blog",
+    "message": "博客",
     "description": "Navbar item with label Blog"
   }
 }
