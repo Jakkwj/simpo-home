@@ -13,7 +13,8 @@ const title = 'SIMPO'
 const urlHome = 'https://www.simpowater.org'
 const urlConsole = 'https://dash.simpowater.org/dashboard/home'
 const urlLogo = 'https://i.postimg.cc/rsPqvJNJ/logo3.png'
-
+const imgWechat = 'https://i.postimg.cc/QMH7KHW2/qrcode-for-gh-5d1b634e9478-1280.jpg'
+const urlWechat = 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzE5MTU1NzAyMQ==&action=getalbum&album_id=4062069451808489491#wechat_redirect'
 /**
  * 登录后台显示 Dashboard, 未登录时显示 Sign In 的功能实现参看: https://github.com/facebook/docusaurus/discussions/5307
  * 1.手动 swizzle Root 组件
@@ -517,7 +518,7 @@ const config = {
         links: [
 
           {
-              // title: 'SIMPO',
+              title: 'WeChat',
               items: [
                 // {
                 //   label: 'Tutorial',
@@ -530,14 +531,31 @@ const config = {
                 //       </a>
                 //     `,
                 // },
-                {
+              //   {
+              //     html: `
+              //         <a href="${urlHome}">
+              //           <img src="${urlLogo}" alt="SIMPO" width="40" height="40" />
+              //           <img src="${urlWechat}" alt="SIMPO" width="80" height="80" />
+              //         </a>
+              //       `,
+              // },
+              // {
+              //     html: `
+              //         <p style="color: white;">
+              //           Join WeChat Group
+              //         </p>
+              //       `,
+              // },
+              // <div style="color: white;">
+              //   Join WeChat Group
+              // </div>
+              {
                   html: `
-                      <a href="${urlHome}">
-                        <img src="${urlLogo}" alt="SIMPO" width="40" height="40" />
+                      <a href="${urlWechat}">
+                        <img src="${imgWechat}" alt="SIMPO" width="60" height="60" />
                       </a>
                     `,
-                },
-
+              }
               ],
             },
 

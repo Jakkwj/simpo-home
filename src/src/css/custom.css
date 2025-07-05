@@ -879,3 +879,15 @@ html[data-theme='dark'] .cncf-logo {
   font-weight: 600;
   font-size: 1.0rem;
 }
+
+
+
+.features-section2 {
+  /* background: linear-gradient(to right,
+      #5e72e4,
+      #484870); */
+  background: #3b3b62;
+  /* background: linear-gradient(135deg, #5e72e4 50%, #3b3b62 100%); */
+  padding: 0.1rem 0.1rem 1.2rem 0.1rem;
+  position: relative;
+}
