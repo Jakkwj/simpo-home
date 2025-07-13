@@ -2,6 +2,8 @@ import React, { JSX, ReactNode } from "react";
 import Translate from "@docusaurus/Translate";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import { useLocation } from "@docusaurus/router";
+import { isMobile } from "react-device-detect";
 import {
   AiFillTablet,
   AiFillFund,
@@ -123,6 +125,16 @@ function Algorithm({
 
 export default function Algorithms() {
   const { siteConfig } = useDocusaurusContext();
+  const location = useLocation();
+  const hasZh = location.pathname.includes("/zh");
+  const className = hasZh
+    ? isMobile
+      ? "refine-card fade-in-up"
+      : "refine-card refine-card-height-zh fade-in-up"
+    : isMobile
+    ? "refine-card fade-in-up"
+    : "refine-card refine-card-height fade-in-up";
+
   return (
     <div className="hero">
       <div
@@ -146,7 +158,7 @@ export default function Algorithms() {
             <Algorithm key={idx} {...props} />
           ))} */}
 
-          <div className="refine-card fade-in-up">
+          <div className={className}>
             <img
               src={siteConfig.customFields.imgUrlAlgorithm_1 as string}
               width="100%"
@@ -180,7 +192,7 @@ export default function Algorithms() {
             </p>
           </div>
 
-          <div className="refine-card fade-in-up">
+          <div className={className}>
             <img
               src={siteConfig.customFields.imgUrlAlgorithm_2 as string}
               width="100%"
@@ -214,7 +226,7 @@ export default function Algorithms() {
             </p>
           </div>
 
-          <div className="refine-card fade-in-up">
+          <div className={className}>
             <img
               src={siteConfig.customFields.imgUrlAlgorithm_3 as string}
               width="100%"
@@ -247,7 +259,7 @@ export default function Algorithms() {
             </p>
           </div>
 
-          <div className="refine-card fade-in-up">
+          <div className={className}>
             <img
               src={siteConfig.customFields.imgUrlAlgorithm_4 as string}
               width="100%"

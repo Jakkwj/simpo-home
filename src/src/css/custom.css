@@ -754,9 +754,16 @@ html[data-theme='dark'] .cncf-logo {
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
-  min-height: 29rem;
+  /* min-height: 29rem; */
 }
 
+.refine-card-height {
+  min-height: 28rem;
+}
+
+.refine-card-height-zh {
+  min-height: 23rem;
+}
 .refine-card::before {
   content: '';
   position: absolute;

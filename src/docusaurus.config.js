@@ -103,6 +103,9 @@ const config = {
     imgUrlCaseStudyBWTEE2_3_4O2: 'https://i.postimg.cc/76NRGZCJ/2-3-4-Chemostat-2.jpg',
     imgUrlCaseStudyBWTEE2_3_4DHO: 'https://i.postimg.cc/zBNMGgf1/2-3-4-Chemostat-3.jpg',
 
+    imgUrlWechatAccount: 'https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg',
+    imgUrlWechatJakk: 'https://i.postimg.cc/yxKhZxM0/jakk-QR.jpg',
+
 
     urlDashHome: 'https://dash.simpowater.org/dashboard/home',
 

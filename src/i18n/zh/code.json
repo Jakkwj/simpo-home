@@ -602,7 +602,7 @@
     "message": "Simulation"
   },
   "provides accurate and efficient ODE solvers, negative value response strategy to cater to diverse modelling needs. The WNSE is employed as the goodness-of-fit criterion for model evaluation.": {
-    "message": "提供精确高效的ODE求解器和负值响应策略，以满足不同的建模需求。WNSE被用作模型评估的拟合优度标准。"
+    "message": "提供精确高效的ODE求解器和负值响应策略，以满足不同的建模需求。WNSE被用作评估的拟合标准。"
   },
   "Sensitivity": {
     "message": "Sensitivity"
@@ -614,7 +614,7 @@
     "message": "Uncertainty"
   },
   "Uncertainty assessment evaluates the uncertainty, distributions and equifinality of parameters, determine the predicted range distribution of model outputs, and refine the range of parameter values.": {
-    "message": "不确定性评估对参数的不确定性、分布和异参同效性进行评价，确定模型输出的预测范围分布，并缩小参数值的取值范围。"
+    "message": "不确定性评估对参数的不确定性、分布和异参同效性进行评价，确定模型输出预测范围，并缩小参数取值范围。"
   },
   "Estimation": {
     "message": "Estimation"
