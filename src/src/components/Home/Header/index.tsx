@@ -242,7 +242,8 @@ export default function HomepageHeader() {
                     // }}
                   >
                     <span>
-                      <Translate>Installtion</Translate>
+                      {/* <Translate>Installtion</Translate> */}
+                      &nbsp;<Translate>Client</Translate>&nbsp;
                     </span>
                     {/* <DownOutlined
                       style={{
