@@ -24,7 +24,9 @@ export default function Resourses() {
             paddingRight: "18vw",
           }}
         /> */}
-        <h1 className="text-center">Resourses</h1>
+        <h1 className="text-center">
+          <Translate>Resourses</Translate>
+        </h1>
 
         <p>
           <Translate>Let's build and use the </Translate>

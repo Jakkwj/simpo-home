@@ -667,6 +667,9 @@
   "Features": {
     "message": "特点"
   },
+  "Resourses": {
+    "message": "资源库"
+  },
   "is initiated by JiangLab (a research team in the School of Environmental Science and Engineering, Sun Yat-sen University, China). It is an intelligent computing SaaS platform specifically designed for wastewater treatment process modelling.": {
     "message": "由JiangLab（中山大学环境科学与工程学院）发起，是一个专为污水处理工艺建模设计的智能计算SaaS平台。"
   },
