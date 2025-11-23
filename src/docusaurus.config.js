@@ -115,8 +115,8 @@ const config = {
     // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.5/SimpoClient_installer.exe',
     // urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.5/SimpoClient_installer.sh',
 
-    urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.12.0/SimpoClient_0.12.0.exe',
-    urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.12.0/SimpoClient_0.12.0_amd64.deb',
+    urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.5/SimpoClient_0.11.5.exe',
+    urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.5/SimpoClient_0.11.5_amd64.deb',
 
     // urlDownloalBaidu: 'https://pan.baidu.com/s/1N89lx1xbCvoIwvbc-Qdl8g?pwd=spwt',
     // urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp',
@@ -229,6 +229,7 @@ const config = {
         // blog: false,
         blog: {
           showReadingTime: true,
+          onUntruncatedBlogPosts: 'ignore',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           // editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
@@ -353,7 +354,7 @@ const config = {
       announcementBar: {
         id: 'announcementBar',
         content:
-          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2025">SimpoClient v0.12.0</a> has been released!</strong>',
+          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2025">SimpoClient v0.11.5</a> has been released!</strong>',
         isCloseable: true,
         // backgroundColor: '#5e72e4',
         // textColor: '#ffffff',
