@@ -9,7 +9,8 @@ function generateSidebarItems(folderPath) {
    * 注意: 文件(不是文件夹)的命名不能带 ()/, 因为文件命名决定了 url 的内容
    * 可以在 mdx 文件内的最上级 title 使用这些特殊字符
    * 所以 url 通过 .mdx 文件内的 slug 字段自定义, 覆盖文件名决定的 url
-   * () 都被替换为 -
+   * slug 第一个字符为 / 则会跳过子文件夹, 不加则保留
+   * () 统一被替换为 _
    *
    */
   const items = [];
@@ -21,6 +22,7 @@ function generateSidebarItems(folderPath) {
 
     if (stat.isFile() && (file.endsWith('.md') || file.endsWith('.mdx'))) {
       const id = filePath.replace(/\.mdx?$/, '').replace(`${docsFolder}/`, '');  // 假设文件名就是文档 ID (去掉 .md 或 .mdx 后缀)
+      // console.log('Generated sidebar item ID:', id);
       items.push(id);
     } else if (stat.isDirectory()) {
       // 递归处理子文件夹
