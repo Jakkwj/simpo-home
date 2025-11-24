@@ -8,7 +8,9 @@ function generateSidebarItems(folderPath) {
    *
    * 注意: 文件(不是文件夹)的命名不能带 ()/, 因为文件命名决定了 url 的内容
    * 可以在 mdx 文件内的最上级 title 使用这些特殊字符
-   * 另外, url 可以通过 .mdx 文件内的 slug 字段自定义, 覆盖文件名决定的 url
+   * 所以 url 通过 .mdx 文件内的 slug 字段自定义, 覆盖文件名决定的 url
+   * () 都被替换为 -
+   *
    */
   const items = [];
   const files = readdirSync(resolve(__dirname, folderPath));
