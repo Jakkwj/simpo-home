@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksimpo_home=self.webpackChunksimpo_home||[]).push([[7472],{5513:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"The Introduction of SIMPO","permalink":"/blog/the-introduction-of-SIMPO","unlisted":false,"date":"2025-06-28T00:00:00.000Z"}]}')}}]);

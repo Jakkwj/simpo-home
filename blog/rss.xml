@@ -4,10 +4,91 @@
         <title>SIMPO Blog</title>
         <link>https://www.simpowater.org/blog</link>
         <description>SIMPO Blog</description>
-        <lastBuildDate>Sat, 28 Jun 2025 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 27 Nov 2025 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[SIMPO 首篇论文发表：面向污水处理数学模拟的无代码智能建模与共享平台]]></title>
+            <link>https://www.simpowater.org/blog/SIMPO—A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling</link>
+            <guid>https://www.simpowater.org/blog/SIMPO—A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling</guid>
+            <pubDate>Thu, 27 Nov 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[{/ ## SIMPO—A Simplified Intelligent Modelling Platform Online for Code-free and Shareable Wastewater Treatment Process Modelling /}]]></description>
+            <content:encoded><![CDATA[
+<!-- -->
+<!-- -->
+<!-- -->
+<!-- -->
+<div class="theme-admonition theme-admonition-tip admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--success"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p>中山大学环境科学与工程学院江峰教授团队于2025年11月7日在 <strong><a href="https://www.simpowater.org/blog/www.water-ecology.cn">Water &amp; Ecology</a></strong> 第一卷第四期上发表题为 <strong>“SIMPO—A Simplified Intelligent Modelling Platform Online for Code-free and Shareable Wastewater Treatment Process Modelling”</strong> 的研究论文。文章介绍了研究团队开发的面向污水处理数学模拟的无代码智能建模与共享平台（SIMPO）。 该平台是一个免费、零门槛、开放和共享的SaaS云计算平台，旨在让每个人都能使用专业级的污水处理建模系统，降低科研、工程和教育中污水处理过程建模的门槛。文章在上线后即被 <strong>EurekAlert!</strong> 等国际科学媒体转载。</p></div></div>
+<!-- -->
+<!-- -->
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="图文摘要">图文摘要<a href="https://www.simpowater.org/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E5%9B%BE%E6%96%87%E6%91%98%E8%A6%81" class="hash-link" aria-label="Direct link to 图文摘要" title="Direct link to 图文摘要">​</a></h2>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://www.sciengine.com/figures/figures-222d1b9f22e7426ea611a03e21409ad5-Graphical%20Abstract.jpg" width="100%"></div>
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p>本文章已经被SIMPO资源库收录，请点击查看AI解读：<a href="https://www.simpowater.org/resource/10.1016/j.wateco.2025.100021" target="_blank" rel="noopener noreferrer">https://www.simpowater.org/resource/10.1016/j.wateco.2025.100021</a></p></div></div>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="图文导读">图文导读<a href="https://www.simpowater.org/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E5%9B%BE%E6%96%87%E5%AF%BC%E8%AF%BB" class="hash-link" aria-label="Direct link to 图文导读" title="Direct link to 图文导读">​</a></h2>
+<p>污水处理数学模型对于污水处理系统的理解、设计和优化至关重要。随着相关研究的深入发展，污水处理数学模型的组分和参数越来越多，矩阵结构越来越复杂。
+对于研究人员、工程师和学生而言，建立或使用现代复杂的污水处理数学模型非常困难。
+即使对于专业的审稿人和读者，也很难评估相关文章中提出的复杂模型是否可靠。
+这极大地阻碍了污水处理数学模型的开发、转化以及实际应用。
+基于此，江峰教授团队开发了面向污水处理数学模拟的无代码智能建模与共享平台（SIMPO），这是一个免费、零门槛、开放和共享的SaaS云计算平台，旨在让每个人都能使用专业级的污水处理建模系统，降低科研、工程和教育中污水处理过程建模的门槛。</p>
+<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="模型开发简单直接">模型开发简单直接<a href="https://www.simpowater.org/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%9B%B4%E6%8E%A5" class="hash-link" aria-label="Direct link to 模型开发简单直接" title="Direct link to 模型开发简单直接">​</a></h3>
+<p>与传统建模软件如 AQUASIM （图 1A）相比，SIMPO 的建模过程更简单、更方便、更顺畅：1）安装计算客户端，注册并登录；2）编辑 BioModel（图 1B）；3）编辑 DataSet（图 1C）；4）选择 BioModel 和 DataSet，组合生成 Project（图 1D），然后开始计算（图 2E）。</p>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://www.sciengine.com/figures/figures-8e8f8ffdd2ed4eec9fffd6db90b94f5f-3050-4724-2025-1-4-201-F002c.jpg" width="100%"><span style="font-size:0.8rem">图1 操作界面比较：（A） AQUASIM;（B）SIMPO BioModel 中的矩阵;（c） SIMPO DataSet 中的流程图;（D）由 SIMPO BioModel 和 DataSet 自动组合生成的 Project;（e） Project中的计算。</span></div>
+<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="计算结果自动可视化">计算结果自动可视化<a href="https://www.simpowater.org/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E8%AE%A1%E7%AE%97%E7%BB%93%E6%9E%9C%E8%87%AA%E5%8A%A8%E5%8F%AF%E8%A7%86%E5%8C%96" class="hash-link" aria-label="Direct link to 计算结果自动可视化" title="Direct link to 计算结果自动可视化">​</a></h3>
+<p>输入模型和数据后，用户只需几次点击即可开始模型计算。平台将基于计算引擎自动生成结果，并形成可视化图形（图 2），便于分析和决策。此外，用户还可以导出所得数据进行定制处理和进一步分析。这使得用户可以专注高效地分析模型，而不用疲于处理复杂的计算结果。</p>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://www.sciengine.com/figures/figures-769b3e9b1b8f4957bfa77a70b9211373-3050-4724-2025-1-4-201-F006c.jpg" width="100%"><span style="font-size:0.8rem">图2 （A） 间歇式反应器的 SIMPO 模拟结果。公开 Project：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Batch/id/407/did/406" target="_blank" rel="noopener noreferrer">https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Batch/id/407/did/406</a>。用户可以将其克隆到自己的仓库。（B）恒定反应器的 SIMPO 模拟结果。公共 Project：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Chemostat/id/414/did/409" target="_blank" rel="noopener noreferrer">https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Chemostat/id/414/did/409</a>。利用 AQUASIM 预测结果作为测量数据来测试 SIMPO 的计算准确性，WNSE 接近 1 的高值表明 SIMPO 与 AQUASIM 在准确性上具有良好一致性。</span></div>
+<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="模型评估敏感性分析">模型评估：敏感性分析<a href="https://www.simpowater.org/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E6%95%8F%E6%84%9F%E6%80%A7%E5%88%86%E6%9E%90" class="hash-link" aria-label="Direct link to 模型评估：敏感性分析" title="Direct link to 模型评估：敏感性分析">​</a></h3>
+<p>在SIMPO中，敏感性分析用于识别敏感参数和强相关性参数，从而减少后续步骤中需要评估的参数数量，以提高计算效率。</p>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://www.sciengine.com/figures/figures-a3c71c0b1ec74597b16c1f197cb5cb42-3050-4724-2025-1-4-201-F010c.jpg" width="100%"><span style="font-size:0.8rem">图3 （A）SIMPO 中 OAT 敏感性分析的结果。（B） SIMPO 中 OAT 曲线积分的加权和。（C）SIMPO 中的配对相关性热力图。（D）AQUASIM 中 OAT 敏感性分析的结果。</span></div>
+<!-- -->
+<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="模型评估不确定性评估">模型评估：不确定性评估<a href="https://www.simpowater.org/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E8%AF%84%E4%BC%B0" class="hash-link" aria-label="Direct link to 模型评估：不确定性评估" title="Direct link to 模型评估：不确定性评估">​</a></h3>
+<p>SIMPO 提供了专业的不确定性评估算法，使用拉丁超立方采样（Latin hypercube sampling，LHS）方法进行采样，然后通过蒙特卡洛法 （Monte Carlo，MC）进行分析。不确定性评估可用于评估参数的不确定性、分布和异常同效性，确定模型输出的范围分布，并缩小参数值的范围。</p>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://www.sciengine.com/figures/figures-8a1a156f6cf44eeab786f8084059f082-3050-4724-2025-1-4-201-F013c.jpg" width="100%"><span style="font-size:0.8rem">图4 （A）SIMPO 中不确定性评估的 PDF 和 CDF 图;（B）Band 图;（C）Density 图;（D）Skeleton 图。</span></div>
+<h3 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="模型评估参数估计">模型评估：参数估计<a href="https://www.simpowater.org/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1" class="hash-link" aria-label="Direct link to 模型评估：参数估计" title="Direct link to 模型评估：参数估计">​</a></h3>
+<p>SIMPO采用遗传算法（Genetic Algorithm，GA）进行参数估计。
+SIMPO提供了多种计算设置，可以灵活地在计算效率和求解精度之间平衡。
+几种不同评估方法的计算结果如下图所示：</p>
+<ul>
+<li>Large GA的结果精度最高，但规模大导致耗时较长，经过约1,394次迭代，在267秒内达到了 0.99161 的WNSE（weighted Nash Sutcliffe efficiency）；</li>
+<li>Samll GA的计算规模小导致计算精度较低，但是耗时很短，仅经过25次迭代，在0.83秒内达到了0.99019的WNSE；</li>
+<li>Uncertainty同样实现了较高的精度，但是耗时最长，经过约880,510次迭代，在4,658秒内达到了0.99161的WNSE；</li>
+<li>AQUASIM在短短时间内达到了0.99142的WNSE；</li>
+<li>所有方法都超过了数据原论文中的0.98853的WNSE。</li>
+</ul>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://i.postimg.cc/GtbFLd63/GA-result-table.png" width="100%"><span style="font-size:0.8rem">图5 参数评估结果比较。</span></div>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="小结">小结<a href="https://www.simpowater.org/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E5%B0%8F%E7%BB%93" class="hash-link" aria-label="Direct link to 小结" title="Direct link to 小结">​</a></h2>
+<ul>
+<li>SIMPO是一个开放、SaaS、无代码且可共享的污水处理建模平台。</li>
+<li>SIMPO提供了简单直观的用户界面和功能强大的算法，极大地降低了模型使用门槛。</li>
+<li>支持敏感度分析、不确定性评估和参数估计等高级模型评估算法。</li>
+<li>该平台可广泛应用于科学研究、教育、工程优化和同行评审。</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="作者简介">作者简介<a href="https://www.simpowater.org/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E4%BD%9C%E8%80%85%E7%AE%80%E4%BB%8B" class="hash-link" aria-label="Direct link to 作者简介" title="Direct link to 作者简介">​</a></h2>
+<ul>
+<li>
+<p>通信作者：江峰，中上大学环境科学与工程学院教授/博导，主要从事环境系统建模与优化、水污染控制与资源化等方向的研究工作。</p>
+</li>
+<li>
+<p>第一作者：</p>
+<ul>
+<li>王军，博士，广东省标准化研究院，主要从事算法开发、建模与优化和数据分析等方向的研究工作。</li>
+<li>李灏，博士，现就读于中山大学环境科学与工程学院，主要从事污水处理过程建模与优化方向的研究工作。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="国际科学媒体报道">国际科学媒体报道<a href="https://www.simpowater.org/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E5%9B%BD%E9%99%85%E7%A7%91%E5%AD%A6%E5%AA%92%E4%BD%93%E6%8A%A5%E9%81%93" class="hash-link" aria-label="Direct link to 国际科学媒体报道" title="Direct link to 国际科学媒体报道">​</a></h2>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://i.postimg.cc/9fyxpKQ8/eurek-Alert-SIMPO.png" width="100%"></div>
+<div class="theme-admonition theme-admonition-tip admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--success"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p>文章已在 <strong>Water &amp; Ecology</strong> 期刊官网<a href="https://www.simpowater.org/blog/www.water-ecology.cn">www.water-ecology.cn</a>上线，欢迎关注！</p></div></div>
+<hr>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>添加好友，备注SIMPO加入交流群</b></div><img src="https://i.postimg.cc/yxKhZxM0/jakk-QR.jpg" width="25%"></div>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>欢迎关注微信公众号</b></div><img src="https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg" width="25%"></div>]]></content:encoded>
+            <category>SIMPO</category>
+        </item>
         <item>
             <title><![CDATA[The Introduction of SIMPO]]></title>
             <link>https://www.simpowater.org/blog/the-introduction-of-SIMPO</link>
