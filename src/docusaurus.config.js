@@ -106,6 +106,10 @@ const config = {
     imgUrlWechatAccount: 'https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg',
     imgUrlWechatJakk: 'https://i.postimg.cc/yxKhZxM0/jakk-QR.jpg',
 
+    imgUrlBlogEurekAlertSIMPO: 'https://i.postimg.cc/9fyxpKQ8/eurek-Alert-SIMPO.png',
+    imgUrlBlogSIMPOHighlights: 'https://i.postimg.cc/s2t4tcvv/SIMPO-highlights.png',
+    imgUrlBlogGAResultTable: 'https://i.postimg.cc/GtbFLd63/GA-result-table.png',
+
 
     urlDashHome: 'https://dash.simpowater.org/dashboard/home',
 
