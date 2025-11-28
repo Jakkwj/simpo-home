@@ -723,5 +723,10 @@
   },
   ". For more details please refer to:": {
     "message": ". For more details please refer to:"
+  },
+  "The following papers have adopted SIMPO as their experimental tool.": {
+    "message": "以下论文使用了SIMPO作为实验工具。"
   }
+
+
 }

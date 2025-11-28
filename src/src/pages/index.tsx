@@ -16,6 +16,7 @@ import FeaturesTrackable from "@site/src/components/Home/Features/trackable";
 import { isMobile, isDesktop } from "react-device-detect";
 import Algorithms from "@site/src/components/Home/algorithms";
 import Resourses from "@site/src/components/Home/resourses";
+import Publications from "@site/src/components/Home/publications";
 // src/components/Home/Roadmap/index.mdx
 // import TeamJiangFeng from '@site/src/components/Home/Team/jiangfeng';
 import { Tabs } from "antd";
@@ -78,6 +79,7 @@ export default function Home(): JSX.Element {
         {/* <FeaturesOpen /> */}
         {/* <FeaturesTrackable /> */}
         <Resourses />
+        <Publications />
 
         {/* <Roadmap /> */}
         {isDesktop ? <Roadmap /> : <span></span>}

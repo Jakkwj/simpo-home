@@ -39,7 +39,7 @@ export default function Resourses() {
         <Feature
           reverse={true}
           width="80%"
-          imgUrl={siteConfig.customFields.imgUrlResource as string}
+          imgUrl={siteConfig.customFields?.imgUrlResource as string}
           title={
             <Translate id="home.collaboration">Everyone is welcome</Translate>
           }

@@ -59,6 +59,8 @@ const config = {
     imgUrlAlgorithm_3: 'https://i.postimg.cc/W4sk1qKf/Figure-14c.png',
     imgUrlAlgorithm_4: 'https://i.postimg.cc/T3VbxJkD/Figure-14bb.png',
 
+    imgUrlPaper_1: 'https://i.postimg.cc/g0TtXr81/SIMPO-A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareab.png',
+
     imgUrlIntroduction_1: 'https://i.postimg.cc/kgNkSsRp/Fig5-Sim-Targets.png',
     imgUrlIntroduction_2: 'https://i.postimg.cc/8zg2s9cv/Project-Eva-Uncertainty-PCDF-59.png',
 
