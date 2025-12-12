@@ -653,7 +653,7 @@
     "message": "合作科学促进了模型的传播、交流和发展："
   },
   "supports version-controlled models, data and results sharing, provides public/private repositories, and advocates a new type of peer review workflow for modelling papers, in line with the principles of open science.": {
-    "message": "支持模型、数据的版本控制和结果共享，提供公共/私有存储库，并倡导符合开放科学原则的新型建模论文同行评审工作流程。"
+    "message": "支持模型、数据的版本控制和结果共享，提供公开/私有存储库，并倡导符合开放科学原则的新型建模论文同行评审工作流程。"
   },
   "Dynamic algorithm ensures the accuracy and efficiency of modelling:": {
     "message": "动态算法确保建模的准确与效率："

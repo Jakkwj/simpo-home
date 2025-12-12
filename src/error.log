@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/opt/SimpoClient/client.py", line 213, in <module>
+  File "/opt/SimpoClient/simpo_client/main.py", line 10, in <module>
+    from .calculation import main as calculation_main
+  File "/opt/SimpoClient/simpo_client/calculation.py", line 15, in <module>
+    from simpo import Project
+  File "/opt/SimpoClient/simpo/__init__.py", line 12, in <module>
+    from .biomodel import *
+  File "/opt/SimpoClient/simpo/biomodel/__init__.py", line 2, in <module>
+    from ._biomodel import BioModel  # noqa
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/SimpoClient/simpo/biomodel/_biomodel.py", line 11, in <module>
+    from simpo.calculation import format_input_df, get_input_df  # , get_input_df_duckdb
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/SimpoClient/simpo/calculation/__init__.py", line 3, in <module>
+    from ._utils import (
+  File "/opt/SimpoClient/simpo/calculation/_utils.py", line 11, in <module>
+    from simpo.checker import SimpoError
+  File "/opt/SimpoClient/simpo/checker/__init__.py", line 2, in <module>
+    from ._checker import *
+  File "/opt/SimpoClient/simpo/checker/_checker/__init__.py", line 3, in <module>
+    from ._check import *
+  File "/opt/SimpoClient/simpo/checker/_checker/_check.py", line 11, in <module>
+    from simpo.ic import ic
+  File "/opt/SimpoClient/simpo/ic.py", line 3, in <module>
+    from icecream import ic  # 全局设定, 包括 simpo_pro,
+    ^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'icecream'

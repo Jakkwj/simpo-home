@@ -111,7 +111,8 @@ const config = {
     imgUrlBlogEurekAlertSIMPO: 'https://i.postimg.cc/9fyxpKQ8/eurek-Alert-SIMPO.png',
     imgUrlBlogSIMPOHighlights: 'https://i.postimg.cc/s2t4tcvv/SIMPO-highlights.png',
     imgUrlBlogGAResultTable: 'https://i.postimg.cc/GtbFLd63/GA-result-table.png',
-
+    imgUrlBlogCover: 'https://i.postimg.cc/xdCqNLBM/cover.jpg',
+    imgUrlBlogComparisonTable: 'https://i.postimg.cc/WzCg4X9R/Comparison-table.png',
 
     urlDashHome: 'https://dash.simpowater.org/dashboard/home',
 
