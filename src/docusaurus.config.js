@@ -187,12 +187,7 @@ const config = {
   // onBrokenLinks: 'throw', // 检测到无效链接时的行为, 抛出错误, v3 升级后 build 时会报错
   onBrokenLinks: 'ignore',
 
-  // onBrokenMarkdownLinks: 'warn', // 检测到无效 Markdown 链接时的行为 警告
-  markdown: {
-    hooks: {
-      onBrokenMarkdownLinks: 'warn', // 检测到无效 Markdown 链接时的行为 警告
-    }
-  },
+
 
 
 
@@ -202,6 +197,18 @@ const config = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'zh'], // zh-Hans 简体中文
+
+    localeConfigs: {
+      en: {
+        url: 'https://www.simpowater.org',
+        baseUrl: '/',
+      },
+      zh: {
+        url: 'https://www.simpowater.com',
+        baseUrl: '/',
+      },
+    },
+
     // locales: ['en'],
     // locales: ['en', 'zh-Hans'], // zh-Hans 简体中文
 
@@ -682,8 +689,9 @@ const config = {
         // },
 
 
-        // copyright: `Copyright © ${new Date().getFullYear()} ${title}, Inc. All rights reserved.`,
-        copyright: `Copyright © ${new Date().getFullYear()} ${title}. All rights reserved.`,
+        copyright: `Copyright © ${new Date().getFullYear()} ${title}. All rights reserved. <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2025444806号-2</a>`,
+        // <img src="https://qcloudimg.tencent-cloud.cn/raw/eed02831a0e201b8d794c8282c40cf2e.png" style="width: 14px; margin-right: 5px;">
+
 
         // Built with Docusaurus.
       },
@@ -693,10 +701,15 @@ const config = {
       },
     }),
 
+
+  // onBrokenMarkdownLinks: 'warn', // 检测到无效 Markdown 链接时的行为 警告
   markdown: { // 加入 mermaid https://docusaurus.io/zh-CN/docs/markdown-features/diagrams
     // yarn add @docusaurus/theme-mermaid@next  # 通过 @ next 选择正确的版本 2.4.0
     // yarn add mdx-mermaid mermaid  # mermaid in mdx
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: 'warn', // 检测到无效 Markdown 链接时的行为 警告
+    }
   },
   themes: ['@docusaurus/theme-mermaid'],
 
