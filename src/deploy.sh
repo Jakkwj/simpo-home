@@ -20,3 +20,5 @@ if [ "$1" == "proxy" ]; then
     yarn config delete proxy  # 取消 yarn 代理
     yarn config delete https-proxy
 fi
+
+tar -cJf home.tar.xz build && mv home.tar.xz /media/Data/SynologyDrive/CloudServer/Simpo/

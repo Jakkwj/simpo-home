@@ -196,18 +196,18 @@ const config = {
   // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'zh'], // zh-Hans 简体中文
+    locales: ['en', 'zh'], // zh-Hans 简体中文, 注意不能通过 localeConfigs 进行 simpowater.org 和 simpowater.com 的切换, 这里只能控制同一域名的跳转
 
-    localeConfigs: {
-      en: {
-        url: 'https://www.simpowater.org',
-        baseUrl: '/',
-      },
-      zh: {
-        url: 'https://www.simpowater.com',
-        baseUrl: '/',
-      },
-    },
+    // localeConfigs: {
+    //   en: {
+    //     url: 'https://www.simpowater.org',
+    //     baseUrl: '/',
+    //   },
+    //   zh: {
+    //     url: 'https://www.simpowater.com',
+    //     baseUrl: '/',
+    //   },
+    // },
 
     // locales: ['en'],
     // locales: ['en', 'zh-Hans'], // zh-Hans 简体中文
