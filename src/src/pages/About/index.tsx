@@ -14,6 +14,7 @@ import HomepageHeader from "@site/src/components/Home/Header";
 import AboutJiangFeng from "@site/src/pages/About/jiangfeng";
 import AboutWangJun from "@site/src/pages/About/wangjun";
 import AboutLiHao from "@site/src/pages/About/lihao";
+import AboutLiangzhensheng from "@site/src/pages/About/liangzhensheng";
 import AboutHuangzhaowei from "@site/src/pages/About/huangzhaowei";
 
 // import AboutWuKe from '@site/src/pages/About/wuke';
@@ -84,6 +85,7 @@ export default function About(): JSX.Element {
         </h1>
 
         <AboutLiHao />
+        <AboutLiangzhensheng />
         <AboutHuangzhaowei />
         {/* <AboutWuKe />
         <AboutHuangZhaoWei />

@@ -68,6 +68,7 @@ const config = {
     imgUrlWangjun: 'https://i.postimg.cc/sXx8tR6k/Jakk2b.jpg',
     imgUrlLihao: 'https://i.postimg.cc/YSpTzF1q/lihao.jpg',
     imgUrlHuangzhaowei: 'https://i.postimg.cc/zX3SYGFD/huangzhaowei.jpg',
+    imgUrlLiangzhensheng: 'https://i.postimg.cc/RCDNqPvc/liangzhensheng.jpg',
 
     imgUrlTheEasiestWay: 'https://i.postimg.cc/bvV8GgKj/The-Easiest-Way.gif',
 
