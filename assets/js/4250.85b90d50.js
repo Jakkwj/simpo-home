@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunksimpo_home=globalThis.webpackChunksimpo_home||[]).push([[4250],{81869:(e,h,s)=>{s.d(h,{createGitGraphServices:()=>a.b});var a=s(67539);s(87960)}}]);

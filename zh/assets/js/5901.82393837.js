@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunksimpo_home=globalThis.webpackChunksimpo_home||[]).push([[5901],{75901:(e,s,a)=>{a.d(s,{createTreemapServices:()=>h.d});var h=a(51633);a(87960)}}]);

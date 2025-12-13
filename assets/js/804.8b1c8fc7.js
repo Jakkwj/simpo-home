@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksimpo_home=self.webpackChunksimpo_home||[]).push([[804],{804:(e,s,h)=>{h.r(s)}}]);

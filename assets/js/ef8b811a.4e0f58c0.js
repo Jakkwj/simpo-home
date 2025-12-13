@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunksimpo_home=globalThis.webpackChunksimpo_home||[]).push([[8947],{56600:a=>{a.exports=JSON.parse('{"authors":[{"name":"Jun Wang","title":"Maintainer of SIMPO","imageURL":"https://i.postimg.cc/sXx8tR6k/Jakk2b.jpg","key":"Jun","page":null,"count":0}]}')}}]);

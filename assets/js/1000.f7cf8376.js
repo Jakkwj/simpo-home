@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunksimpo_home=globalThis.webpackChunksimpo_home||[]).push([[1e3],{91e3:(e,a,s)=>{s.d(a,{createRadarServices:()=>h.f});var h=s(87846);s(87960)}}]);
