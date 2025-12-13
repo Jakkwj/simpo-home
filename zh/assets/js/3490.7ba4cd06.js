@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunksimpo_home=globalThis.webpackChunksimpo_home||[]).push([[3490],{3490:(e,s,h)=>{h.d(s,{createInfoServices:()=>o.v});var o=h(91885);h(87960)}}]);

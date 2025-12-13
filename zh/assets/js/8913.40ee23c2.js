@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunksimpo_home=globalThis.webpackChunksimpo_home||[]).push([[8913],{58913:(h,s,o)=>{o.r(s)}}]);
