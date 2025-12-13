@@ -187,7 +187,12 @@ const config = {
   // onBrokenLinks: 'throw', // 检测到无效链接时的行为, 抛出错误, v3 升级后 build 时会报错
   onBrokenLinks: 'ignore',
 
-  onBrokenMarkdownLinks: 'warn', // 检测到无效 Markdown 链接时的行为 警告
+  // onBrokenMarkdownLinks: 'warn', // 检测到无效 Markdown 链接时的行为 警告
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn', // 检测到无效 Markdown 链接时的行为 警告
+    }
+  },
 
 
 

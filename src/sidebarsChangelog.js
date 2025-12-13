@@ -14,6 +14,7 @@ const sidebars = {
         {
           type: 'category',
           label: 'Earlier',
+          key: 'SIMPO Dash/Earlier',
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [
@@ -43,6 +44,7 @@ const sidebars = {
         {
           type: 'category',
           label: 'Earlier',
+          key: 'SIMPO Backend/Earlier',
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [
@@ -68,6 +70,7 @@ const sidebars = {
         {
           type: 'category',
           label: 'Earlier',
+          key: 'SIMPO/Earlier',
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [
@@ -96,6 +99,7 @@ const sidebars = {
         {
           type: 'category',
           label: 'Earlier',
+          key: 'SIMPO Pro/Earlier',
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [
@@ -129,6 +133,7 @@ const sidebars = {
         {
           type: 'category',
           label: 'Earlier',
+          key: 'SIMPO Client/Earlier',
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [

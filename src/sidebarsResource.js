@@ -26,9 +26,11 @@ function generateSidebarItems(folderPath) {
       items.push(id);
     } else if (stat.isDirectory()) {
       // 递归处理子文件夹
+
       items.push({
         type: 'category',
         label: file, // 使用文件夹名作为类别标签
+        key: filePath,
         collapsible: true,
         collapsed: false,  // 默认展开
         "link": {

@@ -13,6 +13,7 @@ src/build/
 .git/
 dev/
 resource/
+archived/
 
 # Generated files
 .docusaurus
