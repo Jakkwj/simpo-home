@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunksimpo_home=globalThis.webpackChunksimpo_home||[]).push([[5668],{69076:s=>{s.exports=JSON.parse('{"name":"docusaurus-plugin-content-docs","id":"changelog"}')}}]);
