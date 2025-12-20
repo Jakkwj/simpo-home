@@ -14,59 +14,9 @@ export default function HomepageHeader() {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: (
-        <a
-          href={siteConfig.customFields.urlDownloadClientWindows as string}
-          style={{
-            textDecoration: "none",
-            // color: "var(--ifm-color-primary)",
-            fontWeight: 400,
-          }}
-          download
-        >
-          Windows
-        </a>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <a
-          href={siteConfig.customFields.urlDownloalClientUbuntu as string}
-          style={{
-            textDecoration: "none",
-            // color: "var(--ifm-color-primary)",
-            fontWeight: 400,
-          }}
-          download
-        >
-          Ubuntu
-        </a>
-      ),
-    },
-    {
-      key: "3",
-      disabled: true,
-      label: (
-        <a
-          href="#"
-          style={{
-            cursor: "default",
-            color: "gray",
-            textDecoration: "none",
-            // color: "var(--ifm-color-primary)",
-            fontWeight: 400,
-          }}
-        >
-          Mac (pending...)
-        </a>
-      ),
-    },
-    {
-      key: "4",
       children: [
         {
-          key: "4-1",
+          key: "1-1",
           label: (
             <a
               target="_blank"
@@ -83,7 +33,7 @@ export default function HomepageHeader() {
           ),
         },
         {
-          key: "4-2",
+          key: "1-2",
           label: (
             <a
               target="_blank"
@@ -104,17 +54,121 @@ export default function HomepageHeader() {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={siteConfig.customFields.urlDownloalNetdiskUbuntu as string}
+          // href={siteConfig.customFields.urlDownloalNetdiskUbuntu as string}
           style={{
             textDecoration: "none",
             // color: "var(--ifm-color-primary)",
             fontWeight: 400,
           }}
         >
-          Netdisk
+          <Translate id="ChinaRegion">China Region</Translate>
         </a>
       ),
     },
+
+    {
+      key: "2",
+      children: [
+        {
+          key: "2-1",
+          label: (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={siteConfig.customFields.urlDownloadClientWindows as string}
+              style={{
+                textDecoration: "none",
+                // color: "var(--ifm-color-primary)",
+                fontWeight: 400,
+              }}
+            >
+              Windows &nbsp;&nbsp;
+            </a>
+          ),
+        },
+        {
+          key: "2-2",
+          label: (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={siteConfig.customFields.urlDownloalClientUbuntu as string}
+              style={{
+                textDecoration: "none",
+                // color: "var(--ifm-color-primary)",
+                fontWeight: 400,
+              }}
+            >
+              Ubuntu &nbsp;&nbsp;
+            </a>
+          ),
+        },
+      ],
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            textDecoration: "none",
+            // color: "var(--ifm-color-primary)",
+            fontWeight: 400,
+          }}
+        >
+          <Translate id="OtherRegion">Other Regions</Translate>
+        </a>
+      ),
+    },
+
+    // {
+    //   key: "2",
+    //   label: (
+    //     <a
+    //       href={siteConfig.customFields.urlDownloadClientWindows as string}
+    //       style={{
+    //         textDecoration: "none",
+    //         // color: "var(--ifm-color-primary)",
+    //         fontWeight: 400,
+    //       }}
+    //       download
+    //     >
+    //       Windows
+    //     </a>
+    //   ),
+    // },
+    // {
+    //   key: "3",
+    //   label: (
+    //     <a
+    //       href={siteConfig.customFields.urlDownloalClientUbuntu as string}
+    //       style={{
+    //         textDecoration: "none",
+    //         // color: "var(--ifm-color-primary)",
+    //         fontWeight: 400,
+    //       }}
+    //       download
+    //     >
+    //       Ubuntu
+    //     </a>
+    //   ),
+    // },
+    // {
+    //   key: "4",
+    //   disabled: true,
+    //   label: (
+    //     <a
+    //       href="#"
+    //       style={{
+    //         cursor: "default",
+    //         color: "gray",
+    //         textDecoration: "none",
+    //         // color: "var(--ifm-color-primary)",
+    //         fontWeight: 400,
+    //       }}
+    //     >
+    //       Mac (pending...)
+    //     </a>
+    //   ),
+    // },
   ];
 
   return (

@@ -689,9 +689,7 @@ const config = {
         //   height: 30,
         // },
 
-
-        copyright: `Copyright © ${new Date().getFullYear()} ${title}. All rights reserved. <a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2025444806号-2</a>`,
-        // <img src="https://qcloudimg.tencent-cloud.cn/raw/eed02831a0e201b8d794c8282c40cf2e.png" style="width: 14px; margin-right: 5px;">
+        copyright: `<span style="color: grey;">Copyright © ${new Date().getFullYear()} SIMPO. All Rights Reserved. <a style="color: grey;" href="https://beian.mps.gov.cn/#/query/webSearch?code=44011302005105" target="_blank" rel="noreferrer"> <img src="https://qcloudimg.tencent-cloud.cn/raw/eed02831a0e201b8d794c8282c40cf2e.png" style="width: 14px; margin-right: 5px;"> <span>粤公网安备44011302005105号 </span></a> <a style="color: grey;" href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2025444806号-2</a></span>`
 
 
         // Built with Docusaurus.

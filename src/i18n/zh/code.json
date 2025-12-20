@@ -732,7 +732,12 @@
   },
   "The following papers have adopted SIMPO as their experimental tool.": {
     "message": "以下论文使用了SIMPO作为实验工具。"
+  },
+  "ChinaRegion": {
+    "message": "中国地区"
+  },
+  "OtherRegion": {
+    "message": "其它地区"
+
   }
-
-
 }
