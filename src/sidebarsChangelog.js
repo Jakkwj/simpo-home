@@ -9,7 +9,7 @@ const sidebars = {
       collapsible: true,
       collapsed: false, // 默认展开, 后续多了在折叠
       items: [
-        'SIMPO Dash/2025',
+        'SIMPO Dash/2026',
 
         {
           type: 'category',
@@ -18,6 +18,7 @@ const sidebars = {
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [
+            'SIMPO Dash/Earlier/2025',
             'SIMPO Dash/Earlier/2024',
             'SIMPO Dash/Earlier/2023',
             'SIMPO Dash/Earlier/2022',
@@ -39,7 +40,7 @@ const sidebars = {
       collapsible: true,
       collapsed: false, // 默认展开, 后续多了在折叠
       items: [
-        'SIMPO Backend/2025',
+        'SIMPO Backend/2026',
 
         {
           type: 'category',
@@ -48,6 +49,7 @@ const sidebars = {
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [
+            'SIMPO Backend/Earlier/2025',
             'SIMPO Backend/Earlier/2024',
           ],
         },
@@ -65,7 +67,7 @@ const sidebars = {
       collapsible: true,
       collapsed: false, // 默认展开, 后续多了在折叠
       items: [
-        'SIMPO/2025',
+        'SIMPO/2026',
 
         {
           type: 'category',
@@ -74,6 +76,7 @@ const sidebars = {
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [
+            'SIMPO/Earlier/2025',
             'SIMPO/Earlier/2024',
             'SIMPO/Earlier/2023',
             'SIMPO/Earlier/2022',
@@ -129,7 +132,7 @@ const sidebars = {
       //  },
 
       items: [
-        'SIMPO Client/2025',
+        'SIMPO Client/2026',
         {
           type: 'category',
           label: 'Earlier',
@@ -137,6 +140,7 @@ const sidebars = {
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [
+            'SIMPO Client/Earlier/2025',
             'SIMPO Client/Earlier/2024',
             'SIMPO Client/Earlier/2023',
           ],

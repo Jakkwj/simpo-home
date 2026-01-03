@@ -1,0 +1,199 @@
+---
+slug: SIMPO 1.0.0 Officially Released
+title: SIMPO 1.0.0 正式发布：更快、更智能、更好用
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+
+
+
+今天，我们兴奋地宣布：**SIMPO 正式版 1.0.0 震撼发布！**
+
+这次是一次真正意义上的“大版本升级”：
+从内核到界面，从算法到体验，
+我们把**建模效率**、**计算能力**与**使用体验**做了系统性增强。
+更重要的是，我们引入了最前沿的 **AI** 能力，旨在将污水处理工艺数学模型的构建效率提升到一个**全新的维度**。
+
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    具体的更新内容请查看：[SIMPO 1.0.0 更新日志](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)。
+  </div>
+</div>
+
+----
+
+## 更新亮点
+
+### 亮点一：AI 赋能，论文直接变模型，速度直接起飞
+
+还在手动把论文里的模型参数一个个搬进软件？现在不需要了。
+
+**SIMPO 1.0.0** 全面接入 **Gemini 3**。现在的你，只需将 SCI 论文的 PDF 文件拖入软件，AI 将自动解析并提取关键信息，一键生成 **BioModel**！
+*   **流程：** 导入 PDF -> AI 解析 -> 人工简单校验 -> 模型就绪。
+*   **结果：** 过去几小时的建模工作，现在分分钟搞定。
+
+一句话总结：从“论文”到“可计算模型”，流程被大幅压缩，尤其适合需要快速复现文献模型、批量建模、或团队协作共享的场景。
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+  <img src="https://i.postimg.cc/DwjPppJs/ai-Bio-Model.gif"  width="100%"/>
+</div>
+
+-----
+
+
+### 亮点二：pH 计算，拿捏了！
+**pH 的计算**从来都不只是“输入公式”那么简单：离子形态、解离平衡、定量描述……每一步都容易踩坑。
+
+为此，我们在 **BioModel** 中构建了 **Ionization** 模块。现在，你只需对各离子进行定量描述，SIMPO 即可轻松、精准地完成复杂的 pH 计算。不再需要手动列方程，让软件来处理化学平衡。
+
+<div align="center" style={{marginTop: "0.2vh", marginBottom: "0.8vh"}}>
+  <img src="https://i.postimg.cc/q7WX4tGh/p-H-intro.gif"  width="100%"/>
+</div>
+
+-----
+
+### 亮点三：性能狂飙，如丝般顺滑
+为了追求极致的性能，我们完成了多项“看不见”但“用得爽”的努力，带来明显的**访问速度与计算效率提升**：
+*   **内核升级：** Python 版本升级 **3.11.9 → 3.12.12**。
+*   **后端重构：** 后端从 **FastAPI** 迁移至更高效的 **Litestar**。
+*   **域名迁移：** [https://www.simpowater.org]() → [https://www.simpowater.com]()，访问速度更快更丝滑。
+*   **算法优化：** 经过验证，调整后的 **Forward Euler** 算法在极低的 Step Tolerance（0.01%）下即可达到极高精度，因此我们移除冗余的 Improved Euler，让计算更纯粹、更快。
+
+-----
+
+## 体验升级：细节决定成败
+除了上述硬核功能，我们还修复了大量痛点，只为让你用得更顺手：
+*   **无需登录即可分享：** `Public` 和 `Private` 项目现支持免登录访问，分享成果给导师或同事更方便。
+*   **操作流更符合直觉：** `Edit` 和 `Export` 按钮移至 `Detail` 详情页，不再需要频繁切换页面。
+*   **输入优化：** Backspace 不会在未保存时误触退出页面，输入更安心。
+*   **下载优化：** 客户端下载体积显著减少（安装时间较之前略有增加）。
+*   **页面优化：**
+    *   更好地自适应支持不同屏幕大小。
+    *   Dashboard 左侧菜单可折叠：可用空间更大。
+    *   顶部弹窗通知不再重叠：信息更清晰。
+*   **绘图功能大加强：**
+    *   本地绘图资源占用大幅降低，鼠标/键盘切换图片更流畅。
+    *   支持 **SVG 矢量图**导出，直接满足论文发表要求。
+    *   坐标轴、线宽、图例位置均可精细自定义。
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+  <img src="https://i.postimg.cc/T1JrVtvT/figure-control.gif"  width="100%"/>
+</div>
+
+
+---
+
+
+## 重点：福利时间
+
+虽然功能强大了，速度变快了，但这都不重要......
+重要的是——
+
+**现在！立刻！马上！**
+**所有高级功能（包括超贵的 Gemini 3 AI 功能）统统免费！🆓**
+
+教程视频我们还在肝，但这么大的羊毛，建议大家先去薅了再说！🏃‍♂️💨
+
+📍 **新官网地址：** [https://www.simpowater.com](https://www.simpowater.com)
+📝 **客户端下载地址：** [Windows](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)，[Ubuntu](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)
+
+啥别说了，赶紧下载去体验吧！🚀
+
+---
+
+
+
+
+{/*
+
+**SIMPO 正式版 1.0.0** 现已上线。
+这次是一次真正意义上的“大版本升级”：我们把**建模效率**、**计算能力**与**使用体验**做了系统性增强，并上线两项最核心的新能力：
+我们新增了 **AI 新建 BioModel** 和 **pH 计算**等关键功能。
+将 `Python` 版本从 `3.11.9` 升级到 `3.12.12`，后端框架框架从 ``fastapi`` 迁移至 ``litestar``,
+网址从 [https://www.simpowater.org]() 迁移至 [https://www.simpowater.com]()，
+大幅提升了访问和计算的速度和效率。
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    具体的更新内容请查看：[SIMPO 1.0.0 更新日志](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)。
+  </div>
+</div>
+
+## 新增功能
+
+### AI 新建 BioModel
+
+新版本的 **SIMPO** 全面接入 **Gemini 3**。
+现在新建 **BioModel** 时，可以通过导入 SCI 论文 PDF 文件，就可以使用 **Gemini 3** 进行解析后自动新建，最后进行一次人工校验即可在 **SIMPO** 中直接使用论文中的模型。极大地提高了建模的效率，简直不要太香。
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+  <img src={config.customFields.imgUrlTheEasiestWay}  width="100%"/>
+</div>
+
+### pH 计算
+
+**pH** 的计算从来不是一件容易得事情。
+现在通过在 **BioModel** 中的 **Ionization** 页面中对各离子的定量描述，就可以起轻松进行 **pH** 计算。
+
+
+<div align="center" style={{marginTop: "0.2vh", marginBottom: "0.8vh"}}>
+  <img src={config.customFields.imgUrlBlogEurekAlertSIMPO}  width="50%"/>
+    <div style={{fontSize: "0.8rem"}}>[https://www.eurekalert.org/news-releases/1106824](https://www.eurekalert.org/news-releases/1106824)</div>
+</div>
+
+----
+
+## 改进
+
+为了进一步提高用户的实际使用体验，**1.0.0** 版本进行了大量的优化和改进，主要包括：
+
+### 前端页面
+
+- 页面优化，更多地支持自适应屏幕。
+- `Public` 和 `Private` 现在不需要登录就可以访问，进一步提高**分享**的效率。
+- `Edit` 和 `Export` 按钮从 `Profile` 移动到 `Detail` 页面，并且可以在 `Project.Detail` 中直接对 `BioModel` 和 `DataSet` 进行 `Edit` 和 `Export` 操作，不用再到处切换页面了。
+- 进一步优化公式输入，现在 **Backspace** 按键将不会在公式输入未保存前意外退出页面了，大家可以安心输入公式了。
+- `Dashboard` 左侧菜单支持折叠，屏幕可用空间进一步得到扩大。
+- 顶部弹窗通知内容现在不会重叠显示。
+
+### 画图功能
+
+- 优化本地动态画图功能，减少内存和 CPU 消耗。
+- 计算结果图片现在支持 **svg** 图片格式下载导出。
+- 本地动态画图窗口现在支持用鼠标/键盘左右键切换图片。
+- 画图结果现在可以进行精细控制并保存状态，包括：
+  - 坐标轴的范围设置。
+  - 线的宽度和符号的大小。
+  - 画图结果的宽度。
+  - 图例的位置。
+
+### 其它
+
+- 客户端下载体积大幅减少，但是安装时间比过去略长。
+- 我们发现通过降低 **Forward Euler** 的 **Step Tolerance** 可以（甚至更快地）达到同样的计算精度，因此 **Improved Euler** 将不再支持。需要更高计算精度的时候，小伙伴只要降低 **Forward Euler** 的 **Step Tolerance** 就可以了，最低可以降低到 **0.01%**，够用了。
+
+
+------
+
+
+## 最后
+
+具体的使用教程，我们会后续持续补充（包括教学视频）。
+不过，就是现在，啥也别说了，现在所有高级功能都免费哦（包括 **Gemini 3**），赶紧来薅羊毛~~~
+
+
+------------------ */}
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>添加好友，备注SIMPO加入交流群</b></div>
+  <img src={config.customFields.imgUrlWechatJakk}  width="25%"/>
+</div>
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>欢迎关注微信公众号</b></div>
+  <img src={config.customFields.imgUrlWechatAccount}  width="25%"/>
+</div>
