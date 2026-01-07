@@ -3,6 +3,8 @@
 
 // const lightCodeTheme = require('prism-react-renderer/themes/github');
 // const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+import remarkMath from 'remark-math'; // 公式
+import rehypeKatex from 'rehype-katex'; // 公式
 const {themes} = require('prism-react-renderer');
 const lightTheme = themes.github;
 const darkTheme = themes.dracula;
@@ -241,6 +243,8 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebarsDocs.js'),
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           // editUrl:
@@ -250,6 +254,8 @@ const config = {
         blog: {
           showReadingTime: true,
           onUntruncatedBlogPosts: 'ignore',
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           // editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
@@ -301,6 +307,8 @@ const config = {
         path: 'resource',
         routeBasePath: 'resource',
         sidebarPath: require.resolve('./sidebarsResource.js'),
+        remarkPlugins: [remarkMath],
+        rehypePlugins: [rehypeKatex],
       },
     ],
 
@@ -311,6 +319,8 @@ const config = {
         path: 'changelog',
         routeBasePath: 'changelog',
         sidebarPath: require.resolve('./sidebarsChangelog.js'),
+        remarkPlugins: [remarkMath],
+        rehypePlugins: [rehypeKatex],
       },
     ],
 
@@ -714,7 +724,14 @@ const config = {
 
   // <head link>
   // stylesheets: [
-  //   'antd/dist/antd.css', // 或者 antd/dist/antd.min.css
+  //   {
+  //   href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
+  //   type: 'text/css',
+  //   integrity:
+  //       'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
+  //   crossorigin: 'anonymous',
+  //   }
+  // //   'antd/dist/antd.css', // 或者 antd/dist/antd.min.css
   // ],
 
 };
