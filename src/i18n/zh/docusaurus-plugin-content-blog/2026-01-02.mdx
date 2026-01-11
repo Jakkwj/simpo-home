@@ -10,6 +10,7 @@ import config from '@generated/docusaurus.config'
 
 今天，我们兴奋地宣布：**SIMPO 正式版 1.0.0 震撼发布！**
 
+
 这次是一次真正意义上的“大版本升级”：
 从内核到界面，从算法到体验，
 我们把**建模效率**、**计算能力**与**使用体验**做了系统性增强。
@@ -18,7 +19,7 @@ import config from '@generated/docusaurus.config'
 
 <div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
   <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
-    具体的更新内容请查看：[SIMPO 1.0.0 更新日志](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)。
+  **SIMPO** 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：[SIMPO 1.0.0 更新日志](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)。
   </div>
 </div>
 
@@ -64,9 +65,10 @@ import config from '@generated/docusaurus.config'
 -----
 
 ## 体验升级：细节决定成败
-除了上述硬核功能，我们还修复了大量痛点，只为让你用得更顺手：
+除了上述硬核功能，我们还调整和优化了大量痛点，只为让你用得更顺手：
 *   **无需登录即可分享：** `Public` 和 `Private` 项目现支持免登录访问，分享成果给导师或同事更方便。
 *   **操作流更符合直觉：** `Edit` 和 `Export` 按钮移至 `Detail` 详情页，不再需要频繁切换页面。
+*   **函数运算：** `BioModel` 的 `Rate` 现在支持函数: `Max` 和 `Min` (Max(1, 5) = 5，Min(1, 5) = 1)。
 *   **输入优化：** Backspace 不会在未保存时误触退出页面，输入更安心。
 *   **下载优化：** 客户端下载体积显著减少（安装时间较之前略有增加）。
 *   **页面优化：**
@@ -100,6 +102,12 @@ import config from '@generated/docusaurus.config'
 📝 **客户端下载地址：** [Windows](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)，[Ubuntu](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)
 
 啥别说了，赶紧下载去体验吧！🚀
+
+---
+
+**特别提醒：** 升级1.0.0前，请将旧版卸载：
+- Windows: 开始菜单点击 Uninstall SimpoClient。
+- Ubuntu：运行 `sudo dpkg -r SimpoClient`。
 
 ---
 

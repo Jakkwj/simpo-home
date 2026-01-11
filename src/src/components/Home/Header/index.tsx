@@ -12,145 +12,145 @@ import { AiOutlineDown } from "react-icons/ai";
 export default function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   const items: MenuProps["items"] = [
-    {
-      key: "1",
-      children: [
-        {
-          key: "1-1",
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={siteConfig.customFields.urlDownloalNetdiskWindows as string}
-              style={{
-                textDecoration: "none",
-                // color: "var(--ifm-color-primary)",
-                fontWeight: 400,
-              }}
-            >
-              Windows &nbsp;&nbsp;
-            </a>
-          ),
-        },
-        {
-          key: "1-2",
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={siteConfig.customFields.urlDownloalNetdiskUbuntu as string}
-              style={{
-                textDecoration: "none",
-                // color: "var(--ifm-color-primary)",
-                fontWeight: 400,
-              }}
-            >
-              Ubuntu &nbsp;&nbsp;
-            </a>
-          ),
-        },
-      ],
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          // href={siteConfig.customFields.urlDownloalNetdiskUbuntu as string}
-          style={{
-            textDecoration: "none",
-            // color: "var(--ifm-color-primary)",
-            fontWeight: 400,
-          }}
-        >
-          <Translate id="ChinaRegion">China Region</Translate>
-        </a>
-      ),
-    },
-
-    {
-      key: "2",
-      children: [
-        {
-          key: "2-1",
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={siteConfig.customFields.urlDownloadClientWindows as string}
-              style={{
-                textDecoration: "none",
-                // color: "var(--ifm-color-primary)",
-                fontWeight: 400,
-              }}
-            >
-              Windows &nbsp;&nbsp;
-            </a>
-          ),
-        },
-        {
-          key: "2-2",
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={siteConfig.customFields.urlDownloalClientUbuntu as string}
-              style={{
-                textDecoration: "none",
-                // color: "var(--ifm-color-primary)",
-                fontWeight: 400,
-              }}
-            >
-              Ubuntu &nbsp;&nbsp;
-            </a>
-          ),
-        },
-      ],
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            textDecoration: "none",
-            // color: "var(--ifm-color-primary)",
-            fontWeight: 400,
-          }}
-        >
-          <Translate id="OtherRegion">Other Regions</Translate>
-        </a>
-      ),
-    },
+    // {
+    //   key: "1",
+    //   children: [
+    //     {
+    //       key: "1-1",
+    //       label: (
+    //         <a
+    //           target="_blank"
+    //           rel="noopener noreferrer"
+    //           href={siteConfig.customFields.urlDownloalNetdiskWindows as string}
+    //           style={{
+    //             textDecoration: "none",
+    //             // color: "var(--ifm-color-primary)",
+    //             fontWeight: 400,
+    //           }}
+    //         >
+    //           Windows &nbsp;&nbsp;
+    //         </a>
+    //       ),
+    //     },
+    //     {
+    //       key: "1-2",
+    //       label: (
+    //         <a
+    //           target="_blank"
+    //           rel="noopener noreferrer"
+    //           href={siteConfig.customFields.urlDownloalNetdiskUbuntu as string}
+    //           style={{
+    //             textDecoration: "none",
+    //             // color: "var(--ifm-color-primary)",
+    //             fontWeight: 400,
+    //           }}
+    //         >
+    //           Ubuntu &nbsp;&nbsp;
+    //         </a>
+    //       ),
+    //     },
+    //   ],
+    //   label: (
+    //     <a
+    //       target="_blank"
+    //       rel="noopener noreferrer"
+    //       // href={siteConfig.customFields.urlDownloalNetdiskUbuntu as string}
+    //       style={{
+    //         textDecoration: "none",
+    //         // color: "var(--ifm-color-primary)",
+    //         fontWeight: 400,
+    //       }}
+    //     >
+    //       <Translate id="ChinaRegion">China Region</Translate>
+    //     </a>
+    //   ),
+    // },
 
     // {
     //   key: "2",
+    //   children: [
+    //     {
+    //       key: "2-1",
+    //       label: (
+    //         <a
+    //           target="_blank"
+    //           rel="noopener noreferrer"
+    //           href={siteConfig.customFields.urlDownloadClientWindows as string}
+    //           style={{
+    //             textDecoration: "none",
+    //             // color: "var(--ifm-color-primary)",
+    //             fontWeight: 400,
+    //           }}
+    //         >
+    //           Windows &nbsp;&nbsp;
+    //         </a>
+    //       ),
+    //     },
+    //     {
+    //       key: "2-2",
+    //       label: (
+    //         <a
+    //           target="_blank"
+    //           rel="noopener noreferrer"
+    //           href={siteConfig.customFields.urlDownloalClientUbuntu as string}
+    //           style={{
+    //             textDecoration: "none",
+    //             // color: "var(--ifm-color-primary)",
+    //             fontWeight: 400,
+    //           }}
+    //         >
+    //           Ubuntu &nbsp;&nbsp;
+    //         </a>
+    //       ),
+    //     },
+    //   ],
     //   label: (
     //     <a
-    //       href={siteConfig.customFields.urlDownloadClientWindows as string}
+    //       target="_blank"
+    //       rel="noopener noreferrer"
     //       style={{
     //         textDecoration: "none",
     //         // color: "var(--ifm-color-primary)",
     //         fontWeight: 400,
     //       }}
-    //       download
     //     >
-    //       Windows
+    //       <Translate id="OtherRegion">Other Regions</Translate>
     //     </a>
     //   ),
     // },
-    // {
-    //   key: "3",
-    //   label: (
-    //     <a
-    //       href={siteConfig.customFields.urlDownloalClientUbuntu as string}
-    //       style={{
-    //         textDecoration: "none",
-    //         // color: "var(--ifm-color-primary)",
-    //         fontWeight: 400,
-    //       }}
-    //       download
-    //     >
-    //       Ubuntu
-    //     </a>
-    //   ),
-    // },
+
+    {
+      key: "2",
+      label: (
+        <a
+          href={siteConfig.customFields.urlDownloadClientWindows as string}
+          style={{
+            textDecoration: "none",
+            // color: "var(--ifm-color-primary)",
+            fontWeight: 400,
+          }}
+          download
+        >
+          Windows
+        </a>
+      ),
+    },
+    {
+      key: "3",
+      label: (
+        <a
+          href={siteConfig.customFields.urlDownloalClientUbuntu as string}
+          style={{
+            textDecoration: "none",
+            // color: "var(--ifm-color-primary)",
+            fontWeight: 400,
+          }}
+          download
+        >
+          Ubuntu
+        </a>
+      ),
+    },
     // {
     //   key: "4",
     //   disabled: true,

@@ -1,5 +1,7 @@
 import sys
+
 from psutil import virtual_memory
+
 if virtual_memory().total > 33470000000:
     COMPUTER_PATH = "/media/Data/SynologyDrive/GitHub"  # 家里台式机
 else:
@@ -7,45 +9,29 @@ else:
 
 sys.path.append(f"{COMPUTER_PATH}/SimpoBackend/backend/litestar")
 
-from datetime import datetime
-from base64 import b64decode
 from asyncio import run as asy_run
+from base64 import b64decode
+from datetime import datetime
 from random import random
 from time import time
-
-from pickle import (
-    dumps as pdumps,
-)
-from pickle import (
-    loads as pickle_loads,
-)
 from traceback import format_exc
+
+from app.api.biomodel.crud.ai.gemini import main_two_step as gemini_main
+from app.database.models import (
+    BioModel,
+    SourcePaper,
+)
+from app.tasks.task_download.task_download import downloads_input_file_biomodel_task
+from app.tasks.task_parse import parse_BioModel_task
+from config.config import get_settings
 
 # from funboost import BrokerEnum, boost
 from icecream import ic
 from loguru import logger
 from orjson import loads as ploads
 from simpo.biomodel import BioModel as SimpoBioModel
-from simpo.dataset import DataSet as SimpoDataSet
-from sqlalchemy import (
-    create_engine,
-    text,
-)
-from sqlalchemy.orm import (
-    declarative_base,
-    sessionmaker,
-)
-from tqdm import tqdm
-from add_db_paper import get_sync_session
-from app.database.models import (
-    BioModel,
-    SourcePaper,
-)
-from config.config import get_settings
 
-from app.api.biomodel.crud.ai.gemini import main_two_step as gemini_main
-from app.tasks.task_parse import parse_BioModel_task
-from app.tasks.task_download.task_download import downloads_input_file_biomodel_task
+from add_db_paper import get_sync_session
 
 settings = get_settings()
 
@@ -63,19 +49,13 @@ async def main(result: dict[str, str], biomodel_file: str) -> str:
     if isinstance(biomodel_file_gemini, str):
         raise ValueError(biomodel_file_gemini)
 
-
     try:
-
         bm_str = await parse_BioModel_task(biomodel_file_gemini)
 
         biomodel_pickle = b64decode(bm_str)
         bm: SimpoBioModel = ploads(biomodel_pickle)  # 将 pickle 结果解码后加载
-        replacer_parameter = bm.replacer[
-            bm.replacer["type"] == "BioParameter"
-        ].index.tolist()
-        replacer_component = bm.replacer[
-            bm.replacer["type"] == "BioComponent"
-        ].index.tolist()
+        replacer_parameter = bm.replacer[bm.replacer["type"] == "BioParameter"].index.tolist()
+        replacer_component = bm.replacer[bm.replacer["type"] == "BioComponent"].index.tolist()
 
         SessionLocal = get_sync_session()
         session = SessionLocal()
@@ -84,7 +64,9 @@ async def main(result: dict[str, str], biomodel_file: str) -> str:
         version = 0
         state = "Draft"
         current_user_id = 1
-        sourcepaper_id = session.query(SourcePaper.id).where(SourcePaper.DOI == result["DOI"]).first()[0]
+        sourcepaper_id = (
+            session.query(SourcePaper.id).where(SourcePaper.DOI == result["DOI"]).first()[0]
+        )
 
         session.add(
             BioModel(
@@ -120,7 +102,6 @@ async def main(result: dict[str, str], biomodel_file: str) -> str:
         session.close()
 
         return "ok"
-
 
     except Exception as error:  # 解析失败, 未通过 Simpo 的解析算法
         logger.error(error)

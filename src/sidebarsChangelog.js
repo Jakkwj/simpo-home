@@ -97,7 +97,7 @@ const sidebars = {
       collapsible: true,
       collapsed: false, // 默认展开, 后续多了在折叠
       items: [
-        'SIMPO Pro/2025',
+        'SIMPO Pro/2026',
 
         {
           type: 'category',
@@ -106,6 +106,7 @@ const sidebars = {
           collapsible: true,
           collapsed: true, // 默认折叠
           items: [
+            'SIMPO Pro/Earlier/2025',
             'SIMPO Pro/Earlier/2024',
             'SIMPO Pro/Earlier/2023',
             'SIMPO Pro/Earlier/2022',
