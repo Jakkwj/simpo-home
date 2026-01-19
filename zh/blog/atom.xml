@@ -2,11 +2,95 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.simpowater.org/zh/blog</id>
     <title>SIMPO Blog</title>
-    <updated>2025-11-27T00:00:00.000Z</updated>
+    <updated>2026-01-02T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.simpowater.org/zh/blog"/>
     <subtitle>SIMPO Blog</subtitle>
     <icon>https://www.simpowater.org/zh/img/logo3.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[SIMPO 1.0.0 正式发布：更快、更智能、更好用]]></title>
+        <id>https://www.simpowater.org/zh/blog/SIMPO 1.0.0 Officially Released</id>
+        <link href="https://www.simpowater.org/zh/blog/SIMPO 1.0.0 Officially Released"/>
+        <updated>2026-01-02T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[今天，我们兴奋地宣布：SIMPO 正式版 1.0.0 震撼发布！]]></summary>
+        <content type="html"><![CDATA[<p>今天，我们兴奋地宣布：<strong>SIMPO 正式版 1.0.0 震撼发布！</strong></p>
+<p>这次是一次真正意义上的“大版本升级”：
+从内核到界面，从算法到体验，
+我们把<strong>建模效率</strong>、<strong>计算能力</strong>与<strong>使用体验</strong>做了系统性增强。
+更重要的是，我们引入了最前沿的 <strong>AI</strong> 能力，旨在将污水处理工艺数学模型的构建效率提升到一个<strong>全新的维度</strong>。</p>
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p><strong>SIMPO</strong> 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：<a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">SIMPO 1.0.0 更新日志</a>。</p></div></div>
+<hr>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="更新亮点">更新亮点<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E6%9B%B4%E6%96%B0%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="更新亮点的直接链接" title="更新亮点的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="亮点一ai-赋能论文直接变模型速度直接起飞">亮点一：AI 赋能，论文直接变模型，速度直接起飞<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E4%BA%AE%E7%82%B9%E4%B8%80ai-%E8%B5%8B%E8%83%BD%E8%AE%BA%E6%96%87%E7%9B%B4%E6%8E%A5%E5%8F%98%E6%A8%A1%E5%9E%8B%E9%80%9F%E5%BA%A6%E7%9B%B4%E6%8E%A5%E8%B5%B7%E9%A3%9E" class="hash-link" aria-label="亮点一：AI 赋能，论文直接变模型，速度直接起飞的直接链接" title="亮点一：AI 赋能，论文直接变模型，速度直接起飞的直接链接" translate="no">​</a></h3>
+<p>还在手动把论文里的模型参数一个个搬进软件？现在不需要了。</p>
+<p><strong>SIMPO 1.0.0</strong> 全面接入 <strong>Gemini 3</strong>。现在的你，只需将 SCI 论文的 PDF 文件拖入软件，AI 将自动解析并提取关键信息，一键生成 <strong>BioModel</strong>！</p>
+<ul>
+<li class=""><strong>流程：</strong> 导入 PDF -&gt; AI 解析 -&gt; 人工简单校验 -&gt; 模型就绪。</li>
+<li class=""><strong>结果：</strong> 过去几小时的建模工作，现在分分钟搞定。</li>
+</ul>
+<p>一句话总结：从“论文”到“可计算模型”，流程被大幅压缩，尤其适合需要快速复现文献模型、批量建模、或团队协作共享的场景。</p>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://i.postimg.cc/DwjPppJs/ai-Bio-Model.gif" width="100%"></div>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="亮点二ph-计算拿捏了">亮点二：pH 计算，拿捏了！<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E4%BA%AE%E7%82%B9%E4%BA%8Cph-%E8%AE%A1%E7%AE%97%E6%8B%BF%E6%8D%8F%E4%BA%86" class="hash-link" aria-label="亮点二：pH 计算，拿捏了！的直接链接" title="亮点二：pH 计算，拿捏了！的直接链接" translate="no">​</a></h3>
+<p><strong>pH 的计算</strong>从来都不只是“输入公式”那么简单：离子形态、解离平衡、定量描述……每一步都容易踩坑。</p>
+<p>为此，我们在 <strong>BioModel</strong> 中构建了 <strong>Ionization</strong> 模块。现在，你只需对各离子进行定量描述，SIMPO 即可轻松、精准地完成复杂的 pH 计算。不再需要手动列方程，让软件来处理化学平衡。</p>
+<div align="center" style="margin-top:0.2vh;margin-bottom:0.8vh"><img src="https://i.postimg.cc/q7WX4tGh/p-H-intro.gif" width="100%"></div>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="亮点三性能狂飙如丝般顺滑">亮点三：性能狂飙，如丝般顺滑<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E4%BA%AE%E7%82%B9%E4%B8%89%E6%80%A7%E8%83%BD%E7%8B%82%E9%A3%99%E5%A6%82%E4%B8%9D%E8%88%AC%E9%A1%BA%E6%BB%91" class="hash-link" aria-label="亮点三：性能狂飙，如丝般顺滑的直接链接" title="亮点三：性能狂飙，如丝般顺滑的直接链接" translate="no">​</a></h3>
+<p>为了追求极致的性能，我们完成了多项“看不见”但“用得爽”的努力，带来明显的<strong>访问速度与计算效率提升</strong>：</p>
+<ul>
+<li class=""><strong>内核升级：</strong> Python 版本升级 <strong>3.11.9 → 3.12.12</strong>。</li>
+<li class=""><strong>后端重构：</strong> 后端从 <strong>FastAPI</strong> 迁移至更高效的 <strong>Litestar</strong>。</li>
+<li class=""><strong>域名迁移：</strong> <a href="" class="">https://www.simpowater.org</a> → <a href="" class="">https://www.simpowater.com</a>，访问速度更快更丝滑。</li>
+<li class=""><strong>算法优化：</strong> 经过验证，调整后的 <strong>Forward Euler</strong> 算法在极低的 Step Tolerance（0.01%）下即可达到极高精度，因此我们移除冗余的 Improved Euler，让计算更纯粹、更快。</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="体验升级细节决定成败">体验升级：细节决定成败<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E4%BD%93%E9%AA%8C%E5%8D%87%E7%BA%A7%E7%BB%86%E8%8A%82%E5%86%B3%E5%AE%9A%E6%88%90%E8%B4%A5" class="hash-link" aria-label="体验升级：细节决定成败的直接链接" title="体验升级：细节决定成败的直接链接" translate="no">​</a></h2>
+<p>除了上述硬核功能，我们还调整和优化了大量痛点，只为让你用得更顺手：</p>
+<ul>
+<li class=""><strong>无需登录即可分享：</strong> <code>Public</code> 和 <code>Private</code> 项目现支持免登录访问，分享成果给导师或同事更方便。</li>
+<li class=""><strong>操作流更符合直觉：</strong> <code>Edit</code> 和 <code>Export</code> 按钮移至 <code>Detail</code> 详情页，不再需要频繁切换页面。</li>
+<li class=""><strong>函数运算：</strong> <code>BioModel</code> 的 <code>Rate</code> 现在支持函数: <code>Max</code> 和 <code>Min</code> (Max(1, 5) = 5，Min(1, 5) = 1)。</li>
+<li class=""><strong>输入优化：</strong> Backspace 不会在未保存时误触退出页面，输入更安心。</li>
+<li class=""><strong>下载优化：</strong> 客户端下载体积显著减少（安装时间较之前略有增加）。</li>
+<li class=""><strong>页面优化：</strong>
+<ul>
+<li class="">更好地自适应支持不同屏幕大小。</li>
+<li class="">Dashboard 左侧菜单可折叠：可用空间更大。</li>
+<li class="">顶部弹窗通知不再重叠：信息更清晰。</li>
+</ul>
+</li>
+<li class=""><strong>绘图功能大加强：</strong>
+<ul>
+<li class="">本地绘图资源占用大幅降低，鼠标/键盘切换图片更流畅。</li>
+<li class="">支持 <strong>SVG 矢量图</strong>导出，直接满足论文发表要求。</li>
+<li class="">坐标轴、线宽、图例位置均可精细自定义。</li>
+</ul>
+</li>
+</ul>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://i.postimg.cc/T1JrVtvT/figure-control.gif" width="100%"></div>
+<hr>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="重点福利时间">重点：福利时间<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E9%87%8D%E7%82%B9%E7%A6%8F%E5%88%A9%E6%97%B6%E9%97%B4" class="hash-link" aria-label="重点：福利时间的直接链接" title="重点：福利时间的直接链接" translate="no">​</a></h2>
+<p>虽然功能强大了，速度变快了，但这都不重要......
+重要的是——</p>
+<p><strong>现在！立刻！马上！</strong>
+<strong>所有高级功能（包括超贵的 Gemini 3 AI 功能）统统免费！🆓</strong></p>
+<p>教程视频我们还在肝，但这么大的羊毛，建议大家先去薅了再说！🏃‍♂️💨</p>
+<p>📍 <strong>新官网地址：</strong> <a href="https://www.simpowater.com/" target="_blank" rel="noopener noreferrer" class="">https://www.simpowater.com</a>
+📝 <strong>客户端下载地址：</strong> <a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">Windows</a>，<a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">Ubuntu</a></p>
+<p>啥别说了，赶紧下载去体验吧！🚀</p>
+<hr>
+<p><strong>特别提醒：</strong> 升级1.0.0前，请将旧版卸载：</p>
+<ul>
+<li class="">Windows: 开始菜单点击 Uninstall SimpoClient。</li>
+<li class="">Ubuntu：运行 <code>sudo dpkg -r SimpoClient</code>。</li>
+</ul>
+<hr>
+<!-- -->
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>添加好友，备注SIMPO加入交流群</b></div><img src="https://i.postimg.cc/yxKhZxM0/jakk-QR.jpg" width="25%"></div>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>欢迎关注微信公众号</b></div><img src="https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg" width="25%"></div>]]></content>
+        <category label="SIMPO" term="SIMPO"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[SIMPO 首篇论文发表：面向污水处理数学模拟的无代码智能建模与共享平台]]></title>
         <id>https://www.simpowater.org/zh/blog/SIMPO—A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling</id>
@@ -58,7 +142,7 @@
 <p>一个新工具的可靠性，必须经过严格验证。研究团队选取经典案例，将SIMPO的模拟结果与行业标杆软件AQUASIM进行对比。</p>
 <p><strong>如图4所示</strong>，在生物营养物去除模型的批量和恒定反应器模拟中，SIMPO与AQUASIM的模拟曲线几乎完全重合，weighted Nash Sutcliffe efficiency（WNSE）高达0.999以上。这证明SIMPO在保持操作简便性的同时，其计算精度与专业软件一致。</p>
 <div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://www.sciengine.com/figures/figures-769b3e9b1b8f4957bfa77a70b9211373-3050-4724-2025-1-4-201-F006c.jpg" width="100%"><span style="font-size:0.8rem">图4 （A） 间歇式反应器的 SIMPO 模拟结果。公开 Project：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Batch/id/407/did/406" target="_blank" rel="noopener noreferrer" class="">https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Batch/id/407/did/406</a>。用户可以将其克隆到自己的仓库。（B）恒定反应器的 SIMPO 模拟结果。公开 Project：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Chemostat/id/414/did/409" target="_blank" rel="noopener noreferrer" class="">https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Chemostat/id/414/did/409</a>。利用 AQUASIM 预测结果作为测量数据来测试 SIMPO 的计算准确性，WNSE 接近 1 的高值表明 SIMPO 与 AQUASIM 在准确性上具有良好一致性。</span></div>
-<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="智能纠错助手">智能纠错助手<a href="https://www.simpowater.org/zh/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E6%99%BA%E8%83%BD%E7%BA%A0%E9%94%99%E5%8A%A9%E6%89%8B" class="hash-link" aria-label="智能纠错助手的直接链接" title="智能纠错助手的直接链接" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="智能纠错助手">智能纠错助手<a href="https://www.simpowater.org/zh/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E6%99%BA%E8%83%BD%E7%BA%A0%E9%94%99%E5%8A%A9%E6%89%8B" class="hash-link" aria-label="智能纠错助手的直接链接" title="智能纠错助�手的直接链接" translate="no">​</a></h3>
 <p>SIMPO内置的<strong>自动平衡检查与可视化结果评估</strong>功能，能帮助研究者发现已发表模型中不易察觉的错误或缺陷。</p>
 <p><strong>案例1：检测化学计量矩阵错误</strong></p>
 <p><strong>图5</strong>展示了SIMPO在检查一个ASM3扩展模型时的表现。通过输入理论需氧量和氮平衡项，平台成功检测出原始文献中<strong>3处化学计量错误</strong>，并精准定位到具体反应过程。这为模型修正提供了明确方向。</p>
@@ -119,7 +203,7 @@
         <content type="html"><![CDATA[<p>至1987年起，国际水质协会（IAWQ）工作组发布了一系列污水处理工艺数学模型（ASM1，ASM2，ASM2d，ASM3和ADM1等），这些模型建立了有机物，氮，磷等污染物去除的通用框架，已成为污水处理工艺研究和实践的强大工具。</p>
 <p>然而，随着研究的深入，污水处理工艺建模的范围扩展到了多种复杂过程（比如一氧化二氮的排放和硫自养反硝化等）。尽管这些扩展扩大了模型的适用性，但也给模型带来了指数增长的复杂性。生化计量学矩阵（Biochemical Stoichiometry Matrix）变得越来越大，模型组分（Component）和参数（Parameter）的数量越来越多，计算要求也越来越高，这给研究人员和工程师带来了巨大的障碍。</p>
 <div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"></path></svg></span>起源</div><div class="admonitionContent_BuS1"><ul>
-<li class=""><strong>SIMPO</strong> 由JiangLab（中山大学环境科学与工程学院）发起，是一个专为污水处理工艺建模设计的智能计算SaaS平台。</li>
+<li class=""><strong>SIMPO</strong> 由中山大学环境科学与工程学院江峰教授团队发起，是一个专为污水处理工艺建模设计的智能计算SaaS平台。</li>
 </ul></div></div>
 <p>为了应对这些挑战和机遇，我们开发了<strong>SIMPO</strong>（Simplified Intelligent Modelling Platform Online，<a href="https://www.simpowater.org/" target="_blank" rel="noopener noreferrer" class="">https://www.simpowater.org</a>），一个旨在简化和推广污水处理工艺建模的新一代智能计算平台。作为一个零门槛的 SaaS 平台，<strong>SIMPO</strong>提供了直观的拖拉拽用户界面、自适应算法和合作工具，弥补了复杂模型能力与实际可用性之间的差距，使用户能够轻松应对传统ASMs模型和各种现代前沿模型。</p>
 <p><strong>SIMPO</strong>创新地解决了传统计算工具的关键限制：</p>

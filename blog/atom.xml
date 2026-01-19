@@ -2,11 +2,94 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.simpowater.org/blog</id>
     <title>SIMPO Blog</title>
-    <updated>2025-11-27T00:00:00.000Z</updated>
+    <updated>2026-01-02T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.simpowater.org/blog"/>
     <subtitle>SIMPO Blog</subtitle>
     <icon>https://www.simpowater.org/img/logo3.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[SIMPO 1.0.0 Officially Released: Faster, Smarter, and More User-Friendly]]></title>
+        <id>https://www.simpowater.org/blog/SIMPO 1.0.0 Officially Released</id>
+        <link href="https://www.simpowater.org/blog/SIMPO 1.0.0 Officially Released"/>
+        <updated>2026-01-02T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Today, we are thrilled to announce the official release of SIMPO version 1.0.0!]]></summary>
+        <content type="html"><![CDATA[<p>Today, we are thrilled to announce the <strong>official release of SIMPO version 1.0.0!</strong></p>
+<p>This is a "major version upgrade" in the truest sense of the word:
+From the core to the interface, from algorithms to the user experience,
+we have systematically enhanced <strong>modeling efficiency</strong>, <strong>computational power</strong>, and <strong>usability</strong>.
+More importantly, we've integrated cutting-edge <strong>AI</strong> capabilities, aiming to elevate the efficiency of building mathematical models for wastewater treatment processes to an <strong>entirely new dimension</strong>.</p>
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p><strong>SIMPO</strong>, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is a no-code intelligent modeling  and sharing platform for mathematical simulation of wastewater treatment. For specific update details, please see: <a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">SIMPO 1.0.0 Changelog</a>.</p></div></div>
+<hr>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="release-highlights">Release Highlights<a href="https://www.simpowater.org/blog/SIMPO%201.0.0%20Officially%20Released#release-highlights" class="hash-link" aria-label="Direct link to Release Highlights" title="Direct link to Release Highlights" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="highlight-1-ai-powered-directly-convert-papers-to-models-speed-skyrockets">Highlight 1: AI-Powered, Directly Convert Papers to Models, Speed Skyrockets<a href="https://www.simpowater.org/blog/SIMPO%201.0.0%20Officially%20Released#highlight-1-ai-powered-directly-convert-papers-to-models-speed-skyrockets" class="hash-link" aria-label="Direct link to Highlight 1: AI-Powered, Directly Convert Papers to Models, Speed Skyrockets" title="Direct link to Highlight 1: AI-Powered, Directly Convert Papers to Models, Speed Skyrockets" translate="no">​</a></h3>
+<p>Still manually transferring model parameters from papers into the software one by one? Not anymore.</p>
+<p><strong>SIMPO 1.0.0</strong> now fully integrates with <strong>Gemini 3</strong>. You can now simply drag and drop your SCI paper's PDF file into the software, and the AI will automatically parse and extract key information, generating a <strong>BioModel</strong> with a single click!</p>
+<ul>
+<li class=""><strong>Workflow:</strong> Import PDF -&gt; AI Parsing -&gt; Simple Human Verification -&gt; Model Ready.</li>
+<li class=""><strong>Result:</strong> Modeling work that used to take hours is now done in minutes.</li>
+</ul>
+<p>In a nutshell: The process from "paper" to "computable model" has been significantly compressed, especially suitable for scenarios requiring rapid replication of literature models, batch modeling, or team collaboration and sharing.</p>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://i.postimg.cc/DwjPppJs/ai-Bio-Model.gif" width="100%"></div>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="highlight-2-ph-calculation-mastered">Highlight 2: pH Calculation, Mastered!<a href="https://www.simpowater.org/blog/SIMPO%201.0.0%20Officially%20Released#highlight-2-ph-calculation-mastered" class="hash-link" aria-label="Direct link to Highlight 2: pH Calculation, Mastered!" title="Direct link to Highlight 2: pH Calculation, Mastered!" translate="no">​</a></h3>
+<p><strong>pH calculation</strong> has never been as simple as "inputting a formula": ionic speciation, dissociation equilibrium, quantitative descriptions… each step is prone to pitfalls.</p>
+<p>To address this, we've built the <strong>Ionization</strong> module within <strong>BioModel</strong>. Now, you only need to provide quantitative descriptions for each ion, and SIMPO can effortlessly and accurately perform complex pH calculations. No more manually setting up equations; let the software handle chemical equilibrium.</p>
+<div align="center" style="margin-top:0.2vh;margin-bottom:0.8vh"><img src="https://i.postimg.cc/q7WX4tGh/p-H-intro.gif" width="100%"></div>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="highlight-3-performance-surges-silky-smooth">Highlight 3: Performance Surges, Silky Smooth<a href="https://www.simpowater.org/blog/SIMPO%201.0.0%20Officially%20Released#highlight-3-performance-surges-silky-smooth" class="hash-link" aria-label="Direct link to Highlight 3: Performance Surges, Silky Smooth" title="Direct link to Highlight 3: Performance Surges, Silky Smooth" translate="no">​</a></h3>
+<p>In pursuit of ultimate performance, we've made numerous "invisible" yet "delightful to use" improvements, resulting in significant <strong>enhancements in access speed and computational efficiency</strong>:</p>
+<ul>
+<li class=""><strong>Kernel Upgrade:</strong> Python version upgraded from <strong>3.11.9 to 3.12.12</strong>.</li>
+<li class=""><strong>Backend Refactor:</strong> Backend migrated from <strong>FastAPI</strong> to the more efficient <strong>Litestar</strong>.</li>
+<li class=""><strong>Domain Migration:</strong> <a href="" class="">https://www.simpowater.org</a> → <a href="" class="">https://www.simpowater.com</a>, offering faster and smoother access.</li>
+<li class=""><strong>Algorithm Optimization:</strong> Verified that the adjusted <strong>Forward Euler</strong> algorithm achieves extremely high accuracy even with a very low Step Tolerance (0.01%). Therefore, we've removed the redundant Improved Euler, making calculations purer and faster.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="user-experience-enhancements-details-make-the-difference">User Experience Enhancements: Details Make the Difference<a href="https://www.simpowater.org/blog/SIMPO%201.0.0%20Officially%20Released#user-experience-enhancements-details-make-the-difference" class="hash-link" aria-label="Direct link to User Experience Enhancements: Details Make the Difference" title="Direct link to User Experience Enhancements: Details Make the Difference" translate="no">​</a></h2>
+<p>Beyond the hardcore features mentioned above, we've also adjusted and optimized numerous pain points to make your experience smoother:</p>
+<ul>
+<li class=""><strong>Share Without Login:</strong> <code>Public</code> and <code>Private</code> projects now support login-free access, making it easier to share your results with supervisors or colleagues.</li>
+<li class=""><strong>More Intuitive Workflow:</strong> <code>Edit</code> and <code>Export</code> buttons have been moved to the <code>Detail</code> page, eliminating the need for frequent page switching.</li>
+<li class=""><strong>Function Operations:</strong> <code>Rate</code> in <code>BioModel</code> now supports functions: <code>Max</code> and <code>Min</code> (Max(1, 5) = 5, Min(1, 5) = 1).</li>
+<li class=""><strong>Input Optimization:</strong> Backspace will no longer unintentionally exit the page when unsaved, providing a more secure input experience.</li>
+<li class=""><strong>Download Optimization:</strong> Client download size significantly reduced (installation time is slightly longer than before).</li>
+<li class=""><strong>Page Optimizations:</strong>
+<ul>
+<li class="">Better adaptive support for various screen sizes.</li>
+<li class="">Collapsible left-side menu in the Dashboard: More usable space.</li>
+<li class="">Top pop-up notifications no longer overlap: Clearer information.</li>
+</ul>
+</li>
+<li class=""><strong>Significant Enhancements to Plotting:</strong>
+<ul>
+<li class="">Local plotting resource usage significantly reduced, with smoother image switching via mouse/keyboard.</li>
+<li class="">Supports <strong>SVG vector image</strong> export, directly meeting publication requirements.</li>
+<li class="">Axis, line width, and legend positions are all finely customizable.</li>
+</ul>
+</li>
+</ul>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://i.postimg.cc/T1JrVtvT/figure-control.gif" width="100%"></div>
+<hr>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="focus-a-treat-for-you">Focus: A Treat for You!<a href="https://www.simpowater.org/blog/SIMPO%201.0.0%20Officially%20Released#focus-a-treat-for-you" class="hash-link" aria-label="Direct link to Focus: A Treat for You!" title="Direct link to Focus: A Treat for You!" translate="no">​</a></h2>
+<p>While the powerful features and increased speed are great, they aren't the most important thing...
+What truly matters is—</p>
+<p><strong>Now! Immediately! Right Away!</strong>
+<strong>All advanced features (including the super-expensive Gemini 3 AI features) are completely FREE! 🆓</strong></p>
+<p>We're still working hard on the tutorial videos, but with such amazing benefits, we highly recommend you grab them while you can! 🏃‍♂️💨</p>
+<p>📍 <strong>New Official Website:</strong> <a href="https://www.simpowater.com/" target="_blank" rel="noopener noreferrer" class="">https://www.simpowater.com</a>
+📝 <strong>Client Download Addresses:</strong> <a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">Windows</a>, <a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">Ubuntu</a></p>
+<p>Enough said, go download and experience it now! 🚀</p>
+<hr>
+<p><strong>Important Reminder:</strong> Before upgrading to 1.0.0, please uninstall the old version:</p>
+<ul>
+<li class="">Windows: Click "Uninstall SimpoClient" from the Start menu.</li>
+<li class="">Ubuntu: Run <code>sudo dpkg -r SimpoClient</code>.</li>
+</ul>
+<hr>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>Add friend, with the note “SIMPO” to join the group chat</b></div><img src="https://i.postimg.cc/yxKhZxM0/jakk-QR.jpg" width="25%"></div>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>Welcome to follow our WeChat official account</b></div><img src="https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg" width="25%"></div>]]></content>
+        <category label="SIMPO" term="SIMPO"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[First Paper on SIMPO Published]]></title>
         <id>https://www.simpowater.org/blog/SIMPO—A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling</id>
@@ -119,7 +202,7 @@ directly from the result figure, and the initial concentration of autotrophic de
         <content type="html"><![CDATA[<p>Since 1987, the International Association on Water Quality (IAWQ) working group released a series of mathematical models for wastewater treatment processes (such as ASM1, ASM2, ASM2d, ASM3, and ADM1), which established a general framework for the removal of pollutants like organic matter, nitrogen, and phosphorus. These models have become powerful tools for the research and practice of wastewater treatment processes.</p>
 <p>However, as research deepens, the scope of wastewater treatment process modeling has expanded to include various complex processes (such as nitrous oxide emissions, and sulfur autotrophic denitrification). Although these expansions have increased the applicability of the models, they have also introduced exponentially growing complexity. The biochemical stoichiometry matrix has become increasingly large, the number of model components and parameters has increased, and the computational demands have risen, creating significant obstacles for researchers and engineers.</p>
 <div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"></path></svg></span>Origin</div><div class="admonitionContent_BuS1"><ul>
-<li class=""><strong>SIMPO</strong> is initiated by JiangLab (a research team in the School of Environmental Science and Engineering, Sun Yat-sen University, China). It is an intelligent computing SaaS platform specifically designed for wastewater treatment process modelling.</li>
+<li class=""><strong>SIMPO</strong> is initiated by Professor Jiang Feng's research team from the School of Environmental Science and Engineering at Sun Yat-sen University. It is an intelligent computing SaaS platform specifically designed for wastewater treatment process modelling.</li>
 </ul></div></div>
 <p>To address these challenges and opportunities, we developed <strong>SIMPO</strong> (Simplified Intelligent Modelling Platform Online，<a href="https://www.simpowater.org/" target="_blank" rel="noopener noreferrer" class="">https://www.simpowater.org</a>), a next-generation platform aimed at simplifying and promoting wastewater treatment modelling. <strong>SIMPO</strong> offers an intuitive drag-and-drop user interface, adaptive algorithms, and collaborative tools, bridging the gap between complex modeling capabilities and practical accessibility, enabling users to easily handle traditional ASM models and various modern cutting-edge models.</p>
 <p><strong>SIMPO</strong>'s innovations address critical limitations of traditional platforms:</p>
