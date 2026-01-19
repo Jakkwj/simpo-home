@@ -49,8 +49,8 @@ async def main_one_step(
     pdf_path: str,
     # models: str = "gemini-3-pro-preview-11-2025-thinking",
     # models: str = "gemini-3-pro-preview-11-2025",
-    # models: str = "gemini-3-pro-preview-thinking",
-    models: str = "gemini-3-pro-preview",
+    models: str = "gemini-3-pro-preview-thinking",
+    # models: str = "gemini-3-pro-preview",
     # models: str = "gemini-2.5-flash",
     # models: str = "gemini-2.5-flash-lite",
     # models: str = "gemini-2.5-flash-lite-nothinking",
@@ -317,17 +317,17 @@ def get_content(result: dict[str, str], access: str, is_en: bool = True) -> str:
 
         <TabItem value="objective" label="Objective" >
 
-        **Q: What problem does this paper attempt to solve?**
+        {"**Q: What problem does this paper attempt to solve?**" if is_en else "**Q：这篇论文试图解决什么问题？**"}
 
         **Gemini 3.0 Pro:**
 
-        {result["What problem does this paper attempt to solve?"] if is_en else result["zh_Abstract"]}
+        {result["What problem does this paper attempt to solve?"] if is_en else result["zh_What problem does this paper attempt to solve?"]}
 
         </TabItem >
 
         <TabItem value="solution" label="Solution" >
 
-        **Q: How the paper solves this problem?**
+        {"**Q: How the paper solves this problem?**" if is_en else "**Q：论文如何解决这个问题？**"}
 
         **Gemini 3.0 Pro:**
 
@@ -337,7 +337,7 @@ def get_content(result: dict[str, str], access: str, is_en: bool = True) -> str:
 
         <TabItem value="experiment" label="Experiment" >
 
-        **Q: What experiments were done for the paper?**
+        {"**Q: What experiments were done for the paper?**" if is_en else "**Q：论文做了哪些实验？**"}
 
         **Gemini 3.0 Pro:**
 
@@ -347,7 +347,7 @@ def get_content(result: dict[str, str], access: str, is_en: bool = True) -> str:
 
         <TabItem value="exploration" label="Exploration" >
 
-        **Q: What are the points that can be explored further?**
+        {"**Q: What are the points that can be explored further?**" if is_en else "**Q：有什么可以进一步探索的点？**"}
 
         **Gemini 3.0 Pro:**
 
@@ -357,7 +357,7 @@ def get_content(result: dict[str, str], access: str, is_en: bool = True) -> str:
 
         <TabItem value="summary" label="Summary" >
 
-        **Q: Summarize the main points of the paper.**
+        {"**Q: Summarize the main points of the paper.**" if is_en else "**Q： 总结一下论文的主要内容。**"}
 
         **Gemini 3.0 Pro:**
 
@@ -367,7 +367,7 @@ def get_content(result: dict[str, str], access: str, is_en: bool = True) -> str:
 
         <TabItem value="related" label="Related" >
 
-        **Q: What are the relevant studies?**
+        {"**Q: What are the relevant studies?**" if is_en else "**Q： 有哪些相关研究？**"}
 
         **Gemini 3.0 Pro:**
 
@@ -380,40 +380,70 @@ def get_content(result: dict[str, str], access: str, is_en: bool = True) -> str:
     """.replace("        ", "")
 
 
-def main(pdf_file: str):
+def main(
+    pdf_file: str,
+    # models: str = "gemini-3-pro-preview",
+    models: str = "gemini-3-pro-preview-thinking",
+):
     """
-    更新 生成环境时, 把更改 litestar.env 中的 ENV = production
+    更新 生产环境时, 把更改 litestar.env 中的 ENV = production
     生成 resource 的 mdx 文件.
     并尝试生成 BioModel 写入数据库.
+
+    本地拆解论文时, 可以用更高级的模型
     """
 
-    # result = asy_run(main_one_step(f"pdf/{pdf_file}"))
+    result = asy_run(main_one_step(f"pdf/{pdf_file}"))
+    logger.info(result)
 
-    result = {
-        "Title": "Growth, maintenance and product formation of autotrophs in activated sludge: Taking the nitrite-oxidizing bacteria as an example",
-        "Year": "2008",
-        "Journal": "Water Research",
-        "DOI": "10.1016/j.watres.2008.06.024",
-        "Access": "SUBSCRIPTION",
-        "Authors": "Bing-Jie Ni, Fang Fang, Wen-Ming Xie, Han-Qing Yu",
-        "Abstract": "The autotrophs in activated sludge play an important role in biological wastewater treatment, especially in the nitrification process. Compared with the heterotrophs in activated sludge, information about the growth, maintenance, and product formation of the autotrophs is still sparse. In this work both experimental and modeling approaches are used to investigate the growth, nitrite inhibition, maintenance, and formation of extracellular polymeric substances (EPS) and soluble microbial products (SMP) of the autotrophs, with nitrite-oxidizing bacteria (NOB) in activated sludge as an example. The unified theory for EPS and SMP is integrated into our model to describe the microbial product formation of the NOB. Extensive experiments were carried out using the NOB-enriched in a sequencing batch reactor for the calibration and validation of the developed model. Results show that the NOB spend a considerable amount of energy on maintenance processes. Their apparent growth yield is estimated to be 0.044 mg COD biomass mg⁻¹ N. The model simulations reveal that the concentrations of EPS and SMP in the NOB-enriched culture initially increase, but later decrease gradually, and that the SMP formed in the nitrite oxidation process are biodegradable.",
-        "What problem does this paper attempt to solve?": "The paper attempts to address the lack of information regarding the growth, maintenance, and microbial product formation (specifically EPS and SMP) of autotrophs in activated sludge systems. While extensive work exists for heterotrophs, the specific behaviors of autotrophs, such as Nitrite-Oxidizing Bacteria (NOB), are less understood, particularly concerning how they produce Extracellular Polymeric Substances (EPS) and Soluble Microbial Products (SMP) and how maintenance energy affects their yield.",
-        "How the paper solves this problem?": 'The paper solves this problem by:\n- Developing a new mathematical model that integrates the "unified theory for EPS and SMP" (originally by Laspidou and Rittmann) into the kinetics of autotrophic growth.\n- Using Nitrite-Oxidizing Bacteria (NOB) as a representative autotroph.\n- Calibrating and validating the model using extensive experimental data obtained from an NOB-enriched Sequencing Batch Reactor (SBR).\n- Using the model to quantify maintenance energy requirements and distinguish between true and apparent growth yields.',
-        "What experiments were done for the paper?": "The following experiments were conducted:\n- **Enrichment of NOB:** A Sequencing Batch Reactor (SBR) was operated with synthetic wastewater containing nitrite as the sole energy source to selectively enrich NOB.\n- **Batch Tests:** Five sets of batch experiments were conducted with different initial nitrite concentrations (ranging from approx. 100 to 500 mg N/L) to monitor the process kinetics.\n- **Respirometry:** Oxygen Uptake Rate (OUR) was measured to determine microbial activity and yield coefficients.\n- **Chemical Analysis:** Regular measurements of Nitrite-N, Nitrate-N, SMP (as COD), EPS (extracted using cation exchange resin and measured as COD), MLSS, and MLVSS.\n- **Yield Determination:** Specific experiments to calculate the true growth yield ($Y_N$) based on oxygen consumption versus substrate consumption.",
-        "What are the points that can be explored further?": "- **Source of BAP:** The paper notes a disagreement in the literature regarding the unified theory; specifically, whether Biomass-Associated Products (BAP) come solely from EPS hydrolysis (as modeled here) or also from cell lysis. The model assumes only hydrolysis, but lysis might be significant.\n- **Model Structure Differences:** The paper mentions that different model structures might explain variability in parameter values compared to other studies.\n- **Long-term vs. Short-term Exposure:** The sensitivity of microorganisms to nitrite pulses versus long-term exposure could be investigated further, as this affects inhibition parameters ($K_I$).",
-        "Summarize the main points of the paper.": "- **Model Development:** A mathematical model describing NOB growth, nitrite inhibition, maintenance, death, and EPS/SMP formation was successfully developed and validated.\n- **Maintenance Energy:** NOB spend a considerable amount of energy on maintenance (estimated at 26.7% of energy generated at maximum growth rate).\n- **Yields:** The true growth yield ($Y_N$) was determined to be 0.06 mg COD biomass/mg N, while the apparent yield was 0.044 mg COD biomass/mg N.\n- **Product Dynamics:** EPS and SMP concentrations initially increase during the rapid growth phase and decrease/stabilize as nitrite is depleted. The SMP formed consists of Utilization-Associated Products (UAP) and Biomass-Associated Products (BAP), which are biodegradable.\n- **Validation:** The model accurately predicted OUR profiles, nitrogen species changes, and EPS/SMP trends in the batch tests.",
-        "What are the relevant studies?": "- **Laspidou and Rittmann (2002a,b):** Proposed the unified theory for EPS and SMP, which forms the backbone of the model in this paper.\n- **Vadivelu et al. (2006):** Provided stoichiometric and kinetic characterization of *Nitrobacter*, used for method comparison.\n- **Moussa et al. (2005):** Relevant for NOB kinetics and modeling nitrification.\n- **Aquino and Stuckey (2008):** Discussed the mechanisms of SMP/EPS formation, specifically regarding cell lysis vs. hydrolysis.",
-        "zh_Abstract": "活性污泥中的自养菌在生物废水处理中起着重要作用，特别是在硝化过程中。与活性污泥中的异养菌相比，关于自养菌的生长、维持和产物形成的信息仍然很少。在这项工作中，以活性污泥中的亚硝酸盐氧化菌（NOB）为例，采用实验和模拟相结合的方法研究了自养菌的生长、亚硝酸盐抑制、维持以及胞外聚合物（EPS）和溶解性微生物产物（SMP）的形成。我们将EPS和SMP的统一理论整合到我们的模型中，以描述NOB的微生物产物形成。利用序批式反应器中富集的NOB进行了大量实验，用于校准和验证开发的模型。结果表明，NOB在维持过程中消耗了大量的能量。它们的表观生长产率估计为0.044 mg COD生物量 mg⁻¹ N。模型模拟显示，富集NOB的培养物中EPS和SMP的浓度最初增加，但随后逐渐降低，并且在亚硝酸盐氧化过程中形成的SMP是可生物降解的。",
-        "zh_What problem does this paper attempt to solve?": "本文试图解决活性污泥系统中关于自养菌的生长、维持和微生物产物（特别是EPS和SMP）形成方面信息匮乏的问题。虽然关于异养菌的研究已经很广泛，但对于自养菌（如亚硝酸盐氧化菌 NOB）的具体行为，特别是它们如何产生胞外聚合物（EPS）和溶解性微生物产物（SMP）以及维持能量如何影响其产率，了解较少。",
-        "zh_How the paper solves this problem?": "本文通过以下方式解决该问题：\n- 开发了一个新的数学模型，将“EPS和SMP的统一理论”（最初由Laspidou和Rittmann提出）整合到自养菌生长动力学中。\n- 使用亚硝酸盐氧化菌（NOB）作为代表性的自养菌。\n- 利用从富集NOB的序批式反应器（SBR）中获得的大量实验数据对模型进行校准和验证。\n- 使用该模型量化维持能量需求，并区分真实生长产率和表观生长产率。",
-        "zh_What experiments were done for the paper?": "进行了以下实验：\n- **NOB的富集：** 运行一个以亚硝酸盐为唯一能源的合成废水的序批式反应器（SBR），以选择性地富集NOB。\n- **批次测试：** 进行了五组不同初始亚硝酸盐浓度（范围约为100至500 mg N/L）的批次实验，以监测过程动力学。\n- **呼吸测量：** 测量摄氧率（OUR）以确定微生物活性和产率系数。\n- **化学分析：** 定期测量亚硝酸盐氮、硝酸盐氮、SMP（以COD计）、EPS（使用阳离子交换树脂提取并以COD计）、MLSS和MLVSS。\n- **产率测定：** 基于氧消耗与底物消耗的特定实验，计算真实生长产率（$Y_N$）。",
-        "zh_What are the points that can be explored further?": "- **BAP的来源：** 论文指出文献中关于统一理论存在分歧；具体来说，生物量相关产物（BAP）是仅来自EPS水解（如本文模型假设），还是也来自细胞裂解。模型假设仅来自水解，但裂解可能也很重要。\n- **模型结构的差异：** 论文提到，不同的模型结构可能解释了与其他研究相比参数值的变异性。\n- **长期与短期暴露：** 微生物对亚硝酸盐脉冲与长期暴露的敏感性差异可以进一步研究，因为这会影响抑制参数（$K_I$）。",
-        "zh_Summarize the main points of the paper.": "- **模型开发：** 成功开发并验证了一个描述NOB生长、亚硝酸盐抑制、维持、死亡以及EPS/SMP形成的数学模型。\n- **维持能量：** NOB在维持上消耗了大量能量（估计在最大生长速率下占产生能量的26.7%）。\n- **产率：** 测得真实生长产率（$Y_N$）为0.06 mg COD生物量/mg N，而表观产率为0.044 mg COD生物量/mg N。\n- **产物动态：** EPS和SMP浓度在快速生长期最初增加，随着亚硝酸盐耗尽而减少/稳定。形成的SMP由利用相关产物（UAP）和生物量相关产物（BAP）组成，且是可生物降解的。\n- **验证：** 该模型准确预测了批次测试中的OUR曲线、氮物种变化以及EPS/SMP趋势。",
-        "zh_What are the relevant studies?": "- **Laspidou and Rittmann (2002a,b):** 提出了EPS和SMP的统一理论，构成了本文模型的骨架。\n- **Vadivelu et al. (2006):** 提供了*Nitrobacter*的化学计量和动力学表征，用于方法比较。\n- **Moussa et al. (2005):** 与NOB动力学和硝化作用建模相关。\n- **Aquino and Stuckey (2008):** 讨论了SMP/EPS形成的机制，特别是关于细胞裂解与水解的问题。",
-    }
+    # result = {
+    #     "Title": "Growth, maintenance and product formation of autotrophs in activated sludge: Taking the nitrite-oxidizing bacteria as an example",
+    #     "Year": "2008",
+    #     "Journal": "Water Research",
+    #     "DOI": "10.1016/j.watres.2008.06.024",
+    #     "Access": "SUBSCRIPTION",
+    #     "Authors": "Bing-Jie Ni, Fang Fang, Wen-Ming Xie, Han-Qing Yu",
+    #     "Abstract": "The autotrophs in activated sludge play an important role in biological wastewater treatment, especially in the nitrification process. Compared with the heterotrophs in activated sludge, information about the growth, maintenance, and product formation of the autotrophs is still sparse. In this work both experimental and modeling approaches are used to investigate the growth, nitrite inhibition, maintenance, and formation of extracellular polymeric substances (EPS) and soluble microbial products (SMP) of the autotrophs, with nitrite-oxidizing bacteria (NOB) in activated sludge as an example. The unified theory for EPS and SMP is integrated into our model to describe the microbial product formation of the NOB. Extensive experiments were carried out using the NOB-enriched in a sequencing batch reactor for the calibration and validation of the developed model. Results show that the NOB spend a considerable amount of energy on maintenance processes. Their apparent growth yield is estimated to be 0.044 mg COD biomass mg⁻¹ N. The model simulations reveal that the concentrations of EPS and SMP in the NOB-enriched culture initially increase, but later decrease gradually, and that the SMP formed in the nitrite oxidation process are biodegradable.",
+    #     "What problem does this paper attempt to solve?": "The paper attempts to address the lack of information regarding the growth, maintenance, and microbial product formation (specifically EPS and SMP) of autotrophs in activated sludge systems. While extensive work exists for heterotrophs, the specific behaviors of autotrophs, such as Nitrite-Oxidizing Bacteria (NOB), are less understood, particularly concerning how they produce Extracellular Polymeric Substances (EPS) and Soluble Microbial Products (SMP) and how maintenance energy affects their yield.",
+    #     "How the paper solves this problem?": 'The paper solves this problem by:\n- Developing a new mathematical model that integrates the "unified theory for EPS and SMP" (originally by Laspidou and Rittmann) into the kinetics of autotrophic growth.\n- Using Nitrite-Oxidizing Bacteria (NOB) as a representative autotroph.\n- Calibrating and validating the model using extensive experimental data obtained from an NOB-enriched Sequencing Batch Reactor (SBR).\n- Using the model to quantify maintenance energy requirements and distinguish between true and apparent growth yields.',
+    #     "What experiments were done for the paper?": "The following experiments were conducted:\n- **Enrichment of NOB:** A Sequencing Batch Reactor (SBR) was operated with synthetic wastewater containing nitrite as the sole energy source to selectively enrich NOB.\n- **Batch Tests:** Five sets of batch experiments were conducted with different initial nitrite concentrations (ranging from approx. 100 to 500 mg N/L) to monitor the process kinetics.\n- **Respirometry:** Oxygen Uptake Rate (OUR) was measured to determine microbial activity and yield coefficients.\n- **Chemical Analysis:** Regular measurements of Nitrite-N, Nitrate-N, SMP (as COD), EPS (extracted using cation exchange resin and measured as COD), MLSS, and MLVSS.\n- **Yield Determination:** Specific experiments to calculate the true growth yield ($Y_N$) based on oxygen consumption versus substrate consumption.",
+    #     "What are the points that can be explored further?": "- **Source of BAP:** The paper notes a disagreement in the literature regarding the unified theory; specifically, whether Biomass-Associated Products (BAP) come solely from EPS hydrolysis (as modeled here) or also from cell lysis. The model assumes only hydrolysis, but lysis might be significant.\n- **Model Structure Differences:** The paper mentions that different model structures might explain variability in parameter values compared to other studies.\n- **Long-term vs. Short-term Exposure:** The sensitivity of microorganisms to nitrite pulses versus long-term exposure could be investigated further, as this affects inhibition parameters ($K_I$).",
+    #     "Summarize the main points of the paper.": "- **Model Development:** A mathematical model describing NOB growth, nitrite inhibition, maintenance, death, and EPS/SMP formation was successfully developed and validated.\n- **Maintenance Energy:** NOB spend a considerable amount of energy on maintenance (estimated at 26.7% of energy generated at maximum growth rate).\n- **Yields:** The true growth yield ($Y_N$) was determined to be 0.06 mg COD biomass/mg N, while the apparent yield was 0.044 mg COD biomass/mg N.\n- **Product Dynamics:** EPS and SMP concentrations initially increase during the rapid growth phase and decrease/stabilize as nitrite is depleted. The SMP formed consists of Utilization-Associated Products (UAP) and Biomass-Associated Products (BAP), which are biodegradable.\n- **Validation:** The model accurately predicted OUR profiles, nitrogen species changes, and EPS/SMP trends in the batch tests.",
+    #     "What are the relevant studies?": "- **Laspidou and Rittmann (2002a,b):** Proposed the unified theory for EPS and SMP, which forms the backbone of the model in this paper.\n- **Vadivelu et al. (2006):** Provided stoichiometric and kinetic characterization of *Nitrobacter*, used for method comparison.\n- **Moussa et al. (2005):** Relevant for NOB kinetics and modeling nitrification.\n- **Aquino and Stuckey (2008):** Discussed the mechanisms of SMP/EPS formation, specifically regarding cell lysis vs. hydrolysis.",
+    #     "zh_Abstract": "活性污泥中的自养菌在生物废水处理中起着重要作用，特别是在硝化过程中。与活性污泥中的异养菌相比，关于自养菌的生长、维持和产物形成的信息仍然很少。在这项工作中，以活性污泥中的亚硝酸盐氧化菌（NOB）为例，采用实验和模拟相结合的方法研究了自养菌的生长、亚硝酸盐抑制、维持以及胞外聚合物（EPS）和溶解性微生物产物（SMP）的形成。我们将EPS和SMP的统一理论整合到我们的模型中，以描述NOB的微生物产物形成。利用序批式反应器中富集的NOB进行了大量实验，用于校准和验证开发的模型。结果表明，NOB在维持过程中消耗了大量的能量。它们的表观生长产率估计为0.044 mg COD生物量 mg⁻¹ N。模型模拟显示，富集NOB的培养物中EPS和SMP的浓度最初增加，但随后逐渐降低，并且在亚硝酸盐氧化过程中形成的SMP是可生物降解的。",
+    #     "zh_What problem does this paper attempt to solve?": "本文试图解决活性污泥系统中关于自养菌的生长、维持和微生物产物（特别是EPS和SMP）形成方面信息匮乏的问题。虽然关于异养菌的研究已经很广泛，但对于自养菌（如亚硝酸盐氧化菌 NOB）的具体行为，特别是它们如何产生胞外聚合物（EPS）和溶解性微生物产物（SMP）以及维持能量如何影响其产率，了解较少。",
+    #     "zh_How the paper solves this problem?": "本文通过以下方式解决该问题：\n- 开发了一个新的数学模型，将“EPS和SMP的统一理论”（最初由Laspidou和Rittmann提出）整合到自养菌生长动力学中。\n- 使用亚硝酸盐氧化菌（NOB）作为代表性的自养菌。\n- 利用从富集NOB的序批式反应器（SBR）中获得的大量实验数据对模型进行校准和验证。\n- 使用该模型量化维持能量需求，并区分真实生长产率和表观生长产率。",
+    #     "zh_What experiments were done for the paper?": "进行了以下实验：\n- **NOB的富集：** 运行一个以亚硝酸盐为唯一能源的合成废水的序批式反应器（SBR），以选择性地富集NOB。\n- **批次测试：** 进行了五组不同初始亚硝酸盐浓度（范围约为100至500 mg N/L）的批次实验，以监测过程动力学。\n- **呼吸测量：** 测量摄氧率（OUR）以确定微生物活性和产率系数。\n- **化学分析：** 定期测量亚硝酸盐氮、硝酸盐氮、SMP（以COD计）、EPS（使用阳离子交换树脂提取并以COD计）、MLSS和MLVSS。\n- **产率测定：** 基于氧消耗与底物消耗的特定实验，计算真实生长产率（$Y_N$）。",
+    #     "zh_What are the points that can be explored further?": "- **BAP的来源：** 论文指出文献中关于统一理论存在分歧；具体来说，生物量相关产物（BAP）是仅来自EPS水解（如本文模型假设），还是也来自细胞裂解。模型假设仅来自水解，但裂解可能也很重要。\n- **模型结构的差异：** 论文提到，不同的模型结构可能解释了与其他研究相比参数值的变异性。\n- **长期与短期暴露：** 微生物对亚硝酸盐脉冲与长期暴露的敏感性差异可以进一步研究，因为这会影响抑制参数（$K_I$）。",
+    #     "zh_Summarize the main points of the paper.": "- **模型开发：** 成功开发并验证了一个描述NOB生长、亚硝酸盐抑制、维持、死亡以及EPS/SMP形成的数学模型。\n- **维持能量：** NOB在维持上消耗了大量能量（估计在最大生长速率下占产生能量的26.7%）。\n- **产率：** 测得真实生长产率（$Y_N$）为0.06 mg COD生物量/mg N，而表观产率为0.044 mg COD生物量/mg N。\n- **产物动态：** EPS和SMP浓度在快速生长期最初增加，随着亚硝酸盐耗尽而减少/稳定。形成的SMP由利用相关产物（UAP）和生物量相关产物（BAP）组成，且是可生物降解的。\n- **验证：** 该模型准确预测了批次测试中的OUR曲线、氮物种变化以及EPS/SMP趋势。",
+    #     "zh_What are the relevant studies?": "- **Laspidou and Rittmann (2002a,b):** 提出了EPS和SMP的统一理论，构成了本文模型的骨架。\n- **Vadivelu et al. (2006):** 提供了*Nitrobacter*的化学计量和动力学表征，用于方法比较。\n- **Moussa et al. (2005):** 与NOB动力学和硝化作用建模相关。\n- **Aquino and Stuckey (2008):** 讨论了SMP/EPS形成的机制，特别是关于细胞裂解与水解的问题。",
+    # }
 
     if result:
-        ic(123)
+        # if True:
+        # result = {
+        #     "Title": "Simulation of the performance of aerobic granular sludge SBR using modified ASM3 model",
+        #     "Year": "2013",
+        #     "Journal": "Bioresource Technology",
+        #     "DOI": "10.1016/j.biortech.2012.09.076",
+        #     "Access": "SUBSCRIPTION",
+        #     "Authors": "Man Zhou, Jianyu Gong, Changzhu Yang, Wenhong Pu",
+        #     "Abstract": "The activated sludge model No. 3 (ASM3) was modified to describe the biological reactions in aerobic granular sludge SBR. The simultaneous storage and growth, nitrification and denitrification were all accounted for in modified model. The sensitivities of effluent COD, NH4+-N, and TN toward the stoichiometric and kinetic coefficients were analyzed. A standard set of parameters obtained from a combination of literature data was chosen for the model. The experimental results for the time profile of COD, NH4+-N, and TN in a typical cycle were used to verify the ASM3 model. The verification results show the model established is applicable for simulating the performance of an aerobic granule-based SBR. A comparison of the measured and predicted values of substrate removal for both the modified ASM3 and the original ASM3 was also performed. The verification and comparison results show the modified ASM3 model describes the aerobic granule-based SBR better and more mechanistically.",
+        #     "What problem does this paper attempt to solve?": "The paper attempts to address the limitations of the original Activated Sludge Model No. 3 (ASM3) when applied to Aerobic Granular Sludge (AGS) systems in Sequencing Batch Reactors (SBR). Specifically:\n- **Inaccurate Storage Mechanism:** Original ASM3 assumes sequential storage and growth (storage only during feast phase), which does not match the simultaneous storage and growth observed in AGS under feast-famine conditions.\n- **Simplified Nitrogen Removal:** Original ASM3 assumes single-step nitrification and denitrification, neglecting nitrite ($$NO_2^-$$) accumulation, which is a significant intermediate in AGS systems.",
+        #     "How the paper solves this problem?": "The authors developed a **modified ASM3 model** with the following key extensions:\n- **Simultaneous Processes:** Introduced the concept of simultaneous heterotrophic storage and growth on readily biodegradable substrates ($$S_S$$).\n- **Two-Step Nitrogen Removal:** Modeled nitrification and denitrification as two-step processes involving nitrite ($$NO_2^-$$) as an explicit intermediate ($$NH_4^+ \\to NO_2^- \\to NO_3^-$$ and $$NO_3^- \\to NO_2^- \\to N_2$$).\n- **Microbial Population Split:** Split autotrophic biomass into Ammonia Oxidizing Bacteria ($$X_{AOB}$$) and Nitrite Oxidizing Bacteria ($$X_{NOB}$$).\n- **Parameter Calibration:** Performed sensitivity analysis to identify 11 key parameters and calibrated them using experimental data.",
+        #     "What experiments were done for the paper?": "- **Reactor Operation:** Operated a laboratory-scale SBR (8L) fed with synthetic wastewater to cultivate aerobic granules.\n- **Cycle Analysis:** Measured concentration profiles of COD, $$NH_4^+-N$$, and TN during a typical 6-hour cycle (feeding, aeration, settling, discharge).\n- **Sensitivity Analysis:** Evaluated the sensitivity of model outputs to stoichiometric and kinetic parameters to identify the most influential ones.\n- **Model Verification:** Compared the modified ASM3 simulation results with experimental data.\n- **Model Comparison:** Simulated the system using both the original ASM3 and the modified ASM3 to demonstrate the improvement.",
+        #     "What are the points that can be explored further?": "- **DO Competition and Lag Time:** The paper noted a deviation in TN simulation due to a lag time caused by competition for Dissolved Oxygen (DO) between heterotrophs and autotrophs. Further exploration into oxygen diffusion limitations within the granule structure could improve this.\n- **Phosphorus Removal:** The current modification focuses on COD and Nitrogen. Since AGS is known for excellent biological phosphorus removal, extending the model to include PAOs (Polyphosphate Accumulating Organisms) would be a logical next step.\n- **Substrate Diversity:** The model was tested with synthetic wastewater; testing with real, complex wastewater would validate the hydrolysis and storage mechanisms further.",
+        #     "Summarize the main points of the paper.": "- A modified ASM3 model was successfully developed for AGS SBR systems, incorporating simultaneous storage-growth and two-step nitrification-denitrification.\n- Sensitivity analysis identified parameters like $$Y_{H,O2}$$, $$K_S$$, and $$\\mu_{AOB}$$ as highly influential.\n- The modified model showed excellent agreement with experimental data (Goodness of fit: COD 99.7%, $$NH_4^+-N$$ 97.9%, TN 92.4%).\n- Comparative analysis proved that the modified model predicts substrate removal and nitrite accumulation significantly better than the original ASM3, which failed to capture the rapid initial COD removal and intermediate nitrite dynamics.",
+        #     "What are the relevant studies?": "- **Henze et al. (2000)** Activated Sludge Models ASM1, ASM2, ASM2d, and ASM3.\n- **Ni et al. (2008)** Modeling simultaneous autotrophic and heterotrophic growth in aerobic granules.\n- **Krishna and van Loosdrecht (1999)** Substrate flux into storage and growth in relation to activated sludge modelling.\n- **Kaelin et al. (2009)** Extension of ASM3 for two-step nitrification and denitrification and its calibration and validation with batch tests and pilot scale data.\n- **de Kreuk et al. (2007)** Kinetic model of a granular sludge SBR: influences on nutrient removal.",
+        #     "zh_Abstract": "活性污泥3号模型（ASM3）经过修正，用于描述好氧颗粒污泥SBR中的生物反应。修正后的模型考虑了同步储存与生长、硝化和反硝化过程。分析了出水COD、$$NH_4^+-N$$和TN对化学计量系数和动力学系数的敏感性。模型选用了一组结合文献数据的标准参数。利用典型周期内COD、$$NH_4^+-N$$和TN的时间变化实验结果验证了ASM3模型。验证结果表明，建立的模型适用于模拟好氧颗粒污泥SBR的性能。此外，还比较了修正后的ASM3和原始ASM3对底物去除的测量值与预测值。验证和比较结果表明，修正后的ASM3模型能更好、更符合机理地描述好氧颗粒污泥SBR。",
+        #     "zh_What problem does this paper attempt to solve?": "本文旨在解决原始活性污泥3号模型（ASM3）在应用于序批式反应器（SBR）中的好氧颗粒污泥（AGS）系统时存在的局限性。具体包括：\n- **不准确的储存机制：** 原始ASM3假设储存和生长是顺序进行的（仅在盛宴期储存），这与AGS在盛宴-饥荒条件下观察到的同步储存和生长现象不符。\n- **简化的脱氮过程：** 原始ASM3假设单步硝化和反硝化，忽略了亚硝酸盐（$$NO_2^-$$）的积累，而亚硝酸盐是AGS系统中重要的中间产物。",
+        #     "zh_How the paper solves this problem?": "作者开发了一个**修正的ASM3模型**，主要扩展如下：\n- **同步过程：** 引入了异养菌在利用易生物降解底物（$$S_S$$）时的同步储存和生长概念。\n- **两步脱氮：** 将硝化和反硝化模拟为涉及亚硝酸盐（$$NO_2^-$$）作为明确中间产物的两步过程（$$NH_4^+ \\to NO_2^- \\to NO_3^-$$ 和 $$NO_3^- \\to NO_2^- \\to N_2$$）。\n- **微生物种群细分：** 将自养菌群分为氨氧化细菌（$$X_{AOB}$$）和亚硝酸盐氧化细菌（$$X_{NOB}$$）。\n- **参数校准：** 进行敏感性分析以确定11个关键参数，并利用实验数据对其进行校准。",
+        #     "zh_What experiments were done for the paper?": "- **反应器运行：** 运行一个进水为合成废水的实验室规模SBR（8L），培养好氧颗粒污泥。\n- **周期分析：** 测量典型6小时周期（进水、曝气、沉淀、排水）内COD、$$NH_4^+-N$$和TN的浓度变化曲线。\n- **敏感性分析：** 评估模型输出对化学计量和动力学参数的敏感性，以识别最具影响力的参数。\n- **模型验证：** 将修正后的ASM3模拟结果与实验数据进行对比。\n- **模型比较：** 分别使用原始ASM3和修正后的ASM3模拟系统，以展示改进效果。",
+        #     "zh_What are the points that can be explored further?": "- **DO竞争与滞后时间：** 论文指出由于异养菌和自养菌之间对溶解氧（DO）的竞争导致了TN模拟的偏差（滞后时间）。进一步探索颗粒结构内的氧扩散限制可能改善这一点。\n- **除磷：** 目前的修正主要关注COD和氮。由于AGS以优异的生物除磷能力著称，扩展模型以包含聚磷菌（PAOs）将是合乎逻辑的下一步。\n- **底物多样性：** 该模型是使用合成废水测试的；使用真实的复杂废水进行测试将进一步验证水解和储存机制。",
+        #     "zh_Summarize the main points of the paper.": "- 成功开发了适用于AGS SBR系统的修正ASM3模型，整合了同步储存-生长和两步硝化-反硝化过程。\n- 敏感性分析确定了如$$Y_{H,O2}$$、$$K_S$$和$$\\mu_{AOB}$$等参数具有高度影响力。\n- 修正后的模型与实验数据表现出极好的一致性（拟合优度：COD 99.7%，$$NH_4^+-N$$ 97.9%，TN 92.4%）。\n- 对比分析证明，修正后的模型在预测底物去除和亚硝酸盐积累方面显著优于原始ASM3，原始模型未能捕捉到快速的初始COD去除和中间亚硝酸盐的动态变化。",
+        #     "zh_What are the relevant studies?": "- **Henze et al. (2000)** Activated Sludge Models ASM1, ASM2, ASM2d, and ASM3.\n- **Ni et al. (2008)** Modeling simultaneous autotrophic and heterotrophic growth in aerobic granules.\n- **Krishna and van Loosdrecht (1999)** Substrate flux into storage and growth in relation to activated sludge modelling.\n- **Kaelin et al. (2009)** Extension of ASM3 for two-step nitrification and denitrification and its calibration and validation with batch tests and pilot scale data.\n- **de Kreuk et al. (2007)** Kinetic model of a granular sludge SBR: influences on nutrient removal.",
+        # }
+
         if result["Access"] == "OPEN":
             access = """<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-open-42A5F5?style=for-the-badge" />"""
         else:
@@ -421,31 +451,44 @@ def main(pdf_file: str):
 
         target_dir, target_dir_zh = mk_target_dir(result)
 
+        result_title_ = result['Title'].replace("/", "_")  # 替换文件名中的 / 为 _
         content = get_content(result, access)
-        with open(target_dir / f"{result['Title']}.mdx", "w") as file:  # type: ignore
+        with open(target_dir / f"{result_title_}.mdx", "w") as file:  # type: ignore
             file.write(content)
 
         content = get_content(result, access, is_en=False)
-        with open(target_dir_zh / f"{result['Title']}.mdx", "w") as file:  # type: ignore
+        with open(target_dir_zh / f"{result_title_}.mdx", "w") as file:  # type: ignore
             file.write(content)
 
-        # try:
-        #     add_db_paper_main(result)
-        #     # 移动 pdf/xlsx 文件到 unapproved 文件夹下等待人工 approve
-        # except Exception:
-        #     exc = format_exc()
-        #     if 'unique constraint "sourcepaper_DOI_key"' not in exc:
-        #         raise ValueError(exc)
+        try:
+            add_db_paper_main(result)
+            # 移动 pdf/xlsx 文件到 unapproved 文件夹下等待人工 approve
+        except Exception:
+            exc = format_exc()
+            if 'unique constraint "sourcepaper_DOI_key"' not in exc:
+                raise ValueError(exc)
 
-        # create_BioModel_result = asy_run(add_db_BioModel_main(result, pdf_file))
+        create_BioModel_result = asy_run(
+            add_db_BioModel_main(result, f"pdf/{pdf_file}", models)
+        )  # 本地拆解论文时, 可以用更高级的模型
 
-        # move(f"pdf/{pdf_file}", f"pdf/unapproved/{pdf_file}")
-        # if path.exists(f"{result['Title']}.xlsx"):
-        #     move(f"{result['Title']}.xlsx", f"pdf/unapproved/{result['Title']}.xlsx")
+        logger.info(create_BioModel_result)
+
+        move(f"pdf/{pdf_file}", f"pdf/unapproved/{pdf_file}")
+        if path.exists(f"{result_title_}.xlsx"):
+            move(f"{result_title_}.xlsx", f"pdf/unapproved/{result_title_}.xlsx")
 
 
 if __name__ == "__main__":
-    main("pdf_file")
+    main(
+        # "Simulation of the performance of aerobic granular sludge SBR using modiﬁed ASM3 model.pdf"
+        # "Simultaneous removal of sulﬁde, nitrate and acetate under denitrifying sulﬁde removal condition: Modeling and experimental validation.pdf"
+        #
+        # "Achieving Complete Nitrogen Removal by Coupling Nitritation-Anammox and Methane-Dependent Denitrification: A Model-Based Study.pdf"
+        # "A modeling approach to describe ZVI-based anaerobic system.pdf"
+        "A quantified nitrogen metabolic network by reaction kinetics and mathematical model in a single-stage microaerobic system treating low COD_TN wastewater.pdf"
+    )
+
     # pdf_file_list: list = [pdf for pdf in listdir("pdf") if pdf.endswith(".pdf")]
     # # ic(pdf_file_list)
 

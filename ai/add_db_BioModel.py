@@ -39,12 +39,19 @@ settings = get_settings()
 ic.configureOutput(includeContext=True)  # print with line number
 
 
-async def main(result: dict[str, str], biomodel_file: str) -> str:
-    """这里的 pdf 必须是合并了 SI 后的单文件. 且应该不用再次压缩"""
+async def main(
+    result: dict[str, str],
+    biomodel_file: str,
+    # models: str = "gemini-3-pro-preview",
+    models: str = "gemini-3-pro-preview-thinking",
+) -> str:
+    """这里的 pdf 必须是合并了 SI 后的单文件. 且应该不用再次压缩.
+    本地拆解论文时, 可以用更高级的模型
+    """
     # biomodel_file = "pdf/Growth, maintenance and product formation of autotrophs in activated sludge: Taking the nitrite-oxidizing bacteria as an example.pdf"
-    biomodel_file = f"pdf/{biomodel_file}"
+    # biomodel_file = f"pdf/{biomodel_file}"
 
-    biomodel_file_gemini = await gemini_main(biomodel_file, is_skip_SCI_check=True)
+    biomodel_file_gemini = await gemini_main(biomodel_file, models=models, is_skip_SCI_check=True)
 
     if isinstance(biomodel_file_gemini, str):
         raise ValueError(biomodel_file_gemini)
@@ -104,6 +111,7 @@ async def main(result: dict[str, str], biomodel_file: str) -> str:
         return "ok"
 
     except Exception as error:  # 解析失败, 未通过 Simpo 的解析算法
+        logger.error(format_exc())
         logger.error(error)
 
         if isinstance(

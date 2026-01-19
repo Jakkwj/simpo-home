@@ -1,0 +1,135 @@
+---
+slug: 10.1016/j.biortech.2012.09.076
+title: Simulation of the performance of aerobic granular sludge SBR using modified ASM3 model
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Simulation of the performance of aerobic granular sludge SBR using modified ASM3 model](https://doi.org/10.1016/j.biortech.2012.09.076)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.biortech.2012.09.076](https://doi.org/10.1016/j.biortech.2012.09.076)
+
+    作者: Man Zhou, Jianyu Gong, Changzhu Yang, Wenhong Pu
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.org/dashboard/biomodels/public/name/10.1016-j.biortech.2012.09.076/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/10.1016-j.biortech.2012.09.076/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+活性污泥3号模型（ASM3）经过修正，用于描述好氧颗粒污泥SBR中的生物反应。修正后的模型考虑了同步储存与生长、硝化和反硝化过程。分析了出水COD、$$NH_4^+-N$$和TN对化学计量系数和动力学系数的敏感性。模型选用了一组结合文献数据的标准参数。利用典型周期内COD、$$NH_4^+-N$$和TN的时间变化实验结果验证了ASM3模型。验证结果表明，建立的模型适用于模拟好氧颗粒污泥SBR的性能。此外，还比较了修正后的ASM3和原始ASM3对底物去除的测量值与预测值。验证和比较结果表明，修正后的ASM3模型能更好、更符合机理地描述好氧颗粒污泥SBR。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+
+本文旨在解决原始活性污泥3号模型（ASM3）在应用于序批式反应器（SBR）中的好氧颗粒污泥（AGS）系统时存在的局限性。具体包括：
+- **不准确的储存机制：** 原始ASM3假设储存和生长是顺序进行的（仅在盛宴期储存），这与AGS在盛宴-饥荒条件下观察到的同步储存和生长现象不符。
+- **简化的脱氮过程：** 原始ASM3假设单步硝化和反硝化，忽略了亚硝酸盐（$$NO_2^-$$）的积累，而亚硝酸盐是AGS系统中重要的中间产物。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+作者开发了一个**修正的ASM3模型**，主要扩展如下：
+- **同步过程：** 引入了异养菌在利用易生物降解底物（$$S_S$$）时的同步储存和生长概念。
+- **两步脱氮：** 将硝化和反硝化模拟为涉及亚硝酸盐（$$NO_2^-$$）作为明确中间产物的两步过程（$$NH_4^+ \to NO_2^- \to NO_3^-$$ 和 $$NO_3^- \to NO_2^- \to N_2$$）。
+- **微生物种群细分：** 将自养菌群分为氨氧化细菌（$$X_{AOB}$$）和亚硝酸盐氧化细菌（$$X_{NOB}$$）。
+- **参数校准：** 进行敏感性分析以确定11个关键参数，并利用实验数据对其进行校准。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+- **反应器运行：** 运行一个进水为合成废水的实验室规模SBR（8L），培养好氧颗粒污泥。
+- **周期分析：** 测量典型6小时周期（进水、曝气、沉淀、排水）内COD、$$NH_4^+-N$$和TN的浓度变化曲线。
+- **敏感性分析：** 评估模型输出对化学计量和动力学参数的敏感性，以识别最具影响力的参数。
+- **模型验证：** 将修正后的ASM3模拟结果与实验数据进行对比。
+- **模型比较：** 分别使用原始ASM3和修正后的ASM3模拟系统，以展示改进效果。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **DO竞争与滞后时间：** 论文指出由于异养菌和自养菌之间对溶解氧（DO）的竞争导致了TN模拟的偏差（滞后时间）。进一步探索颗粒结构内的氧扩散限制可能改善这一点。
+- **除磷：** 目前的修正主要关注COD和氮。由于AGS以优异的生物除磷能力著称，扩展模型以包含聚磷菌（PAOs）将是合乎逻辑的下一步。
+- **底物多样性：** 该模型是使用合成废水测试的；使用真实的复杂废水进行测试将进一步验证水解和储存机制。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- 成功开发了适用于AGS SBR系统的修正ASM3模型，整合了同步储存-生长和两步硝化-反硝化过程。
+- 敏感性分析确定了如$$Y_{H,O2}$$、$$K_S$$和$$\mu_{AOB}$$等参数具有高度影响力。
+- 修正后的模型与实验数据表现出极好的一致性（拟合优度：COD 99.7%，$$NH_4^+-N$$ 97.9%，TN 92.4%）。
+- 对比分析证明，修正后的模型在预测底物去除和亚硝酸盐积累方面显著优于原始ASM3，原始模型未能捕捉到快速的初始COD去除和中间亚硝酸盐的动态变化。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Henze et al. (2000)** Activated Sludge Models ASM1, ASM2, ASM2d, and ASM3.
+- **Ni et al. (2008)** Modeling simultaneous autotrophic and heterotrophic growth in aerobic granules.
+- **Krishna and van Loosdrecht (1999)** Substrate flux into storage and growth in relation to activated sludge modelling.
+- **Kaelin et al. (2009)** Extension of ASM3 for two-step nitrification and denitrification and its calibration and validation with batch tests and pilot scale data.
+- **de Kreuk et al. (2007)** Kinetic model of a granular sludge SBR: influences on nutrient removal.
+
+</TabItem >
+
+</Tabs>
+

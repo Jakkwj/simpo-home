@@ -1,0 +1,146 @@
+---
+slug: 10.1021/acs.est.6b02202
+title: Evaluation of Nitrous Oxide Emission from Sulfide- and Sulfur-Based Autotrophic Denitrification Processes
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Evaluation of Nitrous Oxide Emission from Sulfide- and Sulfur-Based Autotrophic Denitrification Processes](https://doi.org/10.1021/acs.est.6b02202)
+
+{/* <img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" /> */}
+
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" />
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1021/acs.est.6b02202](https://doi.org/10.1021/acs.est.6b02202)
+
+    作者: Yiwen Liu, Lai Peng, Huu Hao Ngo, Wenshan Guo, Dongbo Wang, Yuting Pan, Jing Sun, and Bing-Jie Ni
+  </div>
+</div>
+
+
+----
+
+
+[SIMPO Dashboard](https://dash.simpowater.org/dashboard/biomodels/public/name/10.1021-acs.est.6b02202/id/699/did/698):
+
+<iframe
+src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/10.1021-acs.est.6b02202/id/699/did/698"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+
+这个 Public version 的主要修订内容包括：
+
+1. 删除了Matrix中的$S_S$和$X_H$列，因为它们在这个模型中不参与任何反应。
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+最近的研究表明，基于硫化物和硫的自养反硝化 (AD) 过程在氧化亚氮 ($N_2O$) 的产生和排放中起着重要作用。然而，$N_2O$ 的产生在当前的 AD 模型中未被识别，限制了它们预测 AD 过程中 $N_2O$ 积累的能力。在这项工作中，首次开发了一个数学模型来描述基于硫化物和硫的 AD 过程中的 $N_2O$ 动力学。该模型使用来自两个以硫化物或硫为电子供体的独立实验系统的 $N_2O$ 数据成功进行了校准和验证。该模型令人满意地描述了两个系统中的氮还原、硫化物/硫氧化和 $N_2O$ 积累。模拟结果显示，由于基于硫化物和硫的 AD 过程中 $N_2O$ 还原率相对较低，导致了大量的 $N_2O$ 积累。应用该模型模拟执行基于硫化物和硫的 AD 过程的活性污泥系统的长期运行表明，较长的污泥停留时间减少了 $N_2O$ 排放。对于基于硫化物的 AD 过程，较高的初始 S/N 比也减少了 $N_2O$ 排放，但运行成本较高。该模型可以作为一个有用的工具，支持以硫化物或硫为电子供体的 AD 过程中用于 $N_2O$ 减排的工艺运行优化。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+
+- **AD模型缺乏$N_2O$预测能力：** 现有的基于硫化物和单质硫的自养反硝化（AD）数学模型未涵盖氧化亚氮（$N_2O$）的生成，通常将反硝化过程简化为单步反应，或认为反应仅停留在亚硝酸盐阶段。
+- **排放未被量化：** 尽管实验证据表明这些工艺会产生$N_2O$排放，但当前的模型无法预测$N_2O$的积累量或排放动力学特征。
+- **亟需减排策略：** 目前缺乏相应的模拟工具，无法为自养反硝化系统中的$N_2O$减排工艺优化提供支持。
+
+
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+- **模型开发：** 作者开发了一个新的数学模型，描述了基于硫化物和硫的 AD 过程中的 $N_2O$ 动力学。该模型包括：
+  - 三步反硝化：$NO_3^- \to NO_2^- \to N_2O \to N_2$。
+  - 两步硫化物氧化：$S^{2-} \to S^0 \to SO_4^{2-}$。
+  - 生物量生长和衰减动力学。
+- **校准和验证：** 利用来自两个独立系统（一个使用硫化物，一个使用元素硫）的实验数据对模型进行了校准和验证。
+- **情景分析：** 应用该模型模拟长期运行，以研究污泥停留时间 (SRT) 和硫氮比 (S/N) 对 $N_2O$ 排放的影响。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+- **数据获取：** 论文利用了先前报道的研究中的实验数据进行模型评估：
+  - **基于硫化物的 AD (Yang et al., 2016)：** 使用自养反硝化颗粒污泥进行的批次测试。实验包括不同颗粒尺寸（700 $\mu m$ 和 1350 $\mu m$）下的 $N_2O$ 积累曲线，以及不同初始 S/N 比下的 $N_2O$ 还原。
+  - **基于硫的 AD (Zhang et al., 2015)：** 使用元素硫作为电子供体的富集培养物进行的批次实验，在不同初始硝酸盐浓度（30-50 mg N/L）下进行测试。
+- **建模实验：**
+  - **参数估计：** 通过使用 AQUASIM 最小化模型预测与测量数据之间的偏差来估计关键动力学参数（例如，最大反应速率 $\mu_{SOB}$）。
+  - **连续流模拟：** 模拟连续流反应器，以研究 SRT（25-400 天）对硝酸盐去除和 $N_2O$ 排放的影响。
+  - **S/N 比模拟：** 模拟了变化的进水硫化物浓度（S/N 比）对系统性能的影响。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **微生物群落联系：** 论文提出，基于硫化物和硫的系统之间动力学参数的差异可能是由于不同的优势微生物群落（例如 *Thiobacillus*, *Sulfurimonas*, *Arcobacter*）造成的。进一步的研究可以将群落结构与模型动力学明确联系起来。
+- **硫的特性：** 需要进一步探索硫颗粒大小、形态和来源（生物生成与化学来源）对基于硫的 AD 中传质和反应速率的影响。
+- **混合营养条件：** 模拟同时存在有机碳和还原性硫化合物的系统（同时进行的异养和自养反硝化）。
+- **pH 和抑制：** 可以整合 pH 值的影响，特别是关于游离亚硝酸 (FNA) 对 $N_2O$ 还原的抑制。
+- **与 ASM 集成：** 将此模型与标准的活性污泥模型 (ASM) 结合，以进行全面的全厂建模。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **首个 AD $N_2O$ 模型：** 开发并验证了一个描述基于硫化物和硫的自养反硝化中 $N_2O$ 产生和还原的数学模型。
+- **积累机制：** 模型揭示了大量的 $N_2O$ 积累是因为自养 $N_2O$ 还原速率（过程 3 和 6）相对低于硝酸盐和亚硝酸盐的还原速率。
+- **验证成功：** 模型准确再现了来自独立数据集的氮物种 ($NO_3^-$, $NO_2^-$, $N_2O$, $N_2$) 和硫物种 ($S^{2-}$, $S^0$, $SO_4^{2-}$) 的实验曲线。
+- **SRT 的影响：** 长期模拟表明，延长污泥停留时间 (SRT) 可显著减少基于硫化物和硫的系统中的 $N_2O$ 排放。
+- **S/N 比的影响：** 对于基于硫化物的 AD，较高的初始 S/N 比促进了完全反硝化并减少了 $N_2O$ 排放，尽管这增加了硫化物消耗成本。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Yang et al. (2016):** Sulfide-driven autotrophic denitrification significantly reduces N2O emissions. (硫化物基AD实验数据来源)
+- **Zhang et al. (2015):** Sulfur-based mixotrophic denitrification corresponding to different electron donors and microbial profiling in anoxic fluidized-bed membrane bioreactors. (硫基AD实验数据来源)
+- **Xu et al. (2016):** Mathematical modeling of autotrophic denitrification (AD) process with sulphide as electron donor. (模型参数参考)
+- **Mora et al. (2015):** Kinetic and stoichiometric characterization of anoxic sulfide oxidation by SO-NR mixed cultures from anoxic biotrickling filters. (动力学参数参考)
+
+</TabItem >
+
+</Tabs>
+

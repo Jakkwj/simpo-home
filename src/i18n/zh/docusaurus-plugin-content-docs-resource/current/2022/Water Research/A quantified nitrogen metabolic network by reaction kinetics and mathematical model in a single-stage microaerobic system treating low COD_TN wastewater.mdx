@@ -1,0 +1,141 @@
+---
+slug: 10.1016/j.watres.2022.119112
+title: A quantified nitrogen metabolic network by reaction kinetics and mathematical model in a single-stage microaerobic system treating low COD_TN wastewater
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [A quantified nitrogen metabolic network by reaction kinetics and mathematical model in a single-stage microaerobic system treating low COD/TN wastewater](https://doi.org/10.1016/j.watres.2022.119112)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.watres.2022.119112](https://doi.org/10.1016/j.watres.2022.119112)
+
+    作者: Zhenju Sun, Jianzheng Li, Yiyang Fan, Jia Meng
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.org/dashboard/biomodels/public/name/10.1016-j.watres.2022.119112/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/10.1016-j.watres.2022.119112/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+开发了一种单级间歇曝气微氧反应器 (IAMR)，用于经济高效地处理低化学需氧量 (COD) 与总氮 (TN) 比率的养猪废水。本研究基于宏基因组学、反应动力学和数学模型构建了量化的氮代谢网络，以深入揭示 IAMR 中的脱氮机制。宏基因组学显示，IAMR 中存在复杂的氮代谢网络，包括好氧氨氧化和亚硝酸盐氧化、厌氧氨氧化 (anammox)、经由硝酸盐和亚硝酸盐的反硝化以及硝酸盐呼吸。开发了一种基于遗传算法的高稳定性动力学参数求解新方法。利用该方法计算了参与氮代谢的各种反应的动力学。动力学结果表明，同步部分亚硝化-厌氧氨氧化 (PN/A) 和部分反硝化-厌氧氨氧化 (PDN/A) 是 IAMR 中脱氮的主要途径。最后，提出了一个基于动力学的模型，用于定量描述 COD 限制下的氮代谢网络。58% ~ 67% 的氮通过基于厌氧氨氧化的过程 (PN/A 和 PDN/A) 去除，而只有 7% ~ 12% 和 1% ~ 2% 的氮分别通过亚硝酸盐和硝酸盐的异养反硝化去除。溶解氧 (DO) 对厌氧氨氧化的半抑制常数模拟为 0.37 ~ 0.60 mg $$L^{-1}$$，填补了量化 DO 对厌氧氨氧化抑制作用的空白。高频间歇曝气被确定为抑制亚硝酸盐氧化细菌的关键措施，尽管其对 DO 和 $$NO_2^--N$$ 具有高亲和力。在连续曝气模式下，模拟的 IAMR 中 $$NO_3^--N$$ 将上升 39.6%。该研究为单级微氧系统中的脱氮机制提供了新的见解，并为实施 PN/A 和 PDN/A 以实现经济高效的脱氮提供了可靠的方法。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决在处理低 COD/TN 比的养猪废水的单级间歇曝气微氧反应器 (IAMR) 中，理解和量化复杂脱氮机制的问题。具体而言，它解决了以下问题：
+- 微氧工艺中缺乏量化的氮代谢网络。
+- 难以确定各种氮转化反应（特别是在低 COD 等特定环境条件下）的稳定动力学参数。
+- 缺乏对厌氧氨氧化细菌的溶解氧 (DO) 抑制常数的量化。
+- 需要一个可靠的数学模型来描述系统性能和不同途径（PN/A 与 PDN/A）的贡献。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+本文采用了宏基因组学、动力学实验和数学建模相结合的方法：
+- **宏基因组学：** 用于鉴定 IAMR 污泥中存在的微生物群落和代谢途径（基因）。
+- **动力学测定：** 进行批次实验以测量特定过程（氨氧化、亚硝酸盐氧化、厌氧氨氧化、异养反硝化等）的摄氧率 (OUR) 和底物利用率。
+- **算法开发：** 开发了一种基于遗传算法 (GA) 和有限元法的新算法，用于求解 Monod 动力学参数（$$\mu_{max}$$ 和 $$K_S$$），比传统的线性拟合具有更高的稳定性。
+- **数学建模：** 构建了一个基于动力学的数学模型，结合了推导出的参数以及 COD 限制和 DO 抑制的修正因子，以模拟氮通量并量化每个途径的贡献。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+- **反应器运行：** 在间歇曝气条件下，长期运行（140 天 + 57 天研究期）处理低 COD/TN (~0.96) 养猪废水的实验室规模 IAMR。
+- **宏基因组测序：** 对污泥进行 DNA 提取和 Illumina 测序，以分析直系同源基因和 KEGG 通路。
+- **动力学测定（批次测试）：**
+  - 针对 $$NH_4^+-N$$、$$NO_2^--N$$ 和 COD 氧化的摄氧率 (OUR) 测试。
+  - 好氧/厌氧条件下的 $$NH_4^+-N$$、$$NO_2^--N$$ 和 $$NO_3^--N$$ 转化率测试，以评估厌氧氨氧化、异养亚硝酸盐/硝酸盐反硝化和硝酸盐呼吸 (DNRA)。
+  - 相互作用测定，以检查厌氧氨氧化和异养反硝化之间的协同或拮抗作用。
+- **模型验证：** 将模型模拟结果与 IAMR 中实际测量的氮物种主体浓度进行比较。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **PDN/A 的长期稳定性：** 虽然研究强调了 PDN/A 的作用，但在进水波动的条件下，硝酸盐呼吸 (DNRA) 途径与厌氧氨氧化耦合的长期稳定性可以进一步探索。
+- **微生物群落动态：** 进一步调查微生物群落结构如何响应曝气频率或 COD/TN 比率的长期变化而发生动态转变。
+- **应用于不同废水：** 在其他类型的高浓度或低碳废水中测试开发的基于 GA 的参数估计方法和代谢模型。
+- **间歇曝气的优化：** 基于模型预测微调曝气/非曝气循环，以在保持高氨氧化率的同时进一步减少硝酸盐的产生。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **主要途径：** 基于厌氧氨氧化的过程（PN/A 和 PDN/A）是主要的脱氮机制，占去除量的 58% ~ 67%。由于 COD 限制，异养反硝化作用较小（去除率 < 12%）。
+- **PDN/A 的重要性：** 部分反硝化-厌氧氨氧化 (PDN/A) 被确定为主要的 $$NO_3^--N$$ 还原过程，去除了产生的总硝酸盐的 84.6%。
+- **动力学参数：** 新的基于 GA 的算法提供了可靠的动力学参数。DO 对厌氧氨氧化的半抑制常数被量化为 $$0.37 \sim 0.60$$ mg $$L^{-1}$$。
+- **NOB 抑制：** 证实间歇曝气对于抑制 NOB 至关重要；连续曝气将使硝酸盐产量增加 39.6%。
+- **模型效用：** 提出的基于动力学的模型成功量化了 IAMR 中的氮代谢网络和通量。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Li et al. (2011)** Long-term partial nitrification in an intermittently aerated sequencing batch reactor (SBR) treating ammonium-rich wastewater under controlled oxygen-limited conditions
+- **Lackner et al. (2014)** Full-scale partial nitritation/anammox experiences—an application survey
+- **Meng et al. (2015)** Nitrogen removal from low COD/TN ratio manure-free piggery wastewater within an upflow microaerobic sludge reactor
+- **Robinson and Characklis (1984)** Simultaneous estimation of Vmax, Km, and the rate of endogenous substrate production (R) from substrate depletion data
+- **Moussa et al. (2005)** Modelling nitrification, heterotrophic growth and predation in activated sludge
+- **Windey et al. (2005)** Oxygen-limited autotrophic nitrification–denitrification (OLAND) in a rotating biological contactor treating high-salinity wastewater
+
+</TabItem >
+
+</Tabs>
+

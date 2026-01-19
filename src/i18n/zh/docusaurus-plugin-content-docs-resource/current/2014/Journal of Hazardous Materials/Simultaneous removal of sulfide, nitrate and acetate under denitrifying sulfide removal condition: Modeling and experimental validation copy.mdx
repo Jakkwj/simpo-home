@@ -1,0 +1,141 @@
+---
+slug: 10.1016/j.jhazmat.2013.10.056
+title: Simultaneous removal of sulfide, nitrate and acetate under denitrifying sulfide removal condition-Modeling and experimental validation
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Simultaneous removal of sulfide, nitrate and acetate under denitrifying sulfide removal condition: Modeling and experimental validation](https://doi.org/10.1016/j.jhazmat.2013.10.056)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.jhazmat.2013.10.056](https://doi.org/10.1016/j.jhazmat.2013.10.056)
+
+    作者: Xijun Xu, Chuan Chen, Aijie Wang, Wanqian Guo, Xu Zhou, Duu-Jong Lee, Nanqi Ren, Jo-Shu Chang
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.org/dashboard/biomodels/public/name/10.1016-j.jhazmat.2013.10.056/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/10.1016-j.jhazmat.2013.10.056/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+在反硝化除硫（DSR）过程中同时去除硫化物（$S^{2-}$）、硝酸盐（$NO_3^-$）和乙酸盐（$Ac^-$）是一种新型的生物废水处理工艺。本工作建立了一个数学模型来描述硫-氮-碳的动力学行为以及自养反硝化菌和异养反硝化菌之间的相互作用。通过数据拟合估算了模型的动力学参数，同时考虑了初始$S^{2-}$浓度、$S^{2-}/NO_3^--N$比率和$Ac^--C/NO_3^--N$比率的影响。模拟结果支持：与亚硝酸盐还原步骤（$NO_2^-$还原为$N_2$）相比，异养硝酸盐还原步骤（$NO_3^-$还原为$NO_2^-$）更易受到$S^{2-}$的抑制。此外，自养反硝化菌以$NO_2^-$为电子受体的$S^{2-}$氧化速率比以$NO_3^-$为电子受体时低两倍。当$S^0$作为最终电子供体参与时，自养反硝化菌的$NO_3^-$还原速度比$S^{2-}$驱动的途径慢3-10倍。对连续流DSR反应器的模型模拟表明，调节水力停留时间是使反应器耐受高$S^{2-}$负荷的有效方法。所提出的模型恰当地描述了DSR过程在宽参数范围内的动力学行为，可为工程师优化生物反应器运行以提高处理能力提供依据。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决缺乏能够同时处理硫化物、硝酸盐和有机碳的反硝化除硫（DSR）工艺的综合动力学模型的问题。具体而言：
+- 现有的模型通常只关注自养或异养反硝化中的一种。
+- 需要模拟混合培养中自养和异养反硝化菌之间复杂的相互作用和竞争。
+- 需要通过数学描述来阐明含硫、氮、碳系统中的动力学行为和抑制效应（如硫化物毒性），以优化生物反应器的运行。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+本文通过开发并验证基于Monod动力学的数学模型解决了这一问题：
+- **模型开发：** 构建了一个动力学模型，描述了6个关键过程，包括硫化物氧化为元素硫（$S^0$）和硫酸盐（$SO_4^{2-}$），以及自养和异养细菌对硝酸盐/亚硝酸盐的还原。
+- **参数估算：** 通过将模型与不同初始硫化物浓度的批式实验数据进行拟合，估算了动力学参数。
+- **抑制函数：** 模型纳入了抑制项，例如硫化物对异养反硝化的抑制和亚硝酸盐对自养反硝化的抑制。
+- **验证：** 使用具有不同 $S^{2-}/NO_3^--N$ 比率和 $Ac^--C/NO_3^--N$ 比率的独立实验数据集对模型进行了验证。
+- **模拟：** 利用该模型模拟连续流反应器的性能，以预测不同负荷率和水力停留时间（HRT）下的行为。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+作者进行了一系列批式实验和模拟：
+- **批式实验案例 1（参数估算）：** 在不同初始硫化物浓度（156, 539, 962, 1490 mg $S^{2-} L^{-1}$）下进行测试，用于估算动力学参数。
+- **批式实验案例 2（验证）：** 测试不同的 $S^{2-}/NO_3^--N$ 摩尔比（5/6）和变化的硫化物浓度（343, 718, 1140 mg $S^{2-} L^{-1}$）。
+- **批式实验案例 3（验证）：** 测试不同的 $Ac^--C/NO_3^--N$ 比率（1.26, 2 和 3），以评估碳源的影响。
+- **分析测量：** 使用离子色谱法、分光光度法和气相色谱法定期采样测量 $S^{2-}$、$NO_3^-$、$NO_2^-$、$Ac^-$ 和 VSS 浓度。
+- **连续流模拟：** 模拟连续反应器在改变水力停留时间（HRT）和进水基质浓度下的性能。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **衰减系数：** 当前模型忽略了衰减项，因为在批式数据中其值很小。对于长期的连续运行模拟，纳入衰减系数可能对于提高准确性是必要的。
+- **硫酸盐生成途径：** 模型在某些条件下忽略了 $S^0$ 氧化伴随 $NO_3^-$ 或 $NO_2^-$ 还原生成 $SO_4^{2-}$ 的途径（假设 $S^0$ 为主要终产物）。在有利于完全氧化的条件下，这一点可以进一步探索。
+- **在线控制：** 论文提出该模型可用于在线监测和控制，这是一个有待开发的实际应用方向。
+- **微生物群落动态：** 虽然模型描述了生物量生长（$X_A$ 和 $X_H$），但将这些动力学参数与微生物群落结构的具体变化（通过分子生物学技术）联系起来可以提供更深入的见解。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- 开发了一个考虑同时去除 $S^{2-}$、$NO_3^-$ 和 $Ac^-$ 的 DSR 工艺数学模型。
+- 估算了动力学参数，并在不同初始硫化物水平、S/N 比和 C/N 比下成功验证了模型。
+- **主要动力学发现：**
+  - 异养硝酸盐还原（$NO_3^- \to NO_2^-$）比亚硝酸盐还原步骤（$NO_2^- \to N_2$）更受硫化物的抑制。
+  - 利用 $NO_2^-$ 进行的自养硫化物氧化比利用 $NO_3^-$ 慢。
+  - 与 $S^{2-}$ 驱动相比，由 $S^0$ 驱动的自养硝酸盐还原速度明显较慢。
+- **模拟启示：** 高硫化物负荷会降低去除效率，但调节 HRT 是维持性能的有效策略。该模型可作为优化 DSR 生物反应器的工具。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Reyes-Avila et al. (2004)**: 提出了自养与异养途径反应速率的比较。
+- **Chen et al. (2008)**: 研究了高速 EGSB 反应器中 DSR 的生物降解。
+- **Chen et al. (2009)**: 调查了高速反硝化除硫工艺。
+- **Zhou et al. (2011)**: 提供了 DSR 过程中生成的元素硫还原的实验数据（用于验证）。
+- **Batston et al. (2002)**: ADM1 模型结构，影响了本研究中使用的动力学表达式。
+
+</TabItem >
+
+</Tabs>
+

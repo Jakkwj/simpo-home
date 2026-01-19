@@ -18,11 +18,12 @@ ic.configureOutput(includeContext=True)  # print with line number
 
 
 def main() -> None:
-    """把需要合并的 2 个 pdf 放入 pdf/merge 文件夹"""
+    """把需要合并的 多 个 pdf 放入 pdf/merge 文件夹"""
     pdf_file_list: list = [
         f"pdf/merge/{pdf}" for pdf in listdir("pdf/merge") if pdf.endswith(".pdf")
     ]
-    pdf_file_list.reverse()
+    pdf_file_list.sort()
+    # pdf_file_list.reverse()
     merge_pdfs(pdf_file_list, "pdf/merge/merged_pdf.pdf")
 
 

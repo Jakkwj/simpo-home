@@ -1,0 +1,133 @@
+---
+slug: 10.1016/j.watres.2013.07.025
+title: A modeling approach to describe ZVI-based anaerobic system
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [A modeling approach to describe ZVI-based anaerobic system](https://doi.org/10.1016/j.watres.2013.07.025)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.watres.2013.07.025](https://doi.org/10.1016/j.watres.2013.07.025)
+
+    作者: Xiao Xiao, Guo-Ping Sheng, Yang Mu, Han-Qing Yu
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.org/dashboard/biomodels/public/name/10.1016-j.watres.2013.07.025/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/10.1016-j.watres.2013.07.025/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+零价铁 (ZVI) 正越来越多地被添加到厌氧反应器中，以增强各种难降解污染物 (LBPs) 的生物转化。本研究旨在建立一个基于厌氧消化模型1号 (ADM1) 的新结构模型，以模拟这种基于ZVI的厌氧反应器。三个新过程，即ZVI腐蚀释放电子、ZVI腐蚀产生H2以及LBPs的转化，被整合到了ADM1中。建立的模型利用一项已发表研究的实验数据进行了校准和测试，并利用另一项工作的数据进行了验证。预测结果与实测结果之间良好的关系表明，所提出的模型适用于描述基于ZVI的厌氧系统的性能。我们的模型可以为厌氧系统的设计、开发和应用提供更精确的策略，特别是用于处理各种含LBPs的废水。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决缺乏综合数学模型来模拟零价铁 (ZVI) 强化厌氧反应器的问题，特别是针对难降解污染物 (LBPs) 的废水处理。现有的模型（如 ADM1）没有考虑 ZVI 引入的非生物过程，例如腐蚀、氢气产生以及化学强化的污染物还原。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+作者通过扩展标准的 **厌氧消化模型1号 (ADM1)** 开发了一个新的结构模型。他们在模型矩阵中整合了三个关键过程：
+- **ZVI 腐蚀：** 模拟为电子释放过程 ($Fe^0 \rightarrow Fe^{2+} + 2e^-$)，使用依赖于 ZVI 浓度的 Monod 型动力学。
+- **$H_2$ 形成：** 模拟为 ZVI 腐蚀的产物 ($Fe^0 + 2H^+ \rightarrow Fe^{2+} + H_2$)。
+- **LBP 转化：** 模拟为 ZVI 促进的生物降解过程。在摄取速率方程中引入了一个促进因子 $P_{Fe} = \frac{S_{Fe0}}{K_{P,Fe}} + 1$，以代表 ZVI 作为电子供体的增强作用。
+
+该模型使用 **AQUASIM 2.0** 软件实现。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+本文主要利用先前发表的研究数据进行了 **建模和模拟实验**。作者没有为这篇特定论文进行新的湿法实验。工作包括：
+- **模型校准 (案例 I)：** 使用 **Lin et al. (2011)** 的实验数据，该数据涉及使用 ZVI 处理含有 3,4-二氯硝基苯 (3,4-DClNB) 和蔗糖的合成废水的 UASB 反应器。
+- **模型验证 (案例 II)：** 使用 **Zhang et al. (2012)** 的实验数据，该数据涉及使用 ZVI 处理偶氮染料 X-3B 和蔗糖的 UASB 反应器。
+- **灵敏度分析：** 进行了绝对-相对灵敏度分析，以评估动力学参数 ($V_{m,Fe}$, $K_{s,Fe}$, $K_{P,Fe}$) 对 COD 去除和甲烷产生的影响。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **流体动力学和混合：** 由于高回流比，模型假设 UASB 反应器为理想混合 (CSTR)。然而，中间产物模拟的偏差表明，可以进一步探索 ZVI 床内的非理想混合或传质限制。
+- **成本优化：** 研究指出增加 ZVI 投加量会增加成本。未来的工作可以利用该模型优化 ZVI 的投加量和投加频率，以平衡性能与运行成本。
+- **毒性机制：** 模型假设产物毒性与 LBP 降解成正比。可以研究特定中间体更复杂的毒性机制。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- 成功开发了一个扩展的 ADM1 模型，用于描述处理 LBPs 的 ZVI 强化厌氧系统。
+- 定义了三个新过程：ZVI 腐蚀、非生物 $H_2$ 产生和 ZVI 促进的污染物降解。
+- 灵敏度分析表明，ZVI 促进常数 ($K_{P,Fe}$) 是影响 COD 和甲烷预测的最敏感参数。
+- 该模型在两个不同的数据集（氯硝基苯和偶氮染料）上进行了验证，显示 COD、沼气和污染物去除的模拟值与测量值之间具有良好的一致性。
+- 该模型为设计和优化基于 ZVI 的厌氧反应器提供了工具。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Batstone et al. (2002)**: The IWA anaerobic digestion model No 1 (ADM1). (IWA厌氧消化模型1号)
+- **Lin et al. (2011)**: Reductive transformation and dechlorination of chloronitrobenzenes in UASB reactor enhanced with zero-valent iron addition. (零价铁强化UASB反应器中氯硝基苯的还原转化与脱氯)
+- **Zhang et al. (2012)**: Steady performance of a zero valent iron packed anaerobic reactor for azo dye wastewater treatment under variable influent quality. (零价铁填充厌氧反应器在变进水水质下处理偶氮染料废水的稳定性能)
+- **Reichert (1998)**: AQUASIM 2.0 User Manual. (AQUASIM 2.0 用户手册)
+
+</TabItem >
+
+</Tabs>
+
+    
