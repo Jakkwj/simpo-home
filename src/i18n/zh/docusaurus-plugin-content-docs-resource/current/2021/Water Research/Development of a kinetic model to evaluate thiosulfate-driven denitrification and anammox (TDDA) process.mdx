@@ -1,5 +1,5 @@
 ---
-slug: 10.1016/j.watres.2021.117155
+slug: /10.1016/j.watres.2021.117155
 title: Development of a kinetic model to evaluate thiosulfate-driven denitrification and anammox (TDDA) process
 ---
 
@@ -30,17 +30,23 @@ import TabItem from "@theme/TabItem";
 ----
 
 
-[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.watres.2021.117155/id/743/did/737):
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.watres.2021.117155/id/748/did/737):
 
 <iframe
-src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.watres.2021.117155/id/743/did/737"
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.watres.2021.117155/id/748/did/737"
 
 width="100%"
 height="400"
 style={{ border: 'none', marginBottom: '0.8rem' }}
 ></iframe>
 
-**暂时未校准ThOD。（2026.01.24）**
+这个 Public version 的主要修订内容包括：
+
+1. 为了准确进行Balance核算，将计量学矩阵中的:
+    - `1.14` 替换为 `16/14`。
+    - `1.71` 替换为 `24/14`。
+    - `4.57` 替换为 `64/14`。
+    - `6.85` 替换为 `96/14`。
 
 ------
 

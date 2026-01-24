@@ -263,7 +263,7 @@ def mk_target_dir(result: dict[str, str]) -> tuple[str, str]:
 def get_content(result: dict[str, str], access: str, is_en: bool = True) -> str:
     """根据 is_en 创建中英文内容"""
     return f"""---
-        slug: {result["DOI"]}
+        slug: /{result["DOI"]}
         title: {result["Title"].replace(": ", "-")}
         ---
 
