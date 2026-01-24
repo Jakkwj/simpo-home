@@ -4,92 +4,91 @@
         <title>SIMPO Blog</title>
         <link>https://www.simpowater.org/zh/blog</link>
         <description>SIMPO Blog</description>
-        <lastBuildDate>Fri, 02 Jan 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 19 Jan 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>zh</language>
         <item>
-            <title><![CDATA[SIMPO 1.0.0 正式发布：更快、更智能、更好用]]></title>
+            <title><![CDATA[SIMPO 1.0.0 Officially Released: Faster, Smarter, and More User-Friendly]]></title>
             <link>https://www.simpowater.org/zh/blog/SIMPO 1.0.0 Officially Released</link>
             <guid>https://www.simpowater.org/zh/blog/SIMPO 1.0.0 Officially Released</guid>
-            <pubDate>Fri, 02 Jan 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[今天，我们兴奋地宣布：SIMPO 正式版 1.0.0 震撼发布！]]></description>
-            <content:encoded><![CDATA[<p>今天，我们兴奋地宣布：<strong>SIMPO 正式版 1.0.0 震撼发布！</strong></p>
-<p>这次是一次真正意义上的“大版本升级”：
-从内核到界面，从算法到体验，
-我们把<strong>建模效率</strong>、<strong>计算能力</strong>与<strong>使用体验</strong>做了系统性增强。
-更重要的是，我们引入了最前沿的 <strong>AI</strong> 能力，旨在将污水处理工艺数学模型的构建效率提升到一个<strong>全新的维度</strong>。</p>
-<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p><strong>SIMPO</strong> 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：<a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">SIMPO 1.0.0 更新日志</a>。</p></div></div>
+            <pubDate>Mon, 19 Jan 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Today, we are thrilled to announce the official release of SIMPO version 1.0.0!]]></description>
+            <content:encoded><![CDATA[<p>Today, we are thrilled to announce the <strong>official release of SIMPO version 1.0.0!</strong></p>
+<p>This is a "major version upgrade" in the truest sense of the word:
+From the core to the interface, from algorithms to the user experience,
+we have systematically enhanced <strong>modeling efficiency</strong>, <strong>computational power</strong>, and <strong>usability</strong>.
+More importantly, we've integrated cutting-edge <strong>AI</strong> capabilities, aiming to elevate the efficiency of building mathematical models for wastewater treatment processes to an <strong>entirely new dimension</strong>.</p>
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p><strong>SIMPO</strong>, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is a no-code intelligent modeling  and sharing platform for mathematical simulation of wastewater treatment. For specific update details, please see: <a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">SIMPO 1.0.0 Changelog</a>.</p></div></div>
 <hr>
-<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="更新亮点">更新亮点<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E6%9B%B4%E6%96%B0%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="更新亮点的直接链接" title="更新亮点的直接链接" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="亮点一ai-赋能论文直接变模型速度直接起飞">亮点一：AI 赋能，论文直接变模型，速度直接起飞<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E4%BA%AE%E7%82%B9%E4%B8%80ai-%E8%B5%8B%E8%83%BD%E8%AE%BA%E6%96%87%E7%9B%B4%E6%8E%A5%E5%8F%98%E6%A8%A1%E5%9E%8B%E9%80%9F%E5%BA%A6%E7%9B%B4%E6%8E%A5%E8%B5%B7%E9%A3%9E" class="hash-link" aria-label="亮点一：AI 赋能，论文直接变模型，速度直接起飞的直接链接" title="亮点一：AI 赋能，论文直接变模型，速度直接起飞的直接链接" translate="no">​</a></h3>
-<p>还在手动把论文里的模型参数一个个搬进软件？现在不需要了。</p>
-<p><strong>SIMPO 1.0.0</strong> 全面接入 <strong>Gemini 3</strong>。现在的你，只需将 SCI 论文的 PDF 文件拖入软件，AI 将自动解析并提取关键信息，一键生成 <strong>BioModel</strong>！</p>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="release-highlights">Release Highlights<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#release-highlights" class="hash-link" aria-label="Release Highlights的直接链接" title="Release Highlights的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="highlight-1-ai-powered-directly-convert-papers-to-models-speed-skyrockets">Highlight 1: AI-Powered, Directly Convert Papers to Models, Speed Skyrockets<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#highlight-1-ai-powered-directly-convert-papers-to-models-speed-skyrockets" class="hash-link" aria-label="Highlight 1: AI-Powered, Directly Convert Papers to Models, Speed Skyrockets的直接链接" title="Highlight 1: AI-Powered, Directly Convert Papers to Models, Speed Skyrockets的直接链接" translate="no">​</a></h3>
+<p>Still manually transferring model parameters from papers into the software one by one? Not anymore.</p>
+<p><strong>SIMPO 1.0.0</strong> now fully integrates with <strong>Gemini 3</strong>. You can now simply drag and drop your SCI paper's PDF file into the software, and the AI will automatically parse and extract key information, generating a <strong>BioModel</strong> with a single click!</p>
 <ul>
-<li class=""><strong>流程：</strong> 导入 PDF -&gt; AI 解析 -&gt; 人工简单校验 -&gt; 模型就绪。</li>
-<li class=""><strong>结果：</strong> 过去几小时的建模工作，现在分分钟搞定。</li>
+<li class=""><strong>Workflow:</strong> Import PDF -&gt; AI Parsing -&gt; Simple Human Verification -&gt; Model Ready.</li>
+<li class=""><strong>Result:</strong> Modeling work that used to take hours is now done in minutes.</li>
 </ul>
-<p>一句话总结：从“论文”到“可计算模型”，流程被大幅压缩，尤其适合需要快速复现文献模型、批量建模、或团队协作共享的场景。</p>
+<p>In a nutshell: The process from "paper" to "computable model" has been significantly compressed, especially suitable for scenarios requiring rapid replication of literature models, batch modeling, or team collaboration and sharing.</p>
 <div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://i.postimg.cc/DwjPppJs/ai-Bio-Model.gif" width="100%"></div>
 <hr>
-<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="亮点二ph-计算拿捏了">亮点二：pH 计算，拿捏了！<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E4%BA%AE%E7%82%B9%E4%BA%8Cph-%E8%AE%A1%E7%AE%97%E6%8B%BF%E6%8D%8F%E4%BA%86" class="hash-link" aria-label="亮点二：pH 计算，拿捏了！的直接链接" title="亮点二：pH 计算，拿捏了！的直接链接" translate="no">​</a></h3>
-<p><strong>pH 的计算</strong>从来都不只是“输入公式”那么简单：离子形态、解离平衡、定量描述……每一步都容易踩坑。</p>
-<p>为此，我们在 <strong>BioModel</strong> 中构建了 <strong>Ionization</strong> 模块。现在，你只需对各离子进行定量描述，SIMPO 即可轻松、精准地完成复杂的 pH 计算。不再需要手动列方程，让软件来处理化学平衡。</p>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="highlight-2-ph-calculation-mastered">Highlight 2: pH Calculation, Mastered!<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#highlight-2-ph-calculation-mastered" class="hash-link" aria-label="Highlight 2: pH Calculation, Mastered!的直接链接" title="Highlight 2: pH Calculation, Mastered!的直接链接" translate="no">​</a></h3>
+<p><strong>pH calculation</strong> has never been as simple as "inputting a formula": ionic speciation, dissociation equilibrium, quantitative descriptions… each step is prone to pitfalls.</p>
+<p>To address this, we've built the <strong>Ionization</strong> module within <strong>BioModel</strong>. Now, you only need to provide quantitative descriptions for each ion, and SIMPO can effortlessly and accurately perform complex pH calculations. No more manually setting up equations; let the software handle chemical equilibrium.</p>
 <div align="center" style="margin-top:0.2vh;margin-bottom:0.8vh"><img src="https://i.postimg.cc/q7WX4tGh/p-H-intro.gif" width="100%"></div>
 <hr>
-<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="亮点三性能狂飙如丝般顺滑">亮点三：性能狂飙，如丝般顺滑<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E4%BA%AE%E7%82%B9%E4%B8%89%E6%80%A7%E8%83%BD%E7%8B%82%E9%A3%99%E5%A6%82%E4%B8%9D%E8%88%AC%E9%A1%BA%E6%BB%91" class="hash-link" aria-label="亮点三：性能狂飙，如丝般顺滑的直接链接" title="亮点三：性能狂飙，如丝般顺滑的直接链接" translate="no">​</a></h3>
-<p>为了追求极致的性能，我们完成了多项“看不见”但“用得爽”的努力，带来明显的<strong>访问速度与计算效率提升</strong>：</p>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="highlight-3-performance-surges-silky-smooth">Highlight 3: Performance Surges, Silky Smooth<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#highlight-3-performance-surges-silky-smooth" class="hash-link" aria-label="Highlight 3: Performance Surges, Silky Smooth的直接链接" title="Highlight 3: Performance Surges, Silky Smooth的直接链接" translate="no">​</a></h3>
+<p>In pursuit of ultimate performance, we've made numerous "invisible" yet "delightful to use" improvements, resulting in significant <strong>enhancements in access speed and computational efficiency</strong>:</p>
 <ul>
-<li class=""><strong>内核升级：</strong> Python 版本升级 <strong>3.11.9 → 3.12.12</strong>。</li>
-<li class=""><strong>后端重构：</strong> 后端从 <strong>FastAPI</strong> 迁移至更高效的 <strong>Litestar</strong>。</li>
-<li class=""><strong>域名迁移：</strong> <a href="" class="">https://www.simpowater.org</a> → <a href="" class="">https://www.simpowater.com</a>，访问速度更快更丝滑。</li>
-<li class=""><strong>算法优化：</strong> 经过验证，调整后的 <strong>Forward Euler</strong> 算法在极低的 Step Tolerance（0.01%）下即可达到极高精度，因此我们移除冗余的 Improved Euler，让计算更纯粹、更快。</li>
+<li class=""><strong>Kernel Upgrade:</strong> Python version upgraded from <strong>3.11.9 to 3.12.12</strong>.</li>
+<li class=""><strong>Backend Refactor:</strong> Backend migrated from <strong>FastAPI</strong> to the more efficient <strong>Litestar</strong>.</li>
+<li class=""><strong>Domain Migration:</strong> <a href="" class="">https://www.simpowater.org</a> → <a href="" class="">https://www.simpowater.com</a>, offering faster and smoother access.</li>
+<li class=""><strong>Algorithm Optimization:</strong> Verified that the adjusted <strong>Forward Euler</strong> algorithm achieves extremely high accuracy even with a very low Step Tolerance (0.01%). Therefore, we've removed the redundant Improved Euler, making calculations purer and faster.</li>
 </ul>
 <hr>
-<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="体验升级细节决定成败">体验升级：细节决定成败<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E4%BD%93%E9%AA%8C%E5%8D%87%E7%BA%A7%E7%BB%86%E8%8A%82%E5%86%B3%E5%AE%9A%E6%88%90%E8%B4%A5" class="hash-link" aria-label="体验升级：细节决定成败的直接链接" title="体验升级：细节决定成败的直接链接" translate="no">​</a></h2>
-<p>除了上述硬核功能，我们还调整和优化了大量痛点，只为让你用得更顺手：</p>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="user-experience-enhancements-details-make-the-difference">User Experience Enhancements: Details Make the Difference<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#user-experience-enhancements-details-make-the-difference" class="hash-link" aria-label="User Experience Enhancements: Details Make the Difference的直接链接" title="User Experience Enhancements: Details Make the Difference的直接链接" translate="no">​</a></h2>
+<p>Beyond the hardcore features mentioned above, we've also adjusted and optimized numerous pain points to make your experience smoother:</p>
 <ul>
-<li class=""><strong>无需登录即可分享：</strong> <code>Public</code> 和 <code>Private</code> 项目现支持免登录访问，分享成果给导师或同事更方便。</li>
-<li class=""><strong>操作流更符合直觉：</strong> <code>Edit</code> 和 <code>Export</code> 按钮移至 <code>Detail</code> 详情页，不再需要频繁切换页面。</li>
-<li class=""><strong>函数运算：</strong> <code>BioModel</code> 的 <code>Rate</code> 现在支持函数: <code>Max</code> 和 <code>Min</code> (Max(1, 5) = 5，Min(1, 5) = 1)。</li>
-<li class=""><strong>输入优化：</strong> Backspace 不会在未保存时误触退出页面，输入更安心。</li>
-<li class=""><strong>下载优化：</strong> 客户端下载体积显著减少（安装时间较之前略有增加）。</li>
-<li class=""><strong>页面优化：</strong>
+<li class=""><strong>Share Without Login:</strong> <code>Public</code> and <code>Private</code> projects now support login-free access, making it easier to share your results with supervisors or colleagues.</li>
+<li class=""><strong>More Intuitive Workflow:</strong> <code>Edit</code> and <code>Export</code> buttons have been moved to the <code>Detail</code> page, eliminating the need for frequent page switching.</li>
+<li class=""><strong>Function Operations:</strong> <code>Rate</code> in <code>BioModel</code> now supports functions: <code>Max</code> and <code>Min</code> (Max(1, 5) = 5, Min(1, 5) = 1).</li>
+<li class=""><strong>Input Optimization:</strong> Backspace will no longer unintentionally exit the page when unsaved, providing a more secure input experience.</li>
+<li class=""><strong>Download Optimization:</strong> Client download size significantly reduced (installation time is slightly longer than before).</li>
+<li class=""><strong>Page Optimizations:</strong>
 <ul>
-<li class="">更好地自适应支持不同屏幕大小。</li>
-<li class="">Dashboard 左侧菜单可折叠：可用空间更大。</li>
-<li class="">顶部弹窗通知不再重叠：信息更清晰。</li>
+<li class="">Better adaptive support for various screen sizes.</li>
+<li class="">Collapsible left-side menu in the Dashboard: More usable space.</li>
+<li class="">Top pop-up notifications no longer overlap: Clearer information.</li>
 </ul>
 </li>
-<li class=""><strong>绘图功能大加强：</strong>
+<li class=""><strong>Significant Enhancements to Plotting:</strong>
 <ul>
-<li class="">本地绘图资源占用大幅降低，鼠标/键盘切换图片更流畅。</li>
-<li class="">支持 <strong>SVG 矢量图</strong>导出，直接满足论文发表要求。</li>
-<li class="">坐标轴、线宽、图例位置均可精细自定义。</li>
+<li class="">Local plotting resource usage significantly reduced, with smoother image switching via mouse/keyboard.</li>
+<li class="">Supports <strong>SVG vector image</strong> export, directly meeting publication requirements.</li>
+<li class="">Axis, line width, and legend positions are all finely customizable.</li>
 </ul>
 </li>
 </ul>
 <div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://i.postimg.cc/T1JrVtvT/figure-control.gif" width="100%"></div>
 <hr>
-<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="重点福利时间">重点：福利时间<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E9%87%8D%E7%82%B9%E7%A6%8F%E5%88%A9%E6%97%B6%E9%97%B4" class="hash-link" aria-label="重点：福利时间的直接链接" title="重点：福利时间的直接链接" translate="no">​</a></h2>
-<p>虽然功能强大了，速度变快了，但这都不重要......
-重要的是——</p>
-<p><strong>现在！立刻！马上！</strong>
-<strong>所有高级功能（包括超贵的 Gemini 3 AI 功能）统统免费！🆓</strong></p>
-<p>教程视频我们还在肝，但这么大的羊毛，建议大家先去薅了再说！🏃‍♂️💨</p>
-<p>📍 <strong>新官网地址：</strong> <a href="https://www.simpowater.com/" target="_blank" rel="noopener noreferrer" class="">https://www.simpowater.com</a>
-📝 <strong>客户端下载地址：</strong> <a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">Windows</a>，<a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">Ubuntu</a></p>
-<p>啥别说了，赶紧下载去体验吧！🚀</p>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="focus-a-treat-for-you">Focus: A Treat for You!<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#focus-a-treat-for-you" class="hash-link" aria-label="Focus: A Treat for You!的直接链接" title="Focus: A Treat for You!的直接链接" translate="no">​</a></h2>
+<p>While the powerful features and increased speed are great, they aren't the most important thing...
+What truly matters is—</p>
+<p><strong>Now! Immediately! Right Away!</strong>
+<strong>All advanced features (including the super-expensive Gemini 3 AI features) are completely FREE! 🆓</strong></p>
+<p>We're still working hard on the tutorial videos, but with such amazing benefits, we highly recommend you grab them while you can! 🏃‍♂️💨</p>
+<p>📍 <strong>New Official Website:</strong> <a href="https://www.simpowater.com/" target="_blank" rel="noopener noreferrer" class="">https://www.simpowater.com</a>
+📝 <strong>Client Download Addresses:</strong> <a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">Windows</a>, <a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">Ubuntu</a></p>
+<p>Enough said, go download and experience it now! 🚀</p>
 <hr>
-<p><strong>特别提醒：</strong> 升级1.0.0前，请将旧版卸载：</p>
+<p><strong>Important Reminder:</strong> Before upgrading to 1.0.0, please uninstall the old version:</p>
 <ul>
-<li class="">Windows: 开始菜单点击 Uninstall SimpoClient。</li>
-<li class="">Ubuntu：运行 <code>sudo dpkg -r SimpoClient</code>。</li>
+<li class="">Windows: Click "Uninstall SimpoClient" from the Start menu.</li>
+<li class="">Ubuntu: Run <code>sudo dpkg -r SimpoClient</code>.</li>
 </ul>
 <hr>
-<!-- -->
-<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>添加好友，备注SIMPO加入交流群</b></div><img src="https://i.postimg.cc/yxKhZxM0/jakk-QR.jpg" width="25%"></div>
-<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>欢迎关注微信公众号</b></div><img src="https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg" width="25%"></div>]]></content:encoded>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>Add friend, with the note “SIMPO” to join the group chat</b></div><img src="https://i.postimg.cc/yxKhZxM0/jakk-QR.jpg" width="25%"></div>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>Welcome to follow our WeChat official account</b></div><img src="https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg" width="25%"></div>]]></content:encoded>
             <category>SIMPO</category>
         </item>
         <item>
@@ -143,7 +142,7 @@
 <p>一个新工具的可靠性，必须经过严格验证。研究团队选取经典案例，将SIMPO的模拟结果与行业标杆软件AQUASIM进行对比。</p>
 <p><strong>如图4所示</strong>，在生物营养物去除模型的批量和恒定反应器模拟中，SIMPO与AQUASIM的模拟曲线几乎完全重合，weighted Nash Sutcliffe efficiency（WNSE）高达0.999以上。这证明SIMPO在保持操作简便性的同时，其计算精度与专业软件一致。</p>
 <div align="center" style="margin-top:2vh;margin-bottom:2vh"><img src="https://www.sciengine.com/figures/figures-769b3e9b1b8f4957bfa77a70b9211373-3050-4724-2025-1-4-201-F006c.jpg" width="100%"><span style="font-size:0.8rem">图4 （A） 间歇式反应器的 SIMPO 模拟结果。公开 Project：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Batch/id/407/did/406" target="_blank" rel="noopener noreferrer" class="">https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Batch/id/407/did/406</a>。用户可以将其克隆到自己的仓库。（B）恒定反应器的 SIMPO 模拟结果。公开 Project：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Chemostat/id/414/did/409" target="_blank" rel="noopener noreferrer" class="">https://dash.simpowater.org/dashboard/projects/public/name/BWTEE2.3.4Chemostat/id/414/did/409</a>。利用 AQUASIM 预测结果作为测量数据来测试 SIMPO 的计算准确性，WNSE 接近 1 的高值表明 SIMPO 与 AQUASIM 在准确性上具有良好一致性。</span></div>
-<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="智能纠错助手">智能纠错助手<a href="https://www.simpowater.org/zh/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E6%99%BA%E8%83%BD%E7%BA%A0%E9%94%99%E5%8A%A9%E6%89%8B" class="hash-link" aria-label="智能纠错助手的直接链接" title="智能纠错助�手的直接链接" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="智能纠错助手">智能纠错助手<a href="https://www.simpowater.org/zh/blog/SIMPO%E2%80%94A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareable-Wastewater-Treatment-Process-Modelling#%E6%99%BA%E8%83%BD%E7%BA%A0%E9%94%99%E5%8A%A9%E6%89%8B" class="hash-link" aria-label="智能纠错助手的直接链接" title="�智能纠错助手的直接链接" translate="no">​</a></h3>
 <p>SIMPO内置的<strong>自动平衡检查与可视化结果评估</strong>功能，能帮助研究者发现已发表模型中不易察觉的错误或缺陷。</p>
 <p><strong>案例1：检测化学计量矩阵错误</strong></p>
 <p><strong>图5</strong>展示了SIMPO在检查一个ASM3扩展模型时的表现。通过输入理论需氧量和氮平衡项，平台成功检测出原始文献中<strong>3处化学计量错误</strong>，并精准定位到具体反应过程。这为模型修正提供了明确方向。</p>

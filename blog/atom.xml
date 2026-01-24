@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.simpowater.org/blog</id>
     <title>SIMPO Blog</title>
-    <updated>2026-01-02T00:00:00.000Z</updated>
+    <updated>2026-01-19T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.simpowater.org/blog"/>
     <subtitle>SIMPO Blog</subtitle>
@@ -11,7 +11,7 @@
         <title type="html"><![CDATA[SIMPO 1.0.0 Officially Released: Faster, Smarter, and More User-Friendly]]></title>
         <id>https://www.simpowater.org/blog/SIMPO 1.0.0 Officially Released</id>
         <link href="https://www.simpowater.org/blog/SIMPO 1.0.0 Officially Released"/>
-        <updated>2026-01-02T00:00:00.000Z</updated>
+        <updated>2026-01-19T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Today, we are thrilled to announce the official release of SIMPO version 1.0.0!]]></summary>
         <content type="html"><![CDATA[<p>Today, we are thrilled to announce the <strong>official release of SIMPO version 1.0.0!</strong></p>
 <p>This is a "major version upgrade" in the truest sense of the word:

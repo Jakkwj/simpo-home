@@ -4,7 +4,7 @@
         <title>SIMPO Blog</title>
         <link>https://www.simpowater.org/blog</link>
         <description>SIMPO Blog</description>
-        <lastBuildDate>Fri, 02 Jan 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 19 Jan 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
@@ -12,7 +12,7 @@
             <title><![CDATA[SIMPO 1.0.0 Officially Released: Faster, Smarter, and More User-Friendly]]></title>
             <link>https://www.simpowater.org/blog/SIMPO 1.0.0 Officially Released</link>
             <guid>https://www.simpowater.org/blog/SIMPO 1.0.0 Officially Released</guid>
-            <pubDate>Fri, 02 Jan 2026 00:00:00 GMT</pubDate>
+            <pubDate>Mon, 19 Jan 2026 00:00:00 GMT</pubDate>
             <description><![CDATA[Today, we are thrilled to announce the official release of SIMPO version 1.0.0!]]></description>
             <content:encoded><![CDATA[<p>Today, we are thrilled to announce the <strong>official release of SIMPO version 1.0.0!</strong></p>
 <p>This is a "major version upgrade" in the truest sense of the word:
