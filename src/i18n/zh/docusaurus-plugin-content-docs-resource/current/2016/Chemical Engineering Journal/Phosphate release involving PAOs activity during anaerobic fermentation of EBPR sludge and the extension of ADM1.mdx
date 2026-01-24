@@ -1,0 +1,134 @@
+---
+slug: 10.1016/j.cej.2015.10.110
+title: Phosphate release involving PAOs activity during anaerobic fermentation of EBPR sludge and the extension of ADM1
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Phosphate release involving PAOs activity during anaerobic fermentation of EBPR sludge and the extension of ADM1](https://doi.org/10.1016/j.cej.2015.10.110)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.cej.2015.10.110](https://doi.org/10.1016/j.cej.2015.10.110)
+
+    作者: Ruyi Wang, Yongmei Li, Wenling Chen, Jinte Zou, Yinguang Chen
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.cej.2015.10.110/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.cej.2015.10.110/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+本研究调查了强化生物除磷（EBPR）污泥厌氧发酵过程中涉及聚磷菌（PAOs）活性的磷酸盐释放和挥发性脂肪酸（VFAs）的产生。发酵过程中PAOs的衰减率测定为 0.35 ± 0.03 d-1。污泥的裂解随着聚羟基脂肪酸酯（PHA）含量的增加而增强。此外，磷酸盐释放曲线、VFAs的产生以及各种VFA组分的比例随初始添加的乙酸浓度的不同而变化。基于这些观察，通过引入以下内容对厌氧消化模型1号（ADM1）进行了扩展和修改：（1）PAOs将4种VFA储存为PHA的过程，这些PHA可根据其组成降解为不同比例的单一VFA；（2）PHA含量对崩解速率的影响；以及（3）磷的沉淀。所提出的模型充分拟合了多实验、多变量的数据集，表明其在预测EBPR污泥发酵过程中磷酸盐和VFAs的变化方面起着重要作用。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决在强化生物除磷（EBPR）污泥厌氧发酵过程中，准确模拟涉及聚磷菌（PAOs）活性的磷酸盐释放和挥发性脂肪酸（VFA）变化的问题。具体而言，它解决了标准厌氧消化模型1号（ADM1）的局限性，即ADM1不包含磷相关过程、PAOs的特定活性（如PHA储存和Poly-P释放）或磷沉淀动力学。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+本文通过开发扩展的ADM1模型解决了这个问题。主要的修改包括：
+- **整合PAO动力学：** 引入了PAOs将4种特定的VFA（乙酸、丙酸、丁酸、戊酸）储存为PHA的过程，以及随后基于PHA组成将其裂解为VFA的过程。
+- **模拟衰减：** 测定了厌氧发酵过程中PAOs的比衰减率（$0.35 \pm 0.03 d^{-1}$）并将其纳入模型。
+- **崩解因子：** 引入了一个依赖于PHA含量的因子来修正污泥崩解速率，因为研究发现高PHA含量会加速细胞裂解。
+- **沉淀模块：** 增加了鸟粪石（$MgNH_4PO_4$）和钾鸟粪石（$MgKPO_4$）沉淀的动力学方程。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+本文进行了以下实验：
+- **PAO活性衰减测试：** 在血清瓶中对EBPR污泥进行厌氧发酵，测量7天内的最大磷释放速率（PRR），以确定PAO的衰减率。
+- **添加乙酸的批式发酵：** 在五种不同的初始乙酸浓度（0, 100, 300, 500, 和 1000 mg COD/L）下对EBPR污泥进行厌氧发酵。分析样品中的VFAs、$PO_4-P$、$NH_4-N$、PHA、VSS和金属离子（$Mg^{2+}$、$K^+$）。
+- **活/死细胞染色：** 使用LIVE/DEAD Baclight试剂盒和荧光显微镜评估细胞活力和膜损伤情况。
+- **模型校准与模拟：** 使用WEST软件模拟批式实验，并校准扩展ADM1模型的参数。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **沉淀模块的改进：** 目前的沉淀模型较为简化。未来的工作可以解决溶解过程，并纳入其他潜在的沉淀物（如磷酸钙），以改善在更复杂条件下的模拟。
+- **全规模验证：** 模型参数，特别是崩解因子（$f_{dis}$），是在实验室规模实验中确定的。对于全规模厌氧发酵系统，需要进行调整和验证。
+- **复杂的物理化学过程：** 需要进一步研究长期发酵对pH缓冲和离子有效性的影响。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **PAO衰减率：** 实验测定厌氧发酵过程中PAOs的衰减率为 $0.35 \pm 0.03 d^{-1}$，高于标准的需氧衰减率。
+- **PHA与裂解：** 发现污泥中PHA含量的增加会加速污泥的崩解和细胞裂解。
+- **乙酸的影响：** 初始乙酸的添加促进了PHA的合成，进而改变了发酵过程中产生的VFAs的分布（由于PHA的裂解）。
+- **模型扩展：** 开发了一个扩展的ADM1模型，成功整合了PAO介导的过程（PHA储存、Poly-P释放）和沉淀过程。
+- **模型性能：** 所提出的模型与磷酸盐、VFAs、镁和钾变化的实验数据吻合良好。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Batstone et al. (2002)**: Anaerobic Digestion Model No 1 (ADM1).
+- **Hao et al. (2010)**: Experimental evaluation of decrease in the activities of polyphosphate/glycogen-accumulating organisms.
+- **Lopez-Vazquez et al. (2007)**: Short-term temperature effects on the anaerobic metabolism of glycogen accumulating organisms.
+- **Wang et al. (2013)**: Short-chain fatty acid production from different biological phosphorus removal sludge.
+- **Musvoto et al. (2000)**: Integrated chemical – physical processes modelling.
+
+</TabItem >
+
+</Tabs>
+
+    

@@ -1,0 +1,152 @@
+---
+slug: 10.1016/j.memsci.2014.10.008
+title: Quantifying sensitivity and uncertainty analysis of a new mathematical model for the evaluation of greenhouse gas emissions from membrane bioreactors
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Quantifying sensitivity and uncertainty analysis of a new mathematical model for the evaluation of greenhouse gas emissions from membrane bioreactors](https://doi.org/10.1016/j.memsci.2014.10.008)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.memsci.2014.10.008](https://doi.org/10.1016/j.memsci.2014.10.008)
+
+    作者: Giorgio Mannina, Alida Cosenza
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.memsci.2014.10.008/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.memsci.2014.10.008/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+本文提出了一种能够量化膜生物反应器（MBR）中二氧化碳（$CO_2$）和氧化亚氮（$N_2O$）等温室气体（GHG）排放的新数学模型。该模型属于活性污泥模型（ASM）系列，同时考虑了生物过程和物理过程（例如膜污染）。文章还分析了影响GHG排放的关键因素和不确定性来源。具体而言，采用了标准化回归系数（SRC）、扩展FAST（Extended-FAST）和基于蒙特卡洛的方法来评估影响三个性能指标（出水质量指数、运行成本和GHG）的模型因子。模型因子被分类为重要因子、非影响因子和交互因子。该模型应用于开普敦大学的一个MBR中试工厂，该工厂进行了广泛的现场数据收集活动。结果表明，与氮转化和膜分离过程相关的模型因子在GHG估算的不确定性中起着核心作用。与物理过程相关的模型因子表现出较大的一阶和总阶效应，这强调了联合考虑生物和物理过程的整体方法的重要性。此外，膜在GHG排放中起着关键作用，这是由于滤饼层厚度反过来影响了膜截留的底物质量，从而影响了MBR中的生物过程。结果表明，建模者在预测GHG时不应排除磷在聚磷菌贡献中的作用，因为$N_2O$具有高度交互作用。结果显示，$CO_2$排放因子的不确定性高于$N_2O$排放因子的不确定性（分别为2.2%和0.17%）。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决膜生物反应器（MBR）温室气体（GHG）排放（特别是二氧化碳 $CO_2$ 和氧化亚氮 $N_2O$）量化过程中存在的不确定性以及缺乏综合建模工具的问题。
+
+主要解决的问题包括：
+- 固定的转换因子（如IPCC）具有高度不确定性。
+- 经验模型过于简化，无法重现因工厂配置或运行条件变化而产生的变异性。
+- 缺乏能够同时考虑MBR系统中生物过程和物理过程（如膜污染）的机理模型。
+- 需要识别影响MBR中GHG预测的关键模型因子和不确定性来源。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+本文通过开发和分析一个新的数学模型 **ASM2d-SMP-GHG** 来解决这个问题。
+
+方法步骤包括：
+- **模型开发：** 将集成的ASM2d-SMP模型（生物+溶解性微生物产物+膜污染）与Hiatt和Grady (2008) 的GHG模型耦合。这使得在考虑膜物理过程的同时模拟 $CO_2$ 和 $N_2O$ 排放成为可能。
+- **敏感性分析：** 应用全局敏感性分析（GSA）方法，特别是标准化回归系数（SRC）和扩展FAST方法，将模型因子分类为重要、无影响或交互因子。
+- **不确定性分析：** 使用蒙特卡洛模拟（LHS采样）将重要模型因子的不确定性传播到性能指标（出水质量指数、运行成本和GHG排放）。
+- **案例研究应用：** 将模型应用于处理城市污水的开普敦大学（UCT）MBR中试工厂，以验证和分析结果。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+本文依赖于用于模型校准的实验数据和大量的计算模拟进行分析：
+
+- **中试工厂运行：** 运行了一个UCT-MBR中试工厂165天，进水为城市污水（$40 L h^{-1}$）。采集了TSS, VSS, COD, $NH_4-N$, $NO_2-N$, $NO_3-N$, $N_{TOT}$ 和 $P_{TOT}$ 等样品。
+- **模型校准：** 利用从中试工厂收集的广泛现场数据对模型进行了校准。
+- **全局敏感性分析（GSA）模拟：**
+    - **SRC方法：** 进行了1200次模型运行，以识别线性关系并筛选重要因子。
+    - **扩展FAST方法：** 对重要因子子集进行了10,000次模型模拟，以量化一阶和总阶敏感性指数（交互效应）。
+- **不确定性分析模拟：** 使用拉丁超立方采样（LHS）运行了7100次蒙特卡洛模拟，以评估性能指标的累积分布函数（CDFs）。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **实测GHG数据：** 作者指出，使用实测的GHG数据（本研究的具体校准中未包含）将提高过程知识和模型的可靠性。
+- **PAO活性：** 聚磷菌（PAOs）在GHG产生中的作用，特别是与 $N_2O$ 排放的相互作用，需要进一步研究。
+- **N2O不确定性：** 尽管与 $CO_2$ 相比排放因子的不确定性较低，但 $N_2O$ 的模型预测显示出高变异性（$0.027 - 0.071 kg CO_{2eq} m^{-3}$），表明需要更精确地估算氮转化参数（如 $\eta_{g3}$, $\eta_{g4}$）。
+- **物理-生物交互：** 鼓励进一步探索结合物理（膜）和生物过程的整体方法，因为像反冲洗效率（$C_E$）这样的物理因子显著影响生物结果。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **新模型：** 建立了一个新的机理模型（ASM2d-SMP-GHG），用于量化MBR中的 $CO_2$ 和 $N_2O$ 排放，整合了生物和物理（膜）过程。
+- **关键因子：** 膜反冲洗效率（$C_E$）是一个关键因子，它影响滤饼层厚度、底物截留，进而影响生物活性和GHG排放。
+- **敏感性分析：**
+    - 物理过程对GHG排放具有较大的一阶和总阶效应。
+    - 氮转化参数（$\eta_{g3}$, $\eta_{g4}$）和PAO相关因子具有高度交互作用，对 $N_2O$ 预测至关重要。
+- **不确定性：**
+    - $CO_2$ 排放因子的不确定性（2.2%）高于 $N_2O$（0.17%）。
+    - 然而，$N_2O$ 预测值的累积分布显示出比 $CO_2$ 更高的变异性。
+- **结论：** MBR中准确的GHG建模需要一种整体方法，不能忽视物理膜过程或聚磷菌的作用。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Kampschreur et al. (2009)**: 讨论了文献中 $N_2O$ 排放的巨大差异。
+- **Corominas et al. (2012)**: 比较了不同的GHG排放建模方法。
+- **Hiatt and Grady (2008)**: 提出了本研究中用于碳氧化、硝化和反硝化的GHG模型基础。
+- **Cosenza et al. (2013)**: 介绍了作为本工作基础的集成ASM2d-SMP模型。
+- **Sweetapple et al. (2013)**: 识别了污水处理GHG排放建模中的关键不确定性来源。
+- **Saltelli et al. (2004)**: 提供了敏感性分析方法（SRC, FAST）的指南。
+- **Mannina et al. (2011)**: MBR生物和物理过程模拟的集成模型。
+
+</TabItem >
+
+</Tabs>
+
+    

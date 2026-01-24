@@ -21,57 +21,57 @@ type AlgorithmItem = {
   link: string;
 };
 
-const AlgorithmList: AlgorithmItem[] = [
-  // svg: https://www.svgrepo.com/
-  {
-    title: "Simulation",
-    icon: "💻",
-    iconColor: "grey",
-    link: "/solution_docs/digital",
-    description: (
-      <>
-        助力企业实现全方位的数字化升级。
-        定制化开发数据中台、ERP、CRM等核心系统，
-        包括数据采集、处理、分析和可视化的一站式解决方案。
-      </>
-    ),
-  },
-  {
-    title: "信息系统集成",
-    icon: "🌐",
-    iconColor: "blue",
-    link: "/solution_docs/integration",
-    description: (
-      <>
-        通过API、RPA接口等技术，打破企业信息系统间的数据孤岛，让数据自由流动，实现跨部门无缝协同，流程自动化管理，提高企业效率。
-      </>
-    ),
-  },
-  {
-    title: "AI解决方案",
-    icon: "🤖",
-    iconColor: "green",
-    link: "/solution_docs/ai",
-    description: (
-      <>
-        结合最新AI技术，为企业提供智能化的业务解决方案，提升运营效率和决策质量。
-        显著降低运营成本，大幅提升工作效率，创造更大商业价值。
-      </>
-    ),
-  },
-  {
-    title: "数据分析与洞察",
-    icon: "📈",
-    iconColor: "red",
-    link: "/solution_docs/bi",
-    description: (
-      <>
-        通过数据分析和可视化技术，化繁为简，帮助企业从数据中发现商业洞察和增长机会。
-        精准定位目标客户，数据驱动增长，洞察成就未来。
-      </>
-    ),
-  },
-];
+// const AlgorithmList: AlgorithmItem[] = [
+//   // svg: https://www.svgrepo.com/
+//   {
+//     title: "Simulation",
+//     icon: "💻",
+//     iconColor: "grey",
+//     link: "/solution_docs/digital",
+//     description: (
+//       <>
+//         助力企业实现全方位的数字化升级。
+//         定制化开发数据中台、ERP、CRM等核心系统，
+//         包括数据采集、处理、分析和可视化的一站式解决方案。
+//       </>
+//     ),
+//   },
+//   {
+//     title: "信息系统集成",
+//     icon: "🌐",
+//     iconColor: "blue",
+//     link: "/solution_docs/integration",
+//     description: (
+//       <>
+//         通过API、RPA接口等技术，打破企业信息系统间的数据孤岛，让数据自由流动，实现跨部门无缝协同，流程自动化管理，提高企业效率。
+//       </>
+//     ),
+//   },
+//   {
+//     title: "AI解决方案",
+//     icon: "🤖",
+//     iconColor: "green",
+//     link: "/solution_docs/ai",
+//     description: (
+//       <>
+//         结合最新AI技术，为企业提供智能化的业务解决方案，提升运营效率和决策质量。
+//         显著降低运营成本，大幅提升工作效率，创造更大商业价值。
+//       </>
+//     ),
+//   },
+//   {
+//     title: "数据分析与洞察",
+//     icon: "📈",
+//     iconColor: "red",
+//     link: "/solution_docs/bi",
+//     description: (
+//       <>
+//         通过数据分析和可视化技术，化繁为简，帮助企业从数据中发现商业洞察和增长机会。
+//         精准定位目标客户，数据驱动增长，洞察成就未来。
+//       </>
+//     ),
+//   },
+// ];
 
 function Algorithm({
   title,
@@ -132,8 +132,8 @@ export default function Algorithms() {
       ? "refine-card fade-in-up"
       : "refine-card refine-card-height-zh fade-in-up"
     : isMobile
-    ? "refine-card fade-in-up"
-    : "refine-card refine-card-height fade-in-up";
+      ? "refine-card fade-in-up"
+      : "refine-card refine-card-height fade-in-up";
 
   return (
     <div className="hero">

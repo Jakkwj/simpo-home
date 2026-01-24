@@ -1,0 +1,137 @@
+---
+slug: 10.1021/es201489n
+title: Modeling Nitrous Oxide Production during Biological Nitrogen Removal via Nitrification and Denitrification-Extensions to the General ASM Models
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Modeling Nitrous Oxide Production during Biological Nitrogen Removal via Nitrification and Denitrification: Extensions to the General ASM Models](https://doi.org/10.1021/es201489n)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1021/es201489n](https://doi.org/10.1021/es201489n)
+
+    作者: Bing-Jie Ni, Maël Ruscalleda, Carles Pellicer-Nàcher, and Barth F. Smets
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1021-es201489n/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1021-es201489n/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+在一氧化二氮（N2O）可能在生物脱氮（N）过程中形成。在这项工作中，开发了一个数学模型，描述了活性污泥硝化和反硝化过程中N2O的产生和消耗。著名的ASM过程模型被扩展以捕捉生物脱氮中硝化和反硝化过程中的N2O动力学。增加了六个额外的过程和三个额外的反应物，所有这些都涉及已知的生化反应。通过将模拟结果与四个不同的混合培养硝化和反硝化反应器研究报告中的N2O产生实验数据进行比较，证明了该模型的有效性和适用性。建模结果证实，当NO2-作为最终电子受体参与时，氨氧化菌（AOB）的羟胺氧化速度比好氧途径慢10倍。在四个反硝化步骤中，最后一个步骤（N2O还原为N2）似乎在O2存在时首先受到抑制。总体而言，N2O的产生量占不同硝化和反硝化系统中消耗N的0.1-25%，这可以通过所提出的模型很好地模拟。总之，我们提供了一个建模结构，它充分捕捉了自养硝化和异养反硝化驱动的生物脱氮过程中的N2O动力学，并可作为后续改进的基础。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决缺乏一个全面且通用的数学模型来描述混合培养活性污泥系统中硝化和反硝化过程中$$N_2O$$动力学（产生和消耗）的问题。以前的模型通常是经验性的、过于简化的、仅针对特定案例的，或者忽略了特定的途径，如AOB驱动的$$N_2O$$产生。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+作者通过以下方式扩展了通用的活性污泥模型（ASMs）：
+- 纳入了6个额外的过程和3种额外的反应物（$$NH_2OH$$、$$NO$$、$$N_2O$$）。
+- 模拟了氨氧化细菌（AOB）通过硝化菌反硝化途径（$$NO_2^-$$还原为$$NO$$，然后还原为$$N_2O$$）产生$$N_2O$$的过程。
+- 将异养反硝化模拟为四个连续的还原步骤（$$NO_3^- 	o NO_2^- 	o NO 	o N_2O 	o N_2$$），具有各自的反应动力学。
+- 利用文献中涵盖不同反应器类型和操作条件的四个不同的实验数据集对模型进行了校准和验证。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+本文没有进行新的湿法实验室实验，而是利用之前四项研究的实验数据进行了模型校准和验证：
+- **案例 1 (Yang et al., 2009):** 处理生活污水的SBR，监测硝化和反硝化批次测试期间的$$N_2O$$。
+- **案例 2 (Butler et al., 2009):** 受到氨冲击负荷的中试规模硝化活性污泥厂。
+- **案例 3 (Itokawa et al., 2001):** 在低COD/N比条件下运行的连续反硝化反应器。
+- **案例 4 (Kim et al., 2010):** 使用$$NH_4^+$$或$$NH_2OH$$作为底物的批次硝化实验。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- $$NH_2OH$$化学分解或HAO介导产生$$N_2O$$的潜在途径在模型中被忽略了（$$\alpha=0$$），但在特定条件下可能很重要。
+- 目前未考虑在限制性DO浓度下利用$$NO_2^-$$作为末端电子受体的AOB生长。
+- 未模拟与$$NO_2^-$$呼吸耦合的AOB生长。
+- 由于所用数据集中缺乏实验性$$NO$$数据，对$$NO$$动力学的验证受到限制。
+- 对全规模系统中$$N_2O$$通量的精确量化估计需要进一步确定参数值。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- 开发了一个扩展ASM的统一数学模型，用于模拟废水处理中的$$N_2O$$排放。
+- 模型假设AOB主要通过硝化菌反硝化（$$NO_2^-$$还原）产生$$N_2O$$，该过程被模拟为比好氧氧化慢。
+- 异养反硝化被模拟为4个步骤，其中$$N_2O$$还原对$$O_2$$抑制最敏感。
+- 该模型成功复现了4项不同研究在不同条件（SBR、连续流、冲击负荷、不同底物）下的$$N_2O$$动力学。
+- 根据系统的不同，发现$$N_2O$$的产生量占消耗氮的0.1-25%。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- Kampschreur et al. (2009) Nitrous oxide emission during wastewater treatment.
+- Yang et al. (2009) N2O Production during nitrogen removal via nitrite from domestic wastewater: Main sources and control method.
+- Butler et al. (2009) Nitrous oxide emissions for early warning of biological nitrification failure in activated sludge.
+- Itokawa et al. (2001) Nitrous oxide production in high-loading biological nitrogen removal process under low COD/N ratio condition.
+- Kim et al. (2010) Nitrous oxide emission from nitrifying activated sludge dependent on denitrification by ammonia-oxidizing bacteria.
+- Hiatt and Grady (2008) An updated process model for carbon oxidation, nitrification, and denitrification.
+
+</TabItem >
+
+</Tabs>
+
+    

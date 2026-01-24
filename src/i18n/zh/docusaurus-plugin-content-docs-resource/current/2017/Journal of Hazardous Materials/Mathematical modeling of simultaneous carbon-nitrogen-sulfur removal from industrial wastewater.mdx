@@ -1,0 +1,139 @@
+---
+slug: 10.1016/j.jhazmat.2016.08.074
+title: Mathematical modeling of simultaneous carbon-nitrogen-sulfur removal from industrial wastewater
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Mathematical modeling of simultaneous carbon-nitrogen-sulfur removal from industrial wastewater](https://doi.org/10.1016/j.jhazmat.2016.08.074)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.jhazmat.2016.08.074](https://doi.org/10.1016/j.jhazmat.2016.08.074)
+
+    作者: Xi-Jun Xu, Chuan Chen, Ai-Jie Wang, Bing-Jie Ni, Wan-Qian Guo, Ye Yuan, Cong Huang, Xu Zhou, Dong-Hai Wu, Duu-Jong Lee, Nan-Qi Ren
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.jhazmat.2016.08.074/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.jhazmat.2016.08.074/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+构建了一个考虑硫酸盐还原菌 (SRB)、硫氧化菌 (SOB)、硝酸盐还原菌 (NRB)、兼性细菌 (FB) 和产甲烷古菌 (MPA) 相互作用的工业废水碳、氮、硫 (C-N-S) 同步去除数学模型。针对动力学网络，提出了异养反硝化菌的 C-N 生物转化 ($NO_3^- \rightarrow NO_2^- \rightarrow N_2$) 以及 SRB ($SO_4^{2-} \rightarrow S^{2-}$) 和 SOB ($S^{2-} \rightarrow S^0$) 的 C-S 生物转化过程，并基于批次实验数据进行了校准。该模型密切预测了厌氧和微好氧条件下的硝酸盐、亚硝酸盐、硫酸盐、硫化物、乳酸、乙酸、甲烷和氧气的变化曲线。最佳拟合动力学参数具有较小的 95% 置信区间，且均值大约位于中心。利用在不同操作条件下生成的独立数据集进一步验证了该模型。这项工作是首次成功对工业废水中的 C-N-S 同步去除进行数学建模，更重要的是，所提出的模型被证明可用于模拟其他相关过程，如硫酸盐还原-硫氧化过程 (SR-SO) 和反硝化除硫 (DSR) 过程。开发的模型有望增强我们预测碳氮硫污染工业废水处理的能力。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决缺乏能够描述工业废水中碳、氮、硫 (C-N-S) 同步去除的综合数学模型的问题。具体来说：
+- 现有模型通常关注单独的过程或部分整合（如 SR-SO 或 DSR），无法完全捕捉 C-N-S 同步去除的复杂动态。
+- 需要理解和预测在厌氧和微好氧条件下，单一反应器中多种微生物群落（SRB, NRB, SOB, FB, 和 MPA）之间复杂的协同和竞争相互作用。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+本文通过构建并验证一个新的数学模型解决了这个问题：
+- **模型整合：** 将活性污泥模型 (ASMs) 和扩展的厌氧消化模型 1 号 (ADM1) 与硫酸盐还原过程相结合。
+- **微生物相互作用：** 模型明确定义了五个关键生物量组的动力学：硫酸盐还原菌 (SRB)、硝酸盐还原菌 (NRB)、硫氧化菌 (SOB)、兼性细菌 (FB) 和产甲烷古菌 (MPA)。
+- **动力学框架：** 使用双底物 Monod 动力学描述反应速率，并采用竞争性抑制系数来模拟电子供体（乳酸/乙酸）和受体（$NO_3^-$, $SO_4^{2-}$, $O_2$）的竞争。
+- **校准与验证：** 利用批次实验数据校准模型以估计关键动力学参数（包含不确定性分析），并使用独立数据集和其他工艺场景（SR-SO 和 DSR）进行验证。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+作者使用实验室规模 EGSB 反应器的污泥进行了批次实验：
+- **培养物 1（厌氧条件）：** 研究了不同初始硝酸盐浓度（$200$, $500$, $700$ $mg L^{-1}$）下的 C-N-S 去除，同时保持硫酸盐（$1000$ $mg L^{-1}$）和 COD（$2700$ $mg L^{-1}$，乳酸）恒定。
+- **培养物 2（微好氧条件）：** 研究了限制供氧条件下的 C-N-S 去除。进行了六组测试，通过不同的氧气投加量实现不同的氧硫摩尔比 ($R_{OS}$)：$0.39$, $0.77$, $1.16$, $1.55$, 和 $1.93$。
+- **测量指标：** 监测了 $SO_4^{2-}$, $NO_3^-$, $NO_2^-$, $S^{2-}$, $S^0$, COD（乳酸和乙酸）, $CH_4$, 和 $O_2$ 的时间序列数据。
+- **参数估计：** 使用 Matlab 拟合模型与实验数据，并计算动力学参数的 95% 置信区间。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **底物复杂性：** 当前模型使用乳酸和乙酸作为简化的碳源。未来的工作需要解决实际工业废水中存在的复杂有机碳成分。
+- **沉淀作用：** 模型忽略了金属硫化物的沉淀（例如在 $SO_4^{2-}$ 存在下），这在实际废水中很常见。
+- **氢途径：** 当前模型未考虑氢营养型产甲烷菌利用 $H_2$ 产甲烷的过程。
+- **长期验证：** 模型需要通过长期研究和全规模应用数据进行验证，以成为实际系统的精确预测工具。
+- **微生物响应机制：** 在高 $R_{OS}$ 下观察到 NRB 数量增加但硝酸盐还原率降低（表明转向氧还原）的现象需要进一步的生物学验证。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **首个综合模型：** 开发了首个成功模拟考虑 SRB, NRB, SOB, FB, 和 MPA 相互作用的 C-N-S 同步去除数学模型。
+- **动力学参数：** 成功估计了关键动力学参数，特别是 SRB 和 NRB 之间的竞争系数，具有良好的可识别性（较窄的 95% 置信区间）。
+- **过程动态：** 模型准确描述了厌氧和微好氧条件下氮、硫和碳物种的变化曲线。
+- **通用性：** 该模型被证明可利用独立数据模拟相关过程，如硫酸盐还原-硫氧化 (SR-SO) 和反硝化除硫 (DSR)。
+- **操作启示：** 模拟结果强调了氧硫比 ($R_{OS}$) 在控制产物谱（特别是元素硫回收）方面的重要性。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Xu et al. (2013)**: Sulfate-reduction: sulfide-oxidation and elemental sulfur bioreduction process: modeling and experimental validation.
+- **Chen et al. (2010)**: Enhanced performance of denitrifying sulfide removal process under micro-aerobic condition.
+- **Henze et al. (2000)**: Activated Sludge Models ASM1, ASM2, ASM2d and ASM3.
+- **Batstone et al. (2002)**: Anaerobic Digestion Model No.1 (ADM1).
+- **Kalyuzhnyi and Fedorovich (1998)**: Mathematical modeling of competition between sulfate reduction and methanogenesis in anaerobic reactors.
+- **Johnston and Voordouw (2012)**: Sulfate-reducing bacteria lower sulfur-mediated pitting corrosion under conditions of oxygen ingress.
+
+</TabItem >
+
+</Tabs>
+
+    

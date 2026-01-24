@@ -1,0 +1,147 @@
+---
+slug: 10.1038/srep35312
+title: Modelling Methane Production and Sulfate Reduction in Anaerobic Granular Sludge Reactor with Ethanol as Electron Donor
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Modelling Methane Production and Sulfate Reduction in Anaerobic Granular Sludge Reactor with Ethanol as Electron Donor](https://doi.org/10.1038/srep35312)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-open-42A5F5?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1038/srep35312](https://doi.org/10.1038/srep35312)
+
+    作者: Jing Sun, Xiaohu Dai, Qilin Wang, Yuting Pan & Bing-Jie Ni
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1038-srep35312/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1038-srep35312/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+在这项工作中，开发了一个基于微生物生长动力学和生物膜基质传输的数学模型，用于描述以乙醇为关键电子供体的甲烷生产和硫酸盐还原过程。该模型利用在颗粒污泥上流式厌氧污泥床（UASB）反应器中进行的两个案例研究的实验数据进行了校准和验证。结果表明，开发的模型能够令人满意地描述两个系统中的甲烷和硫化物产量以及乙醇和硫酸盐的去除情况。模拟结果揭示了厌氧颗粒污泥中产甲烷古菌、硫酸盐还原菌和发酵细菌的分层分布，且这些微生物的相对丰度随基质浓度的变化而变化。结果还表明，当 $COD/SO_4^{2-}$ 比率达到 0.5 时，硫酸盐还原菌可以成功地在乙醇利用方面胜过发酵细菌。模型模拟表明，可以实现最大甲烷生产效率的最佳颗粒直径，而硫酸盐还原效率受颗粒尺寸变化的影响不显著。它还表明，甲烷生产和硫酸盐还原会受到乙醇和硫酸盐负荷率以及反应器中微生物群落发展阶段的影响，这为系统的实际运行提供了全面的见解。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决在处理含乙醇和硫酸盐废水时，厌氧颗粒污泥反应器中不同微生物群落之间复杂的相互作用和竞争机制尚不明确的问题。具体包括：
+- 缺乏专门描述以**乙醇**为关键电子供体的甲烷生产和硫酸盐还原过程的数学模型。
+- 发酵细菌（FB）和硫酸盐还原菌（SRB）之间对乙醇的竞争机制在以往主要关注乙酸和氢气的模型中未得到充分阐明。
+- 需要了解颗粒内部微生物的空间分布（分层）以及操作参数（如颗粒大小和负荷率）如何影响反应器性能。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+本文通过开发并验证一个基于微生物生长动力学和基质扩散的一维数学模型来解决这个问题。具体方法包括：
+- **模型开发：** 构建了一个包含7个颗粒组分（FB、利用乙醇/乙酸/氢气的SRB、利用乙酸/氢气的MA、惰性生物质）和6种溶解性化合物的模型。采用Monod型动力学描述生长，Fick定律描述扩散。
+- **校准与验证：** 利用两个在不同条件下运行的上流式厌氧污泥床（UASB）反应器（案例研究 I 和 II）的长期实验数据来校准动力学参数并验证模型的准确性。
+- **模拟应用：** 应用验证后的模型模拟颗粒内部微生物群落的空间分布、颗粒大小对性能的影响，以及不同乙醇负荷率（ELR）和硫酸盐负荷率（SLR）的影响。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+本文利用了两个UASB反应器的实验数据进行研究：
+- **案例研究 I：**
+  - 运行375天。
+  - 进水为含乙醇（~1000 mg/L）和乙酸（~1000 mg/L）的合成废水。
+  - 有机负荷率（OLR）从 1.4 变化到 36.6 gCOD/L/d。
+  - 硫酸盐浓度从 150 mg/L 变化到 6000 mg/L。
+  - 数据用于模型校准（0-159天）和验证（160-375天）。
+- **案例研究 II：**
+  - 运行180天。
+  - 高进水硫酸盐浓度（3000 mg/L）。
+  - 改变OLR和水力停留时间（HRT）组合。
+  - 用于进一步的模型验证。
+- **模型模拟实验：**
+  - 模拟颗粒内部的微生物分布剖面。
+  - 模拟颗粒直径（1.2 mm 至 2.4 mm）对甲烷产量和硫酸盐还原的影响。
+  - 模拟在广泛的乙醇负荷率（2-24 gCOD/L/d）和硫酸盐负荷率（2-24 gSO4/L/d）下的反应器性能。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **抑制常数：** 由于本研究中溶解态 $H_2S$ 水平较低（< 50 mgS/L），模型对所有SRB和MA使用了相同的硫化物抑制常数。未来的研究可以在高硫化物浓度下探索不同微生物群落的独特抑制常数。
+- **动态颗粒尺寸：** 模型假设基于测量值的固定平均颗粒直径。然而，实际系统中颗粒大小是波动的，可以探索将生物模型与动态造粒模型结合。
+- **接种物组成：** 研究表明，利用乙酸的SRB（ASRB）的初始丰度显著影响达到稳态的时间。关于针对富含硫酸盐废水的最佳接种物选择值得进一步研究。
+- **复杂基质：** 模型主要关注乙醇和乙酸。将其扩展到处理更复杂的工业废水是合乎逻辑的下一步。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **模型成功：** 成功开发并验证了一个数学模型（$R^2 > 0.8$），用于描述UASB反应器中的乙醇降解、硫酸盐还原和甲烷生产。
+- **微生物分层：** 模型揭示了颗粒中的分层结构：利用乙酸的产甲烷菌（AMA）占据核心，而SRB和发酵细菌（FB）位于外层。
+- **竞争机制：** 当 $COD/SO_4^{2-}$ 比率约为 0.5 时，SRB在乙醇利用上能胜过FB。在富含硫酸盐的稳态条件下，SRB显著胜过MA。
+- **颗粒尺寸效应：** 存在一个最佳颗粒直径（本研究中约为 1.8 mm）以实现最大的甲烷生产效率。硫酸盐还原效率对颗粒尺寸变化不太敏感。
+- **操作指导：** 论文提供了基于乙醇负荷率（ELR）和硫酸盐负荷率（SLR）的反应器性能图谱，表明高 ELR/SLR 比率有利于甲烷生产，而低比率有利于硫酸盐还原。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Hu et al. (2015)**: 进水 $COD/SO_4^{2-}$ 比率对UASB处理合成含硫酸盐废水的影响。
+- **Kalyuzhnyi et al. (1998)**: 厌氧反应器中硫酸盐还原与产甲烷竞争的数学模拟。
+- **Omil et al. (1998)**: UASB反应器处理挥发性脂肪酸过程中硫酸盐还原菌与产甲烷菌的长期竞争。
+- **Ni et al. (2009)**: 颗粒基厌氧氨氧化（ANAMMOX）过程的模拟（为本颗粒模型结构的基础）。
+- **Nagpal et al. (2000)**: 硫酸盐还原菌对乙醇的利用：实验与模拟研究。
+
+</TabItem >
+
+</Tabs>
+

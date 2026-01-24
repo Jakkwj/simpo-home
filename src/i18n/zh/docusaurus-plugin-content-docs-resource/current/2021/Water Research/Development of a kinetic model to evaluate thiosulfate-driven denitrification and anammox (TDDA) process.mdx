@@ -1,0 +1,144 @@
+---
+slug: 10.1016/j.watres.2021.117155
+title: Development of a kinetic model to evaluate thiosulfate-driven denitrification and anammox (TDDA) process
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Development of a kinetic model to evaluate thiosulfate-driven denitrification and anammox (TDDA) process](https://doi.org/10.1016/j.watres.2021.117155)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.watres.2021.117155](https://doi.org/10.1016/j.watres.2021.117155)
+
+    作者: Yang-Fan Deng, Wen-Tao Tang, Hao Huang, Jin Qian, Di Wu, Guang-Hao Chen
+  </div>
+</div>
+
+
+----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.watres.2021.117155/id/743/did/737):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.watres.2021.117155/id/743/did/737"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+**暂时未校准ThOD。（2026.01.24）**
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+最近，硫驱动反硝化与厌氧氨氧化（Anammox）工艺的耦合作为一种有前景的替代脱氮技术已被广泛研究。大多数研究调查了工艺的可行性并监测了群落动态。然而，基于数学模型对这一新型硫-氮循环生物工艺的深入理解以及对不同微生物之间复杂相互作用的阐明尚未实现。为了填补这一空白，我们开发了一个动力学模型（包含7个生物过程，12个变量和19个参数）来评估单一反应器中的硫（硫代硫酸盐）驱动反硝化和厌氧氨氧化（TDDA）工艺。该过程中使用的参数是通过拟合实验数据分别估算的。随后，模型在不同条件下进行了进一步验证，结果表明开发的模型能够描述TDDA系统中氮和硫转化的动态行为。新开发的支路硫代硫酸盐氧化模型也通过宏基因组分析得到了验证。利用开发的模型，我们 i) 考察了在不同底物条件下稳态时硫氧化细菌与厌氧氨氧化细菌之间的相互作用，以证明TDDA的可靠性，以及 ii) 从实际实施的角度评估了TDDA工艺的可行性和运行。我们的结果将有助于进一步探索这一新型S-N循环生物工艺的重要意义，并指导其未来的应用。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决对硫驱动反硝化与厌氧氨氧化（TDDA）耦合工艺缺乏深入理解的问题。具体而言：
+- 以往的研究主要集中在可行性和群落动态上，缺乏数学模型研究。
+- 目前没有现成的模型能阐明单一反应器中硫氧化菌（SOB）和厌氧氨氧化菌（AnAOB）之间复杂的相互作用。
+- 现有的硫驱动反硝化模型通常较为简化，未考虑单质硫（$S^0$）作为中间产物的形成或与厌氧氨氧化的耦合。
+- 文章旨在提供一种工具来评估工艺稳定性、优化运行，并理解两种细菌群落之间对底物（特别是亚硝酸盐）的竞争。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+文章通过开发并验证一个综合动力学模型解决了这个问题：
+- **模型开发**：构建了一个包含7个生物过程、12个变量和19个参数的动力学模型。它明确模拟了硫代硫酸盐的两步氧化过程：硫代硫酸盐（$S_2O_3^{2-}$）转化为单质硫（$S^0$）和硫酸盐（$SO_4^{2-}$），然后是$S^0$转化为$SO_4^{2-}$。
+- **参数估算**：利用批次实验分别估算了SOB（使用硫代硫酸盐和$S^0$作为电子供体）和厌氧氨氧化菌的动力学参数。
+- **验证**：利用独立的批次测试和长期的UASB反应器数据对模型进行了验证。
+- **宏基因组验证**：进行了宏基因组测序以确认代谢途径，验证了模型中假设的“支路硫代硫酸盐氧化途径”（涉及Sox和rDsr系统）。
+- **模拟**：利用该模型模拟了不同进水S/N和$NH_4^+/NO_3^-$比率下的稳态条件，以评估工艺的鲁棒性和主要的脱氮途径。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+- **反应器运行**：运行了一个上流式厌氧污泥床（UASB）反应器超过400天（分为3个阶段），处理含有硫代硫酸盐、硝酸盐和铵的合成废水。
+- **批次实验**：
+  - **校准组（A1, A2）**：A1用于硫代硫酸盐驱动的反硝化参数；A2用于厌氧氨氧化参数。
+  - **验证组（B1, B2）**：在不同初始浓度下进行，以验证模型。
+- **化学分析**：使用离子色谱法和分光光度法测量氮物种（$NO_3^-$、$NO_2^-$、$NH_4^+$）和硫物种（$S_2O_3^{2-}$、$SO_4^{2-}$、$S^2-$、$S^0$）的浓度。
+- **宏基因组分析**：从反应器污泥中提取DNA，进行Illumina MiSeq测序、组装和功能注释（KEGG），以识别参与硫氧化的关键基因（如 *sox*, *dsr*, *apr*, *sat*）。
+- **数学建模**：使用Fisher信息矩阵（FIM）进行灵敏度分析和参数估算，并使用AQUASIM和MATLAB进行模拟。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **长期连续模拟**：文章指出，长期验证的结果不如动态批次模拟令人满意，这可能是由于生物量产率系数的变化或连续反应器中硫代硫酸盐的化学氧化。这种差异需要进一步调查。
+- **异养反硝化**：模型忽略了异养反硝化（假设没有有机物）。在处理实际废水（如工业废水）时，有机物可能存在，需要扩展模型。
+- **出水深度处理**：研究提到系统中$NH_4^+$通常过量，需要进一步的深度处理以满足排放标准。
+- **特定代谢基因**：由于注释的局限性，无法确定 *dsrL* 基因的丰度，而这是所提出的硫氧化途径的关键部分。
+- **实际废水应用**：可行性分析基于合成废水；针对浓度波动的实际工业废水的应用需要进行中试测试。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **模型构建**：成功开发了TDDA工艺的动力学模型，纳入了两步硫代硫酸盐氧化途径（$S_2O_3^{2-} \rightarrow S^0 \rightarrow SO_4^{2-}$）。
+- **途径验证**：宏基因组学证实了涉及Sox酶复合物和rDsr系统的支路硫代硫酸盐氧化途径的存在，支持了模型结构。
+- **参数见解**：发现硫代硫酸盐的电子供体能力显著高于单质硫。与SOB（$K_{NO2}^{SOB} = 0.43$ mgN/L）相比，厌氧氨氧化菌对亚硝酸盐表现出更高的亲和力（$K_{NO2}^{AMX} = 0.05$ mgN/L）。
+- **工艺动态**：模拟显示厌氧氨氧化菌和SOB可以稳定共存。只要铵充足，厌氧氨氧化是主要的脱氮途径（贡献率 >73%）。
+- **运行策略**：文章根据S/N和$NH_4^+/NO_3^-$比率确定了最佳运行区域。区域I（S/N > 1.8, $NH_4^+/NO_3^-$ < 0.9）被确定为高TN去除效率（>98%）且无单质硫积累的区域。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Mora et al. (2015)**: Investigating the kinetics of autotrophic denitrification with thiosulfate (提供了SOB动力学的基础)。
+- **Deng et al. (2019)**: Coupling of sulfur(thiosulfate)-driven denitratation and anammox process (作者之前的TDDA实验工作)。
+- **Strous et al. (1998)**: The sequencing batch reactor as a powerful tool for the study of slowly growing anaerobic ammonium-oxidizing microorganisms (厌氧氨氧化产率参数的来源)。
+- **Hao et al. (2002)**: Model-based evaluation of temperature and inflow variations on a partial nitrification–ANAMMOX biofilm process (厌氧氨氧化动力学参数的来源)。
+- **Dahl and Friedrich (2008)**: Microbial Sulfur Metabolism (硫氧化途径的参考文献)。
+- **Henze et al. (2006)**: Activated Sludge Models ASM1, ASM2, ASM2d and ASM3 (生物量组成参数的标准参考)。
+
+</TabItem >
+
+</Tabs>
+

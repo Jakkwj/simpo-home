@@ -294,10 +294,10 @@ def get_content(result: dict[str, str], access: str, is_en: bool = True) -> str:
         {{/* ----
 
 
-        [SIMPO Dashboard](https://dash.simpowater.org/dashboard/biomodels/public/name/{result["DOI"].replace("/", "-")}/id/xxxxxx/did/yyyyyy):
+        [SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/{result["DOI"].replace("/", "-")}/id/xxxxxx/did/yyyyyy):
 
         <iframe
-        src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/{result["DOI"].replace("/", "-")}/id/xxxxxx/did/yyyyyy"
+        src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/{result["DOI"].replace("/", "-")}/id/xxxxxx/did/yyyyyy"
 
         width="100%"
         height="400"
@@ -451,7 +451,7 @@ def main(
 
         target_dir, target_dir_zh = mk_target_dir(result)
 
-        result_title_ = result['Title'].replace("/", "_")  # 替换文件名中的 / 为 _
+        result_title_ = result["Title"].replace("/", "_")  # 替换文件名中的 / 为 _
         content = get_content(result, access)
         with open(target_dir / f"{result_title_}.mdx", "w") as file:  # type: ignore
             file.write(content)
@@ -486,7 +486,21 @@ if __name__ == "__main__":
         #
         # "Achieving Complete Nitrogen Removal by Coupling Nitritation-Anammox and Methane-Dependent Denitrification: A Model-Based Study.pdf"
         # "A modeling approach to describe ZVI-based anaerobic system.pdf"
-        "A quantified nitrogen metabolic network by reaction kinetics and mathematical model in a single-stage microaerobic system treating low COD_TN wastewater.pdf"
+        # "A quantified nitrogen metabolic network by reaction kinetics and mathematical model in a single-stage microaerobic system treating low COD_TN wastewater.pdf"
+        # "Competitive dynamics of anaerobes during long-term biological sulfate reduction process in a UASB reactor.pdf"
+        # "Development of a kinetic model to evaluate thiosulfate-driven denitriﬁcation and anammox (TDDA) process.pdf"
+        # "Development of an Extended ASM3 Model for Predicting the Nitrous Oxide Emissions in a Full-Scale Wastewater Treatment Plant.pdf"
+        # "Evaluating two concepts for the modelling of intermediates accumulation during biological denitrification in wastewater treatment.pdf"
+        # "Expanding ASM models towards integrated processes for short-cut nitrogen removal and bioplastic recovery.pdf"
+        # "Mathematical modeling of simultaneous carbon-nitrogen-sulfur removal from industrial wastewater.pdf"
+        # "Modeling Nitrous Oxide Production during Biological Nitrogen Removal via Nitrification and Denitrification: Extensions to the General ASM Models.pdf"
+        # "Modelling Methane Production and Sulfate Reduction in Anaerobic Granular Sludge Reactor with Ethanol as Electron Donor.pdf"
+        # "Phosphate release involving PAOs activity during anaerobic fermentation of EBPR sludge and the extension of ADM1.pdf"
+        # "Physics-informed neural network-based serial hybrid model capturing the hidden kinetics for sulfur-driven autotrophic denitrification proces.pdf"
+        # "Quantifying sensitivity and uncertainty analysis of a new mathematical model for the evaluation of greenhouse gas emissions from.pdf"
+        # "Simulation of the performance of aerobic granular sludge SBR using modiﬁed ASM3 model.pdf"
+        # "Simultaneous removal of sulﬁde, nitrate and acetate under denitrifying sulﬁde removal condition: Modeling and experimental validation.pdf"
+        "Sulfate-reduction, sulﬁde-oxidation and elemental sulfur bioreduction process: Modeling and experimental validation.pdf"
     )
 
     # pdf_file_list: list = [pdf for pdf in listdir("pdf") if pdf.endswith(".pdf")]

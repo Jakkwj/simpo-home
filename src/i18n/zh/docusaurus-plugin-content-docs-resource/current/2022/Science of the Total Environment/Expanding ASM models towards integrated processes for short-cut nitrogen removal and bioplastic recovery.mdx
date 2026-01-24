@@ -1,0 +1,140 @@
+---
+slug: 10.1016/j.scitotenv.2022.153492
+title: Expanding ASM models towards integrated processes for short-cut nitrogen removal and bioplastic recovery
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Expanding ASM models towards integrated processes for short-cut nitrogen removal and bioplastic recovery](https://doi.org/10.1016/j.scitotenv.2022.153492)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.scitotenv.2022.153492](https://doi.org/10.1016/j.scitotenv.2022.153492)
+
+    作者: Joao M. Ribeiro, Vincenzo Conca, Jorge M.M. Santos, Daniel F.C. Dias, Nilay Sayi-Ucar, Nicola Frison, Adrian Oehmen
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.scitotenv.2022.153492/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.scitotenv.2022.153492/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+{/* 这个 Public version 的主要修订内容包括： */}
+
+
+1. 第6和7行的Rate表达式中的`((K_H_STO+X_STO)/X_H)`应该为`(K_H_STO+X_STO/X_H)`。
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+在下一代水资源回收设施（WRRFs）中，节省能源成本并促进有价值产品的资源回收变得越来越重要。降低WRRFs大量曝气能源成本的一种方法是采用短程脱氮，而作为生物塑料的聚羟基脂肪酸酯（PHA）的生产和回收是从生物固体中回收有价值产品的一种有前景的手段。这两个目标可以通过短程强化磷和PHA回收（SCEPPHAR）工艺同时实现。然而，目前的数学模型以前从未被用于描述这种工艺的行为，这限制了工程设计和工艺运行的优化。这项工作的重点是扩展ASM3模型，以描述侧流处理工艺中的短程脱氮和同步PHA回收。经过校准和验证的模型非常好地描述了在意大利Carbonera运行的中试设施中，亚硝化工艺与用于筛选PHA生产菌的好氧饱食/缺氧饥饿工艺的耦合，归一化均方根误差（NRMSE）始终 < 20%。此外，应用于PHA筛选阶段的模型可以有效地描述PHA积累阶段而无需重新校准。使用修改后的ASM3模型进行了模拟研究，以评估SCEPPHAR工艺策略与用于混合培养PHA生产的全好氧筛选工艺相比的相对效益。虽然发现SCEPPHAR的PHA产量水平低34%，但也实现了挥发性脂肪酸（VFAs）需求减少43%，总悬浮固体（TSS）产量减少15%和需氧量减少28%，这可能导致运营成本的节省。这项研究促进了整合短程脱氮与PHA生产的WRRFs的设计和优化，在实现资源回收的同时节省曝气能源成本。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文旨在解决缺乏能够描述短程强化磷和PHA回收（SCEPPHAR）工艺的数学模型的问题。虽然SCEPPHAR提供了一种在水资源回收设施（WRRFs）中同时降低曝气能源成本（通过短程脱氮）和从生物固体中回收资源（PHA）的方法，但缺乏经过校准的模型限制了该集成工艺与传统方法相比的工程设计、优化和评估。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+作者扩展了活性污泥模型3号（ASM3）以描述SCEPPHAR中涉及的特定生物过程。主要的修改包括：
+- **两步硝化/反硝化**：将 $S_{NOx}$ 分为 $S_{NO2}$ 和 $S_{NO3}$，将 $X_{AUT}$ 分为 $X_{AOB}$ 和 $X_{NOB}$ 以模拟亚硝酸盐旁路（短程硝化）。
+- **PHA储存饱和**：引入饱和项（$fr_{max,STO}$）以限制单位生物量的PHA储存，防止不切实际的预测。
+- **磷限制**：纳入磷酸盐（$S_{PO4}$）作为状态变量和生长及储存的限制因子，类似于Bio-P模块。
+- **校准和验证**：模型在AQUASIM中实施，并使用中试工厂的数据进行了校准/验证。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+该研究利用了位于意大利Carbonera污水处理厂的SCEPPHAR中试装置的数据。实验包括：
+- **亚硝化SBR运行**：运行112天，处理富含 $NH_4^+$ 的厌氧上清液。进行了周期研究以确定氧化动力学。
+- **PHA-生物量筛选SBR运行**：在饱食/饥饿机制下运行108天（好氧饱食阶段投加VFAs，缺氧饥饿阶段利用 $NO_2^-$）。
+- **分批补料PHA积累**：在单独的生物反应器中进行测试，使用来自筛选SBR的剩余污泥，补加乙酸盐或发酵纤维素初沉污泥（VFAs）。
+- **化学分析**：定期监测溶解性COD、VFAs、$NH_4^+$、$NO_2^-$、$NO_3^-$、$PO_4^{3-}$、PHA、TSS和VSS。
+- **模拟情景**：比较情景A（SCEPPHAR：亚硝化+缺氧饥饿）与情景B（传统：硝化+好氧饥饿）。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **经济评估**：论文建议未来的工作应集中在应用该模型对不同工艺选项（SCEPPHAR与传统工艺）进行经济评估。
+- **全规模应用**：进一步评估该策略在全规模WRRFs中的整合应用。
+- **优化**：利用模型优化PHA生产率与能源/化学品节约之间的权衡。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **模型扩展**：成功扩展了ASM3，纳入了两步硝化、经由亚硝酸盐的反硝化以及受磷限制的PHA储存动力学。
+- **高精度**：模型对亚硝化和PHA筛选/积累过程显示出良好的预测能力，NRMSE < 20%。
+- **鲁棒性**：针对筛选SBR校准的参数无需重新校准即可描述积累反应器。
+- **工艺比较**：模拟结果显示，虽然SCEPPHAR（情景A）的PHA生产率比全好氧工艺（情景B）低34%，但它提供了显著的运营节约：VFA需求减少43%，需氧量减少28%，污泥产量减少15%。
+- **资源回收**：研究证实SCEPPHAR是整合低碳足迹脱氮与资源回收的有前景的选项。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Gujer et al. (1999)** Activated sludge model no. 3
+- **Kaelin et al. (2009)** Extension of ASM3 for two-step nitrification and denitrification and its calibration and validation with batch tests and pilot scale data
+- **Rieger et al. (2001)** The EAWAG bio-P module for activated sludge model no. 3
+- **Frison et al. (2015)** Development of a novel process integrating the treatment of sludge reject water and the production of polyhydroxyalkanoate (PHAs)
+- **Guisasola et al. (2005)** Limitations of ASM1 and ASMS3: a comparison based on batch oxygen uptake rate profiles from different full-scale wastewater treatment plants
+
+</TabItem >
+
+</Tabs>
+

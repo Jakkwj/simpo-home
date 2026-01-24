@@ -9,11 +9,10 @@ import TabItem from "@theme/TabItem";
 
 # [Achieving Complete Nitrogen Removal by Coupling Nitritation-Anammox and Methane-Dependent Denitrification: A Model-Based Study](https://doi.org/10.1002/bit.25866)
 
-<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
 
 
-{/*
-<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" />
 
 
 <img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
@@ -27,19 +26,31 @@ import TabItem from "@theme/TabItem";
 </div>
 
 
-{/* ----
+----
 
 
-[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1002-bit.25866/id/xxxxxx/did/yyyyyy):
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1002-bit.25866/id/742/did/735):
 
 <iframe
-src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1002-bit.25866/id/xxxxxx/did/yyyyyy"
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1002-bit.25866/id/742/did/735"
 
 width="100%"
 height="400"
 style={{ border: 'none', marginBottom: '0.8rem' }}
-></iframe> */}
+></iframe>
 
+
+这个 Public version 的主要修订内容包括：
+
+1. 为了准确进行Balance核算，将计量学矩阵中的:
+    - `1.14` 替换为 `16/14`。
+    - `1.71` 替换为 `24/14`。
+    - `2.86` 替换为 `40/14`。
+    - `3.43` 替换为 `48/14`。
+2. 第7行`S_NO2`的计量学系数应该为`(2-Y_Da)/(16/14*Y_Da)`，而不是原来的`(1-Y_Da)/(16/14*Y_Da)`。
+3. 第7行`S_NO3`的计量学系数应该为`-(2-Y_Da)/(16/14*Y_Da)`，而不是原来的`-(1-Y_Da)/(16/14*Y_Da)`。
+4. 第10行`S_NO2`的计量学系数应该为`-(2-Y_Db)/(24/14*Y_Db)`，而不是原来的`-(1-Y_Db)/(24/14*Y_Db)`。
+5. 第10行`S_NO3`的计量学系数应该为`(2-Y_Db)/(24/14*Y_Db)`，而不是原来的`(1-Y_Db)/(24/14*Y_Db)`。
 
 ------
 
@@ -125,9 +136,9 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 - **模型有效性：** 扩展的数学模型成功描述了Anammox-DAMO MBfR系统，准确预测了氮转化率并捕捉了亚硝酸盐抑制效应。
 - **最佳比率：** 耦合系统的最佳进水$$NO_2^-/NH_4^+$$比率为**1.0**，显著低于单独Anammox所需的化学计量比1.32。这使得DAMO古菌能够将（Anammox产生的）硝酸盐还原回亚硝酸盐，供Anammox再次使用。
-- **性能：** 在最佳条件下（比率~1.0，充足的生物膜厚度 >1000 $$\mu m$$），系统可以实现**>99%的TN去除率**。
+- **性能：** 在最佳条件下（比率~1.0，充足的生物膜厚度 >1000 $$\mu m$$），系统可以实现 **>99%的TN去除率**。
 - **微生物竞争：** 必须仔细控制甲烷供应。过量的甲烷会促进DAMO细菌生长（与Anammox竞争亚硝酸盐），而最佳供应则有利于Anammox细菌和DAMO古菌之间的合作关系。
-- **单级可行性：** 模型预测，在主体DO浓度约为**0.17 $$g\ m^{-3}$$**时，单级亚硝化-Anammox-DAMO系统是可行的，允许AOB、Anammox和DAMO生物共存。
+- **单级可行性：** 模型预测，在主体DO浓度约为 **0.17 $$g\ m^{-3}$$** 时，单级亚硝化-Anammox-DAMO系统是可行的，允许AOB、Anammox和DAMO生物共存。
 
 </TabItem>
 

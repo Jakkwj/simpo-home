@@ -1,0 +1,144 @@
+---
+slug: 10.1021/acs.est.8b00386
+title: Development of an Extended ASM3 Model for Predicting the Nitrous Oxide Emissions in a Full-Scale Wastewater Treatment Plant
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Development of an Extended ASM3 Model for Predicting the Nitrous Oxide Emissions in a Full-Scale Wastewater Treatment Plant](https://doi.org/10.1021/acs.est.8b00386)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-open-42A5F5?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1021/acs.est.8b00386](https://doi.org/10.1021/acs.est.8b00386)
+
+    作者: Kati Blomberg, Pascal Kosse, Anna Mikola, Anna Kuokkanen, Tommi Fred, Mari Heinonen, Michela Mulas, Manfred Lübken, Marc Wichern, and Riku Vahala
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1021-acs.est.8b00386/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1021-acs.est.8b00386/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+本研究建立了一个基于活性污泥模型3号 (ASM3) 的伪机理模型，用于描述氧化亚氮 ($N_2O$) 的产生，旨在深入了解全规模污水处理厂 (WWTP) 中 $N_2O$ 的产生、消耗和排放动态。研究的污水处理厂使用傅里叶变换红外分析仪对全厂的 $N_2O$ 排放进行监测，而开发的模型则涵盖了生物反应池中通过氨氧化细菌 (AOB) 硝化作用和异养反硝化作用产生的 $N_2O$。此外，通过应用一种此前未被广泛使用的基于 $K_La$ 的方法，模型还包含了 $N_2O$ 的吹脱过程。本研究的目的是扩展现有的基于 ASM3 的全厂模型，并评估所选模型预测全规模排放的效果。通过将模拟结果与全面的在线数据进行比较，测试了模型的有效性和适用性。结果表明，基于 ASM3 的模型可以成功扩展并应用于全规模污水处理厂 $N_2O$ 产生和排放的模拟。这些结果表明，生物反应池可以解释厂内大部分的 $N_2O$ 排放，但相当一部分液相 $N_2O$ 会在过程中进一步转移。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决准确预测和理解全规模污水处理厂 (WWTPs) 中 $N_2O$ 排放的问题。具体而言，它解决了以下问题：
+- 使用固定排放因子的局限性，这种方法不考虑工艺条件。
+- 需要一个能反映特定工厂布局和运行特征的数学模型。
+- 缺乏应用于全规模工厂的综合模型，这些模型需要同时包含生物产生（通过多种途径）和 $N_2O$ 的物理吹脱。
+- 需要量化不同工艺单元（例如生物反应池与二沉池）对总排放的贡献。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+作者通过开发扩展的活性污泥模型3号 (ASM3) 解决了这个问题。关键步骤包括：
+- **模型扩展**：他们扩展了 ASM3 以包含两步硝化和反硝化过程。他们结合了通过氨氧化细菌 (AOB)（特别是 $NH_2OH$ 氧化途径）和异养反硝化菌（基于 ASMN 模型）产生 $N_2O$ 的途径。
+- **吹脱模型**：他们在曝气区实施了基于传质系数 ($K_La$) 和气流量的 $N_2O$ 吹脱数学方法。
+- **全规模应用**：该模型是根据 Viikinmäki 污水处理厂（芬兰赫尔辛基）的具体配置建立的。
+- **校准和验证**：利用工厂广泛的在线监测数据对模型进行了校准和验证，包括曝气池中的液相 $N_2O$ 浓度和废气中的气体排放。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+该研究利用了赫尔辛基大型地下设施 Viikinmäki 污水处理厂的数据。实验和数据收集包括：
+- **在线监测**：
+  - 使用 Gasmet CEMS II 系统（FTIR 分析仪）连续测量全厂的气态 $N_2O$ 排放。
+  - 使用 Unisense 微传感器测量两个曝气区（4区和6区）的溶解液相 $N_2O$ 浓度。
+  - 在线监测标准参数（$NH_4-N$, $NO_3-N$, SS, 气流, DO 等）。
+- **采样活动**：
+  - 校准期（2017年4月的12天）和验证期（2017年4月的5天）。
+  - 从二沉池进水和出水采集抓样，分析液相 $N_2O$。
+- **模拟**：
+  - 模型使用 GPS-X 软件（版本 6.5）实施和模拟。
+  - 使用残差平方和 (RSS) 进行参数估计，并使用 Nash-Sutcliffe 系数评估拟合优度。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **吹脱模型的准确性**：研究指出，吹脱模型似乎在某些时期高估了 $N_2O$ 的吹脱量，导致模拟的气体排放量高于实测值。这表明吹脱动力学需要进一步完善。
+- **二沉池**：很大一部分液相 $N_2O$ 被转移到二沉池。这些非曝气单元中的排放与消耗的动力学尚不完全清楚，需要进一步研究。
+- **途径识别**：虽然模型成功使用了 $NH_2OH$ 途径，但作者指出，需要稳定的氮氧同位素分析才能明确区分 AOB 反硝化和 $NH_2OH$ 氧化途径的贡献。
+- **减排策略**：开发的模型可用作工具，以研究和测试减少 $N_2O$ 排放的运行策略。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- 成功开发了一个扩展的 ASM3 模型，用于模拟全规模污水处理厂的 $N_2O$ 产生和排放。
+- 该模型结合了通过 AOB $NH_2OH$ 氧化途径和异养反硝化途径产生的 $N_2O$，以及物理吹脱过程。
+- 模型能够重现曝气区液相 $N_2O$ 浓度的动态变化和气体排放的总体趋势。
+- 生物反应池是 $N_2O$ 产生的主要来源，但大量溶解的 $N_2O$ 被输送到二沉池，在那里可能被排放或消耗。
+- 研究强调了在 $N_2O$ 模拟中包含吹脱模型的重要性，尽管当前的方法可能会高估吹脱速率。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- Kaelin et al. (2009) Extension of ASM3 for two-step nitrification and denitrification and its calibration and validation with batch tests and pilot scale data.
+- Hiatt and Grady (2008) An updated process model for carbon oxidation, nitrification and denitrification.
+- Ni et al. (2013) Mathematical Modeling of Nitrous Oxide Emissions from Full-Scale Wastewater Treatment Plants.
+- Schulthess et al. (1996) Release of nitrous oxide ($N_2O$) from denitrifying activated sludge: Verification and application of a mathematical model.
+
+</TabItem >
+
+</Tabs>
+
+    

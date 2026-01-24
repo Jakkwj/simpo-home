@@ -1,0 +1,150 @@
+---
+slug: 10.1016/j.watres.2023.120331
+title: Physics-informed neural network-based serial hybrid model capturing the hidden kinetics for sulfur-driven autotrophic denitrification process
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Physics-informed neural network-based serial hybrid model capturing the hidden kinetics for sulfur-driven autotrophic denitrification process](https://doi.org/10.1016/j.watres.2023.120331)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.watres.2023.120331](https://doi.org/10.1016/j.watres.2023.120331)
+
+    作者: Xu Zou, Hongxiao Guo, Chukuan Jiang, Duc Viet Nguyen, Guang-Hao Chen, Di Wu
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.watres.2023.120331/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.watres.2023.120331/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+硫驱动自养反硝化（SdAD）是一种能够从低碳氮比（C/N）废水中去除硝酸盐的生物工艺。尽管该工艺已被深入研究，但其中间产物（即元素硫和亚硝酸根离子）产生和积累的机制仍然难以捉摸。现有的SdAD数学模型由于对环境条件变化和电子竞争导致的工艺动力学认识不完整，无法准确预测SdAD中的中间产物。为了解决这一局限性，我们提出了一种基于物理信息神经网络（PINN）的新型串联混合模型结构，以捕捉工艺动力学的动态并预测SdAD中的底物浓度。在本研究中，我们通过数值实验评估了该模型，并将其应用于涉及序批式和连续流反应器场景的实际案例研究。利用PINN方法，该混合模型在数值实验中在状态（即底物浓度）和动力学水平上都产生了准确的预测，并且在案例研究中表现优于机理模型和纯数据驱动模型。此外，我们利用训练好的混合模型设计了SdAD的控制策略，以及一种涉及SdAD和厌氧氨氧化的高能效脱氮新工艺。最后，我们讨论了基于PINN的混合模型的优势和应用范围。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决硫驱动自养反硝化（SdAD）工艺的精确建模问题，具体针对以下挑战：
+- **中间产物的积累：** 现有模型难以准确预测元素硫（$S^0$）和亚硝酸盐（$NO_2^-$）等中间产物的生成和积累。
+- **动力学知识不完整：** 传统的机理模型无法捕捉由动态环境条件（pH、DO、ORP）和电子竞争（硫化物与$S^0$之间，或$NO_3^-$与$NO_2^-$之间）引起的“隐藏动力学”。
+- **现有方法的局限性：** 纯数据驱动模型缺乏可解释性且需要海量数据，而传统的混合模型通常面临训练困难或无法在子过程水平上捕捉隐藏动力学的问题。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+本文提出了一种**基于物理信息神经网络（PINN）的串联混合模型**。解决方案包括：
+- **串联架构：**
+    - **Net1（神经网络）：** 将状态变量（底物浓度）和环境条件（pH、DO、ORP）作为输入，预测动力学参数（功能性最大生长速率 $\mu_{nn}$ 和半饱和速率 $K_{nn}$）。
+    - **机理组件：** 将这些预测的参数代入质量平衡微分方程（ODEs）中计算反应速率，确保遵守质量守恒定律。
+- **基于PINN的训练：**
+    - 使用辅助网络（**Net2**）作为代理模型，根据时间 $t$ 和初始条件预测底物浓度（$S_i$）。
+    - 应用**自动微分**技术对 Net2 进行求导（$d\hat{S}_i/dt$）。
+    - 通过最小化**状态水平**（预测浓度与实测浓度的差异）和**动力学水平**（机理速率与自动微分速率的差异）的损失函数来训练模型。
+- **可解释性：** 使用 SHAP（Shapley Additive Explanations）和 PDP（Partial Dependence Plots）来解释“黑箱”神经网络（Net1），验证其学到了具有物理意义的规律。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+作者进行了数值（合成数据）实验和真实案例研究：
+- **数值实验（合成数据）：**
+    - **实验 1（硫化物抑制）：** 使用带有 Haldane 动力学的机理模型（SdAD1）生成数据，测试混合模型是否能推断出隐藏的硫化物抑制动力学。
+    - **实验 2（电子竞争）：** 使用间接电子耦合（ICE）模型（SdAD2）生成数据，测试混合模型是否能捕捉电子竞争动态。
+- **真实案例研究：**
+    - **案例 1（序批式反应器）：** 使用不同 S/N 比的实验室规模批次测试实验数据（来自 Cui et al., 2019b）。将混合模型与两个机理模型（SdAD1 和 SdAD2）进行了比较。
+    - **案例 2（CSTR - 全规模）：** 使用处理含盐污水的 SANI 工艺示范厂数据（188小时强化测试）。输入包括动态的 pH、DO 和 ORP。将混合模型与机理模型和纯数据驱动模型进行了比较。
+- **模拟与应用：**
+    - 利用训练好的模型设计控制策略（HRT 优化），用于硫-反硝化/厌氧氨氧化（SDA）工艺，以最大化 $NO_2^-$ 的积累。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **微生物组整合：** 当前模型未考虑微生物组的变化。未来的工作可以将细菌的遗传信息作为预测数据纳入。
+- **“白箱”转化：** 隐藏的动力学目前由神经网络（Net1）捕捉。未来的研究可以使用深度符号回归将这些捕捉到的动力学拟合为显式的数学方程，将“黑箱”模型转化为“白箱”模型。
+- **代理模型中的质量平衡：** 用于加速的代理模型（Net2）并不严格强制执行质量平衡，这在某些外推条件下可能导致违背守恒律（尽管混合模型本身是强制守恒的）。
+- **数据需求：** 虽然相比纯深度学习减少了数据需求，但该方法仍需要足够的数据覆盖范围进行训练。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **新颖的模型架构：** 开发了一种基于 PINN 的串联混合模型，结合了神经网络的灵活性和机理模型的可解释性及守恒定律。
+- **双层级训练：** 借助自动微分，模型在状态（浓度）和动力学（导数）残差上同时进行训练，提高了准确性和泛化能力。
+- **卓越的性能：**
+    - 在数值实验中，成功推断出隐藏的动力学（抑制和电子竞争），$R^2 > 0.99$。
+    - 在批次测试中，表现优于机理模型（测试集 $R^2=0.90$ vs $0.62-0.65$）。
+    - 在 CSTR 应用中，比机理模型更好地处理了动态环境条件（pH、DO、ORP），并避免了纯数据驱动模型的过拟合问题。
+- **可解释性：** SHAP 和 PDP 分析证实神经网络学到了与生物学机制一致的规律（例如硫化物抑制效应、pH 偏好）。
+- **实际应用：** 该模型成功应用于优化 SdAD-厌氧氨氧化耦合工艺中的 HRT 以实现亚硝酸盐积累。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **硫化物抑制建模：** Decru et al. (2021) "Model-based analysis of sulfur-based denitrification in a moving bed biofilm reactor"; Fajardo et al. (2014) "Cross effect of temperature, pH and free ammonia on autotrophic denitrification process...".
+- **电子竞争（ICE模型）：** Yang et al. (2022) "Assessing intermediate formation and electron competition during thiosulfate-driven denitrification...".
+- **SdAD中间产物：** Kostrytsia et al. (2018) "Biokinetics of microbial consortia using biogenic sulfur..."; Cui et al. (2019b) "Elucidating the biofilm properties and biokinetics..." (批次实验数据来源)。
+- **混合建模：** Quaghebeur et al. (2022) "Hybrid differential equations: integrating mechanistic and data-driven techniques..."; Anderson et al. (2000) "Use of hybrid models in wastewater systems".
+- **水处理/生物学中的PINN：** Raissi et al. (2019) "Physics-informed neural networks..."; Yang et al. (2020) "Physics-informed generative adversarial networks...".
+- **SANI工艺数据：** Wu et al. (2016) "Large-scale demonstration of the sulfate reduction autotrophic denitrification nitrification integrated (SANI) process...".
+
+</TabItem >
+
+</Tabs>
+
+    

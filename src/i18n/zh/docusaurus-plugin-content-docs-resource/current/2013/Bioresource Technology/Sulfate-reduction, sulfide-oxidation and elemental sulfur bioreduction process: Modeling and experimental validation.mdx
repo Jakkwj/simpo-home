@@ -1,0 +1,138 @@
+---
+slug: 10.1016/j.biortech.2013.07.113
+title: Sulfate-reduction, sulfide-oxidation and elemental sulfur bioreduction process-Modeling and experimental validation
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Sulfate-reduction, sulfide-oxidation and elemental sulfur bioreduction process: Modeling and experimental validation](https://doi.org/10.1016/j.biortech.2013.07.113)
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
+
+
+{/*
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.biortech.2013.07.113](https://doi.org/10.1016/j.biortech.2013.07.113)
+
+    作者: Xijun Xu, Chuan Chen, Duu-Jong Lee, Aijie Wang, Wanqian Guo, Xu Zhou, Hongliang Guo, Ye Yuan, Nanqi Ren, Jo-Shu Chang
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.biortech.2013.07.113/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.biortech.2013.07.113/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+本研究描述了使用Monod型模型对硫酸盐还原（SR）和硫化物氧化（SO）过程进行的模拟，并报告和估算了最佳拟合模型参数。氧气与硫化物的摩尔比（$R_{OS}$）显著影响SR + SO过程的动力学。$S^0$由SO步骤产生，但随后被硫还原细菌消耗，导致硫化物浓度的“反弹”。该模型与当前的SR + SO测试中的所有实验数据相关性良好，并且该方法的有效性通过四个反硝化除硫（DSR）系统中的独立硫生物还原测试得到了证实。模拟结果证实，氧气与硫化物的比例是控制$S^0$形成及其生物还原的关键因素。忽略$S^0$生物还原步骤将高估$S^0$的产量。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决含硫酸盐废水处理中的以下问题：
+- **联合过程建模：** 建立微好氧条件下硫酸盐还原（SR）和硫化物氧化（SO）联合过程的数学模型。
+- **解释“硫化物反弹”：** 解释并模拟氧气耗尽后硫化物浓度升高（“反弹”）的现象，该现象归因于元素硫（$S^0$）的生物还原。
+- **修正硫产量估算：** 解决因忽略$S^0$生物还原步骤而导致SR + SO系统中元素硫产量被高估的问题。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+本文通过以下方式解决上述问题：
+- **开发动力学模型：** 构建了一个Monod型动力学模型，包含四个主要过程：硫酸盐还原为硫化物、硫化物氧化为元素硫、元素硫生物还原为硫化物以及好氧COD氧化。
+- **参数估算：** 利用实验数据估算特定的动力学参数，特别是此前未见报道的硫生物还原过程参数（如 $\mu_{eSRE}$, $K_{S^0}^{eSRE}$）。
+- **引入 $R_{OS}$：** 明确使用氧气与硫化物的摩尔比（$R_{OS}$）作为关键过程参数来研究其对动力学的影响。
+- **验证：** 利用不同$R_{OS}$的批式实验数据以及文献中反硝化除硫（DSR）系统的独立数据对模型进行验证。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+本文进行了以下实验：
+- **批式测试：** 在250 mL厌氧瓶中进行，使用活性污泥作为接种物，培养基含有硫酸盐（$600 mg L^{-1}$）和COD（$2000 mg L^{-1}$）。
+- **$R_{OS}$ 变化：** 实验设置了不同的初始氧硫摩尔比（$R_{OS}$），范围从0到2.5（具体为 0, 0.25, 0.5, 1.0, 1.5, 2.0, 2.5）。
+- **化学分析：** 随时间测量硫酸盐（$SO_4^{2-}$）、硫代硫酸盐（$S_2O_3^{2-}$）、硫化物（$S^{2-}$）、溶解氧（DO）和元素硫（$S^0$）的浓度。
+- **参数敏感性分析：** 对估算的动力学参数进行不确定性分析和敏感性分析。
+- **模型拟合：** 使用AQUASIM软件将模型与实验数据拟合，以确定动力学系数。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+- **微生物群落鉴定：** 虽然文章认为产甲烷菌可能负责硫生物还原（引用 Zhou et al., 2011），但在特定的SR+SO系统中，负责该步骤的具体微生物群落及其特性值得进一步探索。
+- **连续流系统：** 当前模型是基于批式测试验证的。将此模型应用并验证于连续流反应器（如CSTR或生物膜反应器）将是合乎逻辑的下一步。
+- **抑制机制：** 除了模型中使用的Monod型抑制项外，可以进一步详细研究氧气对硫生物还原过程的具体抑制机制。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **综合模型：** 成功开发并验证了一个包含硫酸盐还原、硫化物氧化和硫生物还原的综合模型。
+- **$R_{OS}$ 的影响：** 氧气与硫化物的摩尔比（$R_{OS}$）是控制动力学和最终元素硫（$S^0$）产量的关键因素。
+- **硫化物反弹：** 氧气耗尽后硫化物浓度升高的现象是由生成的$S^0$被生物还原回硫化物引起的。
+- **动力学参数：** 论文首次报道了$S^0$生物还原的动力学参数（例如 $\mu_{eSRE} = 0.035 h^{-1}$）。
+- **产量准确性：** 在模型中忽略$S^0$生物还原步骤会导致对$S^0$回收率的高估。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Moosa et al. (2002)**: A kinetic study on anaerobic reduction of sulfate, Part I: Effect of sulfate concentration. (SR参数来源)
+- **Zhou et al. (2011)**: Reduction of produced elemental sulfur in denitrifying sulfide removal process. (涉及硫生物还原及验证数据)
+- **Chen et al. (2010)**: Enhanced performance of denitrifying sulfide removal process under micro-aerobic condition. (验证数据来源)
+- **Ni et al. (2012)**: Formation of distinct soluble microbial products by activated sludge: kinetic analysis and quantitative determination. (参数估算方法)
+- **Xu et al. (2012)**: Enhanced elementary sulfur recovery in integrated sulfate-reducing, sulfur-producing reactor under micro-aerobic condition. (作者的前期工作)
+
+</TabItem >
+
+</Tabs>
+
+    
