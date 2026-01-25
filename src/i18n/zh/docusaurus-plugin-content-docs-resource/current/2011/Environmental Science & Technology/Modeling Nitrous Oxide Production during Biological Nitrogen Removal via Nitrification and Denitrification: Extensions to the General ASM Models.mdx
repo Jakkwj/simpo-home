@@ -9,11 +9,11 @@ import TabItem from "@theme/TabItem";
 
 # [Modeling Nitrous Oxide Production during Biological Nitrogen Removal via Nitrification and Denitrification: Extensions to the General ASM Models](https://doi.org/10.1021/es201489n)
 
-<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
 
 
-{/*
-<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" />
 
 
 <img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
@@ -27,19 +27,28 @@ import TabItem from "@theme/TabItem";
 </div>
 
 
-{/* ----
+----
 
 
-[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1021-es201489n/id/xxxxxx/did/yyyyyy):
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1021-es201489n/id/752/did/749):
 
 <iframe
-src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1021-es201489n/id/xxxxxx/did/yyyyyy"
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1021-es201489n/id/752/did/749"
 
 width="100%"
 height="400"
 style={{ border: 'none', marginBottom: '0.8rem' }}
-></iframe> */}
+></iframe>
 
+这个 Public version 的主要修订内容包括：
+
+1. 为了准确进行Balance核算，将计量学矩阵中的:
+    - `0.57` 替换为 `8/14`。
+    - `1.14` 替换为 `16/14`。
+    - `2.29` 替换为 `32/14`。
+    {/* - `2.86` 替换为 `40/14`。 */}
+    {/* - `3.43` 替换为 `48/14`。 */}
+2. 第2行`S_NH4`的计量学系数应该为`-i_NBM`，而不是原来的`0`。
 
 ------
 

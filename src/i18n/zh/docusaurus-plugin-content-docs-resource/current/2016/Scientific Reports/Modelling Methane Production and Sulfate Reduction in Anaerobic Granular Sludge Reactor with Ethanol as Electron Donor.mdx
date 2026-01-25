@@ -9,11 +9,10 @@ import TabItem from "@theme/TabItem";
 
 # [Modelling Methane Production and Sulfate Reduction in Anaerobic Granular Sludge Reactor with Ethanol as Electron Donor](https://doi.org/10.1038/srep35312)
 
-<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
 
 
-{/*
-<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" />
 
 
 <img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-open-42A5F5?style=for-the-badge" />
@@ -27,19 +26,40 @@ import TabItem from "@theme/TabItem";
 </div>
 
 
-{/* ----
 
-
-[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1038-srep35312/id/xxxxxx/did/yyyyyy):
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1038-srep35312/id/755/did/753):
 
 <iframe
-src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1038-srep35312/id/xxxxxx/did/yyyyyy"
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1038-srep35312/id/755/did/753"
 
 width="100%"
 height="400"
 style={{ border: 'none', marginBottom: '0.8rem' }}
-></iframe> */}
+></iframe>
 
+
+这个 Public version 的主要修订内容包括：
+
+1. 第10个Component`X_SRBH`应该为`X_SRBH2`。
+1. 第13个Component`X_MAH`应该为`X_MAH2`。
+1. 第20个Parameter`kdec_XSRBF`应该为`kdec_XSRBE`。
+1. 第1行的`S_E`的计量学系数应该为`-1/Y_XE`, 而不是原文的`-1/Y_XH`。
+1. 第1行的`S_AC`的计量学系数应该为`2/3*(1-Y_XE)/Y_XE`, 而不是原文的`2/3*(1-Y_XH)/Y_XH`。
+1. 第1行的`S_H2`的计量学系数应该为`1/3*(1-Y_XE)/Y_XE`, 而不是原文的`1/3*(1-Y_XH)/Y_XH`。
+1. 第3行的`S_H2`的计量学系数应该为`-1/Y_XMAH2`, 而不是原文的`-1/Y_XMAH`。
+1. 第3行的`S_CH4`的计量学系数应该为`(1-Y_XMAH2)/Y_XMAH2`, 而不是原文的`(1-Y_XMAH)/Y_XMAH`。
+1. 第6行的`S_H2`的计量学系数应该为`-1/Y_XSRBH2`, 而不是原文的`-1/Y_XSRBH`。
+1. 第6行的`S_H2`的计量学系数应该为`-1/2*(1-Y_XSRBH2)/Y_XSRBH2`, 而不是原文的`-1/2*(1-Y_XSRBH)/Y_XSRBH`。
+1. 第6行的`S_H2`的计量学系数应该为`1/2*(1-Y_XSRBH2)/Y_XSRBH2`, 而不是原文的`1/2*(1-Y_XSRBH)/Y_XSRBH`。
+1. 第1行的Rate表达式中的`X_H`应该为`X_F`。
+1. 第2行的Rate表达式应该为`m_XMAAC*S_AC/(K_XMAAC+S_AC)*K_IH2SMA/(K_IH2SMA+S_H2S)*X_MAAC`。
+1. 第3行的Rate表达式应该为`m_XMAH2*S_H2/(K_XMAH2+S_H2)*K_IH2SMA/(K_IH2SMA+S_H2S)*X_MAH2`。
+1. 第4行的Rate表达式应该为`m_XSRBE*S_E/(K_XSRBE+S_E)*S_SO4/(K_XSRBESO4+S_SO4)*K_IH2SSRB/(K_IH2SSRB+S_H2S)*X_SRBE`。
+1. 第5行的Rate表达式应该为`m_XSRBAC*S_AC/(K_XSRBAC+S_AC)*S_SO4/(K_XSRBACSO4+S_SO4)*K_IH2SSRB/(K_IH2SSRB+S_H2S)*X_SRBAC`
+1. 第6行的Rate表达式应该为`m_XSRBH2*S_H2/(K_XSRBH2+S_H2)*S_SO4/(K_XSRBH2SO4+S_SO4)*K_IH2SSRB/(K_IH2SSRB+S_H2S)*X_SRBH2`
+1. 第7行的Rate表达式中的`kdec_XH`应该为`kdec_XHAC`。
+1. 第8行的Rate表达式中的`kdec_XSRBH*X_SRBH`应该为`kdec_XSRBH2*X_SRBH2`。
+1. 第12行的Rate表达式中的`kdec_XMAH*X_MAH`应该为`kdec_XMAH2*X_MAH2`。
 
 ------
 
