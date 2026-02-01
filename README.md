@@ -14,7 +14,7 @@
 
 ## Resource
 
-- Join us in building and enhancing [Paper Resource](https://www.simpowater.org/resource) with the help of powerful **AI tools** (such as: [Kimi](https://kimi.moonshot.cn)). Your contributions can significantly enhance and expand the collection, making it more valuable for the entire community.
+- Join us in building and enhancing [Paper Resource](https://www.simpowater.org/resource) with the help of powerful **AI tools** (such as: **Geimini**). Your contributions can significantly enhance and expand the collection, making it more valuable for the entire community.
 - We appreciate your support and collaboration, fork and pull request are welcome.
 
 ### 1. Fork
@@ -28,16 +28,16 @@
   - 1st level: the issue year.
   - 2nd level: the name of the journal/conference written in `mdx` syntax.
 
-### 3. Ask Kimi
+### 3. Ask AI
 
-- The following questions will be asked to [Kimi](https://kimi.moonshot.cn/) to understand each paper:
+- The following questions will be asked to **AI** to understand each paper:
   - What problem does this paper attempt to solve?
   - What are the relevant studies?
   - How the paper solves this problem?
   - What experiments were done for the paper?
   - What are the points that can be explored further?
   - Summarize the main points of the paper.
-- These are just a few basic FAQs for understanding a paper with Kimi. if you would like to discuss the paper further with it, click [here](https://kimi.moonshot.cn/) to jump to the Kimi web version and start a new session related to the paper.
+  <!-- - These are just a few basic FAQs for understanding a paper with Kimi. if you would like to discuss the paper further with it, click [here](https://kimi.moonshot.cn/) to jump to the Kimi web version and start a new session related to the paper. -->
 
 ### 4. Pull
 
