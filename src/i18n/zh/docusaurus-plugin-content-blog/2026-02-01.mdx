@@ -1,0 +1,60 @@
+---
+slug: SIMPO-blog-2026-02-01
+title: SIMPO 1.0.1 发布：绘图功能优化
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+  **SIMPO** 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：[SIMPO 1.0.1 更新日志](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)。
+  </div>
+</div>
+
+### 绘图功能优化，提升稳定性
+
+在 **SIMPO** 中，每次计算完成后，程序都会基于计算引擎自动生成一系列复杂的图形。为了最大化绘图效率，我们引入了多进程（利用多核 CPU 并行处理）来加速这一过程。
+
+然而，在某些特定场景下，多进程绘图可能会触发 `BrokenProcessPool` 错误，导致绘图中断。为了解决这一痛点，我们在 **SIMPO 1.0.1** 版本中对绘图功能进行了优化，
+确保程序在遇到这个错误时能**自动切换至主进程**，确保绘图过程的完成。
+
+### 系统平台差异与建议
+
+我们注意到，`BrokenProcessPool` 错误在 `Windows` 系统上更为常见（在 `Ubuntu` 系统中则鲜有出现）。
+这可能与 `Windows` 使用 `spawn` 方式启动子进程，而 `Linux` 采用 `fork` 方式有关。
+
+因此，在 `Ubuntu` 系统下，用户通常能获得**更快的计算速度、更稳定的多进程运行以及更佳的兼容性**。
+
+**为了获得更流畅、更快速、更稳定的计算体验，我们强烈建议您在 `Ubuntu` 环境下进行 SIMPO 计算。**
+
+
+
+
+
+{/* 资源库最新更新的模型论文包括：
+
+1. Achieving Complete Nitrogen Removal by Coupling Nitritation-Anammox and Methane-Dependent Denitrification: A Model-Based Study
+1. Development of a kinetic model to evaluate thiosulfate-driven denitriﬁcation and anammox (TDDA) process
+1. Evaluation of Nitrous Oxide Emission from Sulﬁde- and Sulfur-Based Autotrophic Denitriﬁcation Processes
+1. Growth, maintenance and product formation of autotrophs in activated sludge: Taking the nitrite-oxidizing bacteria as an example
+1. Model-based evaluation of N2O recovery as an energy source in sulfur-driven NO-based autotrophic denitrification
+1. Modeling Nitrous Oxide Production during Biological Nitrogen Removal via Nitrification and Denitrification: Extensions to the General ASM Models
+1. Modelling Methane Production and Sulfate Reduction in Anaerobic Granular Sludge Reactor with Ethanol as Electron Donor
+1. Modelling nitrification, heterotrophic growth and predation in activated sludge
+1. The crucial role of activated sludge models (ASMs) on wastewater treatment processes: Developments, applications, and future perspectives */}
+
+---
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>添加好友，备注SIMPO加入交流群</b></div>
+  <img src={config.customFields.imgUrlWechatJakk}  width="25%"/>
+</div>
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>欢迎关注微信公众号</b></div>
+  <img src={config.customFields.imgUrlWechatAccount}  width="25%"/>
+</div>

@@ -1,0 +1,62 @@
+---
+slug: SIMPO-blog-2026-02-01
+title: "SIMPO 1.0.1: Plotting Functionality Optimized"
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+  **SIMPO**, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is a no-code intelligent modeling  and sharing platform for mathematical simulation of wastewater treatment. For specific update details, please see: [SIMPO 1.0.1 Changelog](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)。
+  </div>
+</div>
+
+
+
+
+### Plotting Functionality Optimized for Enhanced Stability
+
+In **SIMPO**, after each computation, the program automatically generates a series of complex graphics based on the calculation engine. To maximize plotting efficiency, we've introduced multiprocessing (leveraging multi-core CPUs for parallel processing) to accelerate this process.
+
+However, in certain specific scenarios, multiprocessing plotting can trigger a `BrokenProcessPool` error, leading to plotting interruptions. To address this critical issue, we've optimized the plotting functionality in **SIMPO 1.0.1**.
+This version ensures that when the program encounters this error, it will **automatically switch to the main process**, guaranteeing the completion of the plotting procedure.
+
+### System Platform Differences and Recommendations
+
+We've observed that `BrokenProcessPool` errors are more common on **Windows** (and rare on **Ubuntu**).
+This is likely due to the difference in how `Windows` uses `spawn` to start child processes, whereas `Linux` typically uses `fork`.
+
+Consequently, users on **Ubuntu** systems generally benefit from **faster computation speeds, more stable multiprocessing operations, and better compatibility**.
+
+**For a smoother, faster, and more stable computing experience, we strongly recommend performing SIMPO computations within an Ubuntu environment.**
+
+
+
+{/*
+1. Achieving Complete Nitrogen Removal by Coupling Nitritation-Anammox and Methane-Dependent Denitrification: A Model-Based Study
+1. Development of a kinetic model to evaluate thiosulfate-driven denitriﬁcation and anammox (TDDA) process
+1. Evaluation of Nitrous Oxide Emission from Sulﬁde- and Sulfur-Based Autotrophic Denitriﬁcation Processes
+1. Growth, maintenance and product formation of autotrophs in activated sludge: Taking the nitrite-oxidizing bacteria as an example
+1. Model-based evaluation of N2O recovery as an energy source in sulfur-driven NO-based autotrophic denitrification
+1. Modeling Nitrous Oxide Production during Biological Nitrogen Removal via Nitrification and Denitrification: Extensions to the General ASM Models
+1. Modelling Methane Production and Sulfate Reduction in Anaerobic Granular Sludge Reactor with Ethanol as Electron Donor
+1. Modelling nitrification, heterotrophic growth and predation in activated sludge
+1. The crucial role of activated sludge models (ASMs) on wastewater treatment processes: Developments, applications, and future perspectives */}
+
+
+
+---
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Add friend, with the note “SIMPO” to join the group chat</b></div>
+  <img src={config.customFields.imgUrlWechatJakk}  width="25%"/>
+</div>
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Welcome to follow our WeChat official account</b></div>
+  <img src={config.customFields.imgUrlWechatAccount}  width="25%"/>
+</div>

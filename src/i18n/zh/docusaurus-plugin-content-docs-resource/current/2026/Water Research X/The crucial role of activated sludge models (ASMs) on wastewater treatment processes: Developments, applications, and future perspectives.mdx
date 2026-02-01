@@ -1,0 +1,140 @@
+---
+slug: /10.1016/j.wroa.2026.100497
+title: The crucial role of activated sludge models (ASMs) on wastewater treatment processes-Developments, applications, and future perspectives
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [The crucial role of activated sludge models (ASMs) on wastewater treatment processes: Developments, applications, and future perspectives](https://doi.org/10.1016/j.wroa.2026.100497)
+
+
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" />
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-open-42A5F5?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.wroa.2026.100497](https://doi.org/10.1016/j.wroa.2026.100497)
+
+    作者: Tianlong Zheng, Yuxin Wang, Lin Li, Junxin Liu, Pengyu Li
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.wroa.2026.100497/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.wroa.2026.100497/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+活性污泥模型 (ASMs) 是生物污水处理中最广泛使用的数学模型，它提供了污染物生化降解的简化矩阵表示。随着对污水处理机理理解的深入，通用 ASMs 的简化假设在某些条件下已被证明是不合理的，从而促使其改进。现有的综述通常集中在 ASMs 的具体应用上，对其多维扩展和跨模型集成的综合分析有限。本综述首次系统地概述了 ASMs 的最新发展，重点关注模型机理扩展和多尺度模型集成。在机理扩展方面，新理论和二级反应的引入提高了模型在模拟膜生物反应器系统、除磷和工业废水处理方面的准确性。它还量化了 $N_2O$ 的产生和消散途径，并为污泥减量和沉降控制提供了依据。关于模型集成，本综述重点关注 ASMs 与其他模型之间的耦合接口，例如厌氧反应模型、对流扩散理论、流体动力学模型和机器学习。这些耦合模型实现了从微观生化反应到宏观环境动力学的全尺度模拟。最后，综述强调未来的 ASMs 发展应侧重于改进机理和解决新兴污染物问题。它强调集成人工智能可以作为平衡模型准确性和参数可识别性的关键工具。本综述旨在建立 ASMs 的系统研究框架，分析现有模型的局限性，最终为提高 ASMs 在污水处理中的精度和应用提供见解。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文旨在解决通用活性污泥模型 (ASMs) 的局限性问题，这些模型的简化假设在某些复杂条件下已被证明是不合理的。文章试图通过提供系统的综述来解决现有研究碎片化的问题，填补现有综述的空白。具体目标包括：
+- 分析 ASMs 的多维扩展（机理改进）。
+- 分析跨模型集成（与其他领域的耦合）。
+- 识别现有模型在理论基础、参数优化和模拟精度方面的不足。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+本文通过进行全面的系统综述来解决这个问题，综述分为三个主要部分：
+- **扩展和结构改进：** 详细介绍了 ASMs 如何针对悬浮生长工艺（MBR、氧化沟）、污泥相关挑战（膨胀、减量）和常规污染物（磷、$N_2O$、$CH_4$、资源回收）进行修改。
+- **与其他领域模型的耦合：** 分析了 ASMs 与厌氧模型 (ADM)、对流扩散理论 (CFD)、流体动力学模型（下水道/河流系统）和机器学习 (ML) 模型的集成。
+- **未来展望：** 提出了未来发展的框架，重点是更新模型理论、增强参数可识别性以及将模型扩展到新兴污染物。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+作为一篇综述文章，本文没有进行新的实验室实验。相反，作者对现有的文献和方法进行了系统分析。工作内容包括：
+- 综合大量研究数据，比较不同 ASM 版本（ASM1, ASM2d, ASM3）。
+- 评估扩展模型在特定场景（如 MBR、工业废水）中的性能。
+- 分析耦合策略（如 ASM-CFD, ASM-ML）的有效性。
+- 基于先前的研究创建通用框架和流程图（例如，基于 Fisher 信息矩阵的参数校准）。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+本文确定了几个值得进一步探索的关键点：
+- **更新和完善模型理论：** 纳入通常被忽略的二级过程，例如厌氧罐中的微生物生长、两步硝化作用以及二沉池 (SST) 中的生物反应。
+- **增强参数可识别性：** 开发标准化工具将组学数据（宏基因组学）与模型参数联系起来，并使用基于反应不变量的模型简化方法。
+- **扩展到新兴污染物 (ECs)：** 将药物和个人护理产品 (PPCPs) 以及内分泌干扰化学物质 (EDCs) 的生物降解动力学整合到 ASM 框架中。
+- **与 AI 集成：** 提高与 ASMs 耦合的 AI 模型的可解释性，并解决数据稀缺问题。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **机理扩展：** ASMs 已成功扩展以模拟膜生物反应器 (MBR)，纳入了溶解性微生物产物 (SMP) 和胞外聚合物 (EPS)。它们现在也能更好地描述生物除磷（PAO/GAO 竞争）和工业废水处理。
+- **温室气体建模：** 新模型量化了 $N_2O$ 和 $CH_4$ 的产生途径，有助于制定减排策略。
+- **模型耦合：**
+    - **ASM + ADM：** 实现水线和泥线的全厂模拟。
+    - **ASM + CFD：** 结合流体动力学来模拟污染物和氧气的空间分布。
+    - **ASM + ML：** 机器学习有助于在机理知识有限的情况下估计参数和预测性能。
+- **未来方向：** 该领域需要朝着整合微观组学数据、模拟新兴污染物以及利用 AI 平衡准确性与计算效率的方向发展。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **MBR & SMP:** Lu et al. (2001) - *A model for membrane bioreactor process based on the concept of formation and degradation of soluble microbial products.*
+- **丝状菌膨胀:** Amin et al. (2022) - *Expanding the activated sludge model no.1 to describe filamentous bulking: the filamentous model.*
+- **除磷:** Santos et al. (2020b) - *A novel metabolic-ASM model for full-scale biological nutrient removal systems.*
+- **$N_2O$ 排放:** Massara et al. (2018) - *Development of an ASM2d-N2O model to describe nitrous oxide emissions in municipal WWTPs under dynamic conditions.*
+- **与 CFD 耦合:** Lei and Ni (2014) - *Three-dimensional three-phase model for simulation of hydrodynamics, oxygen mass transfer, carbon oxidation, nitrification and denitrification in an oxidation ditch.*
+- **与机器学习耦合:** Mehrani et al. (2022) - *Application of a hybrid mechanistic/machine learning model for prediction of nitrous oxide (N2O) production in a nitrifying sequencing batch reactor.*
+- **下水道-污水厂集成:** Huisman et al. (2003) - *Integral and unified model for the sewer and wastewater treatment plant focusing on transformations.*
+
+</TabItem >
+
+</Tabs>
+
