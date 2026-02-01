@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunksimpo_home=globalThis.webpackChunksimpo_home||[]).push([[9828],{15652:s=>{s.exports=JSON.parse('{"tags":[{"label":"SIMPO","permalink":"/zh/blog/tags/simpo","count":4}]}')}}]);
