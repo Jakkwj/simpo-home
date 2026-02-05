@@ -9,11 +9,10 @@ import TabItem from "@theme/TabItem";
 
 # [Simulation of the performance of aerobic granular sludge SBR using modified ASM3 model](https://doi.org/10.1016/j.biortech.2012.09.076)
 
-<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
 
 
-{/*
-<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" />
 
 
 <img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
@@ -27,18 +26,60 @@ import TabItem from "@theme/TabItem";
 </div>
 
 
-{/* ----
+----
 
 
-[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.biortech.2012.09.076/id/xxxxxx/did/yyyyyy):
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.biortech.2012.09.076/id/794/did/785):
 
 <iframe
-src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.biortech.2012.09.076/id/xxxxxx/did/yyyyyy"
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.biortech.2012.09.076/id/794/did/785"
 
 width="100%"
 height="400"
 style={{ border: 'none', marginBottom: '0.8rem' }}
-></iframe> */}
+></iframe>
+
+
+这个 Public version 的主要修订内容包括：
+
+
+1. 为了准确进行Balance核算，将计量学矩阵中的:
+    - `1.14` 替换为 `16/14`。
+    - `1.71` 替换为 `24/14`。
+    - `2.86` 替换为 `40/14`。
+    {/* - `0.57` 替换为 `8/14`。 */}
+    {/* - `2.29` 替换为 `32/14`。 */}
+    {/* - `3.43` 替换为 `48/14`。 */}
+    {/* - `4.57` 替换为 `64/14`。 */}
+    {/* - `6.85` 替换为 `96/14`。 */}
+1. 计量学系数中的`1.72`应该为`1.71`(`24/14`)。
+1. 原文的参数缺少`i_N_XS`和`i_N_SI`，在Compositions矩阵中，我们用`i_N_SS`代替，从而保证N的Balance。
+1. 第1行的Rate表达式中的`(K_X+X_S)/X_H`应该为`(K_X+X_S/X_H)`。
+1. 第8行的Rate表达式中的`(K_STO+X_STO)/X_H`应该为`(K_STO+X_STO/X_H)`。
+1. 第9行的Rate表达式中的`(K_STO+X_STO)/X_H`应该为`(K_STO+X_STO/X_H)`。
+1. 第10行的Rate表达式中的`(K_STO+X_STO)/X_H`应该为`(K_STO+X_STO/X_H)`。
+1. 第1行`S_I`的计量学系数应该为`f_SI`，而不是原来的`0`。
+1. 第2行`S_NH4`的计量学系数应该为`i_N_SS/Y_STO_O2`，而不是原来的`i_N_SS`。
+1. 第3行`S_S`的计量学系数应该为`1/Y_STO_NO3`，而不是原来的`1/Y_STO_O2`。
+1. 第3行`S_NH4`的计量学系数应该为`i_N_SS/Y_STO_NO3`，而不是原来的`i_N_SS`。
+1. 第3行`S_NO2`的计量学系数应该为`(1-Y_STO_NO3)/(16/14*Y_STO_NO3)`，而不是原来的`(1-Y_STO_NO3)/1.14`。
+1. 第3行`S_NO3`的计量学系数应该为`(Y_STO_NO3-1)/(16/14*Y_STO_NO3)`，而不是原来的`(Y_STO_NO3-1)/1.14`。
+1. 第4行`S_S`的计量学系数应该为`1/Y_STO_NO2`，而不是原来的`1/Y_STO_O2`。
+1. 第4行`S_NH4`的计量学系数应该为`i_N_SS/Y_STO_NO2`，而不是原来的`i_N_SS`。
+1. 第4行`S_NO2`的计量学系数应该为`(1-Y_STO_NO2)/(24/14*Y_STO_NO2)`，而不是原来的`(1-Y_STO_NO2)/1.72`。
+1. 第4行`S_N2`的计量学系数应该为`(Y_STO_NO2-1)/(24/14*Y_STO_NO2)`，而不是原来的`(Y_STO_NO2-1)/1.72`。
+1. 第5行`S_NH4`的计量学系数应该为`-i_N_BM+i_N_SS/Y_H_O2`，而不是原来的`-i_N_BM`。
+1. 第6行`S_S`的计量学系数应该为`1/Y_H_NO3`，而不是原来的`1/Y_H_O2`。
+1. 第6行`S_NH4`的计量学系数应该为`-i_N_BM+i_N_SS/Y_H_NO3`，而不是原来的`-i_N_BM`。
+1. 第6行`S_NO2`的计量学系数应该为`(1-Y_H_NO3)/(16/14*Y_H_NO3)`，而不是原来的`(1-Y_H_NO3)/1.14*Y_H_NO3`。
+1. 第6行`S_NO3`的计量学系数应该为`(Y_H_NO3-1)/(16/14*Y_H_NO3)`，而不是原来的`(Y_H_NO3-1)/1.14*Y_H_NO3`。
+1. 第7行`S_S`的计量学系数应该为`1/Y_H_NO2`，而不是原来的`1/Y_H_O2`。
+1. 第7行`S_NH4`的计量学系数应该为`-i_N_BM+i_N_SS/Y_H_NO2`，而不是原来的`-i_N_BM`。
+1. 第7行`S_NO2`的计量学系数应该为`(1-Y_H_NO2)/(24/14*Y_H_NO2)`，而不是原来的`(1-Y_H_NO2)/1.72*Y_H_NO2`。
+1. 第7行`S_N2`的计量学系数应该为`(Y_H_NO2-1)/(24/14*Y_H_NO2)`，而不是原来的`(Y_H_NO2-1)/1.72*Y_H_NO2`。
+1. 第8行`S_O2`的计量学系数应该为`(Y_H_STO-1)/Y_H_STO`，而不是原来的`(1-Y_H_STO)/Y_H_STO`。
+1. 第17行`S_O2`的计量学系数应该为`(Y_AOB-48/14)/Y_AOB`，而不是原来的`(Y_AOB-64/14)/Y_AOB`。
+
 
 
 ------
