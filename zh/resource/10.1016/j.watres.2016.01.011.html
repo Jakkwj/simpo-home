@@ -10,7 +10,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="SIMPO" href="/zh/opensearch.xml"><link rel="stylesheet" href="/zh/assets/css/styles.9432b48f.css">
-<script src="/zh/assets/js/runtime~main.db597119.js" defer="defer"></script>
+<script src="/zh/assets/js/runtime~main.e0dce3ac.js" defer="defer"></script>
 <script src="/zh/assets/js/main.9cc6d039.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -29,13 +29,15 @@ Han-Qing Yu</p></div></div>
 <!-- -->
 <!-- -->
 <hr>
-<p><a href="https://dash.simpowater.com/dashboard/biomodels/public/name/AD%20with%20sulphide/id/396/did/374" target="_blank" rel="noopener noreferrer" class="">SIMPO Dashboard</a>:</p>
-<iframe src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/AD%20with%20sulphide/id/396/did/374" width="100%" height="400" style="border:none"></iframe>
-<p>如果直接使用原论文中的原始版本（如上所示），将无法获得论文中的结果，需要补充一个开关函数，<a href="https://dash.simpowater.com/dashboard/biomodels/public/name/AD%20with%20sulphide/id/395/did/374" target="_blank" rel="noopener noreferrer" class="">如下所示</a>：</p>
+<!-- -->
+<p><a href="https://dash.simpowater.com/dashboard/biomodels/public/name/AD%20with%20sulphide/id/395/did/374" target="_blank" rel="noopener noreferrer" class="">SIMPO Dashboard</a>:</p>
 <iframe src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/AD%20with%20sulphide/id/395/did/374" width="100%" height="400" style="border:none"></iframe>
-<p>然后，你可以得到于原论文一样的计算结果，<a href="https://dash.simpowater.com/dashboard/projects/public/name/AD%20with%20sulphide/id/463/did/415" target="_blank" rel="noopener noreferrer" class="">如下所示</a>：</p>
-<iframe src="https://dash.simpowater.com/dashboard/projects/iframe/public/name/AD%20with%20sulphide/id/463/did/415" width="100%" height="520" style="border:none;margin-bottom:0.8rem"></iframe>
-<div class="theme-tabs-container tabs-container tabList__CuJ"><ul role="tablist" aria-orientation="horizontal" class="tabs"><li role="tab" tabindex="0" aria-selected="true" class="tabs__item tabItem_LNqP tabs__item--active">摘要</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">目标</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">解决</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">实验</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">探索</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">总结</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">相关</li></ul><div class="margin-top--md"><div role="tabpanel" class="tabItem_Ymn6"><p>自养反硝化（AD）在去除含大量氮氧化物的有机碳缺乏废水中的硝酸盐方面发挥着至关重要的作用。然而，目前的反硝化模型并未包  含 AD 过程，这限制了 AD 技术在废水处理中的应用。本研究建立了一个包含 4 个过程和 5 个组分、9 个参数的 AD 过程动力学模型，以描述硫化物生物氧化和亚硝酸盐去除过程。在该模型中，考虑了在厌氧消化（AD）过程中以硫化物作为电子供体的 4 个氧化还原反应。通过对不同浓度的硫化物、硫磺、硫酸盐、硝酸盐和亚硝酸盐组合的实验数据进行拟合，对模型参数进行了优化。模型校准和验证结果表明，所开发的模型能够合理地描述厌氧消化（AD）过程中硝酸盐、亚硝酸盐、硫化物和硫的去除率。模型模拟结果还表明，硝酸盐、亚硝酸盐、硫化物和硫酸盐动力学方程中的硫项（η(S)）保持不变，而不是受其自身浓度的控制。此外，利用该模型可以准确预测厌氧消化（AD）过程中硫化物生物氧化的产物硫和硫酸盐及其浓度。因此，该模型提供了一种策略，可将硫酸盐浓度控制在排放限值以下，或将硫作为硫化物生物氧化的主要最终产品进行回收。</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Q：这篇论文试图解决什么问题？</strong></p><p><strong>Kimi:</strong>
+<p>这个 Public version 的主要修订内容包括：</p>
+<ol>
+<li class="">第3行的Rate表达式中的补充了一个开关函数<code>S_S0/(S_S0+0.0001)</code>。</li>
+<li class="">第4行的Rate表达式中的补充了一个开关函数<code>S_S0/(S_S0+0.0001)</code>。</li>
+</ol>
+<div class="theme-tabs-container tabs-container tabList__CuJ"><ul role="tablist" aria-orientation="horizontal" class="tabs"><li role="tab" tabindex="0" aria-selected="true" class="tabs__item tabItem_LNqP tabs__item--active">摘要</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">目标</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">解决</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">实验</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">探索</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">总结</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">相关</li></ul><div class="margin-top--md"><div role="tabpanel" class="tabItem_Ymn6"><p>自养反硝化（AD）在去除含大量氮氧化物的有机碳缺乏废水中的硝酸盐方面发挥着至关重要的作用。然而，目前的反硝化模型并未包含 AD 过程，这限制了 AD 技术在废水处理中的应用。本研究建立了一个包含 4 个过程和 5 个组分、9 个参数的 AD 过程动力学模型，以描述硫化物生物氧化和亚硝酸盐去除过程。在该模型中，考虑了在厌氧消化（AD）过程中以硫化物作为电子供体的 4 个氧化还原反应。通过对不同浓度的硫化物、硫磺、硫酸盐、硝酸盐和亚硝酸盐组合的实验数据进行拟合，对模型参数进行了优化。模型校准和验证结果表明，所开发的模型能够合理地描述厌氧消化（AD）过程中硝酸盐、亚硝酸盐、  硫化物和硫的去除率。模型模拟结果还表明，硝酸盐、亚硝酸盐、硫化物和硫酸盐动力学方程中的硫项（η(S)）保持不变，而不是受其自身浓度的控制。此外，利用该模型可以准确预测厌氧消化（AD）过程中硫化物生物氧化的产物硫和硫酸盐及其浓度。因此，该模型提供了一种策略，可将硫酸盐浓度控制在排放限值以下，或将硫作为硫化物生物氧化的主要最终产品进行回收。</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Q：这篇论文试图解决什么问题？</strong></p><p><strong>Kimi:</strong>
 这篇论文主要试图解决的问题是如何通过数学建模来改进自养脱氮（AD）过程的理解和应用。自养脱氮是一种重要的废水处理技术，它能够在缺乏有机碳的情况下，利用硫化物等无机物质作为电子供体，将废水中的硝酸盐转化为氮气，从而去除氮氧化物。</p><p>论文的主要目标包括：</p><ol>
 <li class="">
 <p><strong>建立动力学模型</strong>：开发一个包含多个氧化还原反应和多个组分的动力学模型，用于描述硫化物的生物氧化和亚硝酸盐的去除过程。</p>
@@ -52,7 +54,7 @@ Han-Qing Yu</p></div></div>
 <li class="">
 <p><strong>预测硫化物氧化产物</strong>：准确预测AD过程中硫化物氧化产物（如硫和硫酸盐）的浓度，为工艺控制提供依据。</p>
 </li>
-</ol><p>通过这项研究，论文旨在为环境工程师提供一个强有力的工具，以便更有效地设计、操作和优化自养脱氮过程，减少废水处理过程中的氮氧化物排放，同时实现资源的回收和再利用。这对于环境保护和可持续发展具有重要的实际意义。</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Q：论文如何解决这个问题？</strong></p><p><strong>Kimi:</strong>
+</ol><p>通过这项研究，论文旨在为环境工程师提供一个强有力的工具，以便更  有效地设计、操作和优化自养脱氮过程，减少废水处理过程中的氮氧化物排放，同时实现资源的回收和再利用。这对于环境保护和可持续发展具有重要的实际意义。</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Q：论文如何解决这个问题？</strong></p><p><strong>Kimi:</strong>
 论文通过以下方法解决自养脱氮（AD）过程的数学建模问题：</p><ol>
 <li class="">
 <p><strong>建立动力学模型</strong>：研究者开发了一个包含4个过程和5个组分的动力学模型，这些过程和组分涵盖了AD过程中硫化物的生物氧化和硝酸盐、亚硝酸盐的去除。模型中包括了使用硫化物作为电子供体的氧化还原反应。</p>
@@ -87,7 +89,7 @@ Han-Qing Yu</p></div></div>
 <p><strong>固体停留时间</strong>：考虑到自养脱氮菌（ADB）生长缓慢，通过排放过量污泥来富集自养污泥，将固体停留时间设定为相对较长的30天。</p>
 </li>
 <li class="">
-<p><strong>实验操作</strong>：在达到稳态后，对AD反应器进行了两个S/N（硫化物/氮）摩尔比的实验。在每个测试中，为确保污泥适应底物的变化，在进入下一个测试之前运行一周。</p>
+<p><strong>实验操作</strong>：在达到稳态后，对AD反应器进行了两个S/N（硫化物/氮）摩尔比的实验。在每个测试中，为确保污泥适应底物的变化，在进入下一个测试之  前运行一周。</p>
 </li>
 <li class="">
 <p><strong>数据收集</strong>：收集了关于S2-、SO42-、NO3-和NO2-的浓度数据，以及反应器运行一年期间的性能变化数据。</p>
@@ -101,7 +103,7 @@ Han-Qing Yu</p></div></div>
 <p><strong>微生物群落的作用</strong>：AD过程中微生物群落的动态变化、不同微生物种群的相互作用以及它们对AD效率的影响，这些都是值得深入研究的领域。</p>
 </li>
 <li class="">
-<p><strong>工艺优化</strong>：探索不同的操作策略，如改变硫化物和硝酸盐的投加比例、调节pH值、优化反 应器设计等，以进一步提高AD过程的效率和稳定性。</p>
+<p><strong>工艺优化</strong>：探索不同的操作策略，如改变硫化物和硝酸盐的投加比例、调节pH值、优化反应器设计等，以进一步提高AD过程的效率和稳定性。</p>
 </li>
 <li class="">
 <p><strong>环境因素的影响</strong>：研究温度、pH、溶解氧等环境因素对AD过程的影响，以及如何在实际应用中控制这些因素以达到最佳处理效果。</p>
@@ -110,7 +112,7 @@ Han-Qing Yu</p></div></div>
 <p><strong>经济性和可行性分析</strong>：对AD技术的经济性进行评估，包括成本效益分析、能耗评估和大规模应用的可行性研究。</p>
 </li>
 <li class="">
-<p><strong>新型材料和技术的应用</strong>：研究新型生物反应器材料、生物膜技术或纳米技术在AD过程中的应用，以提高处理效率和降低成本。</p>
+<p><strong>新型材料和技术的应用</strong>：研究新型生物反应器材料、生物膜技术或纳米技术在AD过  程中的应用，以提高处理效率和降低成本。</p>
 </li>
 <li class="">
 <p><strong>长期运行的稳定性</strong>：研究AD系统在长期运行过程中的稳定性和可持续性，包括污泥老化、系统堵塞和腐蚀等问题的解决方案。</p>
@@ -124,7 +126,7 @@ Han-Qing Yu</p></div></div>
 <p><strong>研究背景</strong>：自养脱氮（AD）是在缺乏有机碳的条件下，通过无机电子供体（如硫化物）去除废水中硝酸盐的重要技术。现有脱氮模型未包含AD过程，限制了其在废水处理中的应用。</p>
 </li>
 <li class="">
-<p><strong>研究目标</strong>：开发一个数学模型来描述和优化以硫化物为电子供体的AD过程，提高对AD过程的理解和控制，以便更有效地去  除废水中的硝酸盐和亚硝酸盐。</p>
+<p><strong>研究目标</strong>：开发一个数学模型来描述和优化以硫化物为电子供体的AD过程，提高对AD过程的理解和控制，以便更有效地去除废水中的硝酸盐和亚硝酸盐。</p>
 </li>
 <li class="">
 <p><strong>方法论</strong>：</p>
@@ -137,7 +139,7 @@ Han-Qing Yu</p></div></div>
 <li class="">
 <p><strong>实验设计</strong>：</p>
 <ul>
-<li class="">使用bench-scale序批式反应器（SBR）进行实验。</li>
+<li class="">使用bench-scale序批  式反应器（SBR）进行实验。</li>
 <li class="">合成废水中包含硫化物、硝酸盐、氯化铵、磷酸盐和碳酸氢钠等成分。</li>
 <li class="">收集来自市政污水处理厂的接种污泥，并在反应器中进行为期一年的稳定运行实验。</li>
 </ul>
@@ -154,7 +156,7 @@ Han-Qing Yu</p></div></div>
 <p><strong>结论</strong>：论文成功开发了一个数学模型，为设计、操作和优化AD过程提供了一个强有力的工具，有助于提高废水处理效率，减少氮氧化物排放，并实现资源的可持续利用。</p>
 </li>
 </ol><p>这篇论文通过数学建模方法，为自养脱氮技术的发展和应用提供了新的视角和工具，对于环境工程领域的研究人员和工程师来说具有重要的参考价值。</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Q：有哪些相关研究？</strong></p><p><strong>Kimi:</strong>
-这篇论文提到的相关研究主要集中在自养脱氮（AD）过程的动力  学、反应机理、以及硫化物作为电子供体在AD过程中的应用。以下是一些与论文相关的研究领域和具体工作：</p><ol>
+这篇论文提到的相关研究主要集中在自养脱氮（AD）过程的动力学、反应机理、以及硫化物作为电子供体在AD过程中的应用。以下是一些与论文相关的研究领域和具体工作：</p><ol>
 <li class="">
 <p><strong>自养脱氮的动力学研究</strong>：研究AD过程中的反应动力学，包括硫化物和硝酸盐的生物氧化还原反应速率、半饱和常数、以及微生物生长速率等参数。</p>
 </li>

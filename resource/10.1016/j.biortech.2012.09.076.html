@@ -10,7 +10,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="SIMPO" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.fe1a869d.css">
-<script src="/assets/js/runtime~main.aa78ea97.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.1243e2ed.js" defer="defer"></script>
 <script src="/assets/js/main.b758888b.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -25,6 +25,11 @@
 <p><a href="https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.biortech.2012.09.076/id/794/did/785" target="_blank" rel="noopener noreferrer" class="">SIMPO Dashboard</a>:</p>
 <iframe src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.biortech.2012.09.076/id/794/did/785" width="100%" height="400" style="border:none;margin-bottom:0.8rem"></iframe>
 <p>This Public version&#x27;s main revisions include:</p>
+<!-- -->
+<!-- -->
+<!-- -->
+<!-- -->
+<!-- -->
 <ol>
 <li class="">To accurately perform the <code>Balance</code> accounting, replace the following stoichiometric coefficients in the stoichiometry matrix:<!-- -->
 <ul>
@@ -32,40 +37,9 @@
 <li class=""><code>1.71</code> with <code>24/14</code>.</li>
 <li class=""><code>2.86</code> with <code>40/14</code>.</li>
 </ul>
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
-<!-- -->
 </li>
-<li class="">The <code>1.72</code> in the stoichiometric coefficient should be <code>1.71</code> (<code>24/14</code>).</li>
-<li class="">The original model is missing the parameters <code>i_N_XS</code> and <code>i_N_SI</code>. In the Compositions matrix, we use <code>i_N_SS</code> as a substitute to ensure the balance of N.</li>
-<li class="">In line 1, the Rate expression, <code>(K_X+X_S)/X_H</code> should be <code>(K_X+X_S/X_H)</code>.</li>
-<li class="">In line 8, the Rate expression, <code>(K_STO+X_STO)/X_H</code> should be <code>(K_STO+X_STO/X_H)</code>.</li>
-<li class="">In line 9, the Rate expression, <code>(K_STO+X_STO)/X_H</code> should be <code>(K_STO+X_STO/X_H)</code>.</li>
-<li class="">In line 10, the Rate expression, <code>(K_STO+X_STO)/X_H</code> should be <code>(K_STO+X_STO/X_H)</code>.</li>
-<li class="">In line 1, the stoichiometric coefficient for <code>S_I</code> should be <code>f_SI</code>, instead of the original <code>0</code>.</li>
-<li class="">In line 2, the stoichiometric coefficient for <code>S_NH4</code> should be <code>i_N_SS/Y_STO_O2</code>, instead of the original <code>i_N_SS</code>.</li>
-<li class="">In line 3, the stoichiometric coefficient for <code>S_S</code> should be <code>1/Y_STO_NO3</code>, instead of the original <code>1/Y_STO_O2</code>.</li>
-<li class="">In line 3, the stoichiometric coefficient for <code>S_NH4</code> should be <code>i_N_SS/Y_STO_NO3</code>, instead of the original <code>1/i_N_SS</code>.</li>
-<li class="">In line 3, the stoichiometric coefficient for <code>S_NO2</code> should be <code>(1-Y_STO_NO3)/(16/14*Y_STO_NO3)</code>, instead of the original <code>(1-Y_STO_NO3)/1.14</code>.</li>
-<li class="">In line 3, the stoichiometric coefficient for <code>S_NO3</code> should be <code>(Y_STO_NO3-1)/(16/14*Y_STO_NO3)</code>, instead of the original <code>(Y_STO_NO3-1)/1.14</code>.</li>
-<li class="">In line 4, the stoichiometric coefficient for <code>S_S</code> should be <code>1/Y_STO_NO2</code>, instead of the original <code>1/Y_STO_O2</code>.</li>
-<li class="">In line 4, the stoichiometric coefficient for <code>S_NH4</code> should be <code>i_N_SS/Y_STO_NO2</code>, instead of the original <code>i_N_SS</code>.</li>
-<li class="">In line 4, the stoichiometric coefficient for <code>S_NO2</code> should be <code>(1-Y_STO_NO2)/(24/14*Y_STO_NO2)</code>, instead of the original <code>(1-Y_STO_NO2)/1.72</code>.</li>
-<li class="">In line 4, the stoichiometric coefficient for <code>S_N2</code> should be <code>(Y_STO_NO2-1)/(24/14*Y_STO_NO2)</code>, instead of the original <code>(Y_STO_NO2-1)/1.72</code>.</li>
-<li class="">In line 5, the stoichiometric coefficient for <code>S_NH4</code> should be <code>-i_N_BM+i_N_SS/Y_H_O2</code>, instead of the original <code>-i_N_BM</code>.</li>
-<li class="">In line 6, the stoichiometric coefficient for <code>S_S</code> should be <code>1/Y_H_NO3</code>, instead of the original <code>1/Y_H_O2</code>.</li>
-<li class="">In line 6, the stoichiometric coefficient for <code>S_NH4</code> should be <code>-i_N_BM+i_N_SS/Y_H_NO3</code>, instead of the original <code>-i_N_BM</code>.</li>
-<li class="">In line 6, the stoichiometric coefficient for <code>S_NO2</code> should be <code>(1-Y_H_NO3)/(16/14*Y_H_NO3)</code>, instead of the original <code>(1-Y_H_NO3)/1.14*Y_H_NO3</code>.</li>
-<li class="">In line 6, the stoichiometric coefficient for <code>S_NO3</code> should be <code>(Y_H_NO3-1)/(16/14*Y_H_NO3)</code>, instead of the original <code>(Y_H_NO3-1)/1.14*Y_H_NO3</code>.</li>
-<li class="">In line 7, the stoichiometric coefficient for <code>S_S</code> should be <code>1/Y_H_NO2</code>, instead of the original <code>1/Y_H_O2</code>.</li>
-<li class="">In line 7, the stoichiometric coefficient for <code>S_NH4</code> should be <code>-i_N_BM+i_N_SS/Y_H_NO2</code>, instead of the original <code>-i_N_BM</code>.</li>
-<li class="">In line 7, the stoichiometric coefficient for <code>S_NO2</code> should be <code>(1-Y_H_NO2)/(24/14*Y_H_NO2)</code>, instead of the original <code>(1-Y_H_NO2)/1.72*Y_H_NO2</code>.</li>
-<li class="">In line 7, the stoichiometric coefficient for <code>S_N2</code> should be <code>(Y_H_NO2-1)/(24/14*Y_H_NO2)</code>, instead of the original <code>(Y_H_NO2-1)/1.72*Y_H_NO2</code>.</li>
-<li class="">In line 8, the stoichiometric coefficient for <code>S_O2</code> should be <code>(Y_H_STO-1)/Y_H_STO</code>, instead of the original <code>(1-Y_H_STO)/Y_H_STO</code>.</li>
-<li class="">In line 17, the stoichiometric coefficient for <code>S_O2</code> should be <code>(Y_AOB-64/14)/Y_AOB</code>.</li>
 </ol>
+<!-- -->
 <hr>
 <div class="theme-tabs-container tabs-container tabList__CuJ"><ul role="tablist" aria-orientation="horizontal" class="tabs"><li role="tab" tabindex="0" aria-selected="true" class="tabs__item tabItem_LNqP tabs__item--active">Abstract</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Objective</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Solution</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Experiment</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Exploration</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Summary</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Related</li></ul><div class="margin-top--md"><div role="tabpanel" class="tabItem_Ymn6"><p>The activated sludge model No. 3 (ASM3) was modified to describe the biological reactions in aerobic granular sludge SBR. The simultaneous storage and growth, nitrification and denitrification were all accounted for in modified model. The sensitivities of effluent COD, NH4+–N, and TN toward the stoichiometric and kinetic coefficients were analyzed. A standard set of parameters obtained from a combination of literature data was chosen for the model. The experimental results for the time profile of COD, NH4+–N, and TN in a typical cycle were used to verify the ASM3 model. The verification results show the model established is applicable for simulating the performance of an aerobic granule-based SBR. A comparison of the measured and predicted values of substrate removal for both the modified ASM3 and the original ASM3 was also performed. The verification and comparison results show the modified ASM3 model describes the aerobic granule-based SBR better and more mechanistically.</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Q: What problem does this paper attempt to solve?</strong></p><p><strong>Gemini 3.0 Pro:</strong></p><p>The paper attempts to address the limitations of the original Activated Sludge Model No. 3 (ASM3) when applied to Aerobic Granular Sludge (AGS) systems in Sequencing Batch Reactors (SBR). Specifically:</p><ul>
 <li class=""><strong>Sequential vs. Simultaneous Processes</strong>: ASM3 assumes that readily biodegradable substrates are first stored as internal polymers and then used for growth (sequential process). However, in AGS systems, especially under feast conditions, simultaneous storage and growth occur.</li>

@@ -10,7 +10,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="SIMPO" href="/zh/opensearch.xml"><link rel="stylesheet" href="/zh/assets/css/styles.9432b48f.css">
-<script src="/zh/assets/js/runtime~main.db597119.js" defer="defer"></script>
+<script src="/zh/assets/js/runtime~main.e0dce3ac.js" defer="defer"></script>
 <script src="/zh/assets/js/main.9cc6d039.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -30,8 +30,13 @@
 <hr>
 <p><a href="https://dash.simpowater.com/dashboard/biomodels/public/name/EAWAG%20Bio-P/id/46/did/43" target="_blank" rel="noopener noreferrer" class="">SIMPO Dashboard</a>:</p>
 <iframe src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/EAWAG%20Bio-P/id/46/did/43" width="100%" height="520" style="border:none"></iframe>
+<p>这个 Public version 的主要修订内容包括：</p>
+<ol>
+<li class="">补充了<code>S_Alk</code>（碱度）在矩阵中的计量学系数。</li>
+<li class="">补充了<code>X_TSS</code>在矩阵中的计量学系数。</li>
+</ol>
 <hr>
-<div class="theme-tabs-container tabs-container tabList__CuJ"><ul role="tablist" aria-orientation="horizontal" class="tabs"><li role="tab" tabindex="0" aria-selected="true" class="tabs__item tabItem_LNqP tabs__item--active">摘要</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">目标</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">解决</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">实验</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">探索</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">总结</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">相关</li></ul><div class="margin-top--md"><div role="tabpanel" class="tabItem_Ymn6"><p>在经过校准的 ASM3 版本基础上，提出了一个用于预测强化生物除磷的附加模块。该模块使用了 ASM2d 中修改过的过程，但忽略了易降解基质的发酵。生物量衰减是以内源呼吸的形式建模的，与 ASM3 相同。糖原池和生物诱导的 P 沉淀未考虑在 内。该模块通过各种批次实验、全规模污水处理厂和处理瑞士城市污水的中试厂的实验数据进行了系统校准。标准参数集允许模拟所有数据。</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Q：这篇论文试图解决什么问题？</strong></p><p><strong>Kimi:</strong>
+<div class="theme-tabs-container tabs-container tabList__CuJ"><ul role="tablist" aria-orientation="horizontal" class="tabs"><li role="tab" tabindex="0" aria-selected="true" class="tabs__item tabItem_LNqP tabs__item--active">摘要</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">目标</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">解决</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">实验</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">探索</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">总结</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">相关</li></ul><div class="margin-top--md"><div role="tabpanel" class="tabItem_Ymn6"><p>在经过校准的 ASM3 版本基础上，提出了一个用于预测强 化生物除磷的附加模块。该模块使用了 ASM2d 中修改过的过程，但忽略了易降解基质的发酵。生物量衰减是以内源呼吸的形式建模的，与 ASM3 相同。糖原池和生物诱导的 P 沉淀未考虑在内。该模块通过各种批次实验、全规模污水处理厂和处理瑞士城市污水的中试厂的实验数据进行了系统校准。标准参数集允许模拟所有数据。</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Q：这篇论文试图解决什么问题？</strong></p><p><strong>Kimi:</strong>
 这篇论文介绍了一个额外的模块——EAWAG Bio-P模块，用于增强ASM3（Activated Sludge Model No. 3）模型的预测能力，特别是在增强生物除磷（EBPR）方面。ASM3是一个基本的活性污泥模型，主要用于预测市政废水处理系统中的氧气消耗、污泥产生、硝化和反硝化等过程，但它本身不包括生物除磷过程。EAWAG Bio-P模块的开发旨在填补这一空白，通过结合ASM3的校准版本，对生物除磷过程进行建模和预测。</p><p>具体来说，这篇论文试图解决的问题包括：</p><ol>
 <li class="">
 <p><strong>生物除磷过程的建模</strong>：通过引入EAWAG Bio-P模块，将生物除磷过程整合到ASM3模型中，以便更全面地模拟和预测废水处理过程中的氮、磷去除。</p>
@@ -46,7 +51,7 @@
 <p><strong>适应不同操作条件</strong>：通过模型校准，使其能够适应不同的操作条件和废水特性，如低COD负荷后的“周一效应”，以及不同污泥龄（SRT）下的处理效果。</p>
 </li>
 <li class="">
-<p><strong>提高模型的预测能力</strong>：通过校准和验证，确保模型能够准确预测不同动态效应，如短期内的磷释 放和吸收、长期内的PAO（聚磷酸盐积累菌）的洗出和增长，以及低COD负荷后的出水磷酸盐峰值。</p>
+<p><strong>提高模型的预测能力</strong>：通过校准和验证，确保模型能够准确预测不同动态效应，如短期内的磷释放和吸收、长期内的PAO（聚磷酸盐积累菌）的洗出和增长，以及低COD负荷后的出水磷酸盐峰值。</p>
 </li>
 </ol><p>总的来说，这篇论文的目标是开发和验证一个能够准确模拟和预测生物除磷过程的模型，以便更好地理解和优化市政废水处理系统中的磷去除效率。</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Q：论文如何解决这个问题？</strong></p><p><strong>Kimi:</strong>
 论文通过以下步骤解决增强生物除磷（EBPR）的建模问题：</p><ol>
@@ -63,10 +68,10 @@
 <p><strong>系统校准</strong>：使用来自不同批次实验、全尺寸污水处理厂和试验工厂处理瑞士市政废水的实验数据，对EAWAG Bio-P模块进行了系统的校准。通过迭代方法，将高度相关的参数分组校准，并使用不同批次实验进行验证。</p>
 </li>
 <li class="">
-<p><strong>动态效应模拟</strong>：模型能够模拟不同的动态效应，例如正常的磷释放和吸收、PAO的洗出和增长，以及在低COD负荷时期（如周末、雨天、假期）后的出水磷酸盐峰值。</p>
+<p><strong>动态效应模拟</strong>：模型能够模拟不同  的动态效应，例如正常的磷释放和吸收、PAO的洗出和增长，以及在低COD负荷时期（如周末、雨天、假期）后的出水磷酸盐峰值。</p>
 </li>
 <li class="">
-<p><strong>模型验证</strong>：通过与实  验数据的比较，验证了模型的准确性。这包括对长期模拟和短期动态变化（如日变化）的验证。</p>
+<p><strong>模型验证</strong>：通过与实验数据的比较，验证了模型的准确性。这包括对长期模拟和短期动态变化（如日变化）的验证。</p>
 </li>
 <li class="">
 <p><strong>简化和适应性</strong>：模型设计时考虑了简化复杂性，例如忽略了额外的糖原池，并针对瑞士市政废水的典型条件进行了适应性调整。</p>
@@ -83,7 +88,7 @@
 <p><strong>洗出和生长实验</strong>：进行了一系列批次实验，以检查PAO的最大衰减（bPP, bPAO）和增长率（mPAO），以及磷释放/磷吸收率（qPHA, qPP）。这些实验在不同的流程方案和进水条件下游行了140天。</p>
 </li>
 <li class="">
-<p><strong>日变化实验</strong>：论文提到了在Tu¨ﬀenwies试验工厂进行  的日变化实验，该工厂以AAO模式运行。根据之前的时间段计算了污泥的初始条件，以模拟单日周期内反硝化和Bio-P的行为。</p>
+<p><strong>日变化实验</strong>：论文提到了在Tu¨ﬀenwies试验工厂进行的日变化实验，该工厂以AAO模式运行。根据之前的时间段计算了污泥的初始条件，以模拟单日周期内反硝化和Bio-P的行为。</p>
 </li>
 <li class="">
 <p><strong>全尺度实验</strong>：除了批次和试验工厂实验外，论文还提到了在全尺度污水处理厂（Neugut WWTP）进行的实验。该工厂被建模为CSTRs的级联，二级澄清器被建模为带有进水区、污泥毯和清水区。该模型在校准和验证中使用了该工厂的数据，特别关注不同操作条件和情景下氮和磷的去除。</p>
@@ -120,7 +125,7 @@
 <p><strong>EAWAG Bio-P模块的介绍</strong>：论文提出了一个用于活性污泥模型第3号（ASM3）的附加模块，用于预测增强生物除磷（EBPR）。该模块基于ASM3的校准版本，并结合了ASM2d的修改过程，省略了易于降解底物的发酵过程。</p>
 </li>
 <li class="">
-<p><strong>模型定义</strong>：Bio-P模块为ASM3现有的13个组分引入了四个额外的状态变量，以模拟生物除磷过程。它通过忽略某些过程（如发酵和额外的糖原  池）来简化模型，专注于聚磷菌（PAO）及其在EBPR中的作用。</p>
+<p><strong>模型定义</strong>：Bio-P模块为ASM3现有的13个组分引入了四个额外的状态变量，以模拟生物除磷过程。它通过忽略某些过程（如发酵和额外的糖原池）来简化模型，专注于聚磷菌（PAO）及其在EBPR中的作用。</p>
 </li>
 <li class="">
 <p><strong>校准和验证</strong>：该模块使用来自批次实验、全尺度污水处理厂（WWTP）和试验工厂的实验数据进行了系统校准。开发了一套标准参数集来模拟所有数据集，证明了该模块准确预测氮和磷去除能力。</p>
@@ -140,7 +145,7 @@
 <li class="">
 <p><strong>结论</strong>：论文得出结论，当EAWAG Bio-P模块扩展到ASM3时，可以准确预测氮和磷的去除。该模块能够模拟各种动态效应，并且预计在未来的应用中将减少校准工作量。</p>
 </li>
-</ol><p>总体而言，论文提供了一种增强ASM3模型以预测EBPR的综合方法，为污水处理厂的设计和运行提供了一个有价值的工具。</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Q：有哪些相关研究？</strong></p><p><strong>Kimi:</strong>
+</ol><p>总体而言，论文提供了一种增强ASM3模型以预测EBPR的综合方法，  为污水处理厂的设计和运行提供了一个有价值的工具。</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Q：有哪些相关研究？</strong></p><p><strong>Kimi:</strong>
 论文《EAWAG BIO-P模块用于活性污泥模型第3号》引用了许多相关研究，这些研究为Bio-P模块的开发和验证提供了支持。以下是论文中提到的一些关键相关研究：</p><ol>
 <li class="">
 <p><strong>Henze等人（2000）</strong>：这是关于活性污泥模型第3号（ASM3）的原始工作，为EAWAG Bio-P模块提供了基础。它是一个全面的模型，用于模拟市政废水处理过程。</p>
