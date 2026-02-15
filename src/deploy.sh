@@ -9,7 +9,7 @@ if [ "$1" == "proxy" ]; then  # ./deploy.sh proxy 运行时
     yarn config set https-proxy $proxy_ip
 fi
 
-git add -A && git commit -m "add new paper-2026-02-07" && git push -u origin master
+git add -A && git commit -m "fixed aquasim case" && git push -u origin master
 # git push -u origin master
 
 USE_SSH=true yarn deploy  # 自动部署到 github page
