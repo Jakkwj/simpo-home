@@ -11,7 +11,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 const addIframeListener = () => {
   /**
    * 加载时, 添加 iframe Listener
-   * 监听是否登录了 Dashborad
+   * 监听是否登录了 Dashboard
    */
   window.addEventListener(
     'message',
