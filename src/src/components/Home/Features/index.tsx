@@ -54,11 +54,15 @@ export default function Features() {
             <li style={{ marginBottom: "0.5rem" }}>
               <strong>SIMPO </strong>
               <Translate>
-                is initiated by JiangLab (a research team in the School of
+                {/* is initiated by JiangLab (a research team in the School of
                 Environmental Science and Engineering, Sun Yat-sen University,
                 China). It is an intelligent computing SaaS platform
                 specifically designed for wastewater treatment process
-                modelling.
+                modelling. */}
+                , initiated by Professor Jiang Feng's team at the School of
+                Environmental Science and Engineering, Sun Yat-sen University,
+                is an intelligent platform for code-free and shareable
+                wastewater treatment process modelling.
               </Translate>
             </li>
 

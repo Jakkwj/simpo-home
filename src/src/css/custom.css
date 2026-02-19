@@ -569,6 +569,7 @@ html[data-theme='dark'] .cncf-logo {
 .hero__title {
   font-size: 3.5rem;
   font-weight: 800;
+
   /* background: linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #06b6d4 100%); */
   background: var(--ifm-color-hero-title);
 
@@ -577,6 +578,16 @@ html[data-theme='dark'] .cncf-logo {
   background-clip: text;
   margin-bottom: 1.5rem;
 }
+
+/* .hero__title_2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: #5e72e4;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.5rem;
+} */
 
 .hero__title_red {
   font-size: 3.5rem;

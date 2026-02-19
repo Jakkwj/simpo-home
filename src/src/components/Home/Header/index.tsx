@@ -191,10 +191,10 @@ export default function HomepageHeader() {
                   alt="Preview of using SIMPO"
                   width="9%"
                   // style={{
-                  //   borderRadius: "10px",
-                  //   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                  //   marginTop: "2rem",
-                  //   marginLeft: "10%",
+                  //   // borderRadius: "10px",
+                  //   // boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  //   // marginTop: "2rem",
+                  //   marginLeft: "21%",
                   // }}
                 />
                 <Link> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </Link>
@@ -209,6 +209,9 @@ export default function HomepageHeader() {
                   {siteConfig.title}
                 </h1>
               </div>
+              {/* <p className="hero__title_2 fade-in-up">
+                <Translate id="tagline">{siteConfig.tagline}</Translate>
+              </p> */}
               <p
                 className="hero__subtitle fade-in-up"
                 style={{ marginBottom: "2.2rem" }}

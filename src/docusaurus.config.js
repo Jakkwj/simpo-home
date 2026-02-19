@@ -161,7 +161,14 @@ const config = {
   // tagline: 'A Simulation SaaS Platform for Water and Wastewater Treatment Process Modeling',
   // tagline: 'A Scientific Computing SaaS Platform for Water and Wastewater Treatment Process Modelling',
   // tagline: 'A Scientific Computing SaaS Platform for Wastewater Treatment Process Modelling',
-  tagline: 'An Intelligent Computing SaaS Platform for Wastewater Treatment Process Modelling',
+  // tagline: 'An Intelligent Computing SaaS Platform for Wastewater Treatment Process Modelling',
+  // tagline: 'An Intelligent Cloud Platform for Code-free and Shareable Wastewater Treatment Process Modelling',
+  tagline: 'An Intelligent Platform for Code-free and Shareable Wastewater Treatment Process Modelling',
+  // 污水处理数学模拟无代码智能建模与共享平台
+  // is a code-free and Shareable platform for mathematical simulation of wastewater treatment
+  // An Intelligent Modelling Platform for Code-free and Shareable
+// Wastewater Treatment Process Modelling
+
   // tagline: 'An Intelligent Computing SaaS Platform Specifically designed for wastewater treatment process modelling',
   // tagline: 'A SaaS platform for wastewater treatment modeling',
 
