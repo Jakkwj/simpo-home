@@ -15,29 +15,49 @@ import config from '@generated/docusaurus.config'
 :::
 
 
-**SIMPO**的3个核心元素是：**BioModel** （模型）, **DataSet** （数据）和 **Project** （项目）。
+**SIMPO** 的3个核心元素是：**BioModel** （生化模型）, **DataSet** （数据集）和 **Project** （项目）：
+- **BioModel**：生化模型，储存模型的组分、参数、计量学矩阵、速率方程等。
+- **DataSet**：数据集，储存工艺的水质、流量、连接方式、反应器类型等。
+- **Project**：项目，控制仿真计算的初值、范围、计算模式和分析类型（数值模拟、敏感性分析、不确定性分析、参数估值）。
 
-完整计算过程的步骤如下：
+:::info 任意组合
 
-- [步骤1](/docs/Tutorials/Installtion): 在你的计算机上安装计算客户端，然后注册并登录 <a href={config.customFields.urlDashHome}>Dashboard</a>。
+在 **SIMPO** 平台上，你可以将任意一个 **BioModel** 和任意一个 **DataSet** 进行**自由组合**。
+这一机制不仅能实现不同生化机理的快速验证与横向对比，更能针对特定工艺进行精准模拟与策略寻优。
+这种**即插即用**的高效建模架构，极大地降低了重复配置模型的时间成本。
+
+
+:::
+
+
+
+一个完整的计算过程步骤如下：
+
+- [步骤1](/docs/Tutorials/Installtion): 在你的计算机上**安装**计算客户端，然后**注册**并登录 <a href={config.customFields.urlDashHome}>Dashboard</a>。
 - [步骤2](/docs/Tutorials/BioModel): 创建一个 **BioModel**。
 - [步骤3](/docs/Tutorials/DataSet): 创建一个 **DataSet**。
 - [步骤4](/docs/Tutorials/Project): 创建一个 **Project**，将 **BioModel** 和 **DataSet** 组合在一起，然后选择一个计算引擎来求解。
 
 
-:::tip 克隆即可开始
-
-通过克隆公开 **Project**，我们就可以直接开始计算，而无需经过上述这些步骤。但请记住，在此之前先安装计算客户端并登录。
-
-:::
 
 -------
 
-## 最简单的方式
+## 案例1：最简单的方式
 
-共享研究成果是 **SIMPO** 的主要功能之一，因此从公开资源库中克隆一个**项目**是最简单的方法。该操作将克隆相应的 **BioMode**、**Dataset** 和计算结果。
-- 克隆一个公开项目。
+共享研究成果是 **SIMPO** 的主要功能之一，因此从公开资源库中克隆一个 **Project** 是最简单的方法。该操作将克隆相应的 **BioMode**、**Dataset** 和计算结果。
+
+
+:::tip 克隆即可开始
+
+通过克隆公开 **Project**，我们就可以直接开始计算，而无需经过上述这些步骤。但请记住，计算之前请先安装计算客户端。
+
+:::
+
+
+
+- 克隆一个公开 **Project**。
 - 检查计算结果（您可以更改某些参数并重新计算）。
+
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlTheEasiestWay} width="80%"/>
@@ -46,7 +66,7 @@ import config from '@generated/docusaurus.config'
 
 ------
 
-## 尝试ASM3
+## 案例2：尝试ASM3
 
 **SIMPO** 有很多公开的经典模型，我们可以克隆并使用它们。这里我们以ASM3为一个简单的例子。
 
