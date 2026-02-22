@@ -9,11 +9,10 @@ import TabItem from "@theme/TabItem";
 
 # [Evaluating two concepts for the modelling of intermediates accumulation during biological denitrification in wastewater treatment](https://doi.org/10.1016/j.watres.2014.12.029)
 
-<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/unapproved-red?style=for-the-badge" />
 
 
-{/*
-<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" /> */}
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" />
 
 
 <img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
@@ -27,18 +26,47 @@ import TabItem from "@theme/TabItem";
 </div>
 
 
-{/* ----
+----
 
-
-[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.watres.2014.12.029/id/xxxxxx/did/yyyyyy):
+**Model I (ASMN)**：[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.watres.2014.12.029/id/856/did/852):
 
 <iframe
-src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.watres.2014.12.029/id/xxxxxx/did/yyyyyy"
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.watres.2014.12.029/id/856/did/852"
 
 width="100%"
 height="400"
 style={{ border: 'none', marginBottom: '0.8rem' }}
-></iframe> */}
+></iframe>
+
+
+
+这个 Public version 的主要修订内容包括：
+
+    {/* - `0.57` 替换为 `8/14`。 */}
+    {/* - `2.29` 替换为 `32/14`。 */}
+    {/* - `3.43` 替换为 `48/14`。 */}
+    {/* - `4.57` 替换为 `64/14`。 */}
+    {/* - `6.85` 替换为 `96/14`。 */}
+
+    {/* ThOD */}
+    {/* S_NO3 -64/14 */}
+    {/* S_NO2 -48/14 */}
+    {/* S_NO -40/14 */}
+    {/* S_N2O -32/14 */}
+    {/* S_N2 -24/14 */}
+    {/* S_NH2OH -16/14 */}
+
+    {/* S_S0 -0.5 */}
+    {/* S_SO4 -2.0 */}
+
+    {/* S_CH4 1 */}
+
+1. 为了准确进行Balance核算，将计量学矩阵中的:
+    - `1.143` 替换为 `16/14`。
+    - `0.571` 替换为 `8/14`。
+
+
+**Model II (ASM-ICE)**：[Modeling Electron Competition among Nitrogen Oxides Reduction and N2O Accumulation in Denitrification](https://www.simpowater.com/resource/10.1016/10.1021/es402348n)
 
 
 ------
@@ -47,7 +75,7 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 <TabItem value="abstract" label="Abstract" >
 
-废水处理系统中反硝化中间产物的积累是非常不可取的，因为亚硝酸盐和一氧化氮 (NO) 均已知对细菌有毒，而氧化亚氮 ($N_2O$) 是一种强效温室气体和臭氧消耗物质。迄今为止，已经提出了两个截然不同的反硝化建模概念，分别由氮活性污泥模型 (ASMN) 和电子间接耦合活性污泥模型 (ASM-ICE) 代表。这两个模型在描述反硝化不同步骤之间的电子分配方面存在根本差异。在本研究中，通过文献中报道的四个不同的实验数据集，检查并比较了这两个模型预测反硝化中间产物积累的能力。ASM-ICE 模型预测的氮氧化物积累与所有四个案例中的测量值非常吻合，而 ASMN 模型只能重现四个案例中的一个。ASM-ICE 模型表现更好是因为它采用了通过电子载体连接碳氧化和氮还原过程的“间接耦合”建模概念，这很好地描述了电子竞争。另一方面，ASMN 模型受到其结构缺陷的内在限制，即假设碳氧化总是能够满足所有反硝化步骤的电子需求，从而忽略了这些步骤之间的电子竞争。因此，ASM-ICE 为预测和理解生物反硝化中的中间产物积累提供了更好的工具。
+废水处理系统中反硝化中间产物的积累是非常不受欢迎的，因为亚硝酸盐和一氧化氮 (NO) 都已知对细菌有毒，而氧化亚氮 ($N_2O$) 是一种强效温室气体和臭氧消耗物质。迄今为止，已经提出了两种截然不同的反硝化建模概念，分别以氮活性污泥模型 (ASMN) 和电子间接耦合活性污泥模型 (ASM-ICE) 为代表。这两个模型在描述反硝化不同步骤之间的电子分配方面存在根本差异。在本研究中，考察并比较了这两个模型预测文献中报道的四个不同实验数据集中反硝化中间产物积累的能力。ASM-ICE 模型预测的氮氧化物积累与所有四个案例中的测量值非常吻合，而 ASMN 模型只能重现四个案例中的一个。ASM-ICE 模型表现更好是因为它采用通过电子载体连接碳氧化和氮还原过程的“间接耦合”建模概念，这很好地描述了电子竞争。另一方面，ASMN 模型受到其结构缺陷的内在限制，即假设碳氧化总是能够满足所有反硝化步骤的电子需求，从而忽略了这些步骤之间的电子竞争。因此，ASM-ICE 为预测和理解生物反硝化中的中间产物积累提供了更好的工具。
 
 </TabItem>
 
@@ -57,10 +85,10 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Gemini 3.0 Pro:**
 
-本文试图解决准确预测废水处理系统中反硝化中间产物（$NO_2^-$、$NO$ 和 $N_2O$）积累的问题。具体涉及：
-- 有毒中间产物（$NO_2^-$、$NO$）和温室气体（$N_2O$）的不良积累问题。
-- 现有数学模型在描述四个反硝化步骤（$NO_3^- \to NO_2^- \to NO \to N_2O \to N_2$）之间电子竞争方面的局限性。
-- 需要评估哪种建模概念——直接耦合（ASMN）或间接耦合（ASM-ICE）——能更好地代表电子传递和竞争的潜在生物学机制。
+本文试图解决准确预测和模拟废水处理系统中反硝化中间产物（$NO_2^-$、$NO$ 和 $N_2O$）积累的问题。具体目标包括：
+- 评估两种不同的反硝化数学建模概念的性能。
+- 确定哪种模型结构能更好地描述氮还原酶之间的电子竞争，这是导致中间产物（特别是 $N_2O$）积累的关键原因。
+- 克服现有模型在电子供应受限时无法准确预测中间产物的局限性。
 
 </TabItem >
 
@@ -70,10 +98,13 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Gemini 3.0 Pro:**
 
-本文通过利用实验数据评估和比较两个截然不同的数学建模概念来解决这个问题：
-- **模型 I (ASMN):** 氮活性污泥模型，采用“直接耦合方法”，其中碳氧化和氮还原在单个反应中直接耦合。它假设碳氧化总是能满足电子需求。
-- **模型 II (ASM-ICE):** 电子间接耦合活性污泥模型，采用“间接耦合方法”。它引入电子载体（$M_{ox}$ 和 $M_{red}$）来连接碳氧化和氮还原，允许在电子供应速率受限时模拟电子竞争。
-- 作者使用文献中涵盖纯培养物和混合反硝化培养物的四个不同实验数据集对这些模型进行了校准和验证。
+本文通过对比研究两种截然不同的反硝化模型来解决这个问题：
+- **模型 I (ASMN):** 氮活性污泥模型，代表“直接耦合”方法，即碳氧化与氮还原直接耦合。
+- **模型 II (ASM-ICE):** 电子间接耦合活性污泥模型，代表“间接耦合”方法，其中电子载体（$M_{ox}$/$M_{red}$）连接碳氧化与氮还原。
+
+作者通过以下方式评估了这些模型：
+- 利用文献中的四个不同的实验数据集（涵盖纯培养物和不同底物的混合污泥）对模型进行校准和模拟。
+- 分析每个模型在各种条件下，特别是在涉及电子竞争的条件下，重现硝酸盐、亚硝酸盐和 $N_2O$ 动态变化的能力。
 
 </TabItem >
 
@@ -83,11 +114,11 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Gemini 3.0 Pro:**
 
-本文利用了四个现有的实验数据集（案例 1-4）来测试模型。本文没有进行新的湿实验室实验，但建模工作基于以下实验数据：
-- **案例 1:** 使用葡萄糖对 *Paracoccus denitrificans* 纯培养物进行批次测试。研究了电子流向 $NO_3^-$、$NO_2^-$ 和 $N_2O$ 的分支，包括使用抗霉素阻断电子流 (Kucera et al., 1983)。
-- **案例 2:** 使用乙酸盐喂养的全规模活性污泥进行批次实验。研究了硝酸盐/亚硝酸盐还原和 $N_2$ 气体产生 (McMurray, 2008)。
-- **案例 3:** 使用甲醇喂养的富集反硝化培养物进行批次测试。分别和同时测试了 $NO_3^-$、$NO_2^-$ 和 $N_2O$ 的还原，以观察电子竞争 (Pan et al., 2013a)。
-- **案例 4:** 使用乙酸盐喂养的富集反硝化培养物进行序批式反应器 (SBR) 实验。研究了 COD/N 比对亚硝酸盐积累的影响 (Oh and Silverstein, 1999)。
+本文没有进行新的湿法实验，而是利用了文献中现有的四个实验数据集进行模型评估和校准：
+- **案例 1:** 使用葡萄糖作为底物的 *Paracoccus denitrificans* 纯培养物的批次测试，研究电子流向 $NO_3^-$、$NO_2^-$ 和 $N_2O$ 的分支情况 (数据来自 Kucera et al., 1983)。
+- **案例 2:** 使用乙酸作为底物的全规模活性污泥的批次测试，研究硝酸盐/亚硝酸盐还原和 $N_2$ 气体的产生 (数据来自 McMurray, 2008)。
+- **案例 3:** 使用甲醇作为底物的富集反硝化培养物的批次测试，研究添加不同氮氧化物（$NO_3^-$、$NO_2^-$、$N_2O$）时的电子竞争 (数据来自 Pan et al., 2013a)。
+- **案例 4:** 使用乙酸作为底物的富集反硝化培养物的序批式反应器 (SBR) 测试，研究 COD/N 比对亚硝酸盐积累的影响 (数据来自 Oh and Silverstein, 1999)。
 
 </TabItem >
 
@@ -97,11 +128,12 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Gemini 3.0 Pro:**
 
-本文确定了未来研究的几个领域：
-- **动力学信息:** 需要更多关于碳氧化和氮还原过程动力学的信息，特别是最大碳源氧化速率 ($r_{COD,max}$) 和电子亲和常数 ($K_{Mred}$)。
-- **一氧化氮动力学:** 需要获取更多关于一氧化氮 ($NO$) 还原反应动力学的信息，这很难测量但至关重要。
-- **模型简化:** 基于新的参数模式改进或简化 ASM-ICE 模型结构，以促进实际应用。
-- **参数共识:** 在不同系统中建立一致的参数值模式，以便作为 ASM-ICE 的默认值实施。
+本文指出了几个需要进一步研究的领域：
+- **实验验证:** 需要更多的实验数据来证实不同反硝化系统中电子竞争的共识机制。
+- **参数确定:** 为 ASM-ICE 模型的实际应用划定一致的参数值范围或模式。
+- **NO 还原动力学:** 获取更多关于一氧化氮 (NO) 还原反应动力学的信息，这很难测量但至关重要。
+- **模型简化:** 基于新的参数模式，潜在地改进或简化 ASM-ICE 模型结构。
+- **实验设计:** 优化实验设计，以更好地捕捉碳氧化和氮还原过程的动力学。
 
 </TabItem >
 
@@ -111,11 +143,11 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Gemini 3.0 Pro:**
 
-- **模型比较:** 本研究比较了 ASMN（直接耦合）和 ASM-ICE（间接耦合）预测反硝化中间产物的能力。
-- **性能:** ASM-ICE 成功预测了所有四个实验案例中的氮氧化物积累。ASMN 在四个案例中有三个失败，仅在电子供体过量的案例 4 中成功。
-- **机制:** ASM-ICE 的优越性能归因于其使用电子载体（$M_{ox}/M_{red}$），这有效地模拟了当碳氧化成为限速步骤时反硝化还原酶之间的电子竞争。
-- **ASMN 的缺陷:** ASMN 存在结构性缺陷，因为它将碳氧化和氮还原归为单一步骤，隐含地假设电子供应永不设限，这与许多实际情况相矛盾。
-- **结论:** ASM-ICE 是预测和理解生物反硝化中中间产物积累（$NO_2^-$、$NO$、$N_2O$）的更好工具。
+- **概念对比:** 本研究对比了反硝化的“直接耦合” ASMN 模型和“间接耦合” ASM-ICE 模型。
+- **性能表现:** ASM-ICE 成功预测了所有四个实验案例中的中间产物积累，而 ASMN 仅在电子供体过量的一个案例 (案例 4) 中获得成功。
+- **机制分析:** ASM-ICE 的优越性能归因于其结构，它使用电子载体 ($M_{ox}$/$M_{red}$) 将碳氧化与氮还原解耦。这使得模型能够在电子供应速率受限时动态模拟电子竞争。
+- **ASMN 的局限:** ASMN 假设碳氧化总是满足所有反硝化步骤的电子需求，使其在描述由电子竞争驱动的中间产物积累场景时存在结构性缺陷。
+- **结论:** ASM-ICE 是预测生物反硝化中 $N_2O$ 和其他中间产物的更稳健的工具。
 
 </TabItem>
 
@@ -125,13 +157,14 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Gemini 3.0 Pro:**
 
-- **Hiatt and Grady (2008)**: 提出了代表“直接耦合”概念的氮活性污泥模型 (ASMN)。
-- **Pan et al. (2013b)**: 提出了电子间接耦合活性污泥模型 (ASM-ICE)。
-- **Kucera et al. (1983)**: 提供了案例 1 的实验数据（纯培养 *P. denitrificans*）。
-- **McMurray (2008)**: 提供了案例 2 的实验数据（全规模活性污泥）。
-- **Pan et al. (2013a)**: 提供了案例 3 的实验数据（甲醇富集培养物）并研究了电子竞争。
-- **Oh and Silverstein (1999)**: 提供了案例 4 的实验数据（乙酸盐富集培养物）。
-- **Ni et al. (2011)**: 讨论了 $N_2O$ 产生的建模及其环境影响。
+- Hiatt and Grady (2008) An updated process model for carbon oxidation, nitrification, and denitrification.
+- Pan et al. (2013b) Modeling electron competition among nitrogen oxides reduction and N2O accumulation in denitrification.
+- Kucera et al. (1983) The distribution of redox equivalents in the anaerobic respiratory chain of Paracoccus denitrificans.
+- McMurray (2008) Formation of Denitrification Intermediates and Their Impact on Process Performance.
+- Pan et al. (2013a) Electron competition among nitrogen oxides reduction during methanol-utilizing denitrification in wastewater treatment.
+- Oh and Silverstein (1999) Acetate limitation and nitrite accumulation during denitrification.
+- Zumft (1997) Cell biology and molecular basis of denitrification.
+- Richardson et al. (2009) Mitigating release of the potent greenhouse gas N2O from the nitrogen cycle – could enzymic regulation hold the key?
 
 </TabItem >
 

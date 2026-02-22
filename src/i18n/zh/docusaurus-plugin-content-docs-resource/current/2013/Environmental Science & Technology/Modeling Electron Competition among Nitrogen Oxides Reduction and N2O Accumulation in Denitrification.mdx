@@ -1,0 +1,166 @@
+---
+slug: /10.1021/es402348n
+title: Modeling Electron Competition among Nitrogen Oxides Reduction and N2O Accumulation in Denitrification
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [Modeling Electron Competition among Nitrogen Oxides Reduction and N2O Accumulation in Denitrification](https://doi.org/10.1021/es402348n)
+
+
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" />
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1021/es402348n](https://doi.org/10.1021/es402348n)
+
+    作者: Yuting Pan, Bing-Jie Ni, and Zhiguo Yuan
+  </div>
+</div>
+
+
+----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1021-es402348n/id/851/did/848):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1021-es402348n/id/851/did/848"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+
+
+
+这个 Public version 的主要修订内容包括：
+
+    {/* - `0.57` 替换为 `8/14`。 */}
+    {/* - `2.29` 替换为 `32/14`。 */}
+    {/* - `3.43` 替换为 `48/14`。 */}
+    {/* - `4.57` 替换为 `64/14`。 */}
+    {/* - `6.85` 替换为 `96/14`。 */}
+
+    {/* ThOD */}
+    {/* S_NO3 -64/14 */}
+    {/* S_NO2 -48/14 */}
+    {/* S_NO -40/14 */}
+    {/* S_N2O -32/14 */}
+    {/* S_N2 -24/14 */}
+    {/* S_NH2OH -16/14 */}
+
+    {/* S_S0 -0.5 */}
+    {/* S_SO4 -2.0 */}
+
+    {/* S_CH4 1 */}
+
+
+
+1. 为了保证`ThOD`和`N`的平衡，我们补充了一个组分`S_N2`（氮气），并且补充了它在矩阵中的计量学系数。
+
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="Abstract" >
+
+反硝化不同步骤之间的电子竞争已被证明存在，并在废水处理中$N_2O$的积累和排放中起重要作用。然而，目前的反硝化模型并未识别这种电子竞争，限制了它们预测反硝化过程中$N_2O$积累的能力。在这项工作中，开发了一种用于废水处理过程的新反硝化模型。与直接耦合这两类过程的现有模型相比，它通过分别模拟碳氧化和氮还原过程，描述了反硝化四个步骤之间的电子竞争。引入电子载体来连接碳氧化（向载体提供电子）和氮氧化物还原（从这些载体接收电子）。每个反硝化步骤竞争电子的相对能力通过使用对还原载体的不同亲和力常数来模拟。模型校准和验证结果表明，所开发的模型能够合理地描述甲醇利用反硝化培养物在各种碳和氮氧化物供应条件下的硝酸盐、亚硝酸盐和$N_2O$还原速率。提出的模型虽然有待进一步验证，但有望增强我们预测反硝化中$N_2O$积累的能力。
+
+</TabItem>
+
+<TabItem value="objective" label="Objective" >
+
+**Q：这篇论文试图解决什么问题？**
+
+**Gemini 3.0 Pro:**
+
+本文试图解决现有反硝化模型（如活性污泥模型 ASMs）的局限性，这些模型无法准确预测氧化亚氮（$N_2O$）的积累，特别是在电子受限的条件下。
+
+- **缺乏机制：** 现有模型直接耦合碳氧化和氮还原，忽略了四个还原步骤（$NO_3^- \to NO_2^- \to NO \to N_2O \to N_2$）之间对电子的竞争。
+- **预测失败：** 由于假设电子供应总是满足需求或按比例分配，这些模型无法重现实验观察到的现象，即当电子稀缺时，亚硝酸盐还原通常优先于 $N_2O$ 还原，从而导致 $N_2O$ 排放。
+
+</TabItem >
+
+<TabItem value="solution" label="Solution" >
+
+**Q：论文如何解决这个问题？**
+
+**Gemini 3.0 Pro:**
+
+本文通过开发一个新的数学模型来解决这个问题，该模型明确纳入了电子竞争：
+
+- **过程解耦：** 它将碳氧化过程与氮氧化物还原过程解耦。
+- **电子载体：** 引入了一个电子载体池（$M_{red}$ 代表还原态，$M_{ox}$ 代表氧化态）来连接这两个过程。碳氧化产生 $M_{red}$，然后被氮还原步骤消耗。
+- **动力学差异：** 通过为负责每个反硝化步骤的酶分配对还原电子载体的不同亲和力常数（$K_{Mred}$）来模拟竞争。这使得模型能够模拟当载体浓度较低时，具有较高亲和力（较低 $K_{Mred}$）的酶如何更快地获取电子。
+
+</TabItem >
+
+<TabItem value="experiment" label="Experiment" >
+
+**Q：论文做了哪些实验？**
+
+**Gemini 3.0 Pro:**
+
+本文使用了作者（Pan et al., 2013）之前报告的大量实验数据，使用的是实验室规模序批式反应器（SBR）中的甲醇利用反硝化培养物。实验包括：
+
+- **总共35次测试：** 在厌氧条件下进行。
+- **可变电子供应：** 甲醇通过脉冲投加（非限制性）或以四种不同的负荷率（6.3, 3.9, 1.1, 0.7 mmol/(gVSS $\times$ h)）连续投加，以产生不同程度的电子限制。
+- **可变电子受体：** 氮氧化物以各种方案添加：单独添加（$NO_3^-$，$NO_2^-$，或 $N_2O$）或同时添加两种或三种。
+- **模型评估：** 14次测试用于模型校准（参数估计），其余21次测试用于模型验证。
+
+</TabItem >
+
+<TabItem value="exploration" label="Exploration" >
+
+**Q：有什么可以进一步探索的点？**
+
+**Gemini 3.0 Pro:**
+
+作者指出了未来研究和模型改进的几个领域：
+
+- **不同的碳源：** 当前模型是用甲醇验证的；需要用废水中常见的其他碳源进行测试。
+- **全规模应用：** 需要使用来自全规模污水处理厂的混合培养污泥进行验证，而不仅仅是富集的实验室培养物。
+- **整合：** 该模型应与硝化菌-$N_2O$模型整合，以提供预测污水处理系统整体 $N_2O$ 排放的综合工具。
+- **参数细化：** NO还原的参数（$r_{NO,max}$ 和 $K_{Mred,3}$）是基于没有NO积累的假设估算的；直接测量NO动力学将细化这些数值。
+
+</TabItem >
+
+<TabItem value="summary" label="Summary" >
+
+**Q： 总结一下论文的主要内容。**
+
+**Gemini 3.0 Pro:**
+
+- **新模型结构：** 开发了一种反硝化模型，将碳氧化和氮还原分离，通过电子载体池（$M_{red}/M_{ox}$）连接。
+- **电子竞争：** 该模型通过为每个还原步骤使用不同的亲和力常数（$K_{Mred}$），成功描述了电子竞争。
+- **主要发现：** 校准显示，亚硝酸盐还原酶对电子的亲和力（较低的 $K_{Mred}$）显著高于硝酸盐和 $N_2O$ 还原酶。这解释了为什么当电子供应受限时 $N_2O$ 会积累（亚硝酸盐还原在竞争中获胜）。
+- **验证：** 该模型在广泛的碳负荷率和氮氧化物组合下准确预测了 $NO_3^-$、$NO_2^-$ 和 $N_2O$ 的变化曲线，显著优于标准的耦合模型（如 ASMN）。
+
+</TabItem>
+
+<TabItem value="related" label="Related" >
+
+**Q： 有哪些相关研究？**
+
+**Gemini 3.0 Pro:**
+
+- **Pan et al. (2013)**: *Electron competition among nitrogen oxides reduction during methanol utilizing denitrification in wastewater treatment* (实验数据来源)。
+- **Hiatt and Grady (2008)**: *An updated process model for carbon oxidation, nitrification, and denitrification* (ASMN模型参考文献)。
+- **Ni et al. (2011)**: *Modeling nitrous oxide production during biological nitrogen removal via nitrification and denitrification: Extensions to the general ASM models* (之前的$N_2O$建模尝试)。
+- **Henze et al. (2000)**: *Activated sludge models ASM1, ASM2, ASM2d, and ASM3* (标准ASM模型)。
+
+</TabItem >
+
+</Tabs>
+

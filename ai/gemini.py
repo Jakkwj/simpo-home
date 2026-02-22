@@ -462,7 +462,6 @@ def main(
 
         try:
             add_db_paper_main(result)
-            # 移动 pdf/xlsx 文件到 unapproved 文件夹下等待人工 approve
         except Exception:
             exc = format_exc()
             if 'unique constraint "sourcepaper_DOI_key"' not in exc:
@@ -474,7 +473,9 @@ def main(
 
         logger.info(create_BioModel_result)
 
-        move(f"pdf/{pdf_file}", f"pdf/unapproved/{pdf_file}")
+        move(
+            f"pdf/{pdf_file}", f"pdf/unapproved/{pdf_file}"
+        )  # 移动 pdf/xlsx 文件到 unapproved 文件夹下等待人工 approve
         if path.exists(f"{result_title_}.xlsx"):
             move(f"{result_title_}.xlsx", f"pdf/unapproved/{result_title_}.xlsx")
 
@@ -490,7 +491,7 @@ if __name__ == "__main__":
         # "Competitive dynamics of anaerobes during long-term biological sulfate reduction process in a UASB reactor.pdf"
         # "Development of a kinetic model to evaluate thiosulfate-driven denitriﬁcation and anammox (TDDA) process.pdf"
         # "Development of an Extended ASM3 Model for Predicting the Nitrous Oxide Emissions in a Full-Scale Wastewater Treatment Plant.pdf"
-        # "Evaluating two concepts for the modelling of intermediates accumulation during biological denitrification in wastewater treatment.pdf"
+        "Evaluating two concepts for the modelling of intermediates accumulation during biological denitrification in wastewater treatment.pdf"
         # "Expanding ASM models towards integrated processes for short-cut nitrogen removal and bioplastic recovery.pdf"
         # "Mathematical modeling of simultaneous carbon-nitrogen-sulfur removal from industrial wastewater.pdf"
         # "Modeling Nitrous Oxide Production during Biological Nitrogen Removal via Nitrification and Denitrification: Extensions to the General ASM Models.pdf"
@@ -500,7 +501,8 @@ if __name__ == "__main__":
         # "Quantifying sensitivity and uncertainty analysis of a new mathematical model for the evaluation of greenhouse gas emissions from.pdf"
         # "Simulation of the performance of aerobic granular sludge SBR using modiﬁed ASM3 model.pdf"
         # "Simultaneous removal of sulﬁde, nitrate and acetate under denitrifying sulﬁde removal condition: Modeling and experimental validation.pdf"
-        "Sulfate-reduction, sulﬁde-oxidation and elemental sulfur bioreduction process: Modeling and experimental validation.pdf"
+        # "Sulfate-reduction, sulﬁde-oxidation and elemental sulfur bioreduction process: Modeling and experimental validation.pdf"
+        # "Modeling Electron Competition among Nitrogen Oxides Reduction and N2O Accumulation in Denitriﬁcation.pdf"
     )
 
     # pdf_file_list: list = [pdf for pdf in listdir("pdf") if pdf.endswith(".pdf")]
