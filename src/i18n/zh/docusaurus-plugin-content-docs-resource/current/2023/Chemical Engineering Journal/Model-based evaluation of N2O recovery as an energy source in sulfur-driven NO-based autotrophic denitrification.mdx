@@ -62,7 +62,7 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 <Tabs>
 
-<TabItem value="abstract" label="Abstract" >
+<TabItem value="abstract" label="摘要" >
 
 
 
@@ -72,9 +72,47 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 </TabItem>
 
-<TabItem value="objective" label="Objective" >
+<TabItem value="objective" label="目标" >
 
 **Q：这篇论文试图解决什么问题？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+
+本文试图解决以下几个关键问题：
+
+- **NO烟气处理与资源化回收**：传统化学方法（SCR/SNCR）处理烟气中NO存在成本高、催化剂失活和二次污染等问题。生物处理是一种有前景的替代方案，但如何从硫驱动NO基自养反硝化（SNAD）系统中高效回收$N_2O$作为能源（而非简单地将NO转化为$N_2$）仍未得到解决。
+
+- **缺乏底物动力学机理理解**：目前尚无数学模型能够描述$S^0$或$S_2O_3^{2-}$驱动的NO基自养反硝化（$SNAD_{S0}$和$SNAD_{S2O3}$）系统中详细的NO还原动力学（$NO \rightarrow N_2O \rightarrow N_2$），尤其是当NO以Fe(II)EDTA-NO亚硝酰络合物形式存在时的相关动力学参数。
+
+- **$N_2O$回收效率低**：以往研究仅实现了约40.9%的Fe(II)EDTA-NO向气态$N_2O$的生物转化，大量$N_2O$仍溶解在液相中。如何进一步收集残余溶解态$N_2O$用于实际能源回收尚未得到系统研究。
+
+- **缺乏操作优化指导**：尚未对关键操作参数（S/N质量比和气液体积比）对SNAD系统中$N_2O$积累和回收效率的影响进行系统评估。
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+
+
+
+- 传统的NO去除方法（SCR、SNCR）成本高且会产生二次污染物。
+- NO的生物还原具有前景，但受到NO在水中溶解度低的限制。
+- 虽然化学吸收-生物还原（使用Fe(II)EDTA）解决了溶解度问题，但N2O通常被视为需要尽量减少的温室气体，而不是有价值的能源。
+- 本文旨在转变这一观念，将N2O作为能源进行回收。
+- 具体而言，它解决了硫驱动（$S^0$和$S_2O_3^{2-}$）NO自养反硝化（SNAD）系统中底物动力学缺乏了解的问题。
+- 它还解决了如何从液相中残留的N2O中实现高水平的气相N2O积累以进行实际收集的瓶颈问题。
+
+
+------
+
 
 **Gemini 3.0 Pro:**
 
@@ -86,9 +124,52 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 </TabItem >
 
-<TabItem value="solution" label="Solution" >
+<TabItem value="solution" label="解决" >
 
 **Q：论文如何解决这个问题？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+
+本文通过以下方法解决上述问题：
+
+- **数学模型开发**：在AQUASIM软件中开发了一个两步NO基反硝化模型，模型考虑了：
+  - 三种氮组分：$S_{NO}$（Fe(II)EDTA-NO）、$S_{N2O}$（$N_2O$）、$S_{N2}$（$N_2$）
+  - 三种硫组分：$S_{S0}$（$S^0$）、$S_{S2O3}$（$S_2O_3^{2-}$）、$S_{SO4}$（$SO_4^{2-}$）
+  - 三类微生物：$S^0$氧化菌（$X_{S0}$）、$S_2O_3^{2-}$氧化菌（$X_{S2O3}$）和异养反硝化菌（$X_{HB}$）
+  - 所有微生物的Monod型生长动力学和一阶衰减
+  - NO对NOR（一氧化氮还原酶）和$N_2OR$（氧化亚氮还原酶）活性的抑制函数
+  - $N_2O$和$N_2$在液相和气相之间的气液传质方程
+
+- **模型校准与验证**：采用逐步校准策略，对SNAD过程特有的四个关键动力学参数进行校准：$\mu_{S0,1}$（$X_{S0}$对NO还原的最大反应速率，校准值为$0.0109 \pm 0.0005$ /h）、$\mu_{S0,2}$（$X_{S0}$对$N_2O$还原的最大反应速率，校准值为$0.0023 \pm 0.0002$ /h）、$\mu_{S2O3,1}$（校准值为$0.0136 \pm 0.0008$ /h）和$\mu_{S2O3,2}$（校准值为$0.0014 \pm 0.0001$ /h）。使用8组独立批次实验数据进行校准和验证。
+
+- **基于模拟的操作优化**：利用验证后的模型设计了两个模拟情景：
+  - **情景1**：通过改变初始$S^0$或$S_2O_3^{2-}$浓度（10至200 mg-S/L），评估S/N质量比对$N_2O$转化效率及达到最优转化效率所需时间的影响。
+  - **情景2**：基于情景1得到的最优S/N比，评估气液体积比（0.25至2.0）对$N_2O$回收的影响，利用亨利定律将液相中的$N_2O$驱动至气相以便收集。
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+
+
+
+- 开发了一个两步NO反硝化数学模型（在AQUASIM中实现），以描述硫氧化细菌（SOB）将NO依次还原为N2O然后再还原为N2的过程。
+- 使用来自实验室规模$SNAD_{S^0}$和$SNAD_{S_2O_3}$系统在不同初始Fe(II)EDTA-NO和硫浓度下的八组独立批次实验数据对模型进行了校准和验证。
+- 使用验证后的模型进行模拟，探索最佳操作条件，特别关注S/N质量比和气液比，以最大化N2O回收效率并最小化操作时间。
+
+
+
+
+------
+
 
 **Gemini 3.0 Pro:**
 
@@ -98,9 +179,55 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 </TabItem >
 
-<TabItem value="experiment" label="Experiment" >
+<TabItem value="experiment" label="实验" >
 
 **Q：论文做了哪些实验？**
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+
+本文本身未开展新实验，而是使用已发表的批次实验数据进行模型校准和验证，具体实验细节如下：
+
+**$SNAD_{S0}$过程实验（来自Wu et al. [23]）：**
+- 污泥来源：从稳态$S^0$驱动自养反硝化序批式反应器（SBR）中提取，$NO_3^-$去除率>90%
+- 反应器设置：密封血清瓶，液相体积500 mL，顶空气相体积155 mL
+- 操作条件：气浴摇床170 rpm，温度35 ± 1°C，pH 7.20 ± 0.05，厌氧条件（充氩气>30 min）
+- 实验设计：固定初始$S^0$浓度为500 mg-S/L；初始Fe(II)EDTA-NO浓度分别为**70、140、210和280 mg-N/L**
+- 测量指标：定期采集液相和气相样品，测定Fe(II)EDTA-NO (l)、$N_2O$ (g)和$N_2$ (g)浓度，直至$N_2O$耗尽
+- 模型用途：70和210 mg-N/L数据集用于**校准**；140和280 mg-N/L数据集用于**验证**
+
+**$SNAD_{S2O3}$过程实验（来自Wu et al. [24]）：**
+- 污泥来源：$S_2O_3^{2-}$驱动自养反硝化污泥，来自$NO_3^-$去除率约90%的SBR
+- 反应器设置：与上述相同的密封血清瓶和操作条件
+- 实验设计：固定S/N质量比为5；初始Fe(II)EDTA-NO浓度分别为**70、140、210和280 mg-N/L**（对应$Na_2S_2O_3$投加量分别为350、700、1050和1400 mg-S/L）
+- 测量指标：同上
+- 模型用途：70和210 mg-N/L数据集（$S_2O_3^{2-}$分别为350和1050 mg-S/L）用于**校准**；140和280 mg-N/L数据集用于**验证**
+
+**共使用8组独立批次实验数据集**对模型进行校准和验证。
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+
+
+
+- 本文主要侧重于数学建模和模拟，利用了先前研究中的批次实验数据进行校准和验证。
+- $SNAD_{S^0}$的批次实验：使用来自稳态$S^0$驱动自养反硝化SBR的污泥，在固定的初始$S^0$浓度（500 mg-S/L）下测试了不同的初始Fe(II)EDTA-NO浓度（70、140、210、280 mg-N/L）。
+- $SNAD_{S_2O_3}$的批次实验：使用$S_2O_3^{2-}$驱动的自养反硝化污泥，在固定的S/N质量比为5的情况下测试了不同的初始Fe(II)EDTA-NO浓度。
+- 定期监测底物浓度，主要是Fe(II)EDTA-NO (l)、N2O (g)和N2 (g)。
+- 进行了模拟实验（情景1和2），以评估S/N质量比（将初始$S^0$或$S_2O_3^{2-}$从10更改为200 mg-S/L）和气液比（从0.25到2.0）对N2O回收的影响。
+
+
+
+
+------
 
 **Gemini 3.0 Pro:**
 
@@ -114,9 +241,57 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 </TabItem >
 
-<TabItem value="exploration" label="Exploration" >
+<TabItem value="exploration" label="探索" >
 
 **Q：有什么可以进一步探索的点？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+
+根据论文的讨论和结论，以下几点值得进一步研究：
+
+- **环境因素对最优操作时间的影响**：论文承认最优操作时间受工作温度和离子强度等环境因素的影响，这些影响尚未被量化，需要专项研究。
+
+- **提高$S^0$生物可利用性**：克服$S^0$驱动系统低动力学速率的几种策略值得深入研究：
+  - 使用比表面积更大的更小粒径$S^0$粉末
+  - 使用硫化物生物氧化产生的生物源$S^0$颗粒（具有更高的亲水性和生物可利用性）
+  - 通过硫歧化细菌原位将$S^0$转化为多硫化物
+
+- **硫化物驱动SNAD系统的$N_2O$回收**：论文指出，以硫化物为电子供体可能因硫化物和NO对$N_2OR$活性的联合抑制效应而具有更大的$N_2O$回收潜力，需要详细研究验证其可行性。
+
+- **实用$N_2O$收集策略**：论文提出定期排放顶空积累的$N_2O$或创造（微）真空气相作为可行方案，以在不过度增加建设成本的情况下提高$N_2O$收集效率，这些策略需要实验验证。
+
+- **残余溶解态$N_2O$的环境风险评估**：即使采用优化策略，仍有约15.1%–19.8%的$N_2O$溶解在液相中，可能最终排放到大气中，需要进行全面的环境风险评估。
+
+- **连续流反应器建模与放大**：当前模型仅用批次实验数据进行校准/验证，需要进一步扩展到连续流或SBR构型以及中试/全规模应用。
+
+- **经济和生命周期分析**：需要对$SNAD_{S0}$和$SNAD_{S2O3}$过程进行更全面的技术经济分析和生命周期评估，以支持实际烟气处理和能源回收应用。
+
+- **与热电联产（CHP）系统的集成**：论文提到可持续产生的$N_2O$可作为CHP系统中的可再生能源，但需要详细的工程可行性研究。
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+
+
+
+- 环境因素（如工作温度和离子强度）对N2O回收最佳操作时间的影响。
+- 鉴于硫化物和NO对N2OR活性的联合抑制作用，需要进行详细研究以验证使用硫化物作为电子供体的可行性。
+- 在实际的大规模应用中，进一步提高$S^0$生物利用度的方法（例如，使用更小的颗粒、生物生成的$S^0$或原位转化为多硫化物）。
+- 对全尺寸系统中提出的气相膨胀和定期排气策略进行全面的生命周期评估和经济分析。
+
+
+
+------
+
 
 **Gemini 3.0 Pro:**
 
@@ -128,9 +303,53 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 </TabItem >
 
-<TabItem value="summary" label="Summary" >
+<TabItem value="summary" label="总结" >
 
 **Q：总结一下论文的主要内容。**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+
+本文提出了一种基于模型的评估方法，用于研究硫驱动NO基自养反硝化系统中$N_2O$作为能源的回收潜力。主要内容总结如下：
+
+- **对$N_2O$的全新认识**：本文将$N_2O$从需要最小化的强效温室气体重新定位为有价值的能源（通过热分解释放82 kJ/mol，并可作为与$CH_4$共燃的氧化剂），可从含NO烟气中通过生物过程回收。
+
+- **数学模型开发**：在AQUASIM中开发了两步NO基反硝化模型，包含$S^0$氧化菌（$X_{S0}$）、$S_2O_3^{2-}$氧化菌（$X_{S2O3}$）和异养反硝化菌（$X_{HB}$）的Monod型动力学，以及NO对NOR和$N_2OR$活性的抑制函数和$N_2O$/$N_2$的气液传质方程。
+
+- **成功的校准与验证**：四个关键动力学参数被校准：$\mu_{S0,1} = 0.0109$ /h，$\mu_{S0,2} = 0.0023$ /h，$\mu_{S2O3,1} = 0.0136$ /h，$\mu_{S2O3,2} = 0.0014$ /h。模型经8组独立批次数据集验证，模拟值与实测氮组分动态变化吻合良好。
+
+- **$N_2O$积累的机理解析**：$\mu_{S0,1}$与$\mu_{S0,2}$（以及$\mu_{S2O3,1}$与$\mu_{S2O3,2}$）之间的显著差异解释了SNAD系统中$N_2O$优先积累而非$N_2$的现象。SNAD过程气相产物中$N_2O$占比>90.7%，远高于异养反硝化（8.6%–74.7%）。
+
+- **S/N质量比的影响**：模拟结果表明，当S/N质量比接近1.0（对应约130 mg-S/L的$S^0$或$S_2O_3^{2-}$）时，$SNAD_{S0}$和$SNAD_{S2O3}$系统均能在较短操作时间内（分别为3.5 h和3.1 h）实现较高的$N_2O$转化效率（分别约为39.4%和38.5%）。
+
+- **气液体积比的影响**：将气液体积比从0.25增大至2.0，$N_2O$回收效率显著提升：$SNAD_{S0}$从约35.6%提升至80.2%，$SNAD_{S2O3}$从约32.0%提升至84.9%，这是通过将液相中溶解的$N_2O$驱动至气相实现的。
+
+- **经济性比较**：$SNAD_{S0}$过程（成本约0.086 \$/kg-N）比 $SNAD_{S2O3}$（成本约0.144 \$/kg-N）经济性更优，是处理含NO烟气并实现资源化利用的更具实用价值的技术。
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+
+
+
+- 成功开发、校准并验证了一个数学模型，用于预测$SNAD_{S^0}$和$SNAD_{S_2O_3}$过程中的N2O产生和回收。
+- 动力学分析表明，由于电子竞争和酶亲和力，在这些系统中NO的还原优先于N2O的还原，从而促进了N2O的积累。
+- 模拟结果表明，接近1.0的最佳S/N质量比为高N2O转化率提供了充足的电子供应，同时最大限度地减少了N2O向N2的还原并缩短了操作时间。
+- 增加气液比通过促进N2O从液相到气相的传质，显著提高了N2O回收效率（高达80.2%-84.9%）。
+- 与$SNAD_{S_2O_3}$工艺相比，$SNAD_{S^0}$工艺被强调为一种在含NO烟气处理和N2O资源回收方面更具经济可行性的技术。
+
+
+
+------
+
 
 **Gemini 3.0 Pro:**
 
@@ -142,9 +361,98 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 </TabItem>
 
-<TabItem value="related" label="Related" >
+<TabItem value="related" label="相关" >
 
 **Q：有哪些相关研究？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+
+以下是论文中引用的相关研究：
+
+- Wu et al. (2021) — *Sulfur-driven autotrophic denitrification of nitric oxide for efficient nitrous oxide recovery*，Biotechnol. Bioeng. 119, 257–267。
+  - 提供了用于模型校准和验证的$SNAD_{S0}$批次实验数据；以$S^0$为电子供体实现了高达40.9%的Fe(II)EDTA-NO向气态$N_2O$的生物转化。
+
+- Wu et al. (2022) — *Autotrophic Denitrification of NO for Effectively Recovering $N_2O$ through Using Thiosulfate as Sole Electron Donor*，Bioresour. Technol. 347, 126681。
+  - 提供了$SNAD_{S2O3}$批次实验数据；以$S_2O_3^{2-}$为电子供体实现了高达39.0%的生物转化。
+
+- Liu et al. (2016) — *Evaluation of Nitrous Oxide Emission from Sulfide- and Sulfur-Based Autotrophic Denitrification Processes*，Environ. Sci. Technol. 50, 9407–9415。
+  - 提供了硫基自养反硝化过程中$N_2O$产生/还原的动力学参数；模型结构参考了SAD建模方法。
+
+- Huo et al. (2022) — *Modeling of sulfur-driven autotrophic denitrification coupled with Anammox process*，Bioresour. Technol. 349, 126887。
+  - 同一研究组关于SAD耦合厌氧氨氧化过程建模的密切相关研究；提供了逐步校准策略。
+
+- Decru et al. (2021) — *Model-based analysis of sulfur-based denitrification in a moving bed biofilm reactor*，Environ. Technol. 1–8。
+  - 提供了模型中$S^0$和$S_2O_3^{2-}$氧化菌的化学计量和动力学参数（产率系数、亲和常数）。
+
+- Hiatt et al. (2008) — *An Updated Process Model for Carbon Oxidation, Nitrification, and Denitrification*，Water Environ. Res. 80, 2145–2156。
+  - 提供了NOR和$N_2OR$的NO抑制函数框架（活性污泥氮模型）；异养反硝化菌的动力学参数来源于此研究。
+
+- Wang et al. (2021) — *Biological Reduction of Nitric Oxide for Efficient Recovery of Nitrous Oxide as an Energy Source*，Environ. Sci. Technol. 55, 1992–2005。
+  - 评估了NO基异养反硝化过程中的$N_2O$积累；提供了$N_2O$转化效率（ < 30.8%）的对比数据。
+
+- Yu et al. (2019) — *Energy recovery in the form of $N_2O$ by denitrifying bacteria*，Chem. Eng. J. 371, 500–506。
+  - 展示了NO基异养反硝化过程中的$N_2O$积累；提供了对比参考数据。
+
+- Zhang et al. (2019) — *Engineering feasibility, economic viability and environmental sustainability of energy recovery from nitrous oxide in biological wastewater treatment plant*，Bioresour. Technol. 282, 514–519。
+  - 评估了污水处理中$N_2O$能源回收的可行性；为$N_2O$作为可再生能源提供了背景。
+
+- Scherson et al. (2013) — *Nitrogen removal with energy recovery through $N_2O$ decomposition*，Energy & Environmental Science 6, 241–248。
+  - 展示了$N_2O$作为燃料添加剂用于能源回收；提供了$N_2O$能源应用的背景。
+
+- Oberoi et al. (2021) — *Electron distribution in sulfur-driven autotrophic denitrification under different electron donor and acceptor feeding schemes*，Chem. Eng. J. 404, 126486。
+  - 讨论了有限硫底物条件下$S^0$和$S_2O_3^{2-}$之间电子供给速率的差异。
+
+- Liu et al. (2017) — *Optimizing sulfur-driven mixotrophic denitrification process: System performance and nitrous oxide emission*，Chem. Eng. Sci. 172, 414–422。
+  - 提供了硫驱动混合营养反硝化的动力学参数和建模方法。
+
+- Lu et al. (2018) — *Model-Based Evaluation of $N_2O$ Production Pathways in the Anammox-Enriched Granular Sludge Cultivated in a Sequencing Batch Reactor*，Environ. Sci. Technol. 52, 2800–2809。
+  - 提供了建模研究中基于微生物群落分析计算初始生物量组成的方法。
+
+- Chen et al. (2019) — *Nitrous oxide production in autotrophic nitrogen removal granular sludge: A modeling study*，Biotechnol. Bioeng. 116, 1280–1291。
+  - 提供了自养脱氮系统中$N_2O$产生的建模方法。
+
+- Schulthess et al. (1996) — *Release of nitrous oxide ($N_2O$) from denitrifying activated sludge: Verification and application of a mathematical model*，Water Res. 30, 521–530。
+  - 提供了模型中$N_2O$和$N_2$气液传质方程。
+
+- Zhang et al. (2021) — *Elemental sulfur as electron donor and/or acceptor: Mechanisms, applications and perspectives for biological water and wastewater treatment*，Water Res. 202, 117373。
+  - 提供了单质硫在生物水处理中的应用背景及生物源$S^0$特性。
+
+- Kampschreur et al. (2009) — *Nitrous oxide emission during wastewater treatment*，Water Res. 43, 4093–4103。
+  - 提供了污水处理中$N_2O$作为温室气体的背景。
+
+- Pan et al. (2013) — *Effect of $H_2S$ on $N_2O$ Reduction and Accumulation during Denitrification by Methanol Utilizing Denitrifiers*，Environ. Sci. Technol. 47, 8408–8415。
+  - 表明硫化氢抑制$N_2O$还原，与硫化物驱动SNAD系统$N_2O$回收的讨论相关。
+
+- Lan et al. (2019) — *NO and $N_2O$ accumulation during nitrite-based sulfide-oxidizing autotrophic denitrification*，Bioresource Technology Reports 7, 100190。
+  - 通过脉冲投加$NO_2^-$和硫化物实现了>50%的$NO_2^-$向$N_2O$转化效率，与硫化物驱动系统的讨论相关。
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+
+
+
+- Wu et al. (2021) Sulfur-driven autotrophic denitrification of nitric oxide for efficient nitrous oxide recovery.
+- Wu et al. (2022) Autotrophic Denitrification of NO for Effectively Recovering N2O through Using Thiosulfate as Sole Electron Donor.
+- Wang et al. (2021) Biological Reduction of Nitric Oxide for Efficient Recovery of Nitrous Oxide as an Energy Source.
+- Liu et al. (2016) Evaluation of Nitrous Oxide Emission from Sulfide- and Sulfur-Based Autotrophic Denitrification Processes.
+- Decru et al. (2021) Model-based analysis of sulfur-based denitrification in a moving bed biofilm reactor.
+- Hiatt et al. (2008) An Updated Process Model for Carbon Oxidation, Nitrification, and Denitrification.
+
+
+
+
+------
+
 
 **Gemini 3.0 Pro:**
 

@@ -1,0 +1,381 @@
+---
+slug: /10.2175/106143008X304776
+title: An Updated Process Model for Carbon Oxidation, Nitrification, and Denitrification
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [An Updated Process Model for Carbon Oxidation, Nitrification, and Denitrification](https://doi.org/10.2175/106143008X304776)
+
+
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" />
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.2175/106143008X304776](https://doi.org/10.2175/106143008X304776)
+
+    作者: William C. Hiatt, C. P. Leslie Grady, Jr.
+  </div>
+</div>
+
+
+{/* ----
+
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.2175-106143008X304776/id/xxxxxx/did/yyyyyy):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.2175-106143008X304776/id/xxxxxx/did/yyyyyy"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="摘要" >
+
+现有的综合活性污泥模型，ASM#1 (Grady et al., 1986) 及其后续模型 ASM#3 (Gujer et al., 1999)，在氨氧化抑制、亚硝酸盐积累或一氧化氮和一氧化二氮排放方面，未能充分描述硝化和反硝化过程。本文提出了一种新的综合活性污泥工艺模型——氮活性污泥模型 (ASMN)。ASMN 结合了两种硝化种群——氨氧化细菌和亚硝酸盐氧化细菌——分别使用游离氨和游离亚硝酸作为它们的真实底物。ASMN 结合了四步反硝化（硝酸盐依次通过亚硝酸盐、一氧化氮和一氧化二氮还原为氮气），并使用单独的、特定于反应的参数。使用 ASMN 确定的三种活性污泥工艺配置在稳态和动态城市污水进水条件下的氨、硝酸盐、可溶性底物和生物量浓度的模拟结果表明，与 ASM#1 的结果具有可比性。
+
+</TabItem>
+
+<TabItem value="objective" label="目标" >
+
+**Q：这篇论文试图解决什么问题？**
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文旨在解决现有综合活性污泥模型（ASM#1和ASM#3）在描述生物脱氮过程中的若干关键不足：
+
+- **硝化模型不完善**：ASM#1将硝化过程简化为单步反应且不考虑抑制，无法适用于高氮浓度条件（如厌氧消化液、食品加工废水、集中动物饲养场废水、化肥/制药工业废水等）。
+- **缺乏双菌群硝化模型**：ASM#1未分别模拟氨氧化菌（AOB）和亚硝酸盐氧化菌（NOB），无法预测亚硝酸盐积累。
+- **未使用游离氨（FA）和游离亚硝酸（FNA）作为真实底物和抑制剂**：现有模型未将FA和FNA分别作为AOB和NOB的真实底物及相互抑制剂。
+- **反硝化过程过于简化**：ASM#1将反硝化建模为单步过程（$NO_3^- \rightarrow N_2$），忽略了中间产物$NO_2^-$、$NO$、$N_2O$，而这些中间产物具有重要的环境意义（$N_2O$是温室气体）。
+- **未考虑pH和温度效应**：现有模型未充分纳入pH和温度对硝化动力学的影响。
+- **缺少重要过程**：ASM#1缺乏同化性硝酸盐还原为氨（ANRA）、NOB混合营养生长、盐抑制以及优先污染物和AOB抑制剂的生物降解等过程。
+- **监管驱动因素**：对生物脱氮的日益重视（如切萨皮克湾和坦帕湾的富营养化问题）以及对氮氧化物温室气体排放的关注，要求建立更完善的模型。
+
+
+------
+
+
+**Gemini 3.1 Pro:**
+
+- 现有的综合活性污泥模型（如ASM#1和ASM#3）无法充分描述高氮条件下的硝化和反硝化过程。
+- 现有模型未能考虑氨氧化抑制、亚硝酸盐积累以及一氧化氮（$NO$）和一氧化二氮（$N_2O$）等温室气体的排放。
+- 现有模型缺乏处理极端pH值、温度变化以及工业、农业和厌氧消化液废水中特定抑制性化合物的能力。
+
+
+
+
+</TabItem >
+
+<TabItem value="solution" label="解决" >
+
+**Q：论文如何解决这个问题？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文提出了一个新的综合活性污泥过程模型——**氮活性污泥模型（ASMN）**，在ASM#1基础上进行了以下关键改进：
+
+### 1. 双菌群硝化模型
+- 将硝化过程分为两个独立菌群：**AOB**（氨氧化菌）和**NOB**（亚硝酸盐氧化菌）。
+- 以 **游离氨（FA）** 作为AOB的真实底物（R9），以 **游离亚硝酸（FNA）** 作为NOB的真实底物（R10）。
+- FA和FNA浓度通过Anthonisen et al. (1976)公式由pH和温度计算得出。
+- 采用Andrews (1968)方程描述FA对AOB的底物抑制和FNA对NOB的底物抑制。
+- 包含交叉抑制：FNA对AOB生长的非竞争性抑制，FA对NOB生长的非竞争性抑制。
+
+### 2. 四步反硝化模型
+- 将反硝化建模为四个连续的缺氧异养生长过程（R2–R5）：
+  - R2：$NO_3^- \rightarrow NO_2^-$
+  - R3：$NO_2^- \rightarrow NO$
+  - R4：$NO \rightarrow N_2O$
+  - R5：$N_2O \rightarrow N_2$
+- 每步均有独立的反应特异性动力学参数（$\eta_{g2}$至$\eta_{g5}$、$K_S$、$K_{NO}$、$K_{OH}$）。
+- 在R3（亚硝酸盐还原）和R5（$N_2O$还原）中引入NO的非竞争性抑制项。
+- 在R4（以NO为电子受体的生长）中采用Andrews (1968)方程描述底物抑制。
+
+### 3. pH和温度效应
+- AOB生长的pH效应通过FA浓度（pH和温度的函数）机理性地体现，无需经验校正因子。
+- 采用**Ratkowsky方程**描述三个菌群（异养菌、AOB、NOB）生长速率的温度效应，覆盖完整的生物动力学温度范围（包括高温下的速率下降）。
+- 衰减和裂解速率的温度效应采用Arrhenius方程描述。
+
+### 4. 新增过程
+- **NOB混合营养生长（R11）**：NOB可同时利用无机（亚硝酸盐）和有机底物生长，以混合营养生长因子$\beta_g$乘以自养NOB速率（R10）并加入$S_S$饱和项来建模。
+- **同化性硝酸盐还原为氨（ANRA，R6和R7）**：在氨氮不足时，异养菌将$NO_3^-$（经$NO_2^-$）还原为$NH_3$以满足细胞合成需求；受氨的抑制。
+- **AOB抑制剂的生物降解（R17）**和**优先污染物的生物降解（R18）**：采用有效生物量分数方法建模。
+- **盐抑制**：对所有菌群采用非竞争性抑制函数。
+- **碱度**：追踪硝化过程中的碱度消耗（归属于AOB）和反硝化过程中的碱度产生（归属于$NO_2^- \rightarrow NO$步骤）。
+
+### 5. 模型结构
+- ASMN矩阵包含**20个组分**、**18个生物过程（R1–R18）**和**54个参数**。
+- 完全兼容ASM#1的约定（以COD为基础、Monod动力学、化学计量矩阵格式）。
+- 在MATLAB中实现模拟。
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 开发了一个全新的综合生物工艺模型：氮活性污泥模型（ASMN）。
+- 将硝化过程分为两步，引入了两个独立的硝化菌群：氨氧化细菌（AOB）和亚硝酸盐氧化细菌（NOB）。
+- 使用游离氨（FA）和游离亚硝酸（FNA）作为AOB和NOB的真实底物及抑制剂，而不是总氨或亚硝酸盐。
+- 将反硝化过程建模为四个连续步骤（硝酸盐 -> 亚硝酸盐 -> 一氧化氮 -> 一氧化二氮 -> 氮气），以准确预测中间产物的积累和气体排放。
+- 引入了NOB的混合营养生长模式以及同化硝酸盐还原为氨（ANRA）的过程。
+- 增加了特定有机物（如AOB抑制剂和优先污染物）的生物降解过程。
+- 利用Ratkowsky方程等整合了pH和温度对微生物生长速率的影响。
+
+
+
+
+</TabItem >
+
+<TabItem value="experiment" label="实验" >
+
+**Q：论文做了哪些实验？**
+
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文主要是**模型开发与验证**类论文，未开展新的实验室实验。验证工作通过**计算机模拟**分两个阶段进行：
+
+### 第一阶段：计算平台验证
+- **目标**：验证MATLAB实现与已建立的SSSP（单污泥过程模拟）程序的结果一致性。
+- **方法**：在SSSP和MATLAB中分别用ASM#1对三种活性污泥工艺构型进行模拟。
+- **测试构型**：
+  - 单CSTR（连续搅拌槽反应器）加澄清池
+  - 两个串联CSTR加澄清池
+  - 改良Ludzak-Ettinger（MLE）工艺（两个串联CSTR加内回流和澄清池）
+- **模拟条件**：稳态和动态（24小时日变化）市政进水；pH固定为7.0，温度20°C；好氧区DO = 2.0 mg/L，缺氧区DO = 0.05 mg/L；SRT = 10天；总反应器体积 = 1000 m³；平均流量 = 1000 m³/d；可生物降解COD = 265 mg/L；TKN = 40 mg/L。
+- **结果**：SSSP和MATLAB结果基本一致，验证了计算方法的正确性。
+
+### 第二阶段：ASMN与ASM#1对比验证
+- **目标**：在相同条件下比较ASMN（MATLAB）与ASM#1（SSSP）的模拟结果。
+- **方法**：在MATLAB中运行ASMN时禁用硝化抑制和NO、$N_2O$的传质方程，以便与ASM#1直接比较。
+- **采用与第一阶段相同的三种构型和进水条件**。
+- **主要对比输出**：出水氨氮（$NH_3$-N）浓度、氨氮去除率（%）、可溶性底物（$S_S$）、总氮氧化物（$\Sigma NO_X$）和自养生物量浓度。
+- **文献数据拟合**：
+  - NOB速率方程（R10）通过Boon和Laudelout (1962)关于亚硝酸盐浓度对*Nitrobacter winogradskyi*比生长速率影响的实验数据进行验证（图2）。
+  - pH对NOB生长的影响也通过Boon和Laudelout (1962)数据进行验证（图3）。
+  - ASMN对AOB生长pH效应的处理方式与U.S. EPA (1975)简化模型和Siegrist & Gujer (1987)经验模型进行了比较（图1）。
+
+
+---------
+
+
+**Gemini 3.1 Pro:**
+
+- 本文主要侧重于数学建模和计算机模拟，而非传统的实验室物理实验。
+- 进行了两阶段的计算机模拟验证（使用MATLAB和SSSP软件进行对比）。
+- 模拟了三种不同的活性污泥工艺配置：带澄清池的单级CSTR、带澄清池的串联双CSTR，以及改进型Ludzak-Ettinger（MLE）工艺。
+- 在稳态和动态的城市污水进水条件下，将ASMN的模拟结果与经典的ASM#1模型结果进行了对比分析，以验证其基准准确性。
+
+
+</TabItem >
+
+<TabItem value="exploration" label="探索" >
+
+**Q：有什么可以进一步探索的点？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+根据论文内容、作者承认的局限性以及模型的现有不足，以下方向值得进一步研究：
+
+- **高氮条件下的校准与验证**：论文明确指出配套文章（Hiatt and Grady, 2008）将ASMN应用于高氮条件。需要用真实高氮废水（如厌氧消化液、工业废水）进行更多实验验证。
+
+- **一氧化氮抑制机制**：作者承认"在该领域需要更明确的研究"，关于选择NO作为反硝化过程主要代谢抑制剂的依据。$NO_2^-$与$NO$在各反硝化步骤中作为抑制剂的相对作用需要进一步实验阐明。
+
+- **NOB混合营养生长因子（$\beta_g$）**：默认值$\beta_g = 6.0$因文献数据有限而被选为"合理上限"。需要实验确定该参数以提高模型精度。
+
+- **ANRA速率因子（1.2）**：作者指出"在ANRA是关键过程的情况下，1.2这一数值应通过实验确认"，需要针对特定场地进行验证。
+
+- **AOB抑制剂和优先污染物的场地特异性动力学参数**：论文承认"为AOB抑制剂和优先污染物建立场地特异性动力学参数将是充分利用ASMN过程模型的重要任务"。
+
+- **优先污染物降解的有效生物量估算**：论文指出基于比例的有效生物量近似方法（Magbanua et al., 1998）"并非总是有效"，需要更严格的有效生物量分数估算方法。
+
+- **R17和R18的独立好氧/缺氧速率方程**：论文承认"对R17和R18更严格的描述应包括每个过程的一个好氧和四个缺氧速率方程"，但因缺乏具体信息而采用了简化的组合方法。
+
+- **与磷去除模型的整合**：ASMN专注于碳、氮及硝化/反硝化，未涉及生物除磷（EBPR）。扩展以包含磷动力学将提高其实用性。
+
+- **气态中间产物（NO、$N_2O$）的传质**：论文提到在验证过程中禁用了NO和$N_2O$的传质方程。需要对这些温室气体的气液传质进行完整实现和验证。
+
+- **厌氧氨氧化（Anammox）及其他新型脱氮途径**：ASMN未包含厌氧氨氧化或其他新兴脱氮工艺（如SHARON、CANON），而这些工艺对高氮废水处理越来越重要。
+
+- **动态参数估计与不确定性分析**：论文使用ASM#1和文献的默认参数值；对ASMN的54个参数进行系统灵敏度分析和不确定性量化将提高模型可靠性。
+
+
+-----
+
+
+**Gemini 3.1 Pro:**
+
+- 需要针对特定的AOB抑制剂和优先污染物建立特定位点的动力学参数，以充分发挥ASMN模型在工业应用中的作用。
+- 在反硝化建模中，关于一氧化氮作为主要代谢抑制剂的机制还需要更明确的微生物学和动力学实验研究。
+- 在同化硝酸盐还原为氨（ANRA）过程中，将氮利用率设置为1.2倍的假设需要通过进一步的实验来证实。
+
+
+
+
+
+</TabItem >
+
+<TabItem value="summary" label="总结" >
+
+**Q： 总结一下论文的主要内容。**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文提出了**氮活性污泥模型（ASMN）**，这是一个用于活性污泥系统碳氧化、硝化和反硝化的新综合生物过程模型。主要贡献和发现如下：
+
+### 模型开发
+- **三个微生物种群**：异养菌（$X_{B,H}$）、AOB（$X_{B,A1}$）和NOB（$X_{B,A2}$），而ASM#1只有两个。
+- **20个组分**和**18个生物过程（R1–R18）**，含**54个参数**，相比ASM#1的13个组分、8个过程和19个参数有显著扩展。
+- **两步硝化**：AOB生长（R9）以游离氨（FA）为真实底物，含FA和FNA抑制；NOB生长（R10）以FNA为真实底物，含FNA和FA抑制。两者均采用Andrews (1968)底物抑制方程。
+- **四步反硝化**（R2–R5）：$NO_3^- \rightarrow NO_2^- \rightarrow NO \rightarrow N_2O \rightarrow N_2$的顺序还原，每步有独立参数（$\eta_{g2}$–$\eta_{g5}$）和NO抑制项。
+- **pH效应**通过FA和FNA浓度（pH和温度的函数，基于Anthonisen et al., 1976方程）机理性地体现，证明与更复杂的经验模型同样有效。
+- **温度效应**采用Ratkowsky方程描述生长速率（覆盖完整生物动力学温度范围），采用Arrhenius方程描述衰减速率。
+- **ASM#1中没有的新过程**：NOB混合营养生长（R11）、ANRA（R6、R7）、AOB抑制剂生物降解（R17）、优先污染物生物降解（R18）、盐抑制和异养菌氨氮限制。
+
+### 模型验证
+- 通过将ASMN（MATLAB）模拟结果与ASM#1（SSSP）结果进行比较来验证，测试了三种工艺构型（单CSTR、两个串联CSTR、MLE工艺）在稳态和动态市政进水条件下的表现。
+- ASMN结果与ASM#1高度吻合（如单CSTR氨氮去除率：97.9% vs. 98.1%；两个CSTR：99.5% vs. 99.5%；MLE：92.8% vs. 92.5%）。
+- 主要差异在于ASMN中因NOB混合营养生长导致自养生物量更高（如好氧双CSTR系统中47.6 vs. 39.7 mg COD/L）。
+- NOB速率方程通过Boon和Laudelout (1962)关于*Nitrobacter winogradskyi*的实验数据进行了验证。
+
+### 重要意义
+- ASMN与ASM#1完全向后兼容，保留了大量基于ASM#1的已有研究成果。
+- ASMN专门设计用于处理ASM#1无法应对的**高氮浓度条件**（如硝化抑制、亚硝酸盐积累、$N_2O$排放）。
+- 该模型为模拟生物脱氮系统中温室气体（$N_2O$、$NO$）排放提供了平台。
+
+-----
+
+
+
+**Gemini 3.1 Pro:**
+
+- 提出了ASMN模型，克服了ASM#1和ASM#3在处理高氮和工业废水时的局限性。
+- 通过将硝化细分为AOB和NOB两步，将反硝化细分为四步，更精确地描述了氮的转化路径。
+- 明确了游离氨（FA）和游离亚硝酸（FNA）作为硝化过程真实底物和抑制剂的作用。
+- 模型全面考虑了pH、温度、盐度抑制以及特定有机抑制剂等环境因素的影响。
+- 通过模拟验证表明，ASMN在处理常规城市污水时与ASM#1结果高度一致，同时具备处理复杂、高氮废水的强大扩展能力。
+
+
+
+</TabItem>
+
+<TabItem value="related" label="相关" >
+
+
+**Q： 有哪些相关研究？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+以下是论文中直接相关的参考文献：
+
+**基础ASM模型：**
+- Grady et al. (1986) - *A Model of Single Sludge Wastewater Treatment Systems* — ASMN所基于的原始ASM#1模型。
+- Henze et al. (1987) - *Final Report: Activated Sludge Model No. 1* — ASM#1的IWA出版物。
+- Gujer et al. (1999) - *Activated Sludge Model No. 3* — ASM#3，ASMN同样针对其不足进行改进。
+
+**硝化动力学与抑制：**
+- Anthonisen et al. (1976) - *Inhibition of Nitrification by Ammonia and Nitrous Acid* — 提供ASMN中FA和FNA计算方程及抑制框架。
+- Andrews et al. (1968) - *A Mathematical Model for the Continuous Culture of Microorganisms Utilizing Inhibitory Substrates* — ASMN中用于FA抑制AOB和FNA抑制NOB的底物抑制方程。
+- Boon & Laudelout (1962) - *Kinetics of Nitrite Oxidation by Nitrobacter Winogradskyi* — 用于验证ASMN中NOB速率方程（R10）的实验数据。
+- Chandran & Smets (2000) - *Single-Step Nitrification Models Erroneously Describe Batch Ammonia Oxidation Profiles When Nitrite Oxidation Becomes Rate Limiting* — ASMN中AOB和NOB自养产率的计算依据。
+- Siegrist & Gujer (1987) - *Demonstration of Mass Transfer and PH Effects in a Nitrifying Biofilm* — 与ASMN机理性pH处理方法进行比较的复杂经验pH模型（图1）。
+- Stein et al. (1997) - *Regulation of the Synthesis and Activity of Ammonia Monooxygenase in Nitrosomonas Europaea by Altering PH to Affect NH3 Availability* — 游离氨是AOB真实底物的证据。
+- Suzuki et al. (1974) - *Ammonia or Ammonium Ion as Substrate for Oxidation by Nitrosomonas Europaea Cells and Extracts* — 游离氨是AOB真实底物的证据。
+- Hooper et al. (1989) - *Biochemistry of the Nitrifying Lithoautotrophic Bacteria* — AOB底物和产率计算的微生物学基础。
+- Prosser et al. (1989) - *Autotrophic Nitrification in Bacteria* — 双菌群硝化和NOB混合营养生长的背景。
+- Hellinga et al. (1999) - *Model Based Design of a Novel Process for Nitrogen Removal from Concentrated Flows* — Ratkowsky方程中AOB和NOB关键温度参数值的依据。
+- Hockenbury & Grady (1977) - *Inhibition of Nitrification—Effects of Selected Organic Compounds* — 不对NOB设置化学特异性抑制项的依据。
+
+**反硝化建模：**
+- Tiedje et al. (1988) - *Ecology of Denitrification and Dissimilatory Nitrate Reduction to Ammonium* — 确立ASMN中使用的四步反硝化途径。
+- von Schulthess et al. (1994) - *Nitric and Nitrous Oxides from Denitrifying Activated Sludge at Low Oxygen Concentration* — 早期反硝化中间产物建模。
+- von Schulthess et al. (1995) - *Release of Nitric and Nitrous Oxides from Denitrifying Activated Sludge* — 不含电子供体因子的三步反硝化模型。
+- von Schulthess & Gujer (1996) - *Release of Nitrous Oxide (N2O) from Denitrifying Activated Sludge: Verification and Application of a Mathematical Model* — 含电子供体的三步反硝化模型。
+- Wild et al. (1995) - *Structured Modelling of Denitrification Intermediates* — 含酶合成的反硝化建模。
+- Wicht et al. (1996) - *A Model for Predicting Nitrous Oxide Production During Denitrification in Activated Sludge* — 增加了FNA对$N_2O$还原的抑制。
+- Zumft et al. (1997) - *Cell Biology and Molecular Basis of Denitrification* — 确认NO为反硝化中间产物和抑制剂；$K_{NO}$和$K_{N2O}$值的依据。
+- Berks et al. (1995) - *Enzymes and Associated Electron Transport Systems That Catalyze the Respiratory Reduction of Nitrogen Oxides and Oxyanions* — 确认NO为反硝化中间产物；$K_{NO}$值的依据。
+- Stein & Yung (2003) - *Production, Isotopic Composition, and Atmospheric Fate of Biologically Produced Nitrous Oxide* — NO对反硝化微生物的毒性；ASMN中NO抑制的依据。
+- Stouthamer et al. (1997) - *Emerging Principles of Inorganic Nitrogen Metabolism in Paracoccus Denitrificans and Related Bacteria* — NO对反硝化步骤的抑制。
+- Murray & Knowles (1999) - *Chloramphenicol Inhibition of Denitrifying Enzyme Activity in Two Agricultural Soils* — 各反硝化步骤相对速率（$\eta_{g3}$–$\eta_{g5}$）的依据。
+- Ye et al. (1994) - *Denitrification: Production and Consumption of Nitric Oxide* — 各反硝化步骤相对速率的依据。
+- Itokawa et al. (1996) - *Nitrous Oxide Emission During Nitrification and Denitrification in a Full-Scale Night Soil Treatment Plant* — 低COD/N比下的$N_2O$排放；$K_{S5}$值的依据。
+- Itokawa et al. (2001) - *Nitrous Oxide Production in High-Loading Biological Nitrogen Removal Process Under Low COD/N Ratio Condition* — 低COD/N比下的$N_2O$排放。
+- Kester et al. (1997) - *Production of NO and N2O by Pure Cultures of Nitrifying and Denitrifying Bacteria During Changes in Aeration* — 高NO和$N_2O$排放。
+- Schalk-Otte et al. (2000) - *Nitrous Oxide (N2O) Production by Alcaligenes Faecalis During Feast and Famine Regimes* — $K_{S5}$值的依据。
+
+**温度建模：**
+- Ratkowsky et al. (1983) - *Model for Bacterial Culture Growth Rate Throughout the Entire Biokinetic Temperature Range* — ASMN中使用的Ratkowsky温度方程。
+
+**ANRA和氮同化：**
+- Lin & Stewart (1996) - *Nitrate and Nitrite-Mediated Transcription Antitermination Control of NasF (Nitrate Assimilation) Operon Expression in Klebsiella Pneumoniae M5al* — ANRA建模的依据。
+
+**优先污染物的有效生物量：**
+- Magbanua et al. (1998) - *Estimation of the Competent Biomass Concentration for the Degradation of Synthetic Organic Compounds in an Activated Sludge Culture Receiving a Multicomponent Feed* — R17和R18的有效生物量估算方法。
+- Magbanua et al. (2003) - *Relative Efficacy of Intrinsic and Extant Parameters for Modeling Biodegradation of Synthetic Organic Compounds in Activated Sludge: Steady-State Systems* — 优先污染物$K_S$默认值的依据。
+
+**计算平台：**
+- Bidstrup & Grady (1988) - *SSSP—Simulation of Single-Sludge Processes* — 用作验证标准的SSSP程序。
+
+**配套论文：**
+- Hiatt & Grady (2008) - *Application of the Activated Sludge Model for Nitrogen to Elevated Nitrogen Conditions* — 将ASMN应用于高氮废水的配套论文。
+
+-----
+
+
+**Gemini 3.1 Pro:**
+
+- Grady et al. (1986) A Model of Single Sludge Wastewater Treatment Systems.
+- Gujer et al. (1999) Activated Sludge Model No. 3.
+- Anthonisen et al. (1976) Inhibition of Nitrification by Ammonia and Nitrous Acid.
+- Boon et al. (1962) Kinetics of Nitrite Oxidation by Nitrobacter Winogradskyi.
+- Andrews et al. (1968) A Mathematical Model for the Continuous Culture of Microorganisms Utilizing Inhibitory Substrates.
+- Ratkowsky et al. (1983) Model for Bacterial Culture Growth Rate Throughout the Entire Biokinetic Temperature Range.
+- von Schulthess et al. (1996) Release of Nitrous Oxide ($N_2O$) from Denitrifying Activated Sludge: Verification and Application of a Mathematical Model.
+- Zumft et al. (1997) Cell Biology and Molecular Basis of Denitrification.
+
+
+
+
+
+</TabItem >
+
+</Tabs>
+

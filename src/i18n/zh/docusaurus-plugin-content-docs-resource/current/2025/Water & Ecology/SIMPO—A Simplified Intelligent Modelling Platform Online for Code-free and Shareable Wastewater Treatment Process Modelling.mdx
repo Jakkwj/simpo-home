@@ -81,9 +81,11 @@ SIMPO Dashboard: <a href="https://dash.simpowater.com/dashboard/projects/public/
 
 </TabItem>
 
-<TabItem value="intention" label="目标" >
+<TabItem value="objective" label="目标" >
 
 **Q：这篇论文试图解决什么问题？**
+
+-----
 
 **Claude-4.5-Opus-Thinking:**
 本文旨在解决污水处理过程建模中的几个关键挑战：
@@ -100,7 +102,18 @@ SIMPO Dashboard: <a href="https://dash.simpowater.com/dashboard/projects/public/
 
 -----
 
+**Gemini 3.1 Pro:**
+
+- 污水处理模型（如ASMs）日益复杂，为环境工程师、研究人员和学生设置了很高的门槛。
+- 评估已发表文章中复杂模型的可靠性非常困难，需要耗时的编程工作。
+- 传统的建模平台学习曲线陡峭，缺乏直观的界面，且协作功能有限。
+
+-----
+
+
+
 **Gemini 3.0 Pro:**
+
 这篇论文解决了污水处理模型（如扩展的ASM模型）日益复杂，而研究人员、工程师和学生在使用这些模型时面临巨大障碍的问题。具体问题包括：
 1.  **使用门槛高：** 传统的建模软件（如 AQUASIM）需要耗时的编码或复杂的输入，非专家难以掌握。
 2.  **容易出错：** 手动输入大型化学计量矩阵容易导致细微但影响巨大的错误。
@@ -114,6 +127,9 @@ SIMPO Dashboard: <a href="https://dash.simpowater.com/dashboard/projects/public/
 <TabItem value="solution" label="解决" >
 
 **Q：论文如何解决这个问题？**
+
+-----
+
 
 **Claude-4.5-Opus-Thinking:**
 本文介绍了**SIMPO（Simplified Intelligent Modelling Platform Online）**，一个具有以下解决方案的新一代云平台：
@@ -146,9 +162,23 @@ SIMPO Dashboard: <a href="https://dash.simpowater.com/dashboard/projects/public/
 
 -----
 
+**Gemini 3.1 Pro:**
+
+
+- 开发了SIMPO，一个零门槛、云原生的污水建模SaaS平台
+- 实现了直观的拖拽式图形用户界面（GUI），实现无代码建模
+- 采用动态自适应算法（正向/改进欧拉法）实时优化步长
+- 集成了自动防错机制，如化学计量矩阵的平衡检查和基于NSE的拟合优度评估
+- 提供了用于敏感性分析、不确定性评估和参数估计（使用遗传算法）的高级算法
+- 通过支持版本控制模型、数据共享和公共/私有存储库，促进了协作科学。
+
+
+-----
+
 
 
 **Gemini 3.0 Pro:**
+
 作者开发了 **SIMPO**（Simplified Intelligent Modelling Platform Online），这是一个免费、开源、基于云的 SaaS 平台。解决方案包括：
 1.  **零代码图形界面：** 具有拖放界面和化学计量矩阵的可视化编辑功能（类似于 ASM 表），简化了模型构建。
 2.  **智能算法：** 使用自适应求解器（前向/改进欧拉法），实时优化步长以确保精度和效率。
@@ -159,9 +189,11 @@ SIMPO Dashboard: <a href="https://dash.simpowater.com/dashboard/projects/public/
 
 </TabItem >
 
-<TabItem value="experiments" label="实验" >
+<TabItem value="experiment" label="实验" >
 
 **Q：论文做了哪些实验？**
+
+-----
 
 **Claude-4.5-Opus-Thinking:**
 本文进行了多项验证实验和案例研究：
@@ -206,7 +238,21 @@ SIMPO Dashboard: <a href="https://dash.simpowater.com/dashboard/projects/public/
 -----
 
 
+
+**Gemini 3.1 Pro:**
+
+
+- 使用间歇和恒化反应器中的生物营养物去除微生物生长模型，比较了SIMPO与AQUASIM的计算精度和效率。
+- 使用预测一氧化二氮（$$N_2O$$）的扩展ASM3模型演示了平衡检查，以识别化学计量矩阵错误。
+- 使用以硫化物为电子供体的自养反硝化（AD）模型展示了自动可视化和NSE评估在错误检测中的应用（识别负的$$S^0$$浓度和较差的$$NO_2^-$$ -N拟合）。
+- 对AD模型进行了敏感性分析、不确定性评估和参数估计，以比较SIMPO与AQUASIM及原始文献结果的性能。
+
+
+-----
+
+
 **Gemini 3.0 Pro:**
+
 论文通过对比和案例研究验证了 SIMPO：
 1.  **与 AQUASIM 对比验证：** 模拟了经典教科书中的生物营养物去除模型（序批式和恒化器反应器）。结果：SIMPO 的 WNSE > 0.999，证明其精度与 AQUASIM 一致。
 2.  **案例研究 1（错误检测）：** 建模了一个扩展的 ASM3 $N_2O$ 模型（Blomberg et al., 2018）。SIMPO 的平衡检查器发现了原论文中的三个化学计量错误。
@@ -220,6 +266,8 @@ SIMPO Dashboard: <a href="https://dash.simpowater.com/dashboard/projects/public/
 <TabItem value="exploration" label="探索" >
 
 **Q：有什么可以进一步探索的点？**
+
+-----
 
 **Claude-4.5-Opus-Thinking:**
 
@@ -258,9 +306,25 @@ SIMPO Dashboard: <a href="https://dash.simpowater.com/dashboard/projects/public/
 
 12. **气候影响评估**：集成温室气体排放模型进行可持续性分析。
 
+
+
 -----
 
+**Gemini 3.1 Pro:**
+
+
+- 集成更多AI工具（如DeepSeek）的API，将经典的机制驱动建模与AI辅助的数据驱动建模相结合。
+- 开发GPU并行计算支持，以加速敏感性、不确定性和参数估计计算。
+- 增加对连续搅拌釜反应器和点沉淀池之外的其他反应器类型的支持。
+- 扩展内置模型和工艺布局库，以减少手动操作。
+
+
+
+-----
+
+
 **Gemini 3.0 Pro:**
+
 作者指出了具体的局限性和未来的方向：
 1.  **GPU 加速：** 目前并行计算基于 CPU。未来版本计划支持 GPU 并行计算，以加速灵敏度及不确定性的计算。
 2.  **反应器类型：** 平台目前仅限于连续搅拌釜式反应器（CSTR）和点沉淀池。需要增加更多的反应器类型。
@@ -274,6 +338,8 @@ SIMPO Dashboard: <a href="https://dash.simpowater.com/dashboard/projects/public/
 
 
 **Q：总结一下论文的主要内容。**
+
+-----
 
 **Claude-4.5-Opus-Thinking:**
 **SIMPO（Simplified Intelligent Modelling Platform Online）** 是一个革命性的开源、基于云的免费平台，旨在普及污水处理过程建模。
@@ -303,7 +369,24 @@ SIMPO Dashboard: <a href="https://dash.simpowater.com/dashboard/projects/public/
 SIMPO弥合了先进建模能力与实际可及性之间的差距，在环境工程研究中推广开放科学原则，同时显著降低了污水处理建模的技术门槛。
 
 
+
+-----
+
+**Gemini 3.1 Pro:**
+
+
+- SIMPO是一个免费、开源、基于云的平台，旨在简化污水处理工艺建模。
+- 它具有拖拽式GUI，无需编程，降低了入门门槛。
+- 它包含用于模拟、敏感性分析、不确定性评估和参数估计的强大算法。
+- SIMPO通过平衡检查和自动可视化有效检测已发表模型中的错误。
+- 与AQUASIM的对比验证表明，SIMPO实现了高精度（WNSE > 0.999），同时具有更高的用户友好性和协作能力。
+
+
+-----
+
+
 **Gemini 3.0 Pro:**
+
 本文介绍了 SIMPO，这是一个旨在普及污水处理建模的新型网络平台。与传统软件不同，SIMPO 提供零代码的可视化界面，简化了矩阵编辑和工艺设计等复杂任务。它融合了用于模拟和高级模型评估（灵敏度、不确定性、参数估计）的稳健算法，同时确保了与 AQUASIM 等行业标准相当的精度。关键创新包括自动错误检查（平衡检查）和便捷的共享功能，以支持开放科学和同行评审。研究通过发现先前发表模型中的缺陷，证明了 SIMPO 是科研、教育和工程领域的可靠工具。
 
 
@@ -312,6 +395,8 @@ SIMPO弥合了先进建模能力与实际可及性之间的差距，在环境工
 <TabItem value="related" label="相关" >
 
 **Q：有哪些相关研究？**
+
+-----
 
 **Claude-4.5-Opus-Thinking:**
 
@@ -350,7 +435,42 @@ SIMPO弥合了先进建模能力与实际可及性之间的差距，在环境工
 
 -----
 
+
+**Gemini 3.1 Pro:**
+
+- An et al. (2010) Simultaneous biodesulphurization and denitrification using an oil reservoir microbial culture: effects of sulphide loading rate and sulphide to nitrate loading ratio.
+- Batstone et al. (2003) Kinetics of thermophilic, anaerobic oxidation of straight and branched chain butyrate and valerate.
+- Beven (1993) Prophecy, reality and uncertainty in distributed hydrological modelling.
+- Blomberg et al. (2018) Development of an extended ASM3 model for predicting the nitrous oxide emissions in a full-scale wastewater treatment plant.
+- Gujer et al. (1995) The activated sludge model No. 2: biological phosphorus removal.
+- Gujer et al. (1999) Activated sludge model No. 3.
+- Helton and Davis (2003) Latin hypercube sampling and the propagation of uncertainty in analyses of complex systems.
+- Henze et al. (1987) Activated sludge model No 1.
+- Henze et al. (1999) Activated sludge model No. 2d, ASM2D.
+- Henze et al. (2006) Activated sludge models ASM1, ASM2, ASM2d and ASM3.
+- Holland (1992) Adaptation in natural and artificial systems: an introductory analysis with applications to biology, control, and artificial intelligence.
+- Khatami et al. (2019) Equifinality and flux mapping: a new approach to model evaluation and process representation under uncertainty.
+- Liu et al. (2016) Evaluation of nitrous oxide emission from sulfide- and sulfur-based autotrophic denitrification processes.
+- Lopez-Vazquez et al. (2023) Biological wastewater treatment: examples and exercises.
+- Majhi and Mishra (2025) A novel hybrid genetic algorithm and Nelder-Mead approach and it's application for parameter estimation.
+- McKay et al. (2000) A comparison of three methods for selecting values of input variables in the analysis of output from a computer code.
+- Nelder and Mead (1965) A simplex method for function minimization.
+- Ni et al. (2013) Evaluating four mathematical models for nitrous oxide production by autotrophic ammonia-oxidizing bacteria.
+- Ni et al. (2009) A novel approach to evaluate the production kinetics of extracellular polymeric substances (EPS) by activated sludge using weighted nonlinear least-squares analysis.
+- Obaideen et al. (2022) The role of wastewater treatment in achieving sustainable development goals (SDGs) and sustainability guideline.
+- Reichert (1994) Aquasim – a tool for simulation and data analysis of aquatic systems.
+- Rieger et al. (2001) The eawag bio-p module for activated sludge model no. 3.
+- Sin et al. (2009) Uncertainty analysis in WWTP model applications: a critical discussion using an example from design.
+- Stokes et al. (1997) Improvements to a stoat model of a full scale wastewater treatment works through the use of detailed mechanistic studies.
+- Van Loosdrecht et al. (2015) Twenty-five years of ASM1: past, present and future of wastewater treatment modelling.
+- Xu et al. (2016) Mathematical modeling of autotrophic denitrification (AD) process with sulphide as electron donor.
+
+-----
+
+
+
 **Gemini 3.0 Pro:**
+
 本文基于并引用了几个关键研究领域：
 1.  **活性污泥模型 (ASM):** ASM1, ASM2, ASM2d, 和 ASM3 (Henze et al., Gujer et al.)。
 2.  **现有建模工具:** AQUASIM (Reichert, 1994), BioWin, GPS-X, SUMO, 和 STOAT。

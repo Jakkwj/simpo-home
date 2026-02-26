@@ -16,6 +16,7 @@ from random import random
 from time import time
 from traceback import format_exc
 
+from app.api.biomodel.crud.ai.claude import main_two_step as claude_main
 from app.api.biomodel.crud.ai.gemini import main_two_step as gemini_main
 from app.database.models import (
     BioModel,
@@ -44,14 +45,30 @@ async def main(
     biomodel_file: str,
     # models: str = "gemini-3-pro-preview",
     models: str = "gemini-3-pro-preview-thinking",
+    prompt_content_1_add: str = "",  # 补充的 PROMPT_CONTENT_1
+    prompt_content_2_add: str = "",  # 补充的 PROMPT_CONTENT_2
 ) -> str:
     """这里的 pdf 必须是合并了 SI 后的单文件. 且应该不用再次压缩.
     本地拆解论文时, 可以用更高级的模型
     """
     # biomodel_file = "pdf/Growth, maintenance and product formation of autotrophs in activated sludge: Taking the nitrite-oxidizing bacteria as an example.pdf"
     # biomodel_file = f"pdf/{biomodel_file}"
-
-    biomodel_file_gemini = await gemini_main(biomodel_file, models=models, is_skip_SCI_check=True)
+    if "gemini" in models:
+        biomodel_file_gemini = await gemini_main(
+            biomodel_file,
+            models=models,
+            is_skip_SCI_check=True,
+            prompt_content_1_add=prompt_content_1_add,
+            prompt_content_2_add=prompt_content_2_add,
+        )
+    else:
+        biomodel_file_gemini = await claude_main(
+            biomodel_file,
+            models=models,
+            is_skip_SCI_check=True,
+            prompt_content_1_add=prompt_content_1_add,
+            prompt_content_2_add=prompt_content_2_add,
+        )
 
     if isinstance(biomodel_file_gemini, str):
         raise ValueError(biomodel_file_gemini)

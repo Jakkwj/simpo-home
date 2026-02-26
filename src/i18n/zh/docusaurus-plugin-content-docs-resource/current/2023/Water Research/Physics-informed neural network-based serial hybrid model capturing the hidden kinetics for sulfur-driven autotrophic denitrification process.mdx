@@ -45,15 +45,57 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 <Tabs>
 
-<TabItem value="abstract" label="Abstract" >
+<TabItem value="abstract" label="摘要" >
 
 硫驱动自养反硝化（SdAD）是一种能够从低碳氮比（C/N）废水中去除硝酸盐的生物工艺。尽管该工艺已被深入研究，但其中间产物（即元素硫和亚硝酸根离子）产生和积累的机制仍然难以捉摸。现有的SdAD数学模型由于对环境条件变化和电子竞争导致的工艺动力学认识不完整，无法准确预测SdAD中的中间产物。为了解决这一局限性，我们提出了一种基于物理信息神经网络（PINN）的新型串联混合模型结构，以捕捉工艺动力学的动态并预测SdAD中的底物浓度。在本研究中，我们通过数值实验评估了该模型，并将其应用于涉及序批式和连续流反应器场景的实际案例研究。利用PINN方法，该混合模型在数值实验中在状态（即底物浓度）和动力学水平上都产生了准确的预测，并且在案例研究中表现优于机理模型和纯数据驱动模型。此外，我们利用训练好的混合模型设计了SdAD的控制策略，以及一种涉及SdAD和厌氧氨氧化的高能效脱氮新工艺。最后，我们讨论了基于PINN的混合模型的优势和应用范围。
 
 </TabItem>
 
-<TabItem value="objective" label="Objective" >
+<TabItem value="objective" label="目标" >
 
 **Q：这篇论文试图解决什么问题？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+本文针对 **硫驱动自养反硝化（SdAD）** 过程建模中的以下核心挑战：
+
+- **中间产物机制不明确**：在SdAD过程中，生物源元素硫（$S^0_{bio}$）和亚硝酸盐（$NO_2^-$）等中间产物会发生积累，但由于复杂的环境条件和电子竞争动态，其生成和积累机制至今仍不清晰。
+
+- **现有机理模型的局限性**：传统机理模型（如Monod型子过程速率模型、Haldane抑制方程和间接电子耦合（ICE）模型）无法准确预测SdAD中的中间产物浓度，原因在于：
+  - 依赖固定动力学参数，无法适应动态环境条件（如pH、DO、ORP、温度）；
+  - 无法捕捉多种电子供体（$H_2S$、$S^0$）和受体（$NO_3^-$、$NO_2^-$、DO）之间复杂的电子竞争；
+  - 在实际污水处理场景中，对高硫化物浓度（>100 mg/L）的批次实验预测效果差。
+
+- **纯数据驱动模型的局限性**：虽然数据驱动模型能捕捉动态趋势，但：
+  - 需要大量高质量数据集，而这在实际污水处理厂（WWTPs）中难以获取；
+  - 容易过拟合，且无法预测未测量的中间产物（如$S^0$）；
+  - 缺乏物理可解释性，无法强制执行质量/电子守恒约束。
+
+- **串联混合模型训练困难**：尽管串联混合模型在理论上比并联混合模型更适合学习生物过程的隐藏动力学，但由于传统时间离散方法难以通过机理ODE组件进行反向传播，其训练一直受到限制。
+
+综上，本文旨在开发一种新型建模框架，能够在动态实际条件下**准确预测底物浓度并捕捉SdAD的隐藏动力学**，同时保持物理可解释性并适用于有限数据场景。
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 现有的硫驱动自养反硝化（SdAD）数学模型无法准确预测中间产物（如单质硫 $$S^0$$ 和亚硝酸盐 $$NO_2^-$$）的生成和积累。
+- 由于SdAD过程中动态的环境条件（pH、DO、ORP）和电子竞争，导致对过程动力学的认知不完整。
+- 纯数据驱动模型需要大量高质量的数据集（这在实际污水处理厂中很难获取），并且缺乏可解释性。
+- 传统的并联混合模型难以捕捉生物处理过程中的隐藏动力学，并且在性能和可解释性之间存在权衡。
+- 传统的串联混合模型很难在动力学层面上进行训练，通常依赖于简化的时间离散方法。
+
+------
+
 
 **Gemini 3.0 Pro:**
 
@@ -64,9 +106,72 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 </TabItem >
 
-<TabItem value="solution" label="Solution" >
+<TabItem value="solution" label="解决" >
 
 **Q：论文如何解决这个问题？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+本文提出了一种基于**物理信息神经网络（PINN）的串联混合模型**，将机理知识与数据驱动学习相结合。解决方案结构如下：
+
+### 1. 新型串联混合模型架构
+混合模型由两个神经网络组成：
+- **Net1**：以底物浓度（$S_i$）和/或环境条件（pH、DO、ORP）为输入，输出**功能性动力学参数** $\mu_{nn}$ 和 $K_{nn}$（替代传统机理模型中的固定参数 $\mu_{max}$ 和 $K_{half}$）。
+- **Net2**：以时间 $t$ 和初始底物浓度 $S_{i,ini}$ 为输入，直接预测各时间步的底物浓度 $S_i$。
+
+Net1输出的功能性参数被输入到**机理组件**（ASM风格的化学计量矩阵 + Monod型子过程速率方程，表1）中，计算 $\frac{dS_i}{dt}$：
+$$\frac{dS_i}{dt} = \sum_{j=1} \rho_j r_j$$
+
+对于CSTR反应器，方程扩展为包含稀释项：
+$$\frac{dS_i}{dt} = \sum_{j=1}^{J} \rho_j r_j + \frac{(S_{i,inf} - S_i)}{HRT}$$
+
+### 2. 基于PINN的双层次训练
+与仅在**状态层次**（最小化预测浓度与测量浓度之间的残差）训练的传统串联混合模型不同，PINN方法在**状态层次和动力学层次**同时训练：
+
+- **状态层次损失** $L^{state}(\theta_2)$：Net2预测的 $S_i$ 与测量值 $S_{i,meas}$ 之间的差异：
+$$L^{state}(\theta_2) = \sum_{i=1}^{I} w_i^{state} \left[ \frac{1}{N^{data}} \sum_{n=1}^{N^{data}} \left(S_i(t_{data}, S_{i,ini}) - S_{i,meas}(t_{data}, S_{i,ini})\right)^2 \right]$$
+
+- **动力学层次损失** $L^{kinetic}(\theta_1, \theta_2)$：混合模型计算的 $\frac{dS_i}{dt}$ 与通过**自动微分**对Net2输出求导得到的 $\frac{d\hat{S}_i}{dt}$ 之间的差异：
+$$L^{kinetic}(\theta_1, \theta_2) = \sum_{i=1}^{I} w_i^k \left[ \frac{1}{N^k} \sum_{n=1}^{N^k} \left(\frac{dS_i}{dt} - \frac{d\hat{S}_i}{dt}\right)^2 \right]$$
+
+- **总损失**：$L(\theta_1, \theta_2) = L^{state}(\theta_2) + L^{kinetic}(\theta_1, \theta_2)$，通过Adam优化器最小化。
+
+### 3. 机理组件（化学计量矩阵）
+机理组件保留了ASM风格的化学计量矩阵（表1），包含5个子过程：
+- 过程1–4：$H_2S$/$S^0$ 氧化耦合 $NO_3^-$/$NO_2^-$ 还原的Monod型动力学，使用功能性参数 $\mu_{1-4,nn}$、$K_{H_2S,nn}$、$K_{S^0,nn}$、$K_{NO_3,nn}$、$K_{NO_2,nn}$。
+- 过程5：一阶生物量衰减（$r_5 = b_{SOB} X_{SOB}$）。
+
+### 4. 模型解释
+训练完成后，使用以下方法对模型进行解释：
+- **SHAP（Shapley加性解释）**：量化每个输入特征对预测动力学速率的正/负贡献。
+- **PDP（偏依赖图）**：可视化单个特征对子过程速率的边际效应。
+
+### 5. 双重仿真策略
+经过一次训练，模型提供两种仿真模式：
+- **高精度模式**：使用Net1配合ODE求解器，获得可解释的、符合质量/电子守恒的预测结果。
+- **实时代理模式**：直接使用Net2进行快速预测，适用于批式反应器场景。
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 提出了一种基于物理信息神经网络（PINN）的新型串联混合模型结构。
+- 利用神经网络（Net1）从底物浓度和环境条件中学习隐藏的动力学（如最大比生长速率 $$\mu_{nn}$$ 和半饱和常数 $$K_{nn}$$ 等函数参数）。
+- 将这些函数参数整合到基于质量和电子守恒的机理组件中，以生成微分方程。
+- 采用第二个神经网络（Net2）来预测底物浓度，并使用自动微分来计算导数，从而允许模型在状态层面和动力学层面上同时进行训练。
+- 使用SHAP（沙普利加和解释）和PDP（部分依赖图）方法对训练好的混合模型进行解释，揭示了硫化物抑制和电子竞争的隐藏机制。
+
+------
+
 
 **Gemini 3.0 Pro:**
 
@@ -82,9 +187,81 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 </TabItem >
 
-<TabItem value="experiment" label="Experiment" >
+<TabItem value="experiment" label="实验" >
 
 **Q：论文做了哪些实验？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+本文包括**数值（仿真）实验**和**真实数据案例研究**两部分：
+
+
+### 数值实验（受控环境下的模型验证）
+
+#### 实验1：推断硫化物抑制作为隐藏动力学
+- 以包含Haldane型硫化物抑制的预定义机理模型**SdAD1**（表2）作为"真值"。
+- 使用SdAD1生成**20组批次测试数据**（每批30个数据点），参数范围：
+  - 初始硫化物浓度：30–180 mg S/L
+  - 初始硝酸盐浓度：10–140 mg N/L
+- 添加**10%高斯加性噪声**以测试模型鲁棒性。
+- 15组用于训练，5组用于测试。
+- 混合模型以简化动力学（隐藏硫化物抑制）进行训练，评估其恢复隐藏抑制动力学（$r_1$–$r_4$）的能力。
+
+#### 实验2：推断电子竞争作为隐藏动态
+- 以包含电子介体（$M_{red}$、$M_{ox}$）的预定义**ICE模型（SdAD2）**（表S2）作为"真值"。
+- 生成**20组批次测试数据**（每批30个时间步），参数范围：
+  - 初始S/N质量比：0.1–3.0（涵盖电子缺乏和电子充足情况）
+  - 添加10%高斯加性噪声。
+- 15组用于训练，5组用于测试。
+- 混合模型（基于SdAD1化学计量，不含电子竞争）进行训练，评估其捕捉流向 $NO_3^-$ 还原酶（Nar）和 $NO_2^-$ 还原酶（Nir）的电子流速率的能力。
+
+
+### 真实数据案例研究
+
+#### 案例1：批式反应器中的SdAD
+- **实验数据来源**：引用Cui et al. (2019b)报道的硫氧化移动床生物膜反应器批次测试数据。
+- **数据集**：18批次测试（每批20个数据点），涵盖初始硫化物浓度（36–144 mg S/L）和S/N比（0.7–3.5）的宽范围，包括以 $NO_3^-$ 和 $NO_2^-$ 为电子受体的情况（表S4）。
+- 14批用于训练，4批用于测试。
+- **模型对比**：机理SdAD1模型、机理SdAD2（ICE模型）和所提混合模型。
+- **模型解释**：对1000个随机生成的数据集进行SHAP测试和PDP分析，评估硫化物抑制、电子供体竞争（$H_2S/(H_2S+S^0)$）和电子受体竞争（$NO_3^-/(NO_3^-+NO_2^-)$）效应。
+
+#### 案例2：全尺寸CSTR中的SdAD（SANI示范工厂）
+- **数据来源**：香港沙田污水处理厂**SANI示范工厂**的真实污水处理数据，处理量800–1000 m³/d的生活咸水污水。
+- **强化测试**：188小时连续监测，每4小时取样一次（共48个数据点）。
+- 缺氧CSTR反应器（有效容积224 m³）接收来自硫酸盐还原池和好氧池的进水（残余DO约4 mg/L）。
+- 数据预处理：单指数平滑（平滑因子α = 0.4）。
+- 0–140 h（75%）用于训练，140–188 h（25%）用于测试。
+- **模型对比**：机理SdAD1模型、纯数据驱动神经网络模型和所提混合模型。
+- 混合模型和数据驱动模型的输入特征包括环境条件（pH、DO、ORP）。
+- **模型解释**：通过SHAP和PDP分析评估DO、ORP、pH和硫化物对反硝化速率的影响。
+
+
+### 基于训练混合模型的仿真研究
+- **CSTR控制策略仿真**：生成10000个随机pH、ORP和DO值的数据集，绘制环境条件与反硝化速率之间的三维关系图（图8）。
+- **SDA（SdAD+厌氧氨氧化）批式反应器设计**：生成75000个数据集（初始 $H_2S$：0–100 mg S/L，$NO_3^-$：15–55 mg N/L，HRT：0–10 h），识别最大化 $NO_2^-$ 积累的最优HRT（图9）。
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 数值实验1：使用带有噪声的生成批次测试数据，评估模型推断与硫化物抑制相关的预定义隐藏动力学的能力。
+- 数值实验2：使用不同S/N比的生成批次测试数据，评估模型推断与电子竞争相关的预定义隐藏动态的能力。
+- 实际案例研究1（间歇式反应器）：将模型应用于已报道的间歇式反应器实验数据，比较其与两种传统机理模型的预测性能。
+- 实际案例研究2（CSTR）：将模型应用于大型SANI示范厂（连续搅拌釜反应器）的实际污水处理数据，比较其与机理模型和纯数据驱动模型的性能。
+- 模型解释：对训练好的模型进行SHAP和PDP分析，提取关于硫化物抑制、电子供体/受体竞争以及环境条件（DO、ORP、pH）影响的机理见解。
+- 模拟与控制策略设计：使用训练好的模型模拟动态条件下的CSTR以优化DO和ORP，并模拟间歇式反应器以寻找为厌氧氨氧化细菌创造有利生态位的最佳水力停留时间（HRT）。
+
+
+------
 
 **Gemini 3.0 Pro:**
 
@@ -100,9 +277,72 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 </TabItem >
 
-<TabItem value="exploration" label="Exploration" >
+<TabItem value="exploration" label="探索" >
 
 **Q：有什么可以进一步探索的点？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+根据本文的讨论和结论，以下方向值得进一步研究：
+
+### 1. 打开隐藏动力学的"黑箱"
+- 混合模型在Net1中捕捉了隐藏动力学，但内部表示仍不透明。作者建议使用**深度符号回归**将学习到的功能性动力学参数转化为显式数学表达式，将"黑箱"模型转变为"白箱"模型，从而实现对隐藏动态的完整机理解释。
+
+### 2. 纳入微生物群落动态
+- 当前模型未考虑微生物群落组成的变化。对于微生物群落随时间发生变化的系统（如长期运行或环境扰动），将细菌的**基因/宏基因组信息**作为额外输入特征，可提高模型精度和泛化能力。
+
+### 3. 扩展至更复杂的机理框架
+- 本文指出PINN非常适合求解**偏微分方程（PDEs）**。未来工作可集成更复杂的机理组件，例如：
+  - **传质模型**（如生物膜扩散-反应模型）
+  - **计算流体动力学（CFD）**用于反应器水动力学
+  - 这将使空间分布系统（如生物膜反应器）的建模更加严格。
+
+### 4. 应用于其他污水处理过程
+- 基于PINN的串联混合模型框架不限于SdAD，还可应用于其他机制不明确的过程，包括：
+  - **厌氧消化中的水解过程**
+  - **生物量衰减动力学**
+  - **硫基反硝化/厌氧氨氧化（SDA）集成工艺**
+  - 反硝化过程中的**氧化亚氮（$N_2O$）产生**
+
+### 5. 模型解释结果的验证
+- SHAP和PDP解释结果（如ORP、pH、DO对反硝化速率的影响）提供了机理洞见，但需要**进一步实验验证**其物理意义，特别是案例2中75 h处观察到的异常峰值。
+
+### 6. 中间物种（$NO$、$N_2O$）的处理
+- 当前模型假设 $NO_2^-$ 直接还原为 $N_2$，忽略了 $NO$ 和 $N_2O$ 中间产物。未来模型应纳入这些气态中间产物，它们是重要的温室气体，可能显著影响氮去除效率。
+
+### 7. 实时控制与在线学习
+- 训练好的代理模型（Net2）能够快速预测，适合实时应用。未来工作可探索**在线学习**或**自适应模型更新**策略，随着污水处理厂新运行数据的积累持续优化模型。
+
+### 8. 跨系统的可扩展性和泛化能力
+- 模型仅在一个批式反应器数据集和一个全尺寸CSTR上进行了验证。测试模型在不同反应器配置、规模和污水组成（如不同C/N比、盐度）下的**可迁移性**，将增强其实际应用价值。
+
+### 9. 功能性与常数动力学参数的平衡
+- 作者建议通过合理平衡功能性动力学参数和常数参数的数量，串联混合模型可以用与机理模型相当的数据量进行训练。对**参数敏感性和可识别性**的系统研究将具有重要价值。
+
+### 10. 与过程优化和数字孪生的集成
+- 训练好的混合模型可作为SdAD型污水处理厂**数字孪生**的核心，实现实时过程监控、故障检测以及运行参数（如HRT、回流比、DO设定值）的优化。
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 将基于PINN的串联混合模型应用于其他机制尚不明确的污水处理过程，如厌氧消化中的水解和生物量衰减。
+- 将更复杂的机理模型（如传质和流体动力学）整合到相同的模型框架中。
+- 使用深度符号回归来拟合神经网络（Net1）捕获的隐藏动力学，从而将黑盒模型转化为完全可解释的白盒模型。
+- 在微生物群落可能发生变化的建模场景中，将细菌的遗传信息纳入预测数据中。
+
+
+
+------
 
 **Gemini 3.0 Pro:**
 
@@ -113,9 +353,76 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 </TabItem >
 
-<TabItem value="summary" label="Summary" >
+<TabItem value="summary" label="总结" >
 
 **Q： 总结一下论文的主要内容。**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+### 1. 研究背景与动机
+- **SdAD**是一种利用还原性硫化合物（$H_2S$、$S^0$）作为电子供体、$NO_3^-$/$NO_2^-$ 作为电子受体，从低C/N比污水中去除活性氮的有前景的生物过程。
+- SdAD过程中关键中间产物（$S^0_{bio}$ 和 $NO_2^-$）会发生积累，但由于复杂的电子竞争和动态环境条件，其生成机制尚不明确。
+- 现有机理模型无法准确预测这些中间产物，而纯数据驱动模型存在过拟合问题且需要大量数据集。
+
+### 2. 新型PINN串联混合模型
+- 开发了一种**串联混合模型**，包含：
+  - **Net1**：学习功能性动力学参数（$\mu_{nn}$、$K_{nn}$）作为底物浓度和环境条件的函数。
+  - **Net2**：以时间和初始条件为输入，直接预测底物浓度 $S_i$。
+  - **机理组件**（ASM风格化学计量矩阵 + Monod型动力学），利用Net1的功能性参数计算 $\frac{dS_i}{dt}$。
+- 模型采用**PINN方法**训练，同时最小化**状态层次**（$L^{state}$）和**动力学层次**（$L^{kinetic}$，通过自动微分实现）的残差，无需反应速率的显式标签即可捕捉隐藏动力学。
+
+### 3. 数值实验结果
+- **实验1**（硫化物抑制为隐藏动力学）：混合模型底物浓度预测 $R^2 > 0.99$，子过程速率（$r_1$–$r_4$）恢复的平均预测误差 < 10%，即使在数据稀疏区域也表现良好。
+- **实验2**（电子竞争为隐藏动态）：底物浓度 $R^2 > 0.99$，Nar/Nir电子流速率的 $R^2_{ave} = 0.95/0.88$（训练/测试），证明了模型在无需显式建模电子介体的情况下捕捉复杂电子竞争动态的能力。
+
+### 4. 真实数据案例研究结果
+- **案例1（批式反应器）**：混合模型（$R^2_{test} = 0.90$，$RMSE_{test} = 4.21$ mg/L）显著优于机理SdAD1（$R^2_{test} = 0.62$）和SdAD2（$R^2_{test} = 0.65$）模型，尤其在高初始硫化物浓度（>100 mg/L）的批次中表现突出。
+- **案例2（全尺寸CSTR）**：混合模型优于忽略环境动态的机理模型和对训练数据过拟合的纯数据驱动模型，在训练集和验证集上均取得平衡的预测性能。尽管训练过程中缺乏 $S^0$ 测量数据，模型仍能预测 $S^0$ 浓度。
+
+### 5. 模型解释
+- **SHAP和PDP分析**揭示了物理一致的机理洞见：
+  - 高 $H_2S$ 浓度抑制反硝化速率（$q_{nar}$）和亚硝化速率（$q_{nir}$）（硫化物抑制效应）。
+  - $H_2S$ 比 $S^0$ 更受Nar和Nir青睐，是更优先的电子供体。
+  - $NO_2^-$ 比 $NO_3^-$ 更受青睐，是优先的电子受体。
+  - 高DO抑制反硝化；高pH（7.2–8.2）和低ORP（负值）有利于CSTR中的反硝化。
+- 这些解释与独立实验研究的结论一致，验证了模型捕捉隐藏动力学的能力。
+
+### 6. 实际应用
+- 训练好的混合模型被用于：
+  - **CSTR控制策略设计**：最高反硝化速率（3.2 mg N/L/h）在pH 8.2、DO = 0.2 mg/L、ORP = -300 mV条件下实现。
+  - **SDA（SdAD+厌氧氨氧化）批式反应器设计**：以初始 $H_2S$ 和 $NO_3^-$ 浓度为函数，绘制最大化 $NO_2^-$ 积累的推荐HRT图。
+
+### 7. PINN混合模型的主要优势
+- **减少过拟合**：通过动力学残差约束Net2，而非单纯拟合测量数据。
+- **处理缺失数据**：利用质量/电子守恒约束预测未测量的中间产物（如 $S^0$）。
+- **适用于有限数据**：即使数据集较小（18–48个数据点），也优于纯数据驱动模型。
+- **双重仿真策略**：单次训练后同时提供高精度ODE求解器预测和快速代理模型预测。
+- **物理可解释性**：保留ASM风格化学计量结构，确保质量和电子守恒。
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 成功开发了一种基于PINN的新型串联混合模型，用于预测SdAD过程中的底物浓度并捕获未知动力学。
+- 该模型克服了传统机理模型（动力学知识不完整）和纯数据驱动模型（数据需求量大、缺乏可解释性）的局限性。
+- 通过使用自动微分在状态和动力学层面上进行训练，该模型即使在数据有限的情况下也能准确推断出硫化物抑制和电子竞争等隐藏动力学。
+- 在涉及间歇式和CSTR反应器的实际案例研究中，混合模型的表现显著优于传统机理模型和纯数据驱动模型。
+- SHAP和PDP分析证明该混合模型具有高度的可解释性，并且与现有的领域知识相吻合。
+- 训练好的模型可实际应用于设计SdAD系统的控制策略，并优化SDA（硫驱动反硝化/厌氧氨氧化）等集成工艺。
+
+------
+
+
+
 
 **Gemini 3.0 Pro:**
 
@@ -130,9 +437,139 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 </TabItem>
 
-<TabItem value="related" label="Related" >
+<TabItem value="related" label="相关" >
 
 **Q： 有哪些相关研究？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+以下是论文中引用的相关研究：
+
+
+### SdAD 过程与机理
+- Cardoso et al. (2006) - *Sulfide oxidation under chemolithoautotrophic denitrifying conditions.* Biotechnol. Bioeng. 95, 1148–1157.
+- Yang et al. (2016) - *Sulfide-driven autotrophic denitrification significantly reduces $N_2O$ emissions.* Water Res. 90, 176–184.
+- Kostrytsia et al. (2018) - *Biokinetics of microbial consortia using biogenic sulfur as a novel electron donor for sustainable denitrification.* Bioresour. Technol. 270, 359–367.
+- Oberoi et al. (2021) - *Electron distribution in sulfur-driven autotrophic denitrification under different electron donor and acceptor feeding schemes.* Chem. Eng. J. 404, 126486.
+- Cui et al. (2019a) - *Biological nitrogen removal from wastewater using sulphur-driven autotrophic denitrification.* Appl. Microbiol. Biotechnol. 103, 6023–6039.
+- Cui et al. (2019b) - *Elucidating the biofilm properties and biokinetics of a sulfur-oxidizing moving-bed biofilm for mainstream nitrogen removal.* Water Res. 162, 246–257.
+- Deng et al. (2021) - *Exploration and verification of the feasibility of sulfide-driven partial denitrification coupled with anammox for wastewater treatment.* Water Res. 193, 116905.
+- Wu et al. (2016) - *Large-scale demonstration of the sulfate reduction autotrophic denitrification nitrification integrated (SANI®) process in saline sewage treatment.* Water Res. 100, 496–507.
+- Lin et al. (2018) - *Biological sulfur oxidation in wastewater treatment: a review of emerging opportunities.* Water Res. 143, 399–415.
+- Liu et al. (2017) - *Nitrite accumulation in continuous-flow partial autotrophic denitrification reactor using sulfide as electron donor.* Bioresour. Technol. 243, 1237–1240.
+- Fajardo et al. (2014) - *Cross effect of temperature, pH and free ammonia on autotrophic denitrification process with sulphide as electron donor.* Chemosphere 97, 10–15.
+- Christianson et al. (2015) - *Nitrate removal effectiveness of fluidized sulfur-based autotrophic denitrification biofilters for recirculating aquaculture systems.* Aquac. Eng. 68, 10–18.
+
+### SdAD 机理模型
+- Liu et al. (2015) - *Mathematical modeling of nitrous oxide production during denitrifying phosphorus removal process.* Environ. Sci. Technol. 49, 8595–8601.
+- Mora et al. (2015a) - *Investigating the kinetics of autotrophic denitrification with thiosulfate: modeling the denitritation mechanisms and the effect of the acclimation of SO-NR cultures to nitrite.* Chem. Eng. J. 262, 235–241.
+- Mora et al. (2015b) - *Kinetic and stoichiometric characterization of anoxic sulfide oxidation by SO-NR mixed cultures from anoxic biotrickling filters.* Appl. Microbiol. Biotechnol. 99, 77–87.
+- Xu et al. (2016) - *Mathematical modeling of autotrophic denitrification (AD) process with sulphide as electron donor.* Water Res. 91, 225–234.
+- Decru et al. (2021) - *Model-based analysis of sulfur-based denitrification in a moving bed biofilm reactor.* Environ. Technol. 1–8.
+- Yang et al. (2022) - *Assessing intermediate formation and electron competition during thiosulfate-driven denitrification: an experimental and modeling study.* Environ. Sci. Technol. 56, 11760–11770.
+- Henze et al. (2015) - *Activated sludge models ASM1, ASM2, ASM2d and ASM3.* Water Intell. Online 5.
+
+### 污水处理混合模型
+- Quaghebeur et al. (2022) - *Hybrid differential equations: integrating mechanistic and data-driven techniques for modelling of water systems.* Water Res. 213, 118166.
+- Quaghebeur et al. (2021) - *Incorporating unmodeled dynamics into first-principles models through machine learning.* IEEE Access 9, 22014–22022.
+- Hvala and Kocijan (2020) - *Design of a hybrid mechanistic/Gaussian process model to predict full-scale wastewater treatment plant effluent.* Comput. Chem. Eng. 140, 106934.
+- Li et al. (2022) - *An integrated first principal and deep learning approach for modeling nitrous oxide emissions from wastewater treatment plants.* Environ. Sci. Technol. 56, 2816–2826.
+- Ghosh et al. (2019) - *Hybrid modeling approach integrating first-principles models with subspace identification.* Ind. Eng. Chem. Res. 58, 13533–13543.
+- Anderson et al. (2000) - *Use of hybrid models in wastewater systems.* Ind. Eng. Chem. Res. 39, 1694–1704.
+- Lee et al. (2002) - *Hybrid neural network modeling of a full-scale industrial wastewater treatment process.* Biotechnol. Bioeng. 78, 670–682.
+- Lee et al. (2005) - *Parallel hybrid modeling methods for a full-scale cokes wastewater treatment plant.* J. Biotechnol. 115, 317–328.
+- Psichogios and Ungar (1992) - *A hybrid neural network-first principles approach to process modeling.* AIChE J. 38, 1499–1511.
+- Su et al. (1993) - *Integrating neural networks with first principles models for dynamic modeling.* Proceedings of the Dynamics and Control of Chemical Reactors, Distillation Columns and Batch Processes.
+- Schneider et al. (2022) - *Hybrid modelling of water resource recovery facilities: status and opportunities.* Water Sci. Technol.
+
+### 物理信息神经网络（PINN）
+- Yazdani et al. (2020) - *Systems biology informed deep learning for inferring parameters and hidden dynamics.* PLoS Comput. Biol. 16, e1007575.
+- Yang et al. (2020) - *Physics-informed generative adversarial networks for stochastic differential equations.* SIAM J. Sci. Comput. 42, A292–A317.
+- Yuan et al. (2022) - *A-PINN: auxiliary physics informed neural networks for forward and inverse problems of nonlinear integro-differential equations.* J. Comput. Phys. 462, 111260.
+- Lu et al. (2021) - *DeepXDE: a deep learning library for solving differential equations.* SIAM Rev. 63, 208–228.
+
+### 模型解释方法
+- Merrick and Taly (2020) - *The explanation game: explaining machine learning models using shapley values.* Machine Learning and Knowledge Extraction, Lecture Notes in Computer Science.
+- Sundararajan and Najmi (2020) - *The many shapley values for model explanation.*
+- Wang et al. (2021) - *A machine learning framework to improve effluent quality control in wastewater treatment plants.* Sci. Total Environ. 784, 147138.
+
+### 数据驱动模型在城市水系统中的应用
+- Fu et al. (2022) - *The role of deep learning in urban water management: a critical review.* Water Res. 223, 118973.
+- Yao et al. (2022) - *Emerging investigator series: modeling of wastewater treatment bioprocesses: current development and future opportunities.* Environ. Sci. Water Res. Technol. 8, 208–225.
+- Kang et al. (2020) - *Time series prediction of wastewater flow rate by bidirectional LSTM deep learning.* Int. J. Control Autom. Syst. 18, 3023–3030.
+
+### 其他相关研究
+- Guo et al. (2021) - *Reconsidering hydrolysis kinetics for anaerobic digestion of waste activated sludge applying cascade reactors with ultra-short residence times.* Water Res. 202, 117398.
+- An et al. (2010) - *Simultaneous biodesulphurization and denitrification using an oil reservoir microbial culture: effects of sulphide loading rate and sulphide to nitrate loading ratio.* Water Res. 44, 1531–1541.
+- Oh and Silverstein (1999) - *Oxygen inhibition of activated sludge denitrification.* Water Res. 33, 1925–1937.
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- Anderson et al. (2000) Use of hybrid models in wastewater systems.
+- An et al. (2010) Simultaneous biodesulphurization and denitrification using an oil reservoir microbial culture: effects of sulphide loading rate and sulphide to nitrate loading ratio.
+- Cardoso et al. (2006) Sulfide oxidation under chemolithoautotrophic denitrifying conditions.
+- Christianson et al. (2015) Nitrate removal effectiveness of fluidized sulfur-based autotrophic denitrification biofilters for recirculating aquaculture systems.
+- Cui et al. (2019a) Biological nitrogen removal from wastewater using sulphur-driven autotrophic denitrification.
+- Cui et al. (2019b) Elucidating the biofilm properties and biokinetics of a sulfur-oxidizing moving-bed biofilm for mainstream nitrogen removal.
+- Decru et al. (2021) Model-based analysis of sulfur-based denitrification in a moving bed biofilm reactor.
+- Deng et al. (2021) Exploration and verification of the feasibility of sulfide-driven partial denitrification coupled with anammox for wastewater treatment.
+- Fajardo et al. (2014) Cross effect of temperature, pH and free ammonia on autotrophic denitrification process with sulphide as electron donor.
+- Fu et al. (2022) The role of deep learning in urban water management: a critical review.
+- Gao et al. (2022) Revolutionizing membrane design using machine learning-Bayesian optimization.
+- Gardner (2006) Exponential smoothing: the state of the art-Part II.
+- Ghosh et al. (2019) Hybrid modeling approach integrating first-principles models with subspace identification.
+- Goldsborough (2016) A Tour of TensorFlow.
+- Guo et al. (2021) Reconsidering hydrolysis kinetics for anaerobic digestion of waste activated sludge applying cascade reactors with ultra-short residence times.
+- Henze et al. (2015) Activated sludge models ASM1, ASM2, ASM2d and ASM3.
+- Hvala and Kocijan (2020) Design of a hybrid mechanistic/Gaussian process model to predict full-scale wastewater treatment plant effluent.
+- Kang et al. (2020) Time series prediction of wastewater flow rate by bidirectional LSTM deep learning.
+- Kingma and Ba (2017) Adam: a method for stochastic optimization.
+- Kostrytsia et al. (2018) Biokinetics of microbial consortia using biogenic sulfur as a novel electron donor for sustainable denitrification.
+- Lee et al. (2002) Hybrid neural network modeling of a full-scale industrial wastewater treatment process.
+- Lee et al. (2005) Parallel hybrid modeling methods for a full-scale cokes wastewater treatment plant.
+- Li et al. (2022) An integrated first principal and deep learning approach for modeling nitrous oxide emissions from wastewater treatment plants.
+- Lin et al. (2018) Biological sulfur oxidation in wastewater treatment: a review of emerging opportunities.
+- Liu et al. (2017) Nitrite accumulation in continuous-flow partial autotrophic denitrification reactor using sulfide as electron donor.
+- Liu et al. (2015) Mathematical modeling of nitrous oxide production during denitrifying phosphorus removal process.
+- Lu et al. (2021) DeepXDE: a deep learning library for solving differential equations.
+- Merrick and Taly (2020) The explanation game: explaining machine learning models using shapley values.
+- Mora et al. (2015a) Investigating the kinetics of autotrophic denitrification with thiosulfate: modeling the denitritation mechanisms and the effect of the acclimation of SO-NR cultures to nitrite.
+- Mora et al. (2015b) Kinetic and stoichiometric characterization of anoxic sulfide oxidation by SO-NR mixed cultures from anoxic biotrickling filters.
+- Oberoi et al. (2021) Electron distribution in sulfur-driven autotrophic denitrification under different electron donor and acceptor feeding schemes.
+- Oh and Silverstein (1999) Oxygen inhibition of activated sludge denitrification.
+- Psichogios and Ungar (1992) A hybrid neural network-first principles approach to process modeling.
+- Quaghebeur et al. (2021) Incorporating unmodeled dynamics into first-principles models through machine learning.
+- Quaghebeur et al. (2022) Hybrid differential equations: integrating mechanistic and data-driven techniques for modelling of water systems.
+- Saleh and Kayi (2021) Prediction of chemical oxygen demand from the chemical composition of wastewater by artificial neural networks.
+- Schneider et al. (2022) Hybrid modelling of water resource recovery facilities: status and opportunities.
+- Su et al. (1993) Integrating neural networks with first principles models for dynamic modeling.
+- Sundararajan and Najmi (2020) The many shapley values for model explanation 11.
+- Wang et al. (2021) A machine learning framework to improve effluent quality control in wastewater treatment plants.
+- Wu et al. (2016) Large-scale demonstration of the sulfate reduction autotrophic denitrification nitrification integrated (SANI) process in saline sewage treatment.
+- Xu et al. (2016) Mathematical modeling of autotrophic denitrification (AD) process with sulphide as electron donor.
+- Yang et al. (2020) Physics-informed generative adversarial networks for stochastic differential equations.
+- Yang et al. (2016) Sulfide-driven autotrophic denitrification significantly reduces N2O emissions.
+- Yang et al. (2022) Assessing intermediate formation and electron competition during thiosulfate-driven denitrification: an experimental and modeling study.
+- Yao et al. (2022) Emerging investigator series: modeling of wastewater treatment bioprocesses: current development and future opportunities.
+- Yazdani et al. (2020) Systems biology informed deep learning for inferring parameters and hidden dynamics.
+- Yuan et al. (2022) A-PINN: auxiliary physics informed neural networks for forward and inverse problems of nonlinear integro-differential equations.
+- Zhao et al. (2022) Machine learning-based models with high accuracy and broad applicability domains for screening PMT/vPvM substances.
+
+
+
+------
 
 **Gemini 3.0 Pro:**
 
