@@ -67,8 +67,11 @@ const config = {
     imgUrlIntroduction_2: 'https://i.postimg.cc/8zg2s9cv/Project-Eva-Uncertainty-PCDF-59.png',
 
     imgUrlJiangfeng: 'https://i.postimg.cc/CKmXPKNC/jiangfeng.jpg',
-    imgUrlWangjun: 'https://i.postimg.cc/sXx8tR6k/Jakk2b.jpg',
-    imgUrlLihao: 'https://i.postimg.cc/YSpTzF1q/lihao.jpg',
+    // imgUrlWangjun: 'https://i.postimg.cc/sXx8tR6k/Jakk2b.jpg',
+    imgUrlWangjun: 'https://i.postimg.cc/Jz9DJRFp/jakk-2.png',
+    // imgUrlLihao: 'https://i.postimg.cc/YSpTzF1q/lihao.jpg',
+    // imgUrlLihao: 'https://i.postimg.cc/CMQFdm9M/lihao-2.png',
+    imgUrlLihao: 'https://i.postimg.cc/rwcFLzv4/lihao-3.jpg',
     imgUrlHuangzhaowei: 'https://i.postimg.cc/zX3SYGFD/huangzhaowei.jpg',
     imgUrlLiangzhensheng: 'https://i.postimg.cc/RCDNqPvc/liangzhensheng.jpg',
 
@@ -110,6 +113,7 @@ const config = {
 
     imgUrlWechatAccount: 'https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg',
     imgUrlWechatJakk: 'https://i.postimg.cc/yxKhZxM0/jakk-QR.jpg',
+    imgUrlSimpoQR: 'https://i.postimg.cc/DZRM3JpM/SIMPO-QR.jpg',
 
     imgUrlBlogEurekAlertSIMPO: 'https://i.postimg.cc/9fyxpKQ8/eurek-Alert-SIMPO.png',
     imgUrlBlogSIMPOHighlights: 'https://i.postimg.cc/s2t4tcvv/SIMPO-highlights.png',

@@ -86,7 +86,7 @@ export default function About(): JSX.Element {
 
         <AboutLiHao />
         <AboutLiangzhensheng />
-        <AboutHuangzhaowei />
+        {/* <AboutHuangzhaowei /> */}
         {/* <AboutWuKe />
         <AboutHuangZhaoWei />
         <AboutShiYongFeng /> */}
