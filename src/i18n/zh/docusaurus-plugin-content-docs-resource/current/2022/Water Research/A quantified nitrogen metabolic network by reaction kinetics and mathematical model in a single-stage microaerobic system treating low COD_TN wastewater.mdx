@@ -55,6 +55,38 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：这篇论文试图解决什么问题？**
 
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+本文针对以下几个关键问题展开研究：
+
+- **氮代谢网络未被量化**：处理低COD/TN废水的单级微好氧工艺中，氮代谢涉及多种反应（好氧氨氧化、亚硝酸盐氧化、厌氧氨氧化、反硝化、硝酸盐呼吸）的复合动力学，但其氮代谢网络尚未被定量描述。
+
+- **缺乏可靠的动力学参数估算方法**：传统基于Monod方程积分的线性拟合算法在测量随机误差超过0.5%时不可靠，导致$\mu_{max}$和$K_S$估算误差极大。
+
+- **厌氧氨氧化的DO抑制常数未知**：目前尚无关于厌氧氨氧化的溶解氧半抑制常数（$K_{DO}$）的报道，这是量化微好氧系统中DO对厌氧氨氧化抑制作用的关键空白。
+
+- **主导脱氮途径不明确**：在处理猪场废水（COD/TN ≈ 0.96）的单级连续微好氧反应器中，同步部分亚硝化-厌氧氨氧化（PN/A）和部分反硝化-厌氧氨氧化（PDN/A）是否共存并占主导地位，尚未得到系统阐明。
+
+- **NOB抑制机制的定量评估不足**：高频间歇曝气在单级连续系统中抑制亚硝酸盐氧化菌（NOB）的作用尚未被定量评估。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 单级微好氧工艺中的氮代谢非常复杂，涉及多种反应的组合动力学。
+- 微好氧工艺中的氮代谢网络尚未被定量化。
+- 需要阐明氮代谢网络，以深入了解处理低COD/TN废水的单级微好氧工艺中的脱氮机制。
+- 传统的Monod动力学线性拟合算法容易受到测量误差的影响，需要一种更稳定的算法。
+
+------
+
 **Gemini 3.0 Pro:**
 
 本文试图解决在处理低 COD/TN 比的养猪废水的单级间歇曝气微氧反应器 (IAMR) 中，理解和量化复杂脱氮机制的问题。具体而言，它解决了以下问题：
@@ -69,6 +101,57 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：论文如何解决这个问题？**
 
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+本文采用宏基因组学、反应动力学和数学模型相结合的多层次综合方法：
+
+### 1. 宏基因组学识别代谢途径
+- 对IAMR污泥样品进行宏基因组测序（Illumina Hiseq™），揭示氮代谢相关的直系同源基因和KEGG代谢通路。
+- 定性识别了氮代谢网络，包括好氧氨氧化、亚硝酸盐氧化、厌氧氨氧化、反硝化（经$NO_2^-$和$NO_3^-$）和硝酸盐呼吸（DNRA）。
+
+### 2. 基于遗传算法（GA）的新型动力学参数估算方法
+- 开发了结合**有限元法**和**遗传算法（GA）**的新型算法，以高稳定性求解Monod动力学参数（$\mu_{max}$和$K_S$）。
+- 算法利用第$i-1$个采样点的底物浓度（$S_{i-1}$）预测下一采样点（$S_i$）的浓度，通过最小化**相对均方误差（ReMSE）**进行优化：
+$$\text{ReMSE} = \frac{1}{n-1}\sum_{i=0}^{n}\left(\frac{\hat{S}_i - S_i}{S_i}\right)^2$$
+- 该方法在测量噪声高达5%时仍保持可靠，远优于传统线性拟合方法（误差>0.5%即失效）。
+
+### 3. 各关键反应的动力学实验
+- 开展了三组动力学实验：
+  - 好氧过程的耗氧速率（OUR）实验
+  - 各氮素反应的底物利用速率实验（好氧氨氧化、亚硝酸盐氧化、厌氧氨氧化、异养亚硝酸盐/硝酸盐反硝化）
+  - 综合交互实验（厌氧氨氧化+亚硝酸盐反硝化；厌氧氨氧化+硝酸盐呼吸）
+- 实验测定了所有关键反应的Monod参数（$\mu_{max}$、$K_S$、$K_{DO}$）。
+
+### 4. 基于动力学的数学模型
+- 构建了整合所有已识别反应动力学方程的新型第一原理数学模型。
+- 模型引入：
+  - **COD修正因子**（$f_{COD}$）：表征COD对异养反硝化过程的限制。
+  - **DO抑制函数**：分别用于好氧过程（Monod型激活）和厌氧过程（Monod型抑制）。
+  - **抑制常数因子** $I_{DO,am} = 0.75$：表征DO = 0.2 mg/L时对厌氧氨氧化的抑制。
+- 模型采用独立运行数据（第44–57天）进行验证，通过非参数置换检验（10,000次置换，$p > 0.05$）确认有效性。
+- 厌氧氨氧化的DO半抑制常数反算为$K_{DO,am}$ = **0.37–0.60 mg/L**。
+- 量化了各途径的氮通量，并模拟了从间歇曝气切换为连续曝气对$NO_3^-$-N积累的影响。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 构建了单级间歇曝气微好氧反应器（IAMR）来处理猪场废水。
+- 利用宏基因组测序揭示参与氮代谢的直系同源基因和代谢途径。
+- 进行了动力学实验（包括需氧量、$$NH_4^+$$ -N、$$NO_2^-$$ -N、$$NO_3^-$$ -N在好氧/厌氧条件下的转化率以及相互作用实验）以了解反应动力学。
+- 开发了一种基于有限元方法和遗传算法（GA）的新型高稳定性算法，用于求解动力学参数（$$\mu_{max}$$和$$K_S$$）。
+- 提出了一种基于动力学的数学模型，结合了COD限制校正因子（$$f_{COD}$$）和DO抑制方程，以量化氮代谢网络。
+
+------
+
+
 **Gemini 3.0 Pro:**
 
 本文采用了宏基因组学、动力学实验和数学建模相结合的方法：
@@ -82,6 +165,70 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="experiment" label="实验" >
 
 **Q：论文做了哪些实验？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+### 1. 实验室规模IAMR运行
+- 10 L有机玻璃间歇曝气微好氧反应器（IAMR）连续运行**57天**，处理经SBR预处理的猪场废水（COD/TN ≈ 0.98）。
+- 运行条件：HRT = 8 h，温度 = 32°C，曝气阶段DO = 0.2 mg/L，间歇曝气周期：曝气18 min / 停曝6 min。
+- 每日采集进出水样品；在曝气阶段从F口采集反应区混合液。
+
+### 2. 常规水质分析
+- 定期测定COD、$NH_4^+$-N、$NO_2^-$-N、$NO_3^-$-N、TKN、MLSS、MLVSS、DO和pH。
+
+### 3. 宏基因组测序
+- 从接种污泥和第57天污泥中提取DNA（E.Z.N.A.® Soil DNA Kit）。
+- 在Illumina Hiseq™平台上进行测序（500 bp片段文库）。
+- 通过Pathview网站可视化KEGG代谢通路，定性绘制氮代谢网络。
+
+### 4. 动力学实验（三组，均设三个平行）
+
+#### 第一组：耗氧速率（OUR）实验
+- 分别以$NH_4Cl$（$NH_4^+$-N）、$NaNO_2$（$NO_2^-$-N）或$CH_3COONa$（COD）为唯一耗氧底物。
+- 测定DO消耗曲线，确定好氧氨氧化、亚硝酸盐氧化和COD好氧氧化的$K_{DO}$和$\mu_{DO}$。
+- 同步开展空白对照实验。
+
+#### 第二组：含氮底物利用速率实验
+- **好氧氨氧化**：以$NH_4Cl$为底物，好氧条件。
+- **好氧亚硝酸盐氧化**：以$NaNO_2$为底物，好氧条件。
+- **厌氧氨氧化**：以$NH_4Cl$ + $NaNO_2$为底物，严格厌氧条件（充氮气）。
+- **异养亚硝酸盐反硝化**：以$NaNO_2$ + $CH_3COONa$为底物，厌氧条件。
+- **异养硝酸盐还原**：以$NaNO_3$ + $CH_3COONa$为底物，厌氧条件。
+- 每组实验采集≥8个时间点的底物浓度数据；用GA求解Monod参数（$\mu_{max}$、$K_S$）。
+
+#### 第三组：多氮素转化过程综合反应实验
+- **厌氧氨氧化 + 异养亚硝酸盐反硝化**：以$NH_4Cl$ + $NaNO_2$ + $CH_3COONa$为底物，厌氧条件；通过联合两过程动力学方程拟合$NO_2^-$-N利用速率。
+- **厌氧氨氧化 + 硝酸盐呼吸（PDN/A）**：以$NH_4Cl$ + $NaNO_3$ + $CH_3COONa$为底物，厌氧条件；确认$NO_3^-$-N和$NH_4^+$-N同步减少；用GA和一阶微分方程组估算硝酸盐呼吸占总硝酸盐还原的比例（R = 84.6%）。
+
+#### COD厌氧消化速率测定
+- 分析亚硝酸盐反硝化和硝酸盐还原实验中的COD利用曲线，分离反硝化消耗的COD与厌氧消化消耗的COD；通过线性回归计算COD厌氧消化速率为0.23 mg COD·gVSS⁻¹·min⁻¹。
+
+### 5. 数学模型验证
+- 模型模拟稳定期（第44–57天）反应区$NH_4^+$-N、$NO_2^-$-N和$NO_3^-$-N浓度。
+- 非参数置换检验（10,000次置换）确认模拟值与实测值无显著差异（$p$ = 0.31、0.17、0.31）。
+- 对DO抑制因子（$I_{DO,am}$和$I_{DO,cad}$）进行敏感性分析。
+- 情景模拟：模拟连续曝气模式对$NO_3^-$-N积累的影响。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 实验室规模的IAMR连续运行57天，处理经SBR预处理的猪场废水。
+- 对COD、$$NH_4^+$$ -N、$$NO_2^-$$ -N、$$NO_3^-$$ -N、TKN、MLSS、MLVSS、TN、DO和pH进行化学分析。
+- 对活性污泥进行宏基因组测序，以鉴定KEGG代谢途径和直系同源基因。
+- 分三组进行动力学实验：1）$$NH_4^+$$ -N、$$NO_2^-$$ -N和COD好氧氧化中的氧吸收率（OUR）；2）好氧/厌氧条件下$$NH_4^+$$ -N、$$NO_2^-$$ -N和$$NO_3^-$$ -N的转化率；3）厌氧氨氧化与异养亚硝酸盐反硝化或硝酸盐呼吸的相互作用。
+
+
+
+------
 
 **Gemini 3.0 Pro:**
 
@@ -99,6 +246,47 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：有什么可以进一步探索的点？**
 
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- **PN/A和PDN/A同步运行的长期稳定性**：本研究在57天内证实了PN/A和PDN/A的共存，但在进水波动（COD/TN比、温度、pH）条件下的长期（>1年）稳定性和抗冲击能力有待研究。
+
+- **$K_{DO,am}$的精确测定**：厌氧氨氧化的DO半抑制常数通过模型校准间接估算为$K_{DO,am}$ = 0.37–0.60 mg/L。在受控DO梯度条件下直接实验测定$K_{DO,am}$将提供更精确的数值，降低模型不确定性。
+
+- **DNRA贡献的定量化**：本文发现DNRA（异化硝酸盐还原为铵）相关基因上调，但未观察到显著的$NH_4^+$-N积累。DNRA对IAMR氮循环的实际贡献尚未完全量化，值得深入研究。
+
+- **间歇曝气策略的优化**：本文确定了高频间歇曝气（曝气18 min / 停曝6 min）对NOB抑制的关键作用，但最优曝气频率、时长和DO设定值尚未系统优化，以最大化PN/A + PDN/A效率并最小化$NO_3^-$-N积累。
+
+- **规模放大及应用于其他低COD/TN废水**：IAMR仅在实验室规模下处理猪场废水进行了测试。应用于其他类型低COD/TN废水（如垃圾渗滤液、市政废水侧流）及中试或全规模放大有待探索。
+
+- **微生物群落动态与功能冗余**：宏基因组学识别了关键功能基因，但不同运行条件下微生物群落组成（AOB、NOB、厌氧氨氧化菌、反硝化菌）的动态变化及其功能冗余未被深入分析。
+
+- **PDN/A促进策略**：由于PDN/A被发现可还原84.6%的产生$NO_3^-$-N，进一步提高PDN/A活性的策略（如适量外加碳源、优化缺氧/好氧切换）可作为减少微好氧系统$NO_3^-$-N积累的新途径加以探索。
+
+- **模型扩展以包含生物量增长与衰减**：当前基于动力学的模型未明确考虑不同微生物群体（AOB、NOB、厌氧氨氧化菌、异养菌）的生物量增长、衰减和洗出动态，限制了其对长期运行和启动阶段的预测能力。
+
+- **温度对动力学参数的影响**：所有动力学实验均在32°C下进行。各反应Monod参数（尤其是$K_{DO,am}$）的温度依赖性尚未表征，这对不同气候区域的应用至关重要。
+
+- **COD限制条件下厌氧氨氧化与DNRA的交互作用**：本文证明在COD充足条件下厌氧氨氧化与异养亚硝酸盐反硝化之间无交互作用，但在实际IAMR的COD限制条件下的交互作用未被直接测试。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 将提出的基于动力学的数学模型和GA算法应用于全尺寸污水处理厂。
+- 在波动的进水条件（例如，不同的COD/TN比或温度）下，同步PN/A和PDN/A工艺的长期稳定性。
+- 进一步研究不同间歇曝气频率下的特定微生物群落动态及其相互作用。
+
+
+------
+
+
 **Gemini 3.0 Pro:**
 
 - **PDN/A 的长期稳定性：** 虽然研究强调了 PDN/A 的作用，但在进水波动的条件下，硝酸盐呼吸 (DNRA) 途径与厌氧氨氧化耦合的长期稳定性可以进一步探索。
@@ -111,6 +299,64 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="summary" label="总结" >
 
 **Q： 总结一下论文的主要内容。**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+本文对处理低COD/TN比（约0.96–0.98）猪场废水的单级间歇曝气微好氧反应器（IAMR）中的氮代谢网络进行了全面的定量研究，主要内容如下：
+
+### 1. 反应器运行性能
+- IAMR在第44–57天达到稳定运行，COD、$NH_4^+$-N和TN的平均去除率分别为79.0%、87.2%和73.6%。
+- COD去除量/TN去除量比值极低（1.17），表明厌氧氨氧化过程占主导。
+
+### 2. 宏基因组学揭示复杂氮代谢网络
+- KEGG通路分析识别了六个关键氮转化过程：好氧氨氧化、好氧亚硝酸盐氧化、厌氧氨氧化、异养亚硝酸盐反硝化、异养硝酸盐反硝化和硝酸盐呼吸（DNRA）。
+- 反硝化基因丰度最高，其次为DNRA和亚硝酸盐氧化；厌氧氨氧化排第四。
+
+### 3. 基于GA的新型动力学参数估算算法
+- 开发了结合有限元法和遗传算法（GA）的新型算法，在测量噪声高达5%时仍保持可靠，远优于传统线性拟合方法（误差>0.5%即失效）。
+
+### 4. 动力学实验揭示主导脱氮途径
+- 实验测定了关键Monod参数（表1），包括：
+  - $K_{DO,ao}$ = 0.46 mg/L，$K_{DO,no}$ = 0.21 mg/L（低DO条件下NOB对DO的亲和力高于AOB）
+  - $\mu_{no2,am}$ = 0.12 mgN·gVSS⁻¹·min⁻¹（厌氧氨氧化主导$NO_2^-$-N消耗）
+- 确认了PN/A和PDN/A同步进行是主要脱氮途径。
+- 硝酸盐呼吸占PDN/A过程中总$NO_3^-$-N还原量的84.6%。
+
+### 5. 基于动力学的数学模型定量描述氮代谢网络
+- 模型引入COD限制因子（$f_{COD}$）和各过程的DO抑制函数。
+- 模型验证显示与实测数据无显著差异（$p$ > 0.05）。
+- 氮通量分析（图5）显示：
+  - 58%–67%的氮通过厌氧氨氧化途径（PN/A + PDN/A）去除
+  - 仅7%–12%通过异养亚硝酸盐反硝化去除
+  - 仅1%–2%通过异养硝酸盐反硝化去除
+- 厌氧氨氧化的DO半抑制常数校准为$K_{DO,am}$ = **0.37–0.60 mg/L**，填补了该领域的重要空白。
+
+### 6. 间歇曝气对NOB抑制的作用
+- 高频间歇曝气有效抑制了NOB，尽管NOB对DO的亲和力（$K_{DO,no}$ = 0.21 mg/L）高于AOB（$K_{DO,ao}$ = 0.46 mg/L）。
+- 模型模拟显示，切换为连续曝气将使$NO_3^-$-N产量增加**39.6%**。
+- IAMR中$NO_3^-$-N积累率仅为9.7%，低于PN/A理论值11%，归因于PDN/A还原了84.6%的产生$NO_3^-$-N。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 成功构建了处理低COD/TN废水的单级IAMR的量化氮代谢网络。
+- 开发了一种基于GA的新型算法来可靠地估计Monod动力学参数，克服了传统线性拟合的局限性。
+- 同步短程硝化-厌氧氨氧化（PN/A）和短程反硝化-厌氧氨氧化（PDN/A）被确定为主要的脱氮途径（去除了58%~67%的氮）。
+- 厌氧氨氧化的DO半抑制常数被校准为0.37 ~ 0.60 mg $$L^{-1}$$。
+- 间歇曝气是抑制亚硝酸盐氧化菌（NOB）和防止$$NO_3^-$$ -N积累的关键措施。
+
+
+------
+
 
 **Gemini 3.0 Pro:**
 
@@ -125,6 +371,80 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="related" label="相关" >
 
 **Q： 有哪些相关研究？**
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- Meng et al. (2015): *Nitrogen removal from low COD/TN ratio manure-free piggery wastewater within an upflow microaerobic sludge reactor* — 证明了单级微好氧系统处理COD/TN ≈ 0.84猪场废水的可行性，TN去除率达87.2%。
+
+- Meng et al. (2018): *Enhanced nitrogen removal from piggery wastewater with high $NH_4^+$ and low COD/TN ratio in a novel upflow microaerobic biofilm reactor* — 证明了单级集成固定膜微好氧工艺处理低COD/TN废水的可行性。
+
+- Sun et al. (2021): *Efficiency and mechanism of nitrogen removal from piggery wastewater in an improved microaerobic process* — 本文的前期研究，报道了IAMR 140天运行中COD、$NH_4^+$-N和TN去除率分别为77.9%、94.6%和82.9%。
+
+- Zhang et al. (2019): *Effect of the method of falling water aeration-reflux on nitrogen removal and applicability in a novel upflow microaerobic sludge reactor treating low carbon-to-nitrogen ratio wastewater* — 在DO = 0.41 mg/L的上流式微好氧反应器中实现了约90.4%的TN去除率。
+
+- Lackner et al. (2014): *Full-scale partial nitritation/anammox experiences—an application survey* — 全面综述了全规模PN/A应用经验，确立了单级相对于两级策略的优势。
+
+- Li et al. (2011): *Long-term partial nitrification in an intermittently aerated sequencing batch reactor (SBR) treating ammonium-rich wastewater under controlled oxygen-limited conditions* — 为IAMR间歇曝气策略提供了依据。
+
+- Henze et al. (2000): *Activated Sludge Models ASM1, ASM2, ASM2d and ASM3* — 作为建模框架的基础参考文献，即活性污泥模型。
+
+- Henze et al. (1999): *Activated sludge model no.2d, ASM2D* — 提供了模型中好氧和厌氧过程的DO抑制方程。
+
+- Gernaey et al. (2004): *Activated sludge wastewater treatment plant modelling and simulation: state of the art* — 综述了污水处理厂建模的研究现状，指出参数校准缺乏共识的问题。
+
+- Lotti et al. (2014): *Physiological and kinetic characterization of a suspended cell anammox culture* — 提供了厌氧氨氧化的参考动力学参数，包括$K_{no2,am}$范围。
+
+- Nowka et al. (2015): *Comparison of oxidation kinetics of nitrite-oxidizing bacteria: nitrite availability as a key factor in niche differentiation* — 证明了Nitrospira（k-策略型NOB）在低DO条件下的氧半饱和系数低于AOB，与本文结果一致。
+
+- Regmi et al. (2014): *Control of aeration, aerobic SRT and COD input for mainstream nitritation/denitritation* — 提供了间歇曝气频率和AOB/NOB的$K_{DO}$参考值。
+
+- Castro-Barros et al. (2017): *Evaluating the potential for dissimilatory nitrate reduction by anammox bacteria for municipal wastewater treatment* — 定义了PDN/A概念，即厌氧氨氧化所需$NO_2^-$-N由硝酸盐还原提供。
+
+- Wang et al. (2020b): *A continuous-flow combined process based on partial nitrification-Anammox and partial denitrification-Anammox (PN/A + PD/A) for enhanced nitrogen removal from mature landfill leachate* — 在连续流系统中证明了PN/A和PDN/A的同步实现。
+
+- Du et al. (2015): *Advanced nitrogen removal from wastewater by combining anammox with partial denitrification* — 针对厌氧氨氧化系统中$NO_3^-$-N积累问题，提出与部分反硝化结合的解决方案。
+
+- Kalvelage et al. (2011): *Oxygen sensitivity of anammox and coupled N-cycle processes in oxygen minimum zones* — 提供了低DO条件下厌氧氨氧化活性估算的依据，用于设定$I_{DO,am}$ = 0.75。
+
+- Ge et al. (2014): *Complete nitrogen removal from municipal wastewater via partial nitrification by appropriately alternating anoxic/aerobic conditions in a continuous plug-flow step feed process* — 证明了间歇曝气干扰NOB关键酶的作用。
+
+- Oh and Silverstein (1999): *Oxygen inhibition of activated sludge denitrification* — 提供了模型中异养反硝化过程的DO半抑制系数（$K_{DO}$ = 0.2 mg/L）。
+
+- Moussa et al. (2005): *Modelling nitrification, heterotrophic growth and predation in activated sludge* — 提供了本研究采用的OUR实验方法。
+
+- Robinson and Characklis (1984): *Simultaneous estimation of Vmax, Km, and the rate of endogenous substrate production (R) from substrate depletion data* — 被证明不可靠并被GA方法取代的原始Monod参数线性拟合算法。
+
+- Windey et al. (2005): *Oxygen-limited autotrophic nitrification–denitrification (OLAND) in a rotating biological contactor treating high-salinity wastewater* — 提供了厌氧氨氧化的理论化学计量比（每消耗1个$NH_4^+$-N消耗1.32个$NO_2^-$-N）和PN/A理论$NO_3^-$-N积累率11%。
+
+- Zhu et al. (2017): *Nitrogen removal performance of anaerobic ammonia oxidation (ANAMMOX) in presence of organic matter* — 证明了有机物浓度和异养反硝化对厌氧氨氧化活性的影响，推动了本文交互实验的开展。
+
+- Li et al. (2018): *A critical review of one-stage anammox processes for treating industrial wastewater: optimization strategies based on key functional microorganisms* — 综述了单级厌氧氨氧化工艺，证明间歇曝气限制NOB代谢。
+
+- Jiang et al. (2021): *Efficient and advanced nitrogen removal from mature landfill leachate via combining nitritation and denitritation with Anammox in a single sequencing batch biofilm reactor* — 在批次工艺中证明了PN/A和PDN/A的同步实现。
+
+- Wu et al. (2019): *Low energy treatment of landfill leachate using simultaneous partial nitrification and partial denitrification with anaerobic ammonia oxidation* — 在垃圾渗滤液处理中证明了PN/A和PDN/A的同步实现。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- Li et al. (2011) Long-term partial nitrification in an intermittently aerated sequencing batch reactor (SBR) treating ammonium-rich wastewater under controlled oxygen-limited conditions. - Lackner et al. (2014) Full-scale partial nitritation/anammox experiences—an application survey.
+- Meng et al. (2015) Nitrogen removal from low COD/TN ratio manure-free piggery wastewater within an upflow microaerobic sludge reactor.
+- Gernaey et al. (2004) Activated sludge wastewater treatment plant modelling and simulation: state of the art.
+- Henze et al. (2000) Activated Sludge Models ASM1, ASM2, ASM2d and ASM3.
+- Robinson and Characklis (1984) Simultaneous estimation of Vmax, Km, and the rate of endogenous substrate production (R) from substrate depletion data.
+
+
+
+------
+
 
 **Gemini 3.0 Pro:**
 

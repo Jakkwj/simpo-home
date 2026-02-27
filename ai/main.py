@@ -527,13 +527,21 @@ def get_question(
     question = ""
 
     for index, answer_model in enumerate(answer_models):
+        answer = (
+            result[f"{answer_models[answer_model]}{question_key}"]
+            if is_en
+            else result[f"{answer_models[answer_model]}zh_{question_key}"]
+        )
+        if answer_model == "Gemini 3.1 Pro":
+            answer = answer.replace(" - ", "\n - ")  # Gemini 的回答里经常不换行, 需要手动加上换行
+
         question += f"""
 
         ------
 
         **{answer_model}:**
 
-        {result[f"{answer_models[answer_model]}{question_key}"] if is_en else result[f"{answer_models[answer_model]}zh_{question_key}"]}
+        {answer}
 
 
         """
