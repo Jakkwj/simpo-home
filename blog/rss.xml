@@ -4,10 +4,57 @@
         <title>SIMPO Blog</title>
         <link>https://www.simpowater.org/blog</link>
         <description>SIMPO Blog</description>
-        <lastBuildDate>Sun, 01 Feb 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 28 Feb 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[SIMPO 1.0.2: Expanded Support for AI Large Language Models]]></title>
+            <link>https://www.simpowater.org/blog/SIMPO-blog-2026-02-28</link>
+            <guid>https://www.simpowater.org/blog/SIMPO-blog-2026-02-28</guid>
+            <pubDate>Sat, 28 Feb 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[SIMPO, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is an intelligent platform for code-free and shareable wastewater treatment process modelling. For specific update details, please see: SIMPO 1.0.2 Changelog。]]></description>
+            <content:encoded><![CDATA[<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p><strong>SIMPO</strong>, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is an intelligent platform for code-free and shareable wastewater treatment process modelling. For specific update details, please see: <a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">SIMPO 1.0.2 Changelog</a>。</p></div></div>
+<p>Here's the optimized English translation for your WeChat official account post:</p>
+<hr>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="massive-ai-upgrade-a-new-chapter-with-6-top-llms-integrated">Massive AI Upgrade: A New Chapter with 6 Top LLMs Integrated!<a href="https://www.simpowater.org/blog/SIMPO-blog-2026-02-28#massive-ai-upgrade-a-new-chapter-with-6-top-llms-integrated" class="hash-link" aria-label="Direct link to Massive AI Upgrade: A New Chapter with 6 Top LLMs Integrated!" title="Direct link to Massive AI Upgrade: A New Chapter with 6 Top LLMs Integrated!" translate="no">​</a></h2>
+<p>Hello, Fellow Researchers! <strong>SIMPO</strong> is thrilled to announce a significant upgrade, dramatically expanding our support for <strong>Large Language Models (LLMs)</strong>. This empowers you to achieve unprecedented efficiency in model construction and literature interpretation!</p>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="introducing-6-leading-large-language-models">Introducing 6 Leading Large Language Models!<a href="https://www.simpowater.org/blog/SIMPO-blog-2026-02-28#introducing-6-leading-large-language-models" class="hash-link" aria-label="Direct link to Introducing 6 Leading Large Language Models!" title="Direct link to Introducing 6 Leading Large Language Models!" translate="no">​</a></h3>
+<p>We've successfully integrated the following six industry-leading LLMs, enriching your research toolkit with more powerful capabilities:</p>
+<ul>
+<li class=""><strong>Gemini 3.1 Pro</strong></li>
+<li class=""><strong>Gemini 3.0 Pro</strong></li>
+<li class=""><strong>Gemini 2.5 Flash</strong></li>
+<li class=""><strong>Claude 4.6 Sonnet</strong></li>
+<li class=""><strong>Claude 4.5 Sonnet</strong></li>
+<li class=""><strong>Claude 3.5 Haiku</strong></li>
+</ul>
+<p>Your dedicated AI powerhouse is now officially online! These cutting-edge AI models are ready to be your indispensable research assistants:</p>
+<ol>
+<li class=""><strong>Instant PDF Paper Comprehension, One-Click BioModel Generation:</strong> Upload your PDF papers directly, select one of the <strong>LLM models</strong> for intelligent interpretation, and quickly generate new <strong>BioModels</strong>. This eliminates tedious manual input, making knowledge transformation more efficient!</li>
+<li class=""><strong>In-depth Paper Analysis to Boost Research:</strong> Now, in Resource, <strong>Claude 4.6 Sonnet</strong> and <strong>Gemini 3.1 Pro</strong> offer precise paper interpretation, helping you effortlessly grasp research frontiers and uncover potential insights!</li>
+</ol>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="enhanced-experience-optimizations-and-fixes-for-a-smoother-workflow">Enhanced Experience! Optimizations and Fixes for a Smoother Workflow<a href="https://www.simpowater.org/blog/SIMPO-blog-2026-02-28#enhanced-experience-optimizations-and-fixes-for-a-smoother-workflow" class="hash-link" aria-label="Direct link to Enhanced Experience! Optimizations and Fixes for a Smoother Workflow" title="Direct link to Enhanced Experience! Optimizations and Fixes for a Smoother Workflow" translate="no">​</a></h3>
+<p>Beyond the robust AI model support, we've also implemented various optimizations and bug fixes to ensure a more fluid and stable user experience:</p>
+<ul>
+<li class=""><strong>Smarter Creation:</strong> When creating new blank <strong>BioModels</strong> and <strong>DataSets</strong>, the initial content is now more comprehensive. This allows you to directly create new <strong>Projects</strong> from these templates and begin calculations immediately, saving you pre-configuration time!</li>
+<li class=""><strong>Classic Model Filtering:</strong> A new <code>Classic</code> button has been added to the <strong>BioModel</strong>'s <strong>Public</strong> page. Click to filter and display only classic models, making your search quicker and more focused!</li>
+<li class=""><strong>Updated Example:</strong> The <code>AQUASIM T2P17</code> calculation example has been updated, providing the latest demonstration to assist your learning and practice.</li>
+<li class=""><strong>Formula Input Optimization:</strong> Resolved spacing issues during formula input, ensuring your formulas are more standardized and input is smoother.</li>
+<li class=""><strong>Navigation Fix:</strong> Fixed an issue where clicking <code>Quick Start</code>/<code>Changelog</code>/<code>Resource</code> did not navigate correctly when the left sidebar was minimized, ensuring a more stable navigation experience.</li>
+<li class=""><strong>Table Sorting Resolved:</strong> Fixed a sorting error in the <strong>Personal</strong> table for <strong>BioModel/DataSet/Project</strong> when clicking the <code>Cloned</code> column header, leading to more accurate data management.</li>
+<li class=""><strong>Library Query Fix:</strong> Resolved query errors for <strong>Components</strong> and <strong>Parameters</strong> in the <strong>Library</strong>, allowing you to find required resources more accurately.</li>
+</ul>
+<p>Thank you for your continued support! We invite you to explore these new features and let AI accelerate your research endeavors!</p>
+<hr>
+<!-- -->
+<hr>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>Add friend, with the note “SIMPO” to join the group chat</b></div><img src="https://i.postimg.cc/DZRM3JpM/SIMPO-QR.jpg" width="25%"></div>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>Welcome to follow our WeChat official account</b></div><img src="https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg" width="25%"></div>]]></content:encoded>
+            <category>SIMPO</category>
+        </item>
         <item>
             <title><![CDATA[SIMPO 1.0.1: Plotting Functionality Optimized]]></title>
             <link>https://www.simpowater.org/blog/SIMPO-blog-2026-02-01</link>
