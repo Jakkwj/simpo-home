@@ -64,6 +64,37 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：这篇论文试图解决什么问题？**
 
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文试图解决在活性污泥系统中，针对生物脱氮过程（硝化和反硝化）中$N_2O$产生与消耗缺乏全面、机理合理的数学模型这一问题。具体而言：
+
+- $N_2O$是一种强效温室气体（辐射强迫是$CO_2$的300倍），并会导致平流层臭氧层破坏，即使少量排放也具有重要的环境意义。
+- 自养硝化（通过AOB）和异养反硝化均可产生$N_2O$，但现有模型无法充分捕捉这两条途径之间的动态相互作用。
+- 已有模型要么是经验性的、过度简化的、针对特定案例的，要么缺乏适当的校准和独立验证。例如：
+  - Kampschreur et al. (2007) 对NO进行了建模，但未包含$N_2O$产生。
+  - Schreiber et al. (2009) 在硝化生物膜中对$N_2O$进行了建模，但假设$N_2O$始终在有氧条件下通过AOB反硝化产生，且校准数据有限。
+  - Yu et al. (2010) 使用乘法Monod模型用于纯培养，未在混合培养中验证。
+  - Hiatt and Grady (2008) 纳入了四步反硝化，但忽略了AOB驱动的$N_2O$产生，且未校准模型参数。
+- 在成熟的ASM（活性污泥模型）框架内，尚无通用模型能够整合硝化和反硝化驱动的$N_2O$动力学，适用于混合培养系统的广泛操作条件。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 本文旨在解决污水处理厂生物脱氮 (BNR) 过程中排放 $$N_2O$$（一种强效温室气体和消耗臭氧层物质）的环境问题。
+- 以前用于描述 $$N_2O$$ 动态的数学模型通常是经验性的、过于简化的、针对特定案例的，或者缺乏独立的验证。
+- 本研究旨在开发一个通用的、伪机制的数学模型，以准确描述混合培养硝化和反硝化过程中 $$N_2O$$ 的产生和消耗动态。
+
+
+
+------
+
 **Gemini 3.0 Pro:**
 
 本文试图解决缺乏一个全面且通用的数学模型来描述混合培养活性污泥系统中硝化和反硝化过程中$$N_2O$$动力学（产生和消耗）的问题。以前的模型通常是经验性的、过于简化的、仅针对特定案例的，或者忽略了特定的途径，如AOB驱动的$$N_2O$$产生。
@@ -73,6 +104,63 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="solution" label="解决" >
 
 **Q：论文如何解决这个问题？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文通过开发一个伪机理数学模型来解决上述问题，该模型扩展了通用ASM（活性污泥模型）框架以纳入$N_2O$动力学。方法包括：
+
+**1. $N_2O$产生途径的机理基础：**
+- 对于AOB（硝化），主要考虑的途径是**硝化菌反硝化**（图1B），即在低DO条件下$NO_2^-$作为末端电子受体，通过NIR和NOR依次还原产生NO和$N_2O$。
+- 对于异养反硝化菌，采用**四步顺序反硝化**（$NO_3^- \rightarrow NO_2^- \rightarrow NO \rightarrow N_2O \rightarrow N_2$），每步具有独立的反应特异性动力学。
+
+**2. 模型结构——共8个过程：**
+- **4个AOB过程**（表S1）：
+  - 过程1：AMO催化$NH_4^+$氧化为$NH_2OH$
+  - 过程2：HAO催化$NH_2OH$以$O_2$为末端电子受体氧化为$NO_2^-$（含生物量增长）
+  - 过程3：AOB反硝化以$NO_2^-$为电子受体→产生NO
+  - 过程4：AOB反硝化以NO为电子受体→产生$N_2O$
+- **4个异养反硝化过程**（表S2）：
+  - 过程5：$NO_3^-$ → $NO_2^-$（dNaR催化）
+  - 过程6：$NO_2^-$ → NO（dNiR催化，受NO抑制）
+  - 过程7：NO → $N_2O$（NoR催化，受NO抑制）
+  - 过程8：$N_2O$ → $N_2$（N2OR催化，受NO抑制）
+
+**3. 关键动力学特征：**
+- 对AOB反硝化应用**缺氧校正因子**（$\eta_{AOB}$），反映当$NO_2^-$替代$O_2$作为电子受体时活性降低约10倍。
+- 使用$O_2$的**底物抑制函数**描述低DO下$N_2O$产生增加的现象。
+- 对最后三步反硝化（$NO_2^-$、NO和$N_2O$还原）纳入**NO抑制**。
+- AMO（$K_{S1,O2}^{AOB}$）和末端氧化酶（$K_{S2,O2}^{AOB}$）使用不同的$O_2$亲和常数，反映其对$O_2$的不同亲和力。
+
+**4. 模型组分：**
+- 4个生物量组：$X_{AOB}$、$X_{NOB}$、$X_H$、$X_I$
+- 8个可溶性组分：$S_{NH4}$、$S_{NH2OH}$、$S_{NO2}$、$S_{NO3}$、$S_{NO}$、$S_{N2O}$、$S_{N2}$、$S_O$
+
+**5. 参数估计：**
+- 模型特有参数（硝化：$\mu_{AOB}^{AMO}$、$\mu_{AOB}^{HAO}$、$K_{S1,O2}^{AOB}$、$K_{I,O2}^{AOB}$、$\eta_{AOB}$；反硝化：$\mu_{BH}^{H3}$、$K_{O2}^{H3}$、$K_S^{H3}$）通过最小化模型预测与实验数据偏差的平方和来估计。
+- 其他生物过程（内源呼吸、NOB的有氧$NO_2^-$氧化、异养菌的有氧COD氧化）采用标准ASM动力学表达式和文献参数值。
+- 通过95%置信区间和联合置信椭圆严格评估参数可识别性。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 作者通过添加 6 个新过程和 3 种新反应物（$$NH_2OH$$、$$NO$$、$$N_2O$$）扩展了广泛使用的活性污泥模型 (ASMs)。
+- 对于自养硝化，该模型结合了两步 $$NH_4^+$$ 氧化和 AOB 驱动的硝化菌反硝化（使用 $$NO_2^-$$ 作为电子受体产生 $$N_2O$$）。
+- 对于异养反硝化，该模型实现了四步连续还原（$$NO_3^- \rightarrow NO_2^- \rightarrow NO \rightarrow N_2O \rightarrow N_2$$），并具有独立的、特定于反应的动力学和氧抑制函数。
+- 该模型使用来自四个独立的、已发表的案例研究的实验数据进行了严格的校准和验证，这些案例涵盖了各种反应器配置和操作条件。
+
+
+
+------
+
+
 
 **Gemini 3.0 Pro:**
 
@@ -88,6 +176,75 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：论文做了哪些实验？**
 
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文未开展新实验，而是使用来自**四个已发表案例研究**的实验数据对模型进行校准、验证和测试。四个案例研究涵盖了广泛的反应器类型、废水组成、生物量类型和操作条件：
+
+**案例1 — Yang et al. (2009)：**
+- **反应器类型：** 序批式反应器（SBR）
+- **过程：** 利用生活污水进行硝化和异养反硝化
+- **使用的实验：**
+  - 亚硝化批次实验（DO限制，$NH_4^+$-N = 32.7 g m$^{-3}$）→ 校准AOB $N_2O$参数
+  - 三种$COD/NO_3^-$-N比（1.5、3.8、4.7）下的反硝化批次实验 → 校准反硝化$N_2O$参数
+  - SBR1：经$NO_3^-$途径的完全硝化-反硝化 → 模型验证
+  - SBR2：经$NO_2^-$途径的部分硝化-反硝化 → 模型验证
+  - 不同初始$NH_4^+$浓度（17–55 g N m$^{-3}$）对$N_2O$产生的影响
+  - 不同DO设定点（0.5–2.5 g $O_2$ m$^{-3}$）对$N_2O$产生的影响
+
+**案例2 — Butler et al. (2009)：**
+- **反应器类型：** 连续流中试规模硝化活性污泥装置
+- **过程：** 沉淀污水的硝化
+- **使用的实验：**
+  - 施加2.82和2.61 mg $NH_4^+$-N g$^{-1}$ TSS的铵冲击负荷
+  - 监测$NH_4^+$脉冲期间瞬态$N_2O$排放和DO下降
+  - $N_2O$排放量为铵脉冲的0.6–0.7%
+
+**案例3 — Itokawa et al. (2001)：**
+- **反应器类型：** 连续流活性污泥生物反应器
+- **过程：** 低$COD/N$比（$COD/N < 3.5$）条件下的高负荷生物脱氮
+- **使用的实验：**
+  - 监测典型周期内$N_2O$排放、$NH_4^+$、$NO_2^-$、$NO_3^-$浓度变化
+  - 在COD限制条件下缺氧阶段观察到高$N_2O$排放（约占进水氮的20%）
+  - 从该数据估计反硝化$N_2O$参数（$\mu_{BH}^{H3}$、$K_{O2}^{H3}$、$K_S^{H3}$）
+
+**案例4 — Kim et al. (2010)：**
+- **反应器类型：** 硝化富集培养物的批次反应器
+- **过程：** 以$NH_4^+$或$NH_2OH$为主要底物的硝化
+- **使用的实验：**
+  - 以$NH_4^+$为底物的$N_2O$产生（有氧条件）
+  - 以$NH_2OH$为底物的$N_2O$产生——产生速率高约2个数量级
+  - $NO_2^-$积累对$N_2O$产生速率的影响
+  - 从该数据估计AOB特异性模型参数（$\mu_{AOB}^{AMO}$、$\mu_{AOB}^{HAO}$、$K_{S1,O2}^{AOB}$、$K_{I,O2}^{AOB}$、$\eta_{AOB}$）
+
+**附加模型模拟（非实验）：**
+- 连续反应器模拟，分别针对亚硝化（DO从0.2变化至2.0 mg $O_2$ L$^{-1}$）和异养反硝化（$COD/N$从1.0变化至3.0），预测不同操作条件下的稳态$N_2O$产生量。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 论文本身侧重于数学建模和模拟，而不是进行新的湿法实验。
+- 它利用了来自四个独立案例研究的实验数据进行模型测试：
+  1. 使用生活污水的间歇和序批式反应器 (SBR) 亚硝化/反硝化测试。
+  2. 中试规模硝化活性污泥厂的氨冲击负荷实验。
+  3. 低 COD/N 比条件下的连续反硝化实验。
+  4. 使用 $$NH_4^+$$ 或 $$NH_2OH$$ 作为主要底物的间歇硝化实验。
+- 还进行了连续活性污泥系统模拟，以预测在不同溶解氧 (DO) 和 COD/N 设定点下的 $$N_2O$$ 产生量。
+
+
+
+------
+
+
+
 **Gemini 3.0 Pro:**
 
 本文没有进行新的湿法实验室实验，而是利用之前四项研究的实验数据进行了模型校准和验证：
@@ -101,6 +258,59 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="exploration" label="探索" >
 
 **Q：有什么可以进一步探索的点？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+**1. 缺氧条件下AOB的生长：**
+- 当前模型未考虑在DO限制条件下AOB与$NO_2^-$呼吸耦合的生物量增长。随着关于AOB缺氧生长信息的增加，这一简化应予以修正。
+
+**2. HAO介导的$NH_2OH$直接产生$N_2O$（替代途径）：**
+- 模型忽略了HAO直接从$NH_2OH$化学/酶促产生$N_2O$的途径（即图1A中$\alpha = 0$）。在某些条件下（如缺氧后恢复有氧条件期间的$N_2O$产生），该途径可能变得重要。未来工作应研究该替代途径何时占主导地位。
+
+**3. 缺氧后恢复有氧条件期间的$N_2O$产生：**
+- 模型无法捕捉从缺氧到有氧条件过渡期间的$N_2O$产生，这一现象已被Yu et al. (2010)观察到。这种瞬态行为需要进一步的机理理解和模型改进。
+
+**4. NO动力学的验证：**
+- 虽然NO作为模型组分被纳入（作为$N_2O$的前体），但本研究未对NO动力学进行实验验证。未来工作应包括同步测量NO和$N_2O$以验证NO子模型。
+
+**5. 差异化$O_2$亲和力的实验验证：**
+- 模型使用两个不同的$O_2$亲和常数：$K_{S1,O2}^{AOB}$（AMO，0.031–0.043 g DO m$^{-3}$）和$K_{S2,O2}^{AOB}$（末端氧化酶，0.6 g DO m$^{-3}$），相差10倍。需要直接实验验证这一差异。
+
+**6. 参数普适性与微生物群落效应：**
+- 模型参数值在四个案例研究中存在差异，可能是由于不同反应器条件下微生物群落组成的差异。未来研究应探讨微生物群落结构与$N_2O$产生动力学之间的关系。
+
+**7. 全规模BNR应用：**
+- 该模型尚未针对全规模生物脱氮（BNR）装置的$N_2O$排放进行精确定量预测的验证。需要持续与全规模数据进行对比测试，以确定参数值范围并确认共识机制。
+
+**8. 与其他$N_2O$产生机制的整合：**
+- 两种AOB途径（硝化菌反硝化与HAO介导的$NH_2OH$氧化）在不同DO条件下的相对重要性需要进一步研究，因为它们可能受溶解氧浓度的影响不同。
+
+**9. 厌氧氨氧化（Anammox）和NOB的贡献：**
+- 论文指出NOB和厌氧氨氧化菌目前不被认为是$N_2O$的重要贡献者。然而，随着基于厌氧氨氧化的工艺在污水处理中日益普及，其潜在的$N_2O$产生应被研究并可能纳入模型框架。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 当前模型假设 HAO 介导的由 $$NH_2OH$$ 产生 $$N_2O$$ 的过程可以忽略不计；未来的研究可以探索这种替代途径变得显著的条件。
+- 在限制性 DO 条件下，AOB 结合 $$NO_2^-$$ 呼吸的生长目前被排除在外，随着更多数据的出现，可以将其纳入。
+- 该模型尚不能捕捉在经历一段厌氧期后恢复到好氧条件期间的 $$N_2O$$ 产生。
+- 需要对 AMO 和末端氧化酶之间氧亲和力的差异进行直接的实验验证。
+- 需要在更广泛的全尺寸生物营养物去除 (BNR) 系统中进一步校准和描绘参数值，以实现精确的定量预测。
+
+
+
+------
+
 
 **Gemini 3.0 Pro:**
 
@@ -116,6 +326,60 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q： 总结一下论文的主要内容。**
 
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文提出了一个伪机理数学模型，用于描述活性污泥系统中通过硝化和反硝化进行生物脱氮过程中$N_2O$的产生与消耗。主要内容如下：
+
+**1. 模型开发——ASM框架的扩展：**
+- 在成熟的ASM过程模型基础上，增加了**6个额外过程**和**3个额外反应物**（$NH_2OH$、NO、$N_2O$），以捕捉$N_2O$动力学。
+- 模型追踪4个生物量组（$X_{AOB}$、$X_{NOB}$、$X_H$、$X_I$）和8个可溶性组分（$S_{NH4}$、$S_{NH2OH}$、$S_{NO2}$、$S_{NO3}$、$S_{NO}$、$S_{N2O}$、$S_{N2}$、$S_O$）。
+
+**2. 建模的两条主要$N_2O$产生途径：**
+- **AOB（硝化菌反硝化）：** 在低DO条件下，$NO_2^-$作为末端电子受体；$NH_2OH$通过HAO氧化，电子用于通过NIR和NOR将$NO_2^-$还原为NO再到$N_2O$。基于现有证据，排除了HAO介导的$NH_2OH$直接产生$N_2O$的途径。
+- **异养反硝化（四步）：** 顺序还原$NO_3^- \rightarrow NO_2^- \rightarrow NO \rightarrow N_2O \rightarrow N_2$，每步具有独立的反应特异性动力学，最后三步含NO抑制。
+
+**3. 关键建模发现：**
+- 缺氧校正因子$\eta_{AOB}$校准范围为0.05–0.09，证实当$NO_2^-$（而非$O_2$）作为末端电子受体时，AOB活性**降低约10倍**。
+- 在四步反硝化中，**最后一步（$N_2O$还原为$N_2$）最先受$O_2$抑制**，与实验观察一致。
+- $N_2O$产生量可占不同硝化和反硝化系统中消耗氮的**0.1–25%**。
+- 在连续反应器模拟中，亚硝化产生的$N_2O$更高（占消耗$NH_4^+$的0.5–11.5%），而低$COD/N$条件下异养反硝化产生的$N_2O$占消耗$NO_3^-$的2.6–16.8%。
+
+**4. 针对四个案例研究的模型验证：**
+- 模型成功地对四个不同系统（SBR、连续流；生活污水、合成废水；批次和连续操作）的实验数据进行了校准和验证。
+- 大多数变量的$R^2$值>0.85，表明模型预测与实验观测之间吻合良好。
+- 通过95%置信区间和联合置信椭圆严格确认了参数可识别性。
+
+**5. 操作启示：**
+- 低DO浓度显著增加硝化/亚硝化过程中的$N_2O$产生。
+- 高$NO_2^-$积累是AOB产生$N_2O$的关键驱动因素。
+- 反硝化中低$COD/N$比导致显著更高的$N_2O$排放。
+- 通过优化DO设定点和$COD/N$比可以控制$N_2O$产生。
+
+**6. 意义：**
+- 这是首批在ASM框架内整合硝化和反硝化$N_2O$动力学的综合机理模型之一，具有严格的参数估计和跨多个实验系统的独立验证。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 成功开发了 ASM 框架的综合扩展模型，以模拟生物脱氮过程中的 $$N_2O$$ 动态。
+- 该模型准确地复制了不同系统中的 $$N_2O$$ 产生，证实了 AOB 硝化菌反硝化和不完全异养反硝化是 $$N_2O$$ 的主要来源。
+- 模型内的动力学分析证实，当使用 $$NO_2^-$$ 作为最终电子受体时，AOB 的羟胺氧化速度比使用 $$O_2$$ 时慢约 10 倍。
+- 在四步异养反硝化过程中，最后一步（$$N_2O$$ 还原为 $$N_2$$）对氧抑制最敏感。
+- 模拟表明，$$N_2O$$ 的产生可占消耗氮的 0.1-25%，硝化过程中的低 DO 和反硝化过程中的低 COD/N 比会加剧这种情况。
+
+
+
+------
+
+
 **Gemini 3.0 Pro:**
 
 - 开发了一个扩展ASM的统一数学模型，用于模拟废水处理中的$$N_2O$$排放。
@@ -129,6 +393,61 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="related" label="相关" >
 
 **Q： 有哪些相关研究？**
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- Kampschreur et al. (2009): *Nitrous oxide emission during wastewater treatment.* Water Res., 43, 4093–4103.
+- de Graaf et al. (2010): *Long term partial nitritation of anaerobically treated black water and the emission of nitrous oxide.* Water Res., 44, 2171–2178.
+- Tallec et al. (2006): *Nitrous oxide emissions from secondary activated sludge in nitrifying conditions of urban wastewater treatment plants: Effect of oxygenation level.* Water Res., 40, 2972–2980.
+- Sivret et al. (2008): *Nitrous oxide monitoring for nitrifying activated sludge aeration control: A simulation study.* Biotechnol. Bioeng., 101, 109–118.
+- Kampschreur et al. (2008): *Effect of dynamic process conditions on nitrogen oxides emission from a nitrifying culture.* Environ. Sci. Technol., 42, 429–435.
+- Kampschreur et al. (2008): *Dynamics of nitric oxide and nitrous oxide emission during full-scale reject water treatment.* Water Res., 42, 812–826.
+- Butler et al. (2009): *Nitrous oxide emissions for early warning of biological nitrification failure in activated sludge.* Water Res., 43, 1265–1272.
+- Foley et al. (2010): *Nitrous oxide generation in full-scale biological nutrient removal wastewater treatment plants.* Water Res., 44, 831–844.
+- Kampschreur et al. (2007): *Unraveling the source of nitric oxide emission during nitrification.* Water Environ. Res., 79, 2499–2509.
+- Oh et al. (1999): *Acetate limitation and nitrite accumulation during denitrification.* J. Environ. Eng., 125, 234–242.
+- Zeng et al. (2003): *Simultaneous nitrification, denitrification, and phosphorus removal in a labscale sequencing batch reactor.* Biotechnol. Bioeng., 84, 170–178.
+- Rodionov et al. (2005): *Dissimilatory metabolism of nitrogen oxides in bacteria: comparative reconstruction of transcriptional networks.* PLoS Comput. Biol., 1, 415–431.
+- Yu et al. (2010): *Mechanisms and specific directionality of autotrophic nitrous oxide and nitric oxide generation during transient anoxia.* Environ. Sci. Technol., 44, 1313–1319.
+- Yang et al. (2009): *$N_2O$ Production during nitrogen removal via nitrite from domestic wastewater: Main sources and control method.* Environ. Sci. Technol., 43, 9400–9406.
+- Kim et al. (2010): *Nitrous oxide emission from nitrifying activated sludge dependent on denitrification by ammonia-oxidizing bacteria.* Bioresour. Technol., 101, 3958–3963.
+- Ahn et al. (2011): *Comparison of partial and full nitrification processes applied for treating high-strength nitrogen wastewaters: microbial ecology through nitrous oxide production.* Environ. Sci. Technol., 45, 2734–2740.
+- Schreiber et al. (2009): *Mechanisms of transient nitric oxide and nitrous oxide production in a complex biofilm.* ISME J., 3, 1301–1313.
+- Hiatt et al. (2008): *An updated process model for carbon oxidation, nitrification, and denitrification.* Water Environ. Res., 80, 2145–2156.
+- Itokawa et al. (2001): *Nitrous oxide production in high-loading biological nitrogen removal process under low COD/N ratio condition.* Water Res., 35, 657–664.
+- Hooper et al. (1997): *Enzymology of the oxidation of ammonia to nitrite by bacteria.* Antonie van Leeuwenhoek, 71, 59–67.
+- Arp et al. (2003): *Metabolism of inorganic N compounds by ammonia-oxidizing bacteria.* Crit. Rev. Biochem. Mol. Biol., 38, 471–495.
+- von Schulthess et al. (1996): *Release of nitrous oxide ($N_2O$) from denitrifying activated sludge: Verification and application of a mathematical model.* Water Res., 30, 521–530.
+- Zumft et al. (1993): *The biological role of nitric oxide in bacteria.* Arch. Microbiol., 160, 253–264.
+- Koch et al. (2000): *Mathematical modeling of autotrophic denitrification in a nitrifying biofilm of a rotating biological contactor.* Water Sci. Technol., 41, 191–198.
+- Henze et al. (2000): *Activated Sludge Models ASM1, ASM2, ASM2d and ASM3, Scientific and Technical Reports.* IWA Publishing: London.
+- Smith et al. (1998): *Spreadsheet method for evaluation of biochemical reaction rate coefficients and their uncertainties by weighted nonlinear least-squares analysis of the integrated Monod equation.* Appl. Environ. Microbiol., 64, 2044–2050.
+- Otte et al. (1996): *Nitrous oxide production by Alcaligenes faecalis under transient and dynamic aerobic and anaerobic conditions.* Appl. Environ. Microbiol., 62, 2421–2426.
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- Kampschreur et al. (2009) Nitrous oxide emission during wastewater treatment.
+- Yang et al. (2009) N2O Production during nitrogen removal via nitrite from domestic wastewater: Main sources and control method.
+- Butler et al. (2009) Nitrous oxide emissions for early warning of biological nitrification failure in activated sludge.
+- Itokawa et al. (2001) Nitrous oxide production in high-loading biological nitrogen removal process under low COD/N ratio condition.
+- Kim et al. (2010) Nitrous oxide emission from nitrifying activated sludge dependent on denitrification by ammonia-oxidizing bacteria.
+- Schreiber et al. (2009) Mechanisms of transient nitric oxide and nitrous oxide production in a complex biofilm.
+- von Schulthess et al. (1996) Release of nitrous oxide (N2O) from denitrifying activated sludge: Verification and application of a mathematical model.
+- Hiatt et al. (2008) An updated process model for carbon oxidation, nitrification, and denitrification.
+
+
+
+------
+
 
 **Gemini 3.0 Pro:**
 

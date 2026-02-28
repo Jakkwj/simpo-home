@@ -62,6 +62,34 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：这篇论文试图解决什么问题？**
 
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+- **缺乏针对TDDA集成系统的数学模型**：尽管硫驱动反硝化与厌氧氨氧化（anammox）的集成工艺已被广泛研究，但目前尚无针对单反应器中硫代硫酸盐驱动反硝化与厌氧氨氧化（TDDA）联合工艺的动力学数学模型。
+- **硫代硫酸盐氧化途径认识不足**：以往简化模型假设硫代硫酸盐直接被氧化为硫酸盐（Sox途径），不产生中间产物，但在TDDA系统中观察到显著的元素硫（$S^0$）积累，表明存在不同的（分支）氧化途径，尚未被建模描述。
+- **SOB与厌氧氨氧化菌之间的相互作用不明**：硫氧化细菌（SOB）与厌氧氨氧化菌之间的复杂相互作用——包括对$NO_2^-$作为电子受体的竞争，以及部分反硝化向厌氧氨氧化供给$NO_2^-$——尚未得到定量理解。
+- **缺乏工艺评估与优化的实用工具**：目前没有基于模型的工具来评估TDDA工艺的可行性、评价关键操作参数（如S/N比、$NH_4^+/NO_3^-$比）的影响，以及指导处理含高浓度硝酸盐和铵盐工业废水时的硫代硫酸盐投加量。
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 缺乏基于数学模型对硫-氮循环生物工艺（特别是硫驱动反硝化与厌氧氨氧化结合工艺）的深入理解。
+ - 未能阐明TDDA工艺中不同微生物（硫氧化细菌(SOB)和厌氧氨氧化细菌）之间复杂的相互作用。
+ - 缺乏针对整合的硫（硫代硫酸盐）驱动反硝化与厌氧氨氧化（TDDA）系统的综合动力学模型。
+
+
+------
+
+
 **Gemini 3.0 Pro:**
 
 本文试图解决对硫驱动反硝化与厌氧氨氧化（TDDA）耦合工艺缺乏深入理解的问题。具体而言：
@@ -75,6 +103,54 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="solution" label="解决" >
 
 **Q：论文如何解决这个问题？**
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+### 1. 开发新型动力学模型（TDDA模型）
+- 建立了包含**7个生化过程、12个变量和19个参数**的TDDA系统动力学模型。
+- 模型涉及两类微生物：硫氧化细菌（$X_{SOB}$）和厌氧氨氧化菌（$X_{AMX}$），采用双项Monod型动力学表达底物摄取速率。
+- 提出了**分支硫代硫酸盐氧化模型**：
+  - 第一步：$S_2O_3^{2-}$被氧化为等比例的$SO_4^{2-}$和$S^0$（每分子释放2个电子）：$S_2O_3^{2-} + H_2O \rightarrow SO_4^{2-} + S^0 + 2H^+ + 2e^-$
+  - 第二步：$S^0$进一步被氧化为$SO_4^{2-}$（每分子释放6个电子）：$S^0 + 4H_2O \rightarrow SO_4^{2-} + 8H^+ + 6e^-$
+- 采用**两步反硝化模型**：$NO_3^- \rightarrow NO_2^- \rightarrow N_2$。
+- 7个生化过程包括：(1) 硝酸盐还原耦合硫代硫酸盐氧化，(2) 亚硝酸盐还原耦合硫代硫酸盐氧化，(3) 硝酸盐还原耦合元素硫氧化，(4) 亚硝酸盐还原耦合元素硫氧化，(5) 厌氧氨氧化，(6) $X_{SOB}$衰减，(7) $X_{AMX}$衰减。
+
+### 2. 模型校准与参数估计
+- 使用**AQUASIM**和**MATLAB R2018a**，通过拟合批次实验数据进行参数估计，最小化最小二乘代价函数：$J(\theta) = \min \sum_{t=1}^{N}(y(t) - y(t,\theta))^2$
+- 利用Fisher信息矩阵（FIM）进行**可识别性分析**，计算95%置信区间。
+- 估计了9个参数（$\mu^1_{SOB}$、$\mu^2_{SOB}$、$\mu^3_{SOB}$、$\mu^4_{SOB}$、$K_{S_2O_3}$、$K_{S^0}$、$Y_{SOB1}$、$Y_{SOB2}$、$\mu_{AMX}$），其余10个参数来自文献。
+
+### 3. 不同条件下的模型验证
+- 在两组独立批次实验（B1和B2）下验证模型，分别获得$R^2 > 0.84$和$R^2 > 0.86$，证明模型能够描述氮和硫的动态转化。
+
+### 4. 宏基因组分析验证硫代硫酸盐氧化途径
+- 对UASB反应器污泥进行宏基因组测序（Illumina MiSeq 2500），验证分支氧化途径。
+- 定量分析关键基因丰度（SoxXA、SoxYZ、SoxB、SoxCD、DsrAB、AprAB、Sat），确认分支氧化途径（不完整Sox + DsrAB/AprAB/Sat）的主导地位。
+
+### 5. 稳态模拟评估SOB与厌氧氨氧化菌的相互作用
+- 在不同S/N（0.5–3.5 gS/gN）和$NH_4^+/NO_3^-$（0.3–1.2 gN/gN）比值下模拟TDDA系统稳态，评估生物量分布、脱氮途径及工艺可行性。
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 开发了一个包含7个生物过程、12个变量和19个参数的动力学模型，用于评估单一反应器中的TDDA工艺。
+- 进行了批次实验，分别对硫代硫酸盐驱动反硝化和厌氧氨氧化的模型参数进行了校准和估算。
+- 在不同条件（如不同的电子供体和底物竞争情况）下对模型进行了验证。
+- 通过宏基因组学分析验证了新开发的支链硫代硫酸盐氧化模型。
+- 模拟了稳态条件，以评估在不同底物比率（S/N和$$NH_4^+/NO_3^-$$）下SOB和厌氧氨氧化细菌之间的相互作用。
+
+
+------
 
 **Gemini 3.0 Pro:**
 
@@ -90,6 +166,67 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="experiment" label="实验" >
 
 **Q：论文做了哪些实验？**
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+### 1. UASB反应器长期运行实验
+- 在有效容积为**2.0 L的上流式厌氧污泥床（UASB）反应器**中运行205天（第221–425天），分3个阶段逐步提高底物浓度：
+  - 第1阶段（第221–268天）：进水$NO_3^-$-N ~101.8 mgN/L，$NH_4^+$-N ~97.2 mgN/L，$S_2O_3^{2-}$-S ~201.4 mgS/L
+  - 第2阶段（第269–340天）：进水$NO_3^-$-N ~123.5 mgN/L，$NH_4^+$-N ~118.9 mgN/L，$S_2O_3^{2-}$-S ~238.7 mgS/L
+  - 第3阶段（第341–425天）：进水$NO_3^-$-N ~141.9 mgN/L，$NH_4^+$-N ~140.3 mgN/L，$S_2O_3^{2-}$-S ~276.1 mgS/L
+- 温度：30 ± 1°C；HRT：全程12 h。
+- TN去除率达75.68%–82.01%；硫代硫酸盐去除率100%。
+
+### 2. 模型校准批次实验（A1和A2）
+- 在250 mL血清瓶中进行，30°C，220 rpm，pH 8.0（20 mM HEPES缓冲）。
+- **批次A1**（硫代硫酸盐驱动反硝化参数校准）：
+  - 初始底物：$NO_3^-$-N = 40 mgN/L，$S_2O_3^{2-}$-S = 136 mgS/L（S/N = 3.4）
+  - 测定：$NO_3^-$、$NO_2^-$、$S_2O_3^{2-}$、$SO_4^{2-}$、$S^0$随时间变化
+  - 用于估计：$\mu^1_{SOB}$、$\mu^2_{SOB}$、$\mu^3_{SOB}$、$\mu^4_{SOB}$、$K_{S_2O_3}$、$K_{S^0}$、$Y_{SOB1}$、$Y_{SOB2}$
+- **批次A2**（厌氧氨氧化参数校准）：
+  - 初始底物：$NO_2^-$-N = 40 mgN/L，$NH_4^+$-N = 40 mgN/L
+  - 用于估计：$\mu_{AMX}$
+
+### 3. 模型验证批次实验（B1和B2）
+- **批次B1**（情景1：硫代硫酸盐驱动反硝化为厌氧氨氧化供给亚硝酸盐）：
+  - 初始底物：$NO_3^-$-N = 40 mgN/L，$NH_4^+$-N = 40 mgN/L，$S_2O_3^{2-}$-S = 80 mgS/L（S/N = 2.0）
+- **批次B2**（情景2：硫代硫酸盐驱动反硝化与厌氧氨氧化竞争亚硝酸盐）：
+  - 初始底物：$NO_2^-$-N = 40 mgN/L，$NH_4^+$-N = 40 mgN/L，$S_2O_3^{2-}$-S = 80 mgS/L（S/N = 2.0）
+
+### 4. 化学分析
+- $NO_2^-$、$NO_3^-$、$S_2O_3^{2-}$、$SO_4^{2-}$：离子色谱（Dionex Ionpac AS19柱）
+- $S^{2-}$和$SO_3^{2-}$：分光光度法
+- $NH_4^+$：流动注射分析仪（QuickChem 8500，Lachat）
+- MLSS和MLVSS：标准方法
+- $S^0$浓度：质量平衡计算
+
+### 5. 宏基因组测序与分析
+- 从UASB反应器第3阶段采集污泥样品。
+- 使用FastDNA SPIN Kit提取DNA；**Illumina MiSeq 2500**平台测序。
+- IDBA_UD组装；Prodigal预测ORF；GhostKOALA进行KEGG功能注释。
+- 以每百万reads数（RPM）定量关键硫氧化基因：SoxXA、SoxYZ、SoxB、SoxCD、DoxAD、TsdA、SorAB、AprAB、DsrAB、Sat。
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 运行了一个上流式厌氧污泥床（UASB）反应器，连续200多天进水含有硫代硫酸盐、硝酸盐和铵盐的合成废水。
+- 进行了两组用于模型校准的批次测试：A1用于硫代硫酸盐驱动反硝化参数，A2用于厌氧氨氧化参数。
+- 进行了两组用于模型验证的附加批次测试：B1（硫代硫酸盐驱动反硝化为厌氧氨氧化提供亚硝酸盐）和B2（硫代硫酸盐驱动反硝化与厌氧氨氧化竞争亚硝酸盐）。
+- 进行了化学分析，测量了$$NO_2^-$$、$$NO_3^-$$、$$S_2O_3^{2-}$$、$$SO_4^{2-}$$、$$S^0$$和$$NH_4^+$$的浓度。
+- 对UASB反应器中的污泥样本进行了宏基因组测序和分析，以研究硫代谢途径。
+
+------
+
+
 
 **Gemini 3.0 Pro:**
 
@@ -107,6 +244,46 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：有什么可以进一步探索的点？**
 
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- **以基因组为中心的宏基因组学研究**：文章指出，对宏基因组组装的scaffolds进行分箱以重建单个物种基因组的工作有待进一步探索，这种以基因组为中心的方法将有助于更好地理解TDDA系统的系统发育多样性和代谢途径。
+
+- **批次与连续反应器生物量产率系数差异的机制**：$Y_{SOB1}$和$Y_{SOB2}$在批次实验和连续反应器中的差异原因尚不明确，可能与连续反应器中硫代硫酸盐被其他电子受体（如氧气）化学或生物氧化有关，值得深入研究。
+
+- **亚硝酸盐抑制效应**：模型未考虑$NO_2^-$对反硝化和厌氧氨氧化的抑制效应（实验中最高亚硝酸盐浓度为40.0 mgN/L，pH 8.0）。未来研究可在亚硝酸盐浓度更高的系统中引入亚硝酸盐抑制动力学。
+
+- **反硝化中间产物NO和$N_2O$**：模型将反硝化简化为两步过程（$NO_3^- \rightarrow NO_2^- \rightarrow N_2$），未考虑NO和$N_2O$中间产物。纳入这些中间产物可提高模型精度，对温室气体排放评估也具有重要意义。
+
+- **与异养反硝化的耦合**：文章简要讨论了异养反硝化与厌氧氨氧化耦合的挑战（异养菌过度生长风险）。可开发包含异养反硝化的综合模型，用于处理同时含有机物和无机氮的废水。
+
+- **中试和全规模应用验证**：模型在实验室规模下开发和验证，其在不同环境条件（温度、pH、进水水质波动）下的中试和全规模TDDA系统适用性有待评估。
+
+- **扩展至其他硫电子供体**：当前模型聚焦于硫代硫酸盐（$S_2O_3^{2-}$）和元素硫（$S^0$），将模型扩展至其他硫化合物（如$S^{2-}$、$SO_3^{2-}$、$S_4O_6^{2-}$）将拓宽其适用范围。
+
+- **硫代硫酸盐投加量的动态优化控制**：虽然模型提供了评估S/N和$NH_4^+/NO_3^-$比值的框架，但针对进水水质波动的实时模型预测控制策略仍有待开发。
+
+- **生物膜和颗粒污泥建模**：当前模型基于悬浮生长动力学，将其扩展至生物膜或颗粒污泥构型（如颗粒污泥UASB）需要引入传质限制和空间梯度。
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 对宏基因组组装获得的支架（scaffolds）进行分箱（binning），以重建单个物种的基因组，从而更好地了解TDDA系统的系统发育多样性和代谢途径。
+- 调查批次反应器和连续反应器之间生物量产率系数存在差异的原因，例如连续反应器中可能存在其他电子受体（如氧气）对硫代硫酸盐的化学或生物氧化。
+- TDDA工艺后的进一步深度处理，因为根据排放标准和进水比例，系统中的$$NH_4^+$$可能会过剩。
+
+------
+
+
 **Gemini 3.0 Pro:**
 
 - **长期连续模拟**：文章指出，长期验证的结果不如动态批次模拟令人满意，这可能是由于生物量产率系数的变化或连续反应器中硫代硫酸盐的化学氧化。这种差异需要进一步调查。
@@ -121,6 +298,56 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q： 总结一下论文的主要内容。**
 
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+本文开发、校准、验证并应用了硫代硫酸盐驱动反硝化与厌氧氨氧化（TDDA）工艺的动力学数学模型，主要贡献和发现如下：
+
+### 1. 新型动力学模型的开发
+- 建立了包含**7个生化过程、12个变量和19个参数**的TDDA系统动力学模型。
+- 模型涵盖两类微生物：SOB（$X_{SOB}$）和厌氧氨氧化菌（$X_{AMX}$），采用双项Monod型动力学。
+- 提出了**分支硫代硫酸盐氧化途径**：$S_2O_3^{2-}$首先被氧化为$SO_4^{2-}$和$S^0$，随后$S^0$进一步被氧化为$SO_4^{2-}$。
+
+### 2. 模型校准与验证
+- 从批次实验（A1和A2）中估计了9个关键参数，包括$\mu^1_{SOB}$ = 5.47/d、$\mu^2_{SOB}$ = 1.16/d、$\mu^3_{SOB}$ = 0.0147/d、$\mu^4_{SOB}$ = 0.0076/d、$\mu_{AMX}$ = 0.0899/d、$K_{S_2O_3}$ = 48.26 mgS/L、$K_{S^0}$ = 1.77 mgS/L。
+- 在两种不同条件下（B1和B2）验证模型，分别获得$R^2 > 0.84$和$R^2 > 0.86$，证明模型能够描述氮和硫的动态转化。
+
+### 3. 宏基因组学验证硫代硫酸盐氧化途径
+- 宏基因组分析证实TDDA系统中硫代硫酸盐氧化遵循**分支氧化途径**（不完整Sox系统 + DsrAB + AprAB + Sat），而非完整Sox途径或$S_4I$途径。
+- SoxCD基因缺失及DsrAB、AprAB、Sat基因的高丰度支持了实验中观察到的元素硫积累现象。
+
+### 4. SOB与厌氧氨氧化菌的相互作用
+- 在稳态条件下，不同S/N（0.5–3.5 gS/gN）和$NH_4^+/NO_3^-$（0.3–1.2 gN/gN）比值下，厌氧氨氧化菌占活性生物量的比例为**12%至51%**。
+- 在宽泛的操作条件范围内，厌氧氨氧化菌**不会被SOB淘汰**，这归因于SOB较低的生物量产率和生长速率。
+- 当$NH_4^+/NO_3^-$ > 0.6时，厌氧氨氧化是**主导脱氮途径**（贡献>73%的TN去除）。
+- 稳定协作的原因：(1) SOB中硝酸盐还原速率高于亚硝酸盐还原速率（$\mu^1_{SOB}$是$\mu^2_{SOB}$的4.8倍），确保向厌氧氨氧化持续供给亚硝酸盐；(2) 厌氧氨氧化菌对亚硝酸盐的亲和力（$K_{NO_2}^{AMX}$ = 0.05 mgN/L）远高于SOB（$K_{NO_2}^{SOB}$ = 0.43 mgN/L）。
+
+### 5. 工艺操作的实践意义
+- 推导出$NH_4^+/NO_3^-$（Y）与S/N（X）之间的线性关系：$X = 3.2 - 1.9 \times Y$，$Y \in [0, 0.9]$，定义了实现硫代硫酸盐完全氧化和高TN去除率（>98%）的最优操作区间。
+- 该模型为评估TDDA工艺可行性和调控硫代硫酸盐投加量以处理不同浓度硝酸盐和铵盐工业废水提供了实用工具。
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 成功开发、校准并验证了TDDA工艺的动力学模型，该模型准确描述了氮和硫转化的动态过程。
+- 宏基因组学分析证实，TDDA系统中的硫代硫酸盐氧化遵循以单质硫为中间体的支链氧化途径。
+- 模型模拟表明，SOB和厌氧氨氧化细菌在各种底物浓度下都能稳定合作。
+- 厌氧氨氧化细菌对亚硝酸盐的竞争力强于SOB，只要铵盐充足，厌氧氨氧化仍然是主要的脱氮途径。
+- 所开发的模型可用于评估TDDA工艺的可行性，并优化处理含硝酸盐和铵盐的工业废水的硫代硫酸盐投加量。
+
+
+------
+
+
 **Gemini 3.0 Pro:**
 
 - **模型构建**：成功开发了TDDA工艺的动力学模型，纳入了两步硫代硫酸盐氧化途径（$S_2O_3^{2-} \rightarrow S^0 \rightarrow SO_4^{2-}$）。
@@ -134,6 +361,100 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="related" label="相关" >
 
 **Q： 有哪些相关研究？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+- Deng et al. (2019): *Coupling of sulfur(thiosulfate)-driven denitratation and anammox process to treat nitrate and ammonium contained wastewater.* Water Research 163, 114854.
+
+- Mora et al. (2015): *Investigating the kinetics of autotrophic denitrification with thiosulfate: Modeling the denitritation mechanisms and the effect of the acclimation of SO-NR cultures to nitrite.* Chemical Engineering Journal 262, 235–241.
+
+- Mora et al. (2014): *Examining thiosulfate-driven autotrophic denitrification through respirometry.* Chemosphere 113, 1–8.
+
+- Kostrytsia et al. (2018): *Elemental sulfur-based autotrophic denitrification and denitritation: microbially catalyzed sulfur hydrolysis and nitrogen conversions.* Journal of Environmental Management 211, 313–322.
+
+- Liu et al. (2016): *Evaluation of Nitrous Oxide Emission from Sulfide- and Sulfur-Based Autotrophic Denitrification Processes.* Environmental Science & Technology 50 (17), 9407–9415.
+
+- Xu et al. (2016): *Mathematical modeling of autotrophic denitrification (AD) process with sulphide as electron donor.* Water Research 91, 225–234.
+
+- Baeten et al. (2019): *Modelling anaerobic, aerobic and partial nitritation-anammox granular sludge reactors - A review.* Water Research 149, 322–341.
+
+- Hao et al. (2002): *Model-based evaluation of temperature and inflow variations on a partial nitrification–ANAMMOX biofilm process.* Water Research 36 (19), 4839–4849.
+
+- Kartal et al. (2011): *Molecular mechanism of anaerobic ammonium oxidation.* Nature 479 (7371), U127–U159.
+
+- Kartal et al. (2012): *Advances in Microbial Physiology, Vol 60.* Academic Press Ltd-Elsevier Science Ltd, London, pp. 211–262.
+
+- Campos et al. (2008): *Kinetics of denitrification using sulphur compounds: effects of S/N ratio, endogenous and exogenous compounds.* Bioresource Technology 99 (5), 1293–1299.
+
+- Qian et al. (2015): *Investigation on thiosulfate-involved organics and nitrogen removal by a sulfur cycle-based biological wastewater treatment process.* Water Research 69, 295–306.
+
+- Dasgupta et al. (2017): *Coupling autotrophic denitrification with partial nitritation-anammox (PNA) for efficient total inorganic nitrogen removal.* Bioresource Technology 243, 700–707.
+
+- Wang et al. (2019): *Efficient nitrogen removal in separate coupled-system of anammox and sulfur autotrophic denitrification with a nitrification side-branch under substrate fluctuation.* Science of the Total Environment 696, 133929.
+
+- Li et al. (2019): *Simultaneous removal of ammonia and nitrate by coupled $S^0$-driven autotrophic denitrification and Anammox process in fluorine-containing semiconductor wastewater.* Science of the Total Environment 661, 235–242.
+
+- Canfield et al. (2010): *A Cryptic Sulfur Cycle in Oxygen-Minimum-Zone Waters off the Chilean Coast.* Science 330 (6009), 1375–1378.
+
+- Russ et al. (2013): *Presence and diversity of anammox bacteria in cold hydrocarbon-rich seeps and hydrothermal vent sediments of the Guaymas Basin.* Frontiers in Microbiology 4 (219).
+
+- Strous et al. (1998): *The sequencing batch reactor as a powerful tool for the study of slowly growing anaerobic ammonium-oxidizing microorganisms.* Applied Microbiology and Biotechnology 50 (5), 589–596.
+
+- Lackner et al. (2008): *Heterotrophic activity compromises autotrophic nitrogen removal in membrane-aerated biofilms: Results of a modeling study.* Water Research 42 (4-5), 1102–1112.
+
+- Di Capua et al. (2017): *High-rate autotrophic denitrification in a fluidized-bed reactor at psychrophilic temperatures.* Chemical Engineering Journal 313, 591–598.
+
+- Di Capua et al. (2019): *Electron donors for autotrophic denitrification.* Chemical Engineering Journal 362, 922–937.
+
+- Khanongnuch et al. (2018): *Effect of N/S ratio on anoxic thiosulfate oxidation in a fluidized bed reactor: Experimental and artificial neural network model analysis.* Process Biochemistry 68, 171–181.
+
+- Zhang et al. (2019): *Elucidating functional microorganisms and metabolic mechanisms in a novel engineered ecosystem integrating C, N, P and S biotransformation by metagenomics.* Water Research 148, 219–230.
+
+- Mozumder et al. (2014): *Effect of heterotrophic growth on autotrophic nitrogen removal in a granular sludge reactor.* Environmental Technology 35 (8), 1027–1037.
+
+- Du et al. (2014): *Advanced nitrogen removal with simultaneous Anammox and denitrification in sequencing batch reactor.* Bioresource Technology 162, 316–322.
+
+- Du et al. (2017): *Simultaneous domestic wastewater and nitrate sewage treatment by DEnitrifying AMmonium OXidation (DEAMOX) in sequencing batch reactor.* Chemosphere 174, 399–407.
+
+- Mulder et al. (1995): *Anaerobic ammonium oxidation discovered in a denitrifying fluidized bed reactor.* FEMS Microbiology Ecology 16 (3), 177–183.
+
+- Third et al. (2001): *The CANON System (Completely Autotrophic Nitrogen-removal Over Nitrite) under Ammonium Limitation: Interaction and Competition between Three Groups of Bacteria.* Systematic and Applied Microbiology 24 (4), 588–596.
+
+- Schedel et al. (1980): *Anaerobic oxidation of thiosulfate and elemental sulfur in thiobacillus-denitrificans.* Archives of Microbiology 124 (2-3), 205–210.
+
+- Friedrich et al. (2001): *Oxidation of Reduced Inorganic Sulfur Compounds by Bacteria: Emergence of a Common Mechanism?* Applied and Environmental Microbiology 67 (7), 2873–2882.
+
+- Ghosh et al. (2009): *Biochemistry and molecular biology of lithotrophic sulfur oxidation by taxonomically and ecologically diverse bacteria and archaea.* FEMS Microbiology Reviews 33 (6), 999–1043.
+
+- Dahl et al. (2008): *Microbial Sulfur Metabolism.* Springer-Verlag Berlin Heidelberg.
+
+- Sin et al. (2008): *Modelling nitrite in wastewater treatment systems: a discussion of different modelling concepts.* Water Science and Technology 58 (6), 1155–1171.
+
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- Mora et al. (2015) Investigating the kinetics of autotrophic denitrification with thiosulfate: Modeling the denitritation mechanisms and the effect of the acclimation of SO-NR cultures to nitrite.
+- Deng et al. (2019) Coupling of sulfur(thiosulfate)-driven denitratation and anammox process to treat nitrate and ammonium contained wastewater.
+- Baeten et al. (2019) Modelling anaerobic, aerobic and partial nitritation-anammox granular sludge reactors
+- A review.
+- Kostrytsia et al. (2018) Elemental sulfur-based autotrophic denitrification and denitritation: microbially catalyzed sulfur hydrolysis and nitrogen conversions.
+- Xu et al. (2016) Mathematical modeling of autotrophic denitrification (AD) process with sulphide as electron donor.
+- Campos et al. (2008) Kinetics of denitrification using sulphur compounds: effects of S/N ratio, endogenous and exogenous compounds.
+- Qian et al. (2015) Investigation on thiosulfate-involved organics and nitrogen removal by a sulfur cycle-based biological wastewater treatment process.
+
+
+------
 
 **Gemini 3.0 Pro:**
 

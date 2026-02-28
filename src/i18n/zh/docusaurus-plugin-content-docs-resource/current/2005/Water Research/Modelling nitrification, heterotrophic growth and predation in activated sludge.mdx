@@ -70,19 +70,43 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：这篇论文试图解决什么问题？**
 
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+- **现有ASM模型对微生物群落描述不完整**：传统活性污泥模型（ASM1、ASM2、ASM2d、ASM3）将细菌视为唯一的活性生物量，而将其他所有微生物活动（原生动物、后生动物、噬菌体感染、捕食等）简单地归并到一个"衰减"过程中。这种过度简化忽略了捕食者（原生动物和后生动物）在系统中的显式作用。
+- **缺乏对捕食者-猎物相互作用的定量理解**：尽管捕食者在污水处理厂中明显存在且稳定，但针对硝化菌、异养菌与捕食者（原生动物和后生动物）之间相互作用的数学建模工作极为有限。
+- **无法准确预测活性生物量比例**：在没有捕食机制的情况下，现有模型无法准确预测不同污泥龄（SRT）下活性生物量（氨氧化菌 $X_{NH_4}$、亚硝酸盐氧化菌 $X_{NO_2}$、异养菌 $X_H$）与惰性生物量（$X_I$）的比例。
+- **缺乏评估捕食者活性的标准方法**：目前没有简单可靠的方法来定量测定混合悬浮培养体系中捕食者对呼吸作用的贡献。
+- **SRT和捕食者对生物量组成影响的定量研究不足**：污泥龄和捕食者对SBR系统中种群结构（硝化菌、异养菌、捕食者、惰性生物量）的影响尚未得到充分定量研究。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 当前的活性污泥模型（ASMs）仅将细菌视为唯一的活性生物量，而将其他微生物群落成员（如原生动物和后生动物）的活动隐藏在一个简单的衰减过程中。
+- 在活性污泥微生物群落中，关于细菌与其他微生物（捕食者）之间相互作用的数学建模仍然缺乏。
+- 尽管捕食者（原生动物和后生动物）在污水处理厂中明显存在，并可能影响处理厂的性能和动力学参数，但它们在学术研究中的具体作用在很大程度上被忽视了。
+
+
+
+------
+
+
 **Kimi:**
 这篇论文《Modelling nitriﬁcation, heterotrophic growth and predation in activated sludge》主要关注于活性污泥系统中硝化作用、异养生长和捕食行为之间的相互作用，并试图通过开发一个数学模型来描述这些相互作用。具体来说，论文试图解决以下问题：
 
 1. **硝化作用与异养微生物的相互作用**：活性污泥系统中的硝化细菌和异养微生物在处理废水中的氮和有机物方面发挥着重要作用。论文通过模型来描述这些微生物群体之间的相互作用，以及它们如何共同影响系统的处理效率。
-
 2. **捕食机制的引入**：传统的活性污泥模型通常没有考虑捕食者（如原生动物和后生动物）的影响。这篇论文通过引入捕食机制，尝试更全面地理解微生物生态系统中的捕食行为如何影响硝化细菌和异养微生物的活性和生物量组成。
-
 3. **多底物消耗与多物种生长、维护和衰亡**：论文中的模型考虑了多种底物的消耗以及多种微生物群体的生长、维护和衰亡。这种多底物和多物种的方法有助于更准确地模拟实际的活性污泥系统。
-
 4. **污泥龄（SRT）对生物量组成的作用**：通过模型，研究者探讨了不同的污泥龄（即污泥在系统中的停留时间）如何影响活性生物量（包括硝化细菌、异养细菌和捕食者）的组成以及惰性生物量的积累。
-
 5. **捕食者对硝化作用和异养作用的影响**：论文还研究了捕食者对硝化细菌和异养细菌的存在和活性的影响，这对于理解捕食者在活性污泥系统中的作用至关重要。
-
 6. **实验室规模序批式反应器（SBR）的应用**：为了校准和验证模型，研究者使用了两个在不同污泥龄条件下运行的实验室规模序批式反应器。通过这些实验数据，模型能够成功描述SBR系统的性能，并预测活性生物量的比例。
 
 总的来说，这篇论文试图通过数学建模来提高我们对活性污泥系统中微生物相互作用的理解，特别是在考虑捕食者作用的情况下，如何优化污泥龄和提高系统的整体处理效率。这对于设计和优化废水处理工艺具有重要的实际意义。
@@ -96,17 +120,59 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：论文如何解决这个问题？**
 
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+- **开发新的数学模型（ASM型矩阵模型）**：
+  - 模型以类似ASM模型（Henze et al., 2000）的化学计量/动力学矩阵形式呈现，包含**6种溶解性组分**（溶解氧 $S_{O_2}$、氮气 $S_{N_2}$、氨氮 $S_{NH_4}$、亚硝酸盐 $S_{NO_2}$、硝酸盐 $S_{NO_3}$、有机碳 $S_S$）和**5种颗粒性生物量组分**（$X_{NH_4}$、$X_{NO_2}$、$X_H$、$X_{predators}$、$X_I$）。
+  - **硝化过程**被建模为两步反应：氨氧化（$X_{NH_4}$）和亚硝酸盐氧化（$X_{NO_2}$），以预测20°C以上温度下可能出现的亚硝酸盐积累。
+  - **异养菌生长**在好氧和缺氧（反硝化）条件下均采用Monod切换函数建模。
+  - **生长、维持和衰减过程**遵循Beeftink et al. (1990)的框架，底物同时用于生长和维持。
+  - **捕食机制**通过将所有捕食者（原生动物和后生动物）作为单一集总活性生物量组分（$X_{predators}$）显式引入模型。捕食者好氧生长于三类细菌的可降解部分 $(1-F_{xi})$，对不同细菌类型的捕食偏好相同。捕食者衰减被集总为一个过程（$b_{predators}$）。
+  - 所有生物量类型的衰减产物均产生可降解有机碳（供异养菌利用）和惰性颗粒COD（$X_I$，比例为 $F_{xi}$）。
+
+- **开发简单的捕食者活性评估方法**：
+  - 采用NaCl冲击（5 g NaCl-Cl/L，接触1小时）作为选择性试剂，消除原生动物和后生动物而不影响细菌活性。
+  - 通过比较有无捕食者条件下饥饿状态的呼吸速率（OUR），定量捕食者活性，结果显示捕食者贡献约12–15%的呼吸降低。
+
+- **采用逐步法进行模型校准和验证**：
+  - 在SRT = 30天的SBR上进行校准，拟合三个关键参数：捕食速率（$\mu_{predators} = 0.01\ \text{h}^{-1}$）、捕食者衰减速率（$b_{predators} = 0.15\ \text{h}^{-1}$）和惰性COD比例（$F_{xi} = 0.15$）。
+  - 随后校准硝化菌对氧、亚硝酸盐和氨的亲和常数（$K_{O_2}^{NH_4}$、$K_{O_2}^{NO_2}$、$K_{NH_4}^{NH_4}$、$K_{NO_2}^{NO_2}$）。
+  - 校准后的模型在SRT = 100天的SBR上进行验证（仅将 $K_{O_2}^{NH_4}$ 从1调整为3 mg-$O_2$/L，以反映较大絮体的扩散梯度影响）。
+
+- **基于模型的模拟研究**：
+  - 模拟了SRT从0增加到100天对活性生物量比例和氧化速率的影响。
+  - 对比有无捕食者的模拟结果，定量评估捕食对硝化菌和异养菌活性的影响。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 开发了一个描述硝化菌、异养菌和捕食者之间相互作用的数学模型，结合了多底物消耗以及多物种的生长、维持和衰减。
+- 在ASM框架中引入了捕食机制，将捕食者视为在细菌可降解部分上进行好氧生长的活性生物量。
+- 开发了一种简单的实验程序，使用盐休克（5 g NaCl-Cl/L）选择性地消除捕食者而不影响细菌活性，从而能够量化捕食者的呼吸活性。
+- 使用在不同污泥停留时间（SRT）下长期运行的两个实验室规模序批式反应器（SBRs）的数据，对提出的模型进行了校准和验证。
+
+
+
+------
+
+
+
 **Kimi:**
 这篇论文通过以下几个关键步骤来解决活性污泥系统中硝化、异养生长和捕食相互作用的问题：
 
 1. **开发数学模型**：研究者开发了一个数学模型，用于描述硝化细菌、异养微生物和捕食者（如原生动物和后生动物）之间的相互作用。这个模型考虑了多底物消耗和多物种的生长、维护和衰亡过程。
-
 2. **实验验证**：为了校准和验证这个模型，研究者使用了两个在不同污泥龄（SRT）条件下运行的实验室规模序批式反应器（SBR）。通过长期运行这些反应器并收集数据，研究者能够调整模型参数，确保模型能够准确预测实际系统的性能。
-
 3. **分析微生物群落结构**：通过模型，研究者分析了不同污泥龄对活性生物量（硝化细菌、异养细菌和捕食者）组成以及惰性生物量积累的影响。这有助于理解污泥龄如何影响系统的微生物生态和处理效率。
-
 4. **评估捕食者的作用**：研究者通过模型评估了捕食者在系统中的作用，特别是在抑制捕食者的情况下，活性生物量分数的变化。这有助于理解捕食者对硝化和异养过程的影响，并探索通过控制捕食者来优化系统性能的可能性。
-
 5. **模型应用和优化**：研究者使用模型来模拟和预测不同操作条件下的系统表现，包括在不同污泥龄下的反应器性能。这为设计和优化实际废水处理系统提供了理论依据。
 
 通过这些方法，论文不仅提供了一个理论框架来理解活性污泥系统中的复杂微生物相互作用，而且还提供了一种工具，可以帮助环境工程师和研究人员优化废水处理工艺，提高系统的效率和稳定性。
@@ -117,23 +183,76 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：论文做了哪些实验？**
 
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- **长期SBR运行实验（4年）**：
+  - 两个工作体积为2.5 L的实验室规模SBR在30°C、pH 7.5±0.05条件下运行。
+  - 两个反应器初始均在SRT = 100天下运行；约170天达到稳态后，其中一个切换至SRT = 30天。
+  - 运行周期：进水10 min、曝气反应240 min（曝气量120 L/h）、沉淀80 min、排水30 min。
+  - 接种来自城市污水处理厂的硝化活性污泥。
+  - 合成培养基：以 $(NH_4)_2CO_3$ 为主要氨氮来源（氮负荷：1200 mg-N/天），COD极低（约10 mg/L，来自酵母提取物）。
+
+- **常规监测与取样**：
+  - 在线连续监测DO和pH。
+  - 定期取样测定MLSS、MLVSS、$NH_4^+$、$NO_2^-$、$NO_3^-$（分光光度法和离子色谱法）。
+  - 使用在线呼吸仪（Smolders et al., 1994）在SBR运行周期内在线测定OUR。
+
+- **呼吸活性测定（BOM）**：
+  - 使用生物氧监测仪（BOM，批式呼吸仪，10 mL）评估生物量活性和活力。
+  - 分别注入不同底物（$NO_2^-$、$NH_4^+$、COD）以区分亚硝酸盐氧化菌、氨氧化菌和异养菌的活性。
+  - 测试前将生物量洗涤并重悬于无盐洗涤培养基中。
+
+- **捕食者活性测定**：
+  - 测试了多种捕食者抑制剂（甲硝唑、放线菌酮、制霉菌素等）的选择性消除效果（数据未展示）。
+  - NaCl冲击实验：施加5 g NaCl-Cl/L持续1小时，选择性消除原生动物和后生动物。
+  - 显微镜观察（相差模式，Olympus光学显微镜）确认捕食者（纤毛虫、轮虫、线虫、螨虫）被消除。
+  - 在饥饿条件下测定盐处理前后的呼吸活性（OUR），定量捕食者贡献（观察到12–15%的降低）。
+
+- **絮体粒径测定**：
+  - 采用图像分析法测定平均絮体直径（每个样品至少分析500个颗粒）。
+  - 结果：SRT 30天约70 μm；SRT 100天约90 μm。
+
+- **活/死染色（LIVE/DEAD BacLight）**：
+  - 使用Molecular Probes的LIVE/DEAD BacLight细菌活力试剂盒（L-7007和L-7012）区分活细胞（绿色，SYTO 9）和死细胞（红色，碘化丙啶）。
+  - 荧光显微镜观察证实了模型预测的高惰性/死亡生物量比例。
+
+- **模型模拟（Aquasim）**：
+  - 在Aquasim（Reichert et al., 1994）中实现所开发的模型。
+  - SBR被建模为可变体积混合反应器隔室（1.0–2.5 L），配有出水隔室和气体隔室。
+  - 运行至稳态（>6×SRT）进行校准和验证，并进一步模拟SRT（0–100天）和捕食者对生物量组成的影响。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 在30天和100天的SRT下，连续运行两个以合成氨培养基为进水的实验室规模SBR长达4年。
+- 使用生物氧监测仪（BOM）进行呼吸活性测定，以测量不同生物量组分的耗氧率（OUR）。
+- 通过测量饥饿条件下的呼吸作用来确定捕食者活性，使用盐冲击负荷选择性地消除捕食者并比较结果。
+- 进行显微镜观察和死活染色（LIVE/DEAD BacLight细菌活性试剂盒），以评估生物量活性、絮体大小以及原生动物和后生动物的稳定存在。
+- 使用Aquasim软件进行模型模拟和校准，以拟合固体含量、呼吸率和捕食者活性。
+
+
+
+------
+
+
 **Kimi:**
 论文《Modelling nitriﬁcation, heterotrophic growth and predation in activated sludge》进行了以下实验来支持数学模型的开发和验证：
 
 1. **实验室规模序批式反应器（SBRs）**：研究人员在不同的污泥龄（SRTs）条件下运行了两个SBR，分别为30天和100天，持续4年。这些反应器被用来模拟实际条件并收集用于模型校准和验证的数据。
-
 2. **连续运行和监测**：SBRs自动按照包括填充期、反应期、沉降时间和出水排放的周期运行。研究人员持续监测了溶解氧（DO）、pH和温度等参数，并使用自动控制系统控制pH值。
-
 3. **底物添加和生物量分析**：使用含有氨和营养物质的合成培养基来喂养SBR。测量了混合液悬浮固体（MLSS）和混合液挥发性悬浮固体（MLVSS），以及氨（NH4+）、亚硝酸盐（NO2-）和硝酸盐（NO3-）的浓度。
-
 4. **呼吸活性测定**：使用生物氧气监测仪（BOM）测量氧摄取率（OUR），以估算生物量的活性和生存能力。这包括向反应室注入不同的底物（NO2、NH4、COD）并监测氧浓度的降低。
-
 5. **捕食者活性的确定**：通过在有无捕食者存在的情况下测量饥饿条件下的呼吸来确定捕食者的活性。使用盐冲击（NaCl）消除捕食者并测量对剩余生物量的影响。
-
 6. **分析程序**：采用了多种分析方法来测量氮种和有机物的浓度。这包括分光光度法、离子色谱法和用于MLSS和MLVSS测定的过滤技术。
-
 7. **染色技术（活死细胞染色）**：使用Molecular Probes的LIVE/DEAD BacLightTM细菌活性试剂盒来区分微生物群落中的活细胞和死细胞。
-
 8. **模型校准和验证**：使用从SBR收集的数据来校准模型参数，如捕食率、捕食者衰亡率和生物量裂解产生的惰性COD分数。然后，对校准后的模型进行验证，以对抗实际观察到的SBR性能。
 
 这些实验提供了全面的数据处理，使研究人员能够详细理解活性污泥系统中不同微生物群体之间的相互作用，并将数学模型的预测与实际观察结果进行对比验证。
@@ -144,23 +263,50 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：有什么可以进一步探索的点？**
 
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+- **全规模验证**：作者明确指出"所开发模型的实际应用和捕食者活性评估需要在全规模活性污泥处理厂运行条件下进行验证"。目前模型仅在实验室规模的两个SBR上得到验证。
+- **捕食者类型的细化区分**：当前模型将所有捕食者（原生动物、轮虫、线虫、螨虫）集总为单一组分（$X_{predators}$）。未来工作可尝试区分不同类型的捕食者（如鞭毛虫、纤毛虫、后生动物），赋予各自的动力学和化学计量参数，因为捕食者之间的相互作用十分复杂。
+- **捕食者的实际选择性抑制**：在实际/全规模条件下使用NaCl作为捕食者选择性抑制剂需要进一步研究。应仔细评估合适的投加策略以及抑制捕食者对整体系统性能（如出水水质、污泥沉降性）的影响。
+- **硝化菌产生的溶解性微生物产物（SMP）**：文章承认硝化菌可能产生支持异养菌种群的SMP（Rittman et al., 1994）。引入SMP子模型可以改善对自养系统中异养菌生长的描述，而无需依赖不切实际的高产率参数。
+- **扩展至除磷系统**：当前模型聚焦于硝化和异养菌生长。将捕食模型扩展至生物除磷（EBPR）系统（如PAOs、GAOs）将具有重要价值。
+- **不同环境条件下的捕食者动力学**：由于数据缺乏，捕食者在不同环境条件（温度、pH、缺氧/厌氧条件）下的行为被简化处理。需要更详细的实验研究来获取捕食者动力学参数。
+- **在膜生物反应器（MBR）中的应用**：文章指出在长SRT下运行的系统（如MBR）需要仔细优化以避免惰性生物量积累。将模型应用于MBR系统并进行验证是自然的延伸方向。
+- **捕食者与生物膜系统的相互作用**：该模型是针对悬浮生长系统开发的。将其扩展至生物膜或颗粒污泥系统（捕食者-猎物动力学可能显著不同）将具有重要意义。
+- **活/死定量区分**：LIVE/DEAD染色无法定量区分两个反应器（SRT 30天与100天）之间的差异。可探索更先进的技术（如流式细胞术）进行定量生物量活力评估。
+- **捕食者对出水水质的影响**：当前模型主要关注生物量组成和氧化速率。将捕食者活性与出水悬浮固体和浊度（如Curds, 1971年的研究）相关联，可提供更完整的处理性能评估。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 所开发模型的实际应用和捕食者活性的评估需要在全尺寸活性污泥厂的实际运行中进行验证。
+- 在实际条件下使用盐作为捕食者的选择性抑制剂需要进一步研究，包括合适的投加策略以及捕食者缺失对整个系统性能的综合影响。
+- 该模型将所有捕食者简化为单一类型（$X_G$）；如果未来能获得特定的动力学和化学计量参数，研究可以进一步区分不同类型的捕食者。
+
+
+
+------
+
+
 **Kimi:**
 尽管论文《Modelling nitriﬁcation, heterotrophic growth and predation in activated sludge》提供了对活性污泥系统中硝化、异养生长和捕食相互作用的深入理解，但仍有一些方面可以进一步探索：
 
 1. **模型参数的区域适应性**：研究者可能需要在不同的地理区域和不同类型的废水处理厂中验证和调整模型参数，以确保模型的广泛适用性和准确性。
-
 2. **捕食者行为的深入研究**：可以进一步研究捕食者在不同环境条件下的行为，例如在不同的温度、pH值和污染物浓度下，捕食者的活性和选择性如何变化。
-
 3. **微生物群落动态**：通过高通量测序等分子生物学技术，可以更详细地研究活性污泥中的微生物多样性和群落动态，以及它们如何响应捕食者的存在和操作条件的变化。
-
 4. **系统稳定性和鲁棒性**：研究不同操作策略（如周期时间、底物浓度、曝气量等）对系统稳定性和鲁棒性的影响，以及如何优化这些策略以提高系统的整体性能。
-
 5. **经济性和可持续性**：评估模型指导的工艺改进对经济成本和环境可持续性的长期影响，包括能源消耗、温室气体排放和资源回收等方面。
-
 6. **模型与其他生物过程的整合**：探索将硝化、异养生长和捕食模型与其他生物过程（如厌氧消化、生物除磷等）整合的可能性，以模拟更复杂的废水处理系统。
-
 7. **模型的实际应用**：研究如何将模型应用于全规模的废水处理厂，以及如何将模型预测与实际操作数据相结合，以实现更精确的过程控制和优化。
-
 8. **新型生物反应器的设计**：利用模型的见解来指导新型生物反应器的设计，这些反应器可以更有效地促进硝化、异养生长和捕食之间的相互作用，从而提高废水处理效率。
 
 通过这些进一步的探索，研究人员可以继续提高对活性污泥系统复杂性的理解和控制，为废水处理技术的发展和环境保护做出更大的贡献。
@@ -172,21 +318,51 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：总结一下论文的主要内容。**
 
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文提出了一个新颖的活性污泥系统数学模型，明确纳入了原生动物和后生动物的捕食作用，超越了传统ASM框架。主要内容如下：
+
+- **新型模型开发**：建立了一个动态ASM型矩阵模型，描述氨氧化菌（$X_{NH_4}$）、亚硝酸盐氧化菌（$X_{NO_2}$）、异养菌（$X_H$）、捕食者（$X_{predators}$）和惰性生物量（$X_I$）共存体系中的多底物消耗和多物种生长、维持与衰减过程。显式捕食机制的引入是对现有活性污泥模型的新贡献。
+- **两步硝化过程**：硝化被建模为两步反应（氨→亚硝酸盐→硝酸盐），以预测亚硝酸盐积累，在20°C以上温度下尤为重要。
+- **捕食机制**：所有捕食者被集总为一个组分，好氧生长于所有细菌类型的可降解部分 $(1-F_{xi})$，对不同细菌类型的捕食偏好相同。捕食者衰减用单一集总过程表示。关键校准参数：$\mu_{predators} = 0.01\ \text{h}^{-1}$，$b_{predators} = 0.15\ \text{h}^{-1}$，$F_{xi} = 0.15$。
+- **实验系统**：两个运行4年的实验室规模SBR（SRT分别为30天和100天）用于模型校准和验证。模型成功描述了两个反应器中 $NH_4^+$、$NO_2^-$、$NO_3^-$ 和OUR的变化规律。
+- **高惰性生物量比例**：模型预测在SRT = 30天和100天时，活性细菌（氨氧化菌+亚硝酸盐氧化菌+异养菌）仅占MLVSS的**33%**和**14%**，其余为惰性生物量和捕食者。这一结果得到了LIVE/DEAD染色的证实。
+- **SRT的影响**：模拟结果表明，活性生物量和体积氧化速率随SRT增加至约40天时达到最大值，此后仅惰性生物量持续积累。随着SRT增加，比氧化速率因惰性生物量积累而持续下降。
+- **捕食者的作用**：模型模拟表明，在SRT = 100天时去除捕食者可使活性生物量比例几乎翻倍，显著提高硝化速率。捕食者的存在导致活性生物量大幅减少。
+- **捕食者活性评估**：开发了一种简单有效的方法，利用NaCl冲击（5 g NaCl-Cl/L，1小时）选择性消除原生动物和后生动物而不影响细菌活性。捕食者对饥饿呼吸的贡献为12–15%。
+- **实践意义**：在长SRT下运行的系统（如MBR）应仔细优化，以避免过多惰性生物量积累和不必要的运营成本，而不能获得体积处理能力的提升。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 成功开发了一种新型数学模型，将捕食作用（原生动物和后生动物）与活性污泥系统中的硝化作用和异养生长结合起来。
+- 建立了一种简单有效的盐休克程序，用于选择性地测量悬浮混合培养物中的捕食者活性，且不损害细菌功能。
+- 模型模拟和实验数据表明，增加SRT（从30天增加到100天）会增加总生物量，但由于惰性生物量的积累，活性生物量比例显著下降（从33%降至14%）。
+- 模拟显示，如果没有捕食者，活性生物量比例将急剧增加，突显了捕食作用对生物量组成和氧化速率的重大影响。
+- 该研究强调了对长SRT系统（如膜生物反应器）进行仔细优化的必要性，以避免在没有体积改进的情况下因惰性生物量积累而导致的高昂运营成本。
+
+
+
+------
+
+
 **Kimi:**
 论文《Modelling nitriﬁcation, heterotrophic growth and predation in activated sludge》对活性污泥系统中不同微生物群体之间的相互作用进行了全面研究，重点关注硝化细菌、异养细菌和原生动物及后生动物等捕食者。以下是论文的主要内容概述：
 
 1. **目标**：该论文旨在开发一个数学模型，描述废水处理中硝化细菌、异养细菌和捕食者之间的复杂相互作用。该模型旨在提高对这些生物如何共存并影响活性污泥系统性能的理解。
-
 2. **模型开发**：开发了一个动态数学模型，包括六种可溶性化合物和五种颗粒性生物量。该模型考虑了多底物消耗、多物种生长、维护和衰亡，并将捕食机制作为现有活性污泥模型的新方面纳入。
-
 3. **实验设置**：使用两个污泥龄（SRTs）分别为30天和100天的实验室规模序批式反应器（SBRs）来校准和验证模型。这些SBRs运行了四年，监测了各种参数，如溶解氧、pH值和氮种浓度。
-
 4. **模型校准和验证**：模型使用来自SBRs的数据进行校准，并针对第二个在不同SRT下运行的反应器的性能进行验证。模型成功描述了SBR系统的性能，并预测了活性生物量的分数。
-
 5. **捕食者活性评估**：开发了一种简单的程序来评估捕食者活性，基于有无捕食者存在时的呼吸速率测量。还探索了使用盐（NaCl）作为选择性剂来消除捕食者并观察系统立即效应的方法。
-
 6. **主要发现**：模型预测了两个反应器中惰性生物量的比例较高，与显微观察结果一致。它还展示了增加污泥龄对SBR系统生物量组成的影响以及捕食者在控制活性生物量分数方面的作用。
-
 7. **结论**：论文得出结论，开发的模型是理解活性污泥系统中生物过程的有价值工具，并可以帮助优化这类系统的运行。该模型展示了在废水处理厂的设计和管理中考虑捕食者的重要性。
 
 总体而言，该论文通过提供一个详细的模型，有助于更好地理解和优化废水处理设施中的生物处理过程，从而为环境工程领域做出了贡献。
@@ -195,6 +371,105 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="related" label="相关" >
 
 **Q：有哪些相关研究？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+
+- Henze et al. (2000) — *Activated Sludge Models ASM1, ASM2, ASM2d and ASM3*
+- van Loosdrecht et al. (1999) — *Maintenance, endogenous respiration, lysis, decay and predation*
+- Curds et al. (1971a) — *A computer-simulation study of predator-prey relationships in a single-stage continuous-culture system*
+- Curds et al. (1971b) — *Computer simulation study of microbial population dynamics in the activated-sludge process*
+- Curds et al. (1973) — *A theoretical study of factors influencing the microbial population dynamics of the activated sludge process-I*
+- Curds et al. (1970) — *Protozoa in biological sewage-treatment process-I. A survey of the protzoan fauna of British percolating filters and activated sludge plants*
+- Lee et al. (1994) — *Influence of predators on nitrification in aerobic biofilm processes*
+- Lee et al. (2003) — *Effects of predation and ORP conditions on the performance of nitrifiers in activated sludge systems*
+- Bouchez et al. (2000) — *Ecological study of a bio-augmentation failure*
+- Ratsak et al. (1996) — *Effects of protozoa on carbon mineralization in activated sludge*
+- Beeftink et al. (1990) — *Maintenance requirements: energy supply from simultaneous endogenous respiration and substrate consumption*
+- Hunik et al. (1994) — *Co-immobilized Nitrosomonas europea and Nitrobacter agilis cells: validation of dynamic model for simultaneous substrate conversion and growth in K-carrageenan gel beads*
+- Leenen et al. (1997) — *Dynamics of artificially immobilized Nitrosomonas europaea: effect of biomass decay*
+- Siegrist et al. (1999) — *Reduction of biomass decay rate under anoxic and anaerobic conditions*
+- Hellinga et al. (1998) — *The SHARON process: an innovative method for nitrogen removal from ammonia-rich wastewater*
+- Hellinga et al. (1999) — *Model based designed of a novel process for ammonia removal from concentrated flow*
+- Brouwer et al. (1998) — *Feed-forward control of nitrification by manipulating the aerobic volume in activated sludge plants*
+- Nowak et al. (1995) — *The dynamic behaviour of nitrifying activated sludge systems influenced by inhibiting wastewater compounds*
+- Meijer et al. (2001) — *Metabolic modelling of full-scale biological nitrogen and phosphorus removing WWTPs*
+- Pollice et al. (2002) — *Influence of aeration and sludge retention time on ammonia oxidation to nitrite and nitrate*
+- Moussa et al. (2003) — *Improved method for determination of ammonia and nitrite oxidation activities in mixed bacterial cultures*
+- Tappe et al. (1999) — *Maintenance energy demand and starvation recovery dynamics of Nitrosomonas europaea and Nitrobacter winogradskyi cultivated in a retentostat with complete biomass retention*
+- Rittman et al. (1994) — *Nitrification as source of soluble organic substrate in biological treatment*
+- Schlimme et al. (1997) — *Gen transfer between bacteria within digestive vacuoles of protozoa*
+- Reichert et al. (1994) — *Aquasim 2.0*
+- Beccari et al. (1992) — *Effect of dissolved oxygen and diffusion resistances on nitrification kinetics*
+- Martin-Cereceda et al. (1996) — *A comparative study of ciliated protozoa communities in activated-sludge plants*
+- Salvadó et al. (1995) — *Capability of ciliated protozoa as indicators of effluent quality in activated-sludge plants*
+- Madoni et al. (1993) — *Comparative-analysis of the activated-sludge microfauna in several sewage-treatment works*
+- Al-Shahwani et al. (1991) — *The use of protozoa to indicate changes in the performance of activated-sludge plants*
+- De Gooijer et al. (1991) — *Growth and substrate consumption of Nitrobacter agilis cells immobilized in carrageenan: part 1. Dynamic modelling*
+- Ziglio et al. (2002) — *Assessment of activated sludge viability with flow cytometry*
+- van Dongen et al. (2001) — *The Combined Sharon/Anammox Process, A Sustainable Method for N-removal from Sludge Water*
+- Griffiths et al. (1989) — *The effect of protozoan on nitrification-implications from application of organic wastes applied to soils*
+- Smolders et al. (1994) — *Stoichiometric model of the aerobic metabolism of the biological phosphorus removal process*
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- Al-Shahwani et al. (1991) The use of protozoa to indicate changes in the performance of activated-sludge plants.
+- APHA et al. (1998) Standard methods for the examination of water and wastewater.
+- Barbesti et al. (2000) Two and three-color fluorescence flow cytometric analysis of immuno identied viable bacteria.
+- Beccari et al. (1992) Effect of dissolved oxygen and diffusion resistances on nitrification kinetics.
+- Beeftink et al. (1990) Maintenance requirements: energy supply from simultaneous endogenous respiration and substrate consumption.
+- Bouchez et al. (2000) Ecological study of a bio-augmentation failure.
+- Brouwer et al. (1998) Feed-forward control of nitrification by manipulating the aerobic volume in activated sludge plants.
+- Curds et al. (1971a) A computer-simulation study of predator-prey relationships in a single-stage continuous-culture system.
+- Curds et al. (1971b) Computer simulation study of microbial population dynamics in the activated-sludge process.
+- Curds et al. (1973) A theoretical study of factors influencing the microbial population dynamics of the activated sludge process-I.
+- Curds et al. (1970) Protozoa in biological sewage-treatment process-I. A survey of the protzoan fauna of British percolating filters and activated sludge plants.
+- De Gooijer et al. (1991) Growth and substrate consumption of Nitrobacter agilis cells immobilized in carrageenan: part 1. Dynamic modelling.
+- Griffiths et al. (1989) The effect of protozoan on nitrification-implications from application of organic wastes applied to soils.
+- Hellinga et al. (1998) The SHARON process: an innovative method for nitrogen removal from ammonia-rich wastewater.
+- Hellinga et al. (1999) Model based designed of a novel process for ammonia removal from concentrated flow.
+- Henze et al. (2000) Activated Sludge Models ASM1, ASM2, ASM2d and ASM3.
+- Hunik et al. (1994) Co-immobilized Nitrosomonas europea and Nitrobacter agilis cells: validation of dynamic model for simultaneous substrate conversion and growth in K-carrageenan gel beads.
+- Lee et al. (1994) Influence of predators on nitrification in aerobic biofilm processes.
+- Lee et al. (2003) Effects of predation and ORP conditions on the performance of nitrifiers in activated sludge systems.
+- Leenen et al. (1997) Dynamics of artificially immobilized Nitrosomonas europaea: effect of biomass decay.
+- Lesouef et al. (1992) Optimizing nitrogen removal reactor configurations by on-site calibration of the IAWPRC activated sludge model.
+- Martin-Cereceda et al. (1996) A comparative study of ciliated protozoa communities in activated-sludge plants.
+- Meijer et al. (2001) Metabolic modelling of full-scale biological nitrogen and phosphorus removing WWTPs.
+- Madoni et al. (1993) Comparative analysis of the activated-sludge microfauna in several sewage-treatment works.
+- Moussa et al. (2003) Improved method for determination of ammonia and nitrite oxidation activities in mixed bacterial cultures.
+- Novitsky et al. (1990) Protozoa abundance, growth, and bacteriovory in the water column, on sedimenting particles, and in the sediment of Halifax Harbor.
+- Nowak et al. (1995) The dynamic behaviour of nitrifying activated sludge systems influenced by inhibiting wastewater compounds.
+- Pollice et al. (2002) Influence of aeration and sludge retention time on ammonia oxidation to nitrite and nitrate.
+- Ratsak et al. (1996) Effects of protozoa on carbon mineralization in activated sludge.
+- Reichert et al. (1994) Aquasim 2.0.
+- Rittman et al. (1994) Nitrification as source of soluble organic substrate in biological treatment.
+- Salvadó et al. (1995) Capability of ciliated protozoa as indicators of effluent quality in activated-sludge plants.
+- Schlimme et al. (1997) Gen transfer between bacteria within digestive vacuoles of protozoa.
+- Siegrist et al. (1999) Reduction of biomass decay rate under anoxic and anaerobic conditions.
+- Smolders et al. (1994) Stoichiometric model of the aerobic metabolism of the biological phosphorus removal process.
+- Tappe et al. (1999) Maintenance energy demand and starvation recovery dynamics of Nitrosomonas europaea and Nitrobacter winogradskyi cultivated in a retentostat with complete biomass retention.
+- Tijhuis et al. (1994) Solid retention time in spherical biofilms in a biofilm airlift suspended reactor.
+- van Dongen et al. (2001) The Combined Sharon/Anammox Process, A Sustainable Method for N-removal from Sludge Water.
+- van Loosdrecht et al. (1999) Maintenance, endogenous respiration, lysis, decay and predation.
+- Weinbauer et al. (1998) Utility of green fluorescent nucleic acid dyes and aluminum oxide membrane filters for rapid epifuorescence enumeration of soil and sediment bacteria.
+- Ziglio et al. (2002) Assessment of activated sludge viability with flow cytometry.
+
+
+
+------
+
+
 
 **Kimi:**
 活性污泥中硝化作用、异养生长和捕食行为之间的相互作用是一个复杂的研究领域，有许多相关的研究工作。以下是与该主题相关的一些领域和具体研究：

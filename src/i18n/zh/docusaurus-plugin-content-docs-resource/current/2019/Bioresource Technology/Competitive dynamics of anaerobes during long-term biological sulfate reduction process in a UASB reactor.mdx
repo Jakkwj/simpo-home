@@ -55,6 +55,34 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：这篇论文试图解决什么问题？**
 
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- **富硫酸盐厌氧生物反应器中厌氧微生物的长期竞争动态**：硫酸盐还原菌（SRB）与产甲烷古菌（MPA）之间的竞争已被研究了三十余年，但其长期动态机制仍不清楚。具体而言，SRB为何需要超过200天才能在UASB反应器中竞争性超越MPA，这一问题尚未得到解释。
+- **缺乏综合性数学模型**：现有基于ADM1的模型要么未包含硫酸盐还原过程，要么仅在较短运行周期（如77天）内进行了验证，不足以描述长期竞争动态。
+- **SRB功能群的分类**：以往模型未能充分区分不同功能类型的SRB。本文将SRB分为产乙酸型SRB（ASRB）和产甲烷型SRB（MSRB），以更好地反映其与不同厌氧微生物群（EAcB、AMPA、HMPA）竞争中的不同代谢角色。
+- **解释"僵持阶段"**：MPA主导阶段与SRB主导阶段之间存在一个较长的过渡性"僵持阶段"，此前从未从机理上加以解释或建模。
+- **验证热力学推测**：从热力学角度，SRB应能同时竞争性超越MPA和产乙酸菌（AcB），但这一推测此前未经长期动态建模验证。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 厌氧生物反应器中硫酸盐还原菌（SRB）和产甲烷古菌（MPA）之间的长期竞争动态尚未被完全理解。
+- 现有的数学模型（如ADM1）缺乏全面的结构来准确描述硫酸盐还原过程中SRB、MPA和产乙酸菌（AcB）之间复杂的长期竞争和种群动态。
+- 解释在上流式厌氧污泥床（UASB）反应器中，为什么SRB需要很长时间（超过200天）才能在竞争中战胜MPA这一难题。
+
+
+------
+
+
 **Gemini 3.0 Pro:**
 
 本文试图解决在处理富含硫酸盐废水的厌氧生物反应器中，硫酸盐还原菌（SRB）与产甲烷古菌（MPA）之间长期竞争动力学的理解和预测问题。具体而言：
@@ -67,6 +95,42 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="solution" label="解决" >
 
 **Q：论文如何解决这个问题？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- **在ADM1基础上扩展硫酸盐还原过程**：在标准ADM1基础上增加了13个新的生化过程和6个新组分，以纳入硫酸盐还原过程。包括ASRB和MSRB与EAcB、AMPA、HMPA竞争底物（乙醇、乙酸、氢气、挥发性脂肪酸等）的过程。
+- **将SRB分为两个功能群**：
+  - *产乙酸型SRB（ASRB）*：以糖类、氨基酸、长链脂肪酸、挥发性脂肪酸和乙醇为电子供体，与发酵/产乙酸菌竞争。
+  - *产甲烷型SRB（MSRB）*：以乙酸和氢气为电子供体，与MPA竞争。
+- **双底物限制的修正Monod动力学**：对ASRB和MSRB采用双Monod方程（公式2），同时考虑有机底物和硫酸盐的共同限制：
+$$\rho_j = k_{m,k} \frac{S_i}{K_{S,i} + S_i} \cdot \frac{S_{so4}}{K_{S,i,so4,k} + S_{so4}} \cdot X_k$$
+- **游离$H_2S$的非竞争性抑制**：对所有相关过程引入非竞争性抑制函数（$I_{H_2S,j}$），50%抑制浓度$k_{I,h2s}$ = 0.0044 kmol m$^{-3}$。
+- **物理化学过程**：纳入酸碱平衡（包括$H_2S$解离）和气液传质（$H_2S$、$CH_4$、$CO_2$、$H_2$的亨利定律）。
+- **灵敏度分析与参数估计**：采用局部相对灵敏度分析（有限差分近似）识别最敏感参数，并应用基于灵敏度的层次化顺序单参数优化（SHSSPO）校准方法估计63个模型参数，其中包括29个硫酸盐还原相关的额外参数。
+- **在GPS-X平台上实现模型**：所有模拟均在GPS-X™ v6.4软件上进行，以450天甲烷产量数据进行模型校准，以出水COD和硫酸盐浓度进行验证。
+- **电子流分析**：利用硫化作用（$E_{sul}$）和产甲烷作用（$E_{meth}$）的电子流方程，定量表征SRB与MPA之间的竞争程度。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 通过扩展厌氧消化模型1号（ADM1）以包含硫酸盐还原过程，开发了一个全面的结构化数学模型。
+- 将SRB分为两个不同的营养群：类产乙酸SRB（ASRB）和类产甲烷SRB（MSRB）。
+- 在ADM1框架中增加了13个生化过程和6个组分。
+- 利用处理富硫酸盐废水的实验室规模UASB反应器连续运行329天的实验数据对模型进行校准和验证。
+- 使用广义参数估计方法（SHSSPO）进行敏感性分析和参数估计，以识别主导参数并优化模型。
+
+
+------
+
 
 **Gemini 3.0 Pro:**
 
@@ -82,6 +146,60 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="experiment" label="实验" >
 
 **Q：论文做了哪些实验？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- **实验室规模UASB反应器运行**：
+  - 有效容积：6 L；高度：0.85 m
+  - 连续运行**329天**（加上约84天启动阶段，共约413天）
+  - 水力停留时间（HRT）：6 h
+  - 温度：35 ± 1 °C
+  - 上流速度：3.4 m d$^{-1}$
+  - 顶部三相分离器收集沼气（约0.5 L）
+
+- **合成富硫酸盐废水**：
+  - 恒定硫酸盐浓度：3.0 kg m$^{-3}$
+  - COD/硫酸盐比值：1.0
+  - 实际平均进水：硫酸盐3.081 kg m$^{-3}$，乙酸1.069 kgCOD m$^{-3}$，乙醇2.11 kgCOD m$^{-3}$
+  - 有机负荷率：12 kgCOD m$^{-3}$ d$^{-1}$；硫酸盐负荷率：12 kgSO$_4$ m$^{-3}$ d$^{-1}$
+
+- **接种污泥**：1 L颗粒污泥 + 2 L厌氧污泥
+
+- **329天全程监测参数**：
+  - 出水残余硫酸盐浓度
+  - 出水COD浓度
+  - 甲烷产量（沼气组成和流量）
+  - 出水$H_2S$浓度
+
+- **微生物群落分析**（来自配套论文Wu et al., 2018）：
+  - 运行末期优势菌为*Desulfovibrio marrakechensis*（SRB，以乙醇和氢气为底物）
+  - 乙酸营养型MPA（*Methanosaeta concilli GP6*）丰度约为氢营养型MPA的4倍
+
+- **模型校准与验证**：
+  - 校准：使用450天全程甲烷产量数据
+  - 验证：使用329天出水COD和硫酸盐浓度
+  - 灵敏度分析：对四个过程变量（$S_{ac}$、$S_{so4}$、$S_{eth}$、$Q_{gas,CH_4}$）采用三个扰动因子（δ = 1%、10%、−5%）
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 连续运行实验室规模的UASB反应器（工作体积6 L）329天（外加84天的启动阶段），温度控制在35 °C，水力停留时间为6小时。
+- 向反应器中通入含有乙醇和乙酸的合成富硫酸盐有机废水，保持恒定的COD/硫酸盐比率为1.0。
+- 在整个运行期间监测沼气产量、残留硫酸盐以及随出水排放的COD。
+- 在GPS-X™ v6.4平台上进行动态模拟，以根据实验数据校准和验证模型。
+
+
+
+------
 
 **Gemini 3.0 Pro:**
 
@@ -99,6 +217,40 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q：有什么可以进一步探索的点？**
 
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- **改进MSRB种群动态建模**：模型显示MSRB种群变化很小，这难以用实验证据或基础理论解释。需要进一步研究以更好地理解和模拟MSRB的代谢特性和种群动态。
+- **完善抑制机制**：本文对游离$H_2S$采用了简化的非竞争性抑制函数。可探索更复杂的抑制模型（如竞争性抑制、阈值抑制），以提高精度，尤其是在MPA主导阶段偏差最大的情况下。
+- **Monod动力学的底物阈值浓度**：如Ribes et al. (2004)所建议，可合理采用底物阈值浓度对Monod动力学进行修正，用于模拟硫酸盐还原菌与产甲烷菌对氢气的竞争。
+- **更精确的SRB模型结构分类与优化**：随着对SRB代谢特性和生物途径的深入理解，可对模型结构进行更精确的分类和优化（如区分更多SRB功能群）。
+- **不同COD/硫酸盐比值下的应用**：当前模型仅在COD/硫酸盐 = 1条件下验证，探索不同比值下的模型性能将拓宽其适用范围。
+- **与更复杂废水组成的整合**：模型可扩展用于处理组成更复杂的实际工业废水（如碳-氮-硫同步去除）。
+- **颗粒尺度建模**：当前模型将UASB视为完全混合反应器。考虑颗粒结构和传质限制的多尺度方法可改善预测精度。
+- **329天以上的长期验证**：模型对329天后（329–450天）的预测未经实验验证，更长期的实验数据将具有重要价值。
+- **纳入同型产乙酸过程**：本模型因其比例较低而排除了同型产乙酸过程。在不同操作条件下，其贡献可能更为显著，应予以考虑。
+- **厌氧种群动态的精确测定**：采用更精确的微生物群落分析方法（如定量PCR、宏基因组学）可提供更好的实验数据，支持和验证模型对种群动态的预测。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 改进模型以准确分类和优化MSRB的模型结构，因为当前模型中MSRB种群的变化比预期的要小。
+- 将Monod动力学修正的底物阈值浓度合理地用于模拟硫酸盐还原菌和产甲烷菌之间对氢气的竞争。
+- 进一步了解SRB的代谢特征、抑制机制和生物学途径，以完善数学模型。
+
+
+
+------
+
+
 **Gemini 3.0 Pro:**
 
 - **代谢特征：** 需要进一步了解SRB的具体代谢特征、抑制机制和生物途径，以改进模型结构。
@@ -112,7 +264,48 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 
 **Q： 总结一下论文的主要内容。**
 
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- **模型开发**：通过在ADM1基础上扩展硫酸盐还原过程，增加13个生化过程和6个新组分，建立了一个综合结构化数学模型。SRB被分为两个功能群：产乙酸型SRB（ASRB），竞争挥发性脂肪酸、乙醇、糖类、氨基酸和长链脂肪酸；产甲烷型SRB（MSRB），竞争乙酸和氢气。
+
+- **五个微生物营养群**：模型包含五个关键微生物群：乙醇产乙酸菌（$X_{EAcB}$）、乙酸营养型MPA（$X_{AMPA}$）、氢营养型MPA（$X_{HMPA}$）、ASRB（$X_{ASRB}$）和MSRB（$X_{MSRB}$），各自具有Monod型动力学和相应的抑制函数。
+
+- **模型校准与验证**：以处理富硫酸盐废水（COD/硫酸盐 = 1，乙醇+乙酸为底物）的实验室规模UASB反应器450天甲烷产量数据进行校准。329天甲烷产量的平均绝对相对误差为8.52%，表明预测精度较高。
+
+- **识别三个竞争阶段**：模型清晰区分了运行全程的三个阶段：
+  1. **MPA主导阶段**（前约100天）：MPA生物量占主导，甲烷产量高
+  2. **僵持阶段**（中间约150天）：硫化作用与产甲烷作用的电子流相当；两类种群处于过渡状态
+  3. **SRB主导阶段**（最后约100天）：SRB生物量占主导，硫化/产甲烷电子流比稳定在约6:4
+
+- **长期竞争动态**：模型解释了SRB需要超过200天才能竞争性超越MPA的原因。最显著的种群变化是ASRB增加和EAcB减少，证实了ASRB能够竞争性超越EAcB对乙醇的利用。
+
+- **热力学推测得到验证**：模型预测支持了SRB最终能够同时竞争性超越AcB和MPA的热力学推测。
+
+- **灵敏度分析**：识别出的关键敏感参数包括$k_{m,MSRB}$、$k_{m,EAcB}$、$K_{S,AMPA}$和$Y_{AMPA}$，这些参数同时影响多个过程变量。
+
+- **$H_2S$抑制**：游离$H_2S$的50%抑制浓度采用0.0044 kmol m$^{-3}$（≈150 mg S L$^{-1}$），与文献中产甲烷菌和SRB抑制的实验值一致。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 扩展的ADM1模型通过增加13个生化过程和6个组分，成功地纳入了硫酸盐还原过程，并将SRB分为ASRB和MSRB。
+- 该模型准确预测了UASB反应器中产硫菌和产甲烷菌之间对电子的长期动态竞争。
+- 识别并预测了三个截然不同的竞争阶段：MPA主导阶段、僵持阶段和SRB主导阶段。
+- 该模型解释了SRB战胜MPA需要长期（超过200天）的原因，并证实了SRB最终能够战胜AcB和MPA。
+
+
+------
+
 **Gemini 3.0 Pro:**
+
 
 - **模型开发：** 成功扩展了ADM1以包含硫酸盐还原过程，定义了类产乙酸SRB（$X_{ASRB}$）和类产甲烷SRB（$X_{MSRB}$）。
 - **三阶段动力学：** 模型和实验证实了三个明显的竞争阶段：MPA主导期、僵持期和SRB主导期。
@@ -125,6 +318,142 @@ style={{ border: 'none', marginBottom: '0.8rem' }}
 <TabItem value="related" label="相关" >
 
 **Q： 有哪些相关研究？**
+
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- Ahmed et al. (2017): *Generalized parameter estimation and calibration for biokinetic models using correlation and single variable optimisations: application to sulfate reduction modelling in anaerobic digestion.* Water Res. 122, 407–418.
+
+- Ahmed et al. (2018): *Modelling sulfate reduction in anaerobic digestion: complexity evaluation and parameter calibration.* Water Res. 130, 255–262.
+
+- Arnell et al. (2016): *Modelling anaerobic co-digestion in benchmark simulation model No. 2: parameter estimation, substrate characterization and plant-wide integration.* Water Res. 98, 138–146.
+
+- Barrera et al. (2015): *Modeling the anaerobic digestion of cane-molasses vinasse: Extension of the Anaerobic Digestion Model No. 1 (ADM1) with sulfate reduction for a very high strength and sulfate rich wastewater.* Water Res. 71, 42–54.
+
+- Batstone et al. (2003): *Industrial applications of the IWA anaerobic digestion model No. 1 (ADM1).* Water Sci. Technol. 47, 199–206.
+
+- Batstone et al. (2006): *A review of ADM1 extensions, applications, and analysis: 2002–2005.* Water Sci. Technol. 54, 1–10.
+
+- Batstone et al. (2015): *Mathematical modelling of anaerobic digestion processes: applications and future needs.* Rev. Environ. Sci. Bio/Technol. 14, 595–613.
+
+- Fedorovich et al. (2003): *Extension of anaerobic digestion model No.1 with processes of sulfate reduction.* Appl. Biochem. Biotechnol. 109, 33–45.
+
+- Feldman et al. (2017): *Modelling an industrial anaerobic granular reactor using a multi-scale approach.* Water Res. 126, 488–500.
+
+- Flores-Alsina et al. (2016): *Modelling phosphorus (P), sulfur (S) and iron (Fe) interactions for dynamic simulations of anaerobic digestion processes.* Water Res. 95, 370–382.
+
+- Gonzalez-Silva et al. (2009): *Inhibition of sulfate reduction by iron, cadmium and sulfide in granular sludge.* J. Hazard. Mat. 172, 400–407.
+
+- Gupta et al. (1994): *Methanogenesis and sulfate reduction in chemostats-I kinetic studies and experiments.* Water Res. 28, 781–793.
+
+- Jing et al. (2013): *UASB performance and electron competition between methane-producing archaea and sulfate-reducing bacteria in treating sulfate-rich wastewater containing ethanol and acetate.* Bioresource Technol. 137, 349–357.
+
+- Kalyuzhnyi et al. (1998): *Mathematical modelling of competition between sulphate reduction and methanogenesis in anaerobic reactions.* Bioresource Technol. 65, 227–242.
+
+- Kalyuzhnyi et al. (1998): *Mathematical modelling as a tool to study population dynamics between sulfate reducing and methanogenic bacteria.* Biodegrad. 9, 187–199.
+
+- Kiyuna et al. (2017): *Unraveling the influence of the COD/sulfate ratio on organic matter removal and methane production from the biodigestion of sugarcane vinasse.* Bioresource Technol. 232, 103–112.
+
+- Li et al. (1996): *Interactions between methanogenic, sulfate-reducing and syntrophic acetogenic bacteria in the anaerobic degradation of benzoate.* Water Res. 30, 1555–1562.
+
+- Liamleam et al. (2007): *Electron donors for biological sulfate reduction.* Biotechnol. Adv. 25, 452–463.
+
+- Liu et al. (2016): *Sulfide and methane production in sewer sediments: Field survey and model evaluation.* Water Res. 89, 142–150.
+
+- Liu et al. (2017): *Anaerobic treatment of hydrothermally solubilised sugarcane bagasse and its kinetic modelling.* Bioresource Technol. 234, 253–263.
+
+- Lovley et al. (1982): *Kinetic analysis of competition between sulfate reducers and methanogens for hydrogen in sediments.* Appl. Environ. Microbiol. 43, 1373–1389.
+
+- Maharaj et al. (2018): *ADM1 based mathematical model of trace element precipitation/dissolution in anaerobic digestion processes.* Bioresource Technol. 267, 666–676.
+
+- O'Flaherty et al. (1998): *Long-term competition between sulphate-reducing and methane-producing bacteria during full-scale anaerobic treatment of citric acid production wastewater.* Water Res. 32, 815–825.
+
+- Omil et al. (1998): *Long-term competition between sulfate reducing and methanogenic bacteria in UASB reactors treating volatile fatty acids.* Biotechnol Bioeng. 57, 676–685.
+
+- Ribes et al. (2004): *Modelling anaerobic biomass growth kinetics with a substrate threshold concentration.* Water Res. 38, 4502–4510.
+
+- Rinzema et al. (1988): *Anaerobic treatment of sulphate-containing waste water.* In: Wise, D.L. (Ed.), Biotreatment systems Vol. III. CRC Press, Boca Raton, FL, pp. 65–109.
+
+- Rivas-García et al. (2013): *Numerical study of microbial population dynamics in anaerobic digestion through the anaerobic digestion model No. 1 (ADM1).* Chem. Eng. J. 228, 87–92.
+
+- Schönheit et al. (1982): *Kinetic mechanism for the ability of sulfate reducers to out-compete methanogens for acetate.* Arch. Microbiol. 132, 285–288.
+
+- Spanjers et al. (2002): *Modelling the competition between sulphate reducers and methanogens in a thermophilic methanol-fed bioreactor.* Water Sci. Technol. 45, 93–98.
+
+- Sun et al. (2016): *Modelling methane production and sulfate reduction in anaerobic granular sludge reactor with ethanol as electron donor.* Sci. Rep. 6, 35312.
+
+- Wu et al. (2018): *A gradual change between methanogenesis and sulfidogenesis during a long-term UASB treatment of sulfate-rich chemical wastewater.* Sci Total Environ. 636, 168–176.
+
+- Xu et al. (2017): *Mathematical modeling of simultaneous carbon-nitrogen-sulfur removal from industrial wastewater.* J. Hazard. Mat. 321, 371–381.
+
+- Yasui et al. (2008): *Modified ADM1 structure for modelling municipal primary sludge hydrolysis.* Water Res. 42, 249–259.
+
+- Yoda et al. (1987): *Long term competition between sulfate-reducing and methane-producing bacteria for acetate in anaerobic biofilm.* Water Res. 21, 1547–1556.
+
+- Zhou et al. (1998): *Competition between methanogenesis and sulfidogenesis in anaerobic wastewater treatment.* Wat. Sci. Tech. 38, 317–324.
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- Schӧnheit et al. (1982) Kinetic mechanism for the ability of sulfate reducers to out-compete methanogens for acetate.
+- Li et al. (1996) Interactions between methanogenic, sulfate-reducing and syntrophic acetogenic bacteria in the anaerobic degradation of benzoate.
+- O’Flaherty et al. (1998) Long-term competition between sulphate-reducing and methane-producing bacteria during full-scale anaerobic treatment of citric acid production wastewater.
+- Jing et al. (2013) UASB performance and electron competition between methane-producing archaea and sulfate-reducing bacteria in treating sulfate-rich wastewater containing ethanol and acetate.
+- Zhao et al. (2015) Free nitrous acid serving as a pretreatment method for alkaline fermentation to enhance short-chain fatty acid production from waste activated sludge.
+- Zhao et al. (2017a) Aged refuse enhances anaerobic digestion of waste activated sludge.
+- Zhao et al. (2017b) Revealing the underlying mechanisms of how sodium chloride affects short-chain fatty acid production from the cofermentation of waste activated sludge and food waste.
+- Yoda et al. (1987) Long term competition between sulfate-reducing and methane-producing bacteria for acetate in anaerobic biofilm.
+- Omil et al. (1998) Long-term competition between sulfate reducing and methanogenic bacteria in UASB reactors treating volatile fatty acids.
+- Rinzema and Lettinga (1988) Anaerobic treatment of sulphate-containing waste water.
+- Batstone et al. (2006) A review of ADM1 extensions, applications, and analysis: 2002–2005.
+- Batstone et al. (2015) Mathematical modelling of anaerobic digestion processes: applications and future needs.
+- Donoso-Bravo et al. (2011) Model selection, identification and validation in anaerobic digestion.
+- Rieger et al. (2012) Good Modelling Practice: Guidelines for use of Activated Sludge Models.
+- Lovley et al. (1982) Kinetic analysis of competition between sulfate reducers and methanogens for hydrogen in sediments.
+- Gupta et al. (1994) Methanogenesis and sulfate reduction in chemostats-I kinetic studies and experiments.
+- Kalyuzhnyi and Fedorovich (1998) Mathematical modelling of competition between sulphate reduction and methanogenesis in anaerobic reactions.
+- Kalyuzhnyi et al. (1998) Mathematical modelling as a tool to study population dynamics between sulfate reducing and methanogenic bacteria.
+- Spanjers et al. (2002) Modelling the competition between sulphate reducers and methanogens in a thermophilic methanol-fed bioreactor.
+- Batstone and Keller (2003) Industrial applications of the IWA anaerobic digestion model No. 1 (ADM1).
+- Maharai et al. (2018) ADM1 based mathematical model of trace element precipitation/dissolution in anaerobic digestion processes.
+- Yasui et al. (2008) Modified ADM1 structure for modelling municipal primary sludge hydrolysis.
+- Xiao et al. (2015) A modeling approach to describe ZVI-based anaerobic system.
+- Arnell et al. (2016) Modelling anaerobic co-digestion in benchmark simulation model No. 2: parameter estimation, substrate characterization and plant-wide integration.
+- Feldman et al. (2017) Modelling an industrial anaerobic granular reactor using a multi-scale approach.
+- Fedorovich et al. (2003) Extension of anaerobic digestion model No.1 with processes of sulfate reduction.
+- Santos et al. (2009) Mathematical modelling of hydrogen sulphide emission and removal in aerobic biofilters comprising chemical oxidation.
+- Flores-Alsina et al. (2016) Modelling phosphorus (P), sulfur (S) and iron (Fe) interactions for dynamic simulations of anaerobic digestion processes.
+- Rasool et al. (2016) Exploring the potential of anaerobic sulfate reduction process in treating sulfonated diazo dye: Microbial community analysis using bar-coded pyrosequencing.
+- Barrera et al. (2015) Modeling the anaerobic digestion of cane-molasses vinasse: Extension of the Anaerobic Digestion Model No. 1 (ADM1) with sulfate reduction for a very high strength and sulfate rich wastewater.
+- Sun et al. (2016) Modelling methane production and sulfate reduction in anaerobic granular sludge reactor with ethanol as electron donor.
+- Liu et al. (2016) Sulfide and methane production in sewer sediments: Field survey and model evaluation.
+- Xu et al. (2017) Mathematical modeling of simultaneous carbon-nitrogen-sulfur removal from industrial wastewater.
+- Wu et al. (2018) A gradual change between methanogenesis and sulfidogenesis during a long-term UASB treatment of sulfate-rich chemical wastewater.
+- Liamleam and Annachhatre (2007) Electron donors for biological sulfate reduction.
+- Gonzalez-Silva et al. (2009) Inhibition of sulfate reduction by iron, cadmium and sulfide in granular sludge.
+- Dochain and Vanrolleghem (2001) Dynamical modelling and estimation in wastewater processes.
+- Meima et al. (2008) Sensitivity analysis and literature review of parameters controlling local biodegradation processes in municipal solid waste landfills.
+- Ahmed and Rodríguez (2017) Generalized parameter estimation and calibration for biokinetic models using correlation and single variable optimisations: application to sulfate reduction modelling in anaerobic digestion.
+- Ahmed and Rodríguez (2018) Modelling sulfate reduction in anaerobic digestion: complexity evaluation and parameter calibration.
+- Zhou and Fang (1998) Competition between methanogenesis and sulfidogenesis in anaerobic wastewater treatment.
+- Kiyuna et al. (2017) Unraveling the influence of the COD/sulfate ratio on organic matter removal and methane production from the biodigestion of sugarcane vinasse.
+- Rivas-García et al. (2013) Numerical study of microbial population dynamics in anaerobic digestion through the anaerobic digestion model No. 1 (ADM1).
+- Ribes et al. (2004) Modelling anaerobic biomass growth kinetics with a substrate threshold concentration.
+
+
+
+------
+
+
 
 **Gemini 3.0 Pro:**
 

@@ -54,19 +54,43 @@ DOI: [10.1016/S0043-1354(01)00110-5](https://doi.org/10.1016/S0043-1354(01)00110
 
 **Q：这篇论文试图解决什么问题？**
 
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文旨在解决活性污泥模型3（ASM3）缺乏生物除磷（BPR）预测能力的问题。具体包括：
+
+- **ASM3的局限性**：由IWA工作组开发的ASM3能够预测耗氧量、污泥产量、硝化和反硝化，但**不包含生物除磷（BPR）**。
+- **需要集成模块**：需要一个专门的、经过校准的EBPR（强化生物除磷）模块，能够与ASM3兼容，并适用于瑞士市政污水处理条件。
+- **简化现有模型**：现有的ASM2d模型虽然包含BPR，但引入了易降解底物的发酵过程和糖原池，作者认为对于典型的瑞士市政污水而言过于复杂。
+- **缺乏标准参数集**：在瑞士市政污水条件下，尚无经过系统校准和验证的EBPR建模参数集，可适用于不同工艺配置和规模的污水处理厂。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 活性污泥模型No. 3 (ASM3) 缺乏对生物除磷 (BPR) 过程的描述。
+- 现有的除磷模型（如ASM2d）过于复杂（包含发酵过程、糖原池等），对于典型的低浓度市政污水而言可能是不必要的。
+- 需要一个经过校准的、简化的模块来预测强化生物除磷 (EBPR)，并能与ASM3无缝集成。
+
+
+
+------
+
+
 **Kimi:**
 这篇论文介绍了一个额外的模块——EAWAG Bio-P模块，用于增强ASM3（Activated Sludge Model No. 3）模型的预测能力，特别是在增强生物除磷（EBPR）方面。ASM3是一个基本的活性污泥模型，主要用于预测市政废水处理系统中的氧气消耗、污泥产生、硝化和反硝化等过程，但它本身不包括生物除磷过程。EAWAG Bio-P模块的开发旨在填补这一空白，通过结合ASM3的校准版本，对生物除磷过程进行建模和预测。
 
 具体来说，这篇论文试图解决的问题包括：
 
 1. **生物除磷过程的建模**：通过引入EAWAG Bio-P模块，将生物除磷过程整合到ASM3模型中，以便更全面地模拟和预测废水处理过程中的氮、磷去除。
-
 2. **参数校准和验证**：通过与不同批次实验、全尺寸污水处理厂和试验工厂处理瑞士市政废水的实验数据进行系统校准，确保模型参数的准确性和适用性。
-
 3. **简化模型复杂性**：在保持模型准确性的同时，尽可能简化模型，例如忽略易于降解底物的发酵过程和额外的糖原池，以减少模型的复杂性和计算需求。
-
 4. **适应不同操作条件**：通过模型校准，使其能够适应不同的操作条件和废水特性，如低COD负荷后的“周一效应”，以及不同污泥龄（SRT）下的处理效果。
-
 5. **提高模型的预测能力**：通过校准和验证，确保模型能够准确预测不同动态效应，如短期内的磷释放和吸收、长期内的PAO（聚磷酸盐积累菌）的洗出和增长，以及低COD负荷后的出水磷酸盐峰值。
 
 总的来说，这篇论文的目标是开发和验证一个能够准确模拟和预测生物除磷过程的模型，以便更好地理解和优化市政废水处理系统中的磷去除效率。
@@ -79,21 +103,67 @@ DOI: [10.1016/S0043-1354(01)00110-5](https://doi.org/10.1016/S0043-1354(01)00110
 
 **Q：论文如何解决这个问题？**
 
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文通过开发和校准**EAWAG Bio-P模块**来解决上述问题，该模块是对已校准ASM3的扩展。主要方法包括：
+
+- **四个额外状态变量**（在ASM3的13个组分基础上新增）：
+  - $S_{PO_4}$：无机溶解性磷（主要为正磷酸盐）
+  - $X_{PAO}$：聚磷菌（PAO）
+  - $X_{PHA}$：细胞内储存产物（聚羟基烷酸酯和糖原）
+  - $X_{PP}$：聚磷酸盐（细胞内无机储存物）
+
+- **11个额外生物过程**（P1–P11）：
+  - P1：$X_{PHA}$的储存（厌氧底物摄取耦合释磷）
+  - P2/P3：$X_{PP}$的好氧/缺氧储存（摄磷）
+  - P4/P5：$X_{PAO}$的好氧/缺氧生长
+  - P6/P7：$X_{PAO}$的好氧/缺氧内源呼吸
+  - P8/P9：$X_{PP}$的好氧/缺氧裂解
+  - P10/P11：$X_{PHA}$的好氧/缺氧呼吸
+
+- **与ASM2d相比的主要简化**：
+  - **忽略发酵过程**（在典型瑞士市政污水中，发酵不限制释磷）。
+  - **不单独建模糖原池**（测量结果表明糖原对瑞士条件下EBPR过程无显著影响）。
+  - **不考虑生物诱导的磷酸钙沉淀**（pH < 7.5、T < 20°C时不显著）。
+  - **忽略厌氧衰减**（基于批次饥饿实验）。
+  - 采用**内源呼吸框架**（ASM3概念），并为所有PAO衰减/呼吸过程引入**独立的缺氧折减系数**（$\eta_{NO,PAO}$、$\eta_{NO,end,PAO}$、$\eta_{NO,lys,PP}$、$\eta_{NO,resp,PHA}$）。
+
+- 在ASM3所有生长过程中**增加磷限制项**。
+
+- **迭代校准策略**：将参数分组，利用多种批次实验进行校准，并用全规模和中试装置数据进行验证，在AQUASIM 2.0中实现。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 开发了“EAWAG Bio-P模块”作为ASM3的附加组件。
+- 引入了4个额外的状态变量（$S_{PO_4}$, $X_{PAO}$, $X_{PHA}$, $X_{PP}$）和11个附加过程。
+- 对ASM2d进行了简化，忽略了易降解底物的发酵过程，省略了额外的糖原池和生物诱导的无机磷酸钙沉淀。
+- 将生物量衰减建模为内源呼吸（与ASM3保持一致），并设定缺氧衰减速率低于好氧衰减速率，同时忽略厌氧衰减。
+- 利用批次实验、中试装置和全尺寸污水处理厂的数据，通过迭代方法对模块进行了系统的参数校准。
+
+
+
+------
+
+
+
 **Kimi:**
 论文通过以下步骤解决增强生物除磷（EBPR）的建模问题：
 
 1. **模型开发**：开发了EAWAG Bio-P模块，这是一个附加模块，用于扩展ASM3模型以包括生物除磷过程。该模块基于ASM3的校准版本，并结合了ASM2d中的修改过程，但不包括易于降解底物的发酵过程。
-
 2. **参数定义**：定义了四个额外的状态变量，除了ASM3中已经定义的13个组分，以模拟生物除磷过程。这些变量包括无机可溶性磷（SPO4）、聚磷酸盐积累菌（XPAO）、细胞内存储产物（XPHA）和聚磷酸盐（XPP）。
-
 3. **过程定义**：详细描述了与生物除磷相关的11个额外过程，包括磷的吸收、存储和释放，以及聚磷酸盐积累菌（PAO）的有氧和缺氧生长条件。
-
 4. **系统校准**：使用来自不同批次实验、全尺寸污水处理厂和试验工厂处理瑞士市政废水的实验数据，对EAWAG Bio-P模块进行了系统的校准。通过迭代方法，将高度相关的参数分组校准，并使用不同批次实验进行验证。
-
 5. **动态效应模拟**：模型能够模拟不同的动态效应，例如正常的磷释放和吸收、PAO的洗出和增长，以及在低COD负荷时期（如周末、雨天、假期）后的出水磷酸盐峰值。
-
 6. **模型验证**：通过与实验数据的比较，验证了模型的准确性。这包括对长期模拟和短期动态变化（如日变化）的验证。
-
 7. **简化和适应性**：模型设计时考虑了简化复杂性，例如忽略了额外的糖原池，并针对瑞士市政废水的典型条件进行了适应性调整。
 
 通过这些步骤，论文成功地将生物除磷过程整合到了ASM3模型中，并通过实验数据的校准和验证，提高了模型预测生物除磷效率的能力。这为废水处理工程师提供了一个强大的工具，以优化设计和操作，提高磷去除效率。
@@ -104,17 +174,73 @@ DOI: [10.1016/S0043-1354(01)00110-5](https://doi.org/10.1016/S0043-1354(01)00110
 
 **Q：论文做了哪些实验？**
 
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+校准和验证基于在**Neugut污水处理厂（Dübendorf）**和**Tüffenwies中试装置（苏黎世）**开展的实验，具体包括：
+
+**A. 释磷和好氧/缺氧摄磷批次实验**
+- 来自Neugut污水处理厂和Tüffenwies中试装置的三个批次实验。
+- 以乙酸盐为碳源。
+- 厌氧阶段（0–0.25 d）：用于校准$q_{PHA}$、$K_{SS,PAO}$、$K_{PP,PAO}$和$Y_{PO_4}$。
+- 好氧/缺氧阶段（0.25–0.55 d）：用于校准$q_{PP}$、$K_{PHA}$、$K_{max,PAO}$、$K_{iPP,PAO}$及缺氧折减系数。
+
+**B. PAO淘洗和增殖批次系列实验**
+- 在Tüffenwies中试装置进行，历时约140天，采用不同流程（DEN-2、UCT-3、AAO-3）。
+- 用于校准最大衰减速率（$b_{PP}$、$b_{PAO}$）和最大生长速率（$\mu_{PAO}$）。
+- 同时验证释磷/摄磷速率（$q_{PHA}$、$q_{PP}$）。
+
+**C. PAO衰减批次实验**
+- 在Tüffenwies中试装置进行三组好氧和厌氧饥饿条件下的批次实验。
+- 监测168小时内聚磷酸盐含量（$X_{PP}$）变化（0、48、96、168 h）。
+- 估算好氧聚磷酸盐衰减速率：$b_{PP} \approx 0.12\ d^{-1}$（15°C），换算为$0.2\ d^{-1}$（20°C）。
+- 这些实验**未被建模**，但提供了参数估算依据。
+
+**D. Neugut污水处理厂三次周变化监测**
+- 多个反应器隔室中$S_{PO_4}$的连续在线监测。
+- 包含"周一效应"（低COD负荷周末后出水磷酸盐峰值）。
+- 用于模型周动态行为的验证。
+
+**E. Tüffenwies中试装置两次日变化监测**
+- 多个反应器隔室中$S_{PO_4}$、$S_{NH}$、$S_{NO}$的详细2天动态测量。
+- AAO流程，SRT = 12 d。
+- 用于短期动态预测的验证。
+
+**F. Neugut污水处理厂九周长期模拟**
+- 1996年第11–19周，AAO模式，平均SRT = 12 d。
+- 用于验证模型稳定性和长期预测精度。
+
+所有模拟均在**AQUASIM 2.0-prerel3**（Reichert, 1998）中实现。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- PAO衰减批次实验（好氧和厌氧条件）：研究聚磷的衰减和内源呼吸。
+- 释磷和吸磷批次实验（好氧/缺氧）：用于校准动力学和化学计量学参数。
+- PAO生长与洗出批次实验：在不同工艺流程（DEN, UCT, AAO）下检查最大释磷量和衰减/生长速率。
+- 全尺寸污水处理厂 (Neugut WWTP) 监测：包括周变化数据和长达9周的长期模拟验证。
+- 中试装置 (Tüffenwies) 监测：用于模拟和验证日变化动态数据。
+
+
+
+------
+
+
+
 **Kimi:**
 论文《EAWAG BIO-P模块用于活性污泥模型第3号》进行并使用了多种实验来开发、校准和验证Bio-P模块。以下是论文中提到的主要实验：
 
 1. **批次实验**：进行了一系列批次实验，以研究聚磷酸盐的衰减率和PAO（聚磷酸盐积累菌）在好氧和厌氧条件下的内源呼吸。这些实验有助于估计PAO的减少，并用于校准如XPHA存储速率常数（qPHA）和XPAO最大增长率（mPAO）等动力学参数。
-
 2. **磷释放和磷吸收实验**：进行了这些实验以确定最大磷释放量以及最大好氧和厌氧磷吸收量。这些实验在项目的所有重要阶段进行，并用于微调如每XPHA生物量产量（YPAOO2和YPAO,NO）和XPP存储每XPHA需求（YPHA）等化学计量参数。
-
 3. **洗出和生长实验**：进行了一系列批次实验，以检查PAO的最大衰减（bPP, bPAO）和增长率（mPAO），以及磷释放/磷吸收率（qPHA, qPP）。这些实验在不同的流程方案和进水条件下游行了140天。
-
 4. **日变化实验**：论文提到了在Tu¨ﬀenwies试验工厂进行的日变化实验，该工厂以AAO模式运行。根据之前的时间段计算了污泥的初始条件，以模拟单日周期内反硝化和Bio-P的行为。
-
 5. **全尺度实验**：除了批次和试验工厂实验外，论文还提到了在全尺度污水处理厂（Neugut WWTP）进行的实验。该工厂被建模为CSTRs的级联，二级澄清器被建模为带有进水区、污泥毯和清水区。该模型在校准和验证中使用了该工厂的数据，特别关注不同操作条件和情景下氮和磷的去除。
 
 这些实验对于Bio-P模块的开发至关重要，因为它们提供了必要的经验数据，以完善模型的参数并验证其对不同操作条件下生物除磷预测能力。
@@ -125,23 +251,50 @@ DOI: [10.1016/S0043-1354(01)00110-5](https://doi.org/10.1016/S0043-1354(01)00110
 
 **Q：有什么可以进一步探索的点？**
 
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- **引入糖原池**：本文有意省略了糖原建模，但承认在低COD负荷条件下（如周末后）糖原限制可能起关键作用。未来研究可引入糖原池，以改善"周一效应"等低COD场景的预测，尤其适用于与瑞士市政污水特性不同的污水。
+- **生物诱导的磷酸钙沉淀**：该模块未考虑此过程。在pH > 7.5或T > 20°C时，生物诱导的磷沉淀可能变得显著，其引入将扩展模型的适用范围。
+- **化学除磷**：ASM2d中的两个化学沉淀过程未被纳入，但作者指出可以方便地实现。
+- **发酵过程**：本文忽略了易降解底物的发酵。对于底物组成不同的污水（如VFA含量较高或工业废水），发酵可能很重要，需重新考虑。
+- **内部储存池的直接测量**：论文指出目前缺乏可靠的聚磷酸盐和糖原测量方法。开发$X_{PP}$和$X_{PHA}$的在线或快速分析方法将大大改善模型校准和验证。
+- **改善进水特征化**：论文指出仅有日均样品，且假设$S_S$/COD比值恒定。动态进水组分分析（尤其是易生物降解组分$S_S$）将提高模拟精度。
+- **减少校准工作量**：作者预期未来应用中可减少校准工作量。系统的灵敏度分析和可识别性研究有助于简化校准流程。
+- **适用于不同污水类型**：本文的简化（无糖原、无发酵）适用于稀释的瑞士市政污水。模型对浓度较高或工业废水，或COD组成不同的污水的适用性需进一步研究。
+- **缺氧PAO反硝化**：本文对所有缺氧PAO过程使用单一折减系数$\eta_{NO,PAO}$。对反硝化PAO比例及其动力学进行更详细的建模可改善预测。
+- **长期稳定性和参数可移植性**：虽然找到了一套标准参数，但自养生长速率$\mu_A$需针对每个污水处理厂进行调整。进一步研究参数集对其他污水处理厂和条件的可移植性具有重要意义。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 改进对初始污泥成分（如聚磷PP和PHA池）的估算，以提高短期动态模拟的准确性。
+- 引入进水中易降解COD ($S_S$) 与总COD比例的动态测量数据，而非使用恒定比例。
+- 开发可靠的直接测量方法来量化内部储存池（如聚磷酸盐和糖原），以便更好地验证模型。
+- 如果应用于不同的污水条件（如较高的pH值或温度），需考虑将生物诱导的无机磷酸钙沉淀纳入模型。
+
+
+
+------
+
 **Kimi:**
 尽管论文《EAWAG BIO-P模块用于活性污泥模型第3号》在增强生物除磷（EBPR）的建模和预测方面取得了显著进展，但仍有一些潜在的研究方向可以进一步探索：
 
 1. **模型参数的敏感性分析**：虽然模型已经过校准，但对参数的敏感性进行更深入的分析可能会揭示哪些参数对模型输出的影响最大，从而为未来的模型调整和优化提供指导。
-
 2. **不同条件下的模型适用性**：在不同的地理、气候和操作条件下，模型的适用性和准确性可能会有所不同。在更广泛的条件下测试和验证模型可以提高其普遍性和可靠性。
-
 3. **微生物生态学和分子生物学的应用**：结合微生物生态学和分子生物学的最新进展，可以更深入地了解参与EBPR的微生物群落结构和功能，从而改进模型的微生物学基础。
-
 4. **模型与实验数据的集成**：利用现代传感器技术和大数据分析，可以实时收集和集成实验数据到模型中，以提高模型的动态适应性和预测精度。
-
 5. **模型的扩展和改进**：考虑将其他重要的生物过程或化学过程集成到模型中，如微生物的代谢途径、不同污染物的影响等，以提高模型的复杂性和全面性。
-
 6. **模型在实际工程中的应用**：将模型应用于实际的工程设计和运行优化中，评估其在实际工程问题解决中的效果，并根据实际应用反馈进行调整。
-
 7. **模型与其他模型的比较和结合**：与其他现有的废水处理模型进行比较，探索不同模型之间的差异和互补性，甚至考虑将多个模型的优点结合起来，创建一个更全面的废水处理模型。
-
 8. **模型的教育和培训应用**：利用模型作为教育和培训工具，帮助学生和工程师更好地理解EBPR过程和废水处理技术。
 
 通过这些进一步的探索，可以不断提高模型的性能，扩展其应用范围，并为废水处理领域的研究和实践提供更多的洞见和工具。
@@ -153,23 +306,72 @@ DOI: [10.1016/S0043-1354(01)00110-5](https://doi.org/10.1016/S0043-1354(01)00110
 
 **Q：总结一下论文的主要内容。**
 
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文提出了**EAWAG Bio-P模块**，作为已校准ASM3的扩展，用于预测处理瑞士市政污水的活性污泥系统中的强化生物除磷（EBPR）。主要内容如下：
+
+**1. 模型结构**
+- 模块在ASM3基础上新增**4个状态变量**（$S_{PO_4}$、$X_{PAO}$、$X_{PHA}$、$X_{PP}$）和**11个生物过程**（P1–P11）。
+- 在ASM3所有生长过程中增加磷限制项。
+- 完整的化学计量和动力学框架以矩阵形式呈现（表1–3）。
+
+**2. 与ASM2d相比的主要简化**
+- **无发酵过程**（在瑞士市政污水中发酵不限制释磷）。
+- **无糖原池**（测量结果表明糖原在典型瑞士条件下对EBPR无显著影响）。
+- **无生物诱导磷酸钙沉淀**（pH < 7.5、T < 20°C时不相关）。
+- **无厌氧衰减**（基于饥饿批次实验）。
+- 采用**内源呼吸**（ASM3概念），区分**好氧和缺氧产率**（$Y_{PAO,O_2} = 0.6$，$Y_{PAO,NO} = 0.5\ gCOD\ gCOD^{-1}$）。
+
+**3. 校准方法**
+- 利用多种实验类型进行迭代校准：批次实验、批次系列、周变化、日变化和长期模拟。
+- 在AQUASIM 2.0中实现。
+- 关键校准参数：$q_{PHA} = 6\ d^{-1}$，$K_{SS,PAO} = 10\ gCOD\ m^{-3}$，$K_{max,PAO} = 0.2\ gP\ gCOD^{-1}$，$Y_{PO_4} = 0.35\ gP\ gCOD^{-1}$。
+
+**4. 验证结果**
+- 模型成功再现了：
+  - 批次实验中的短期释磷和摄磷动态。
+  - 140天内PAO的淘洗和增殖过程。
+  - 包含"周一效应"的周变化（低COD负荷后出水$PO_4$峰值）。
+  - 中试装置中$S_{PO_4}$、$S_{NH}$、$S_{NO}$的日变化。
+  - 全规模污水处理厂9周长期稳定模拟。
+- **一套标准参数集**适用于所有模拟；仅$\mu_A$需针对具体污水处理厂调整。
+
+**5. 主要发现**
+- 引入Bio-P模块后，异养菌生长/储存的缺氧折减系数$\eta_{NO,H}$需从0.5（校准ASM3）提高至0.8（= ASM2d默认值），原因是异养菌与PAO之间的底物竞争。
+- 最大聚磷酸盐含量$K_{max,PAO} = 0.2\ gP\ gCOD_{PAO}^{-1}$得到文献和分子生物学数据的支持。
+- 该模型特别适用于典型运行条件下稀释的瑞士市政污水。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- EAWAG Bio-P模块成功扩展了ASM3，使其具备了模拟生物除磷的能力。
+- 该模块简化了以往的模型（如ASM2d），去除了发酵和糖原池过程，证明这些过程在典型的瑞士市政污水条件下是不必要的。
+- 模型区分了好氧和缺氧条件下的生长/产率，并采用内源呼吸来描述衰减过程。
+- 通过单一的标准参数集，成功在批次实验、中试和全尺寸水厂的各种动态条件（日变化、周变化、长期运行）下完成了模型的校准和验证。
+
+
+
+------
+
+
 **Kimi:**
 论文《EAWAG BIO-P模块用于活性污泥模型第3号》的主要内容可以总结如下：
 
 1. **EAWAG Bio-P模块的介绍**：论文提出了一个用于活性污泥模型第3号（ASM3）的附加模块，用于预测增强生物除磷（EBPR）。该模块基于ASM3的校准版本，并结合了ASM2d的修改过程，省略了易于降解底物的发酵过程。
-
 2. **模型定义**：Bio-P模块为ASM3现有的13个组分引入了四个额外的状态变量，以模拟生物除磷过程。它通过忽略某些过程（如发酵和额外的糖原池）来简化模型，专注于聚磷菌（PAO）及其在EBPR中的作用。
-
 3. **校准和验证**：该模块使用来自批次实验、全尺度污水处理厂（WWTP）和试验工厂的实验数据进行了系统校准。开发了一套标准参数集来模拟所有数据集，证明了该模块准确预测氮和磷去除能力。
-
 4. **化学计量和动力学**：提供了ASM3和Bio-P模块可溶性和颗粒性组分的详细化学计量和动力学速率表达式。这些表达式对于理解模型内不同组分和过程之间的相互作用至关重要。
-
 5. **参数校准**：使用迭代方法对模型参数进行校准，将高度相关的参数分组并对WWTP数据进行验证。校准过程专注于通过同时评估多个实验来减少无法识别的参数数量。
-
 6. **实验数据**：论文讨论了进行的各种实验，包括用于PAO衰减的批次实验、磷释放和磷吸收以及日变化实验。这些实验对于Bio-P模块的开发和验证至关重要。
-
 7. **模型应用**：Bio-P模块被应用于模拟不同的动态效应，如“周一效应”和长期磷酸盐浓度变化的模拟。该模块在使用一套默认参数的情况下成功模拟了这些效应，仅在特定条件下需要进行微小调整。
-
 8. **结论**：论文得出结论，当EAWAG Bio-P模块扩展到ASM3时，可以准确预测氮和磷的去除。该模块能够模拟各种动态效应，并且预计在未来的应用中将减少校准工作量。
 
 总体而言，论文提供了一种增强ASM3模型以预测EBPR的综合方法，为污水处理厂的设计和运行提供了一个有价值的工具。
@@ -179,31 +381,82 @@ DOI: [10.1016/S0043-1354(01)00110-5](https://doi.org/10.1016/S0043-1354(01)00110
 
 **Q：有哪些相关研究？**
 
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+
+- Brdjanovic et al. (1998) — *Impact of excessive aeration on biological phosphorus removal from waste water.* Wat. Res. 32(1), 200–208.
+- Carucci et al. (1999) — *Microbial competition for the organic substrates and its impact on EBPR systems under conditions of changing carbon feed.* Wat. Sci. Technol. 39(1), 75–85.
+- Crocetti et al. (2000) — *Identification of polyphosphate-accumulating organisms and design of 16S rRNA-directed probes for their detection and quantification.* Appl. Environ. Microbiol. 66(3), 1175–1182.
+- Gujer and Larsen (1995) — *The Implementation of biokinetics and conservation principles in ASIM.* Wat. Sci. Technol. 31(2), 257–266.
+- Henze et al. (2000) — *Activated Sludge Model No. 3. Scientific and Technical Report No 9: Activated Sludge Models ASM1, ASM2, ASM2d and ASM3.* IWA Task Group on Mathematical Modelling for Design and Operation of Biological Wastewater Treatment, IWA Publishing, London.
+- Johansson et al. (1996) — *Modeling of the anaerobic reactor in a biological phosphate removal process.* Wat. Sci. Technol. 34(1–2), 49–55.
+- Koch et al. (1998) — *Final Report: Nitrogen removal in activated sludge plants. Studies at the WWTPs Werdhölzli and Neugut.* EAWAG.
+- Koch et al. (2000) — *Calibration and validation of activated sludge model no. 3 for Swiss municipal wastewater.* Wat. Res. 34(14), 3580–3590.
+- Koch et al. (2001) — *Calibration and validation of an ASM3-based steady state model for activated sludge systems—Part II: Prediction of phosphorus removal.* Wat. Res. 35(9), 2246–2255.
+- Kunst (1991) — *Investigations of enhanced biological phosphorus removal with regard to waste water treatment.* Published by the Institute of Sanitary Engineering and Waste Management of the University of Hannover.
+- Maurer (1996) — *Enhanced biological phosphorus removal. Modelling of the biological and chemical processes.* Ph.D. Thesis, ETHZ Nr. 11920.
+- Maurer et al. (1999) — *Kinetics of biologically induced phosphorus precipitation in waste-water treatment.* Wat. Res. 33(2), 484–493.
+- Mino et al. (1995) — *Modelling glycogen storage and denitrification capability of microorganisms in enhanced biological phosphate removal processes.* Wat. Sci. Technol. 31(2), 25–34.
+- Mino et al. (1998) — *Review paper: Microbiology and biochemistry of the enhanced biological phosphate removal process.* Wat. Res. 32(11), 3193–3207.
+- Reichert (1998) — *AQUASIM 2.0—Computer program for the identification and simulation of aquatic systems.* EAWAG Report.
+- Satoh et al. (1996) — *Anaerobic substrate uptake by the enhanced biological phosphorus removal activated sludge treating real sewage.* Wat. Sci. Technol. 34(1–2), 9–16.
+- Siegrist et al. (1999) — *Reduction of biomass decay rate under anoxic and anaerobic conditions.* Wat. Sci. Technol. 39(1), 129–137.
+- Smolders et al. (1994) — *Stoichiometry of the aerobic metabolism.* Biotechnol. Bioeng. 44, 837–848.
+- Van Veldhuizen et al. (1999) — *Modeling biological phosphorus and nitrogen removal in a full-scale activated sludge process.* Wat. Res. 33(16), 3459–3468.
+- Wild (1997) — *Nutrient fluxes in WWTPs with enhanced biological phosphorus removal.* Ph.D. Thesis, ETHZ Nr. 12197.
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- Brdjanovic et al. (1998) Impact of excessive aeration on biological phosphorus removal from waste water.
+- Carucci et al. (1999) Microbial competition for the organic substrates and its impact on EBPR systems under conditions of changing carbon feed.
+- Crocetti et al. (2000) Identification of polyphosphate-accumulating organisms and design of 16S rRNA-directed probes for their detection and quantification.
+- Gujer and Larsen (1995) The Implementation of biokinetics and conservation principles in ASIM.
+- Henze et al. (2000) Activated Sludge Model No. 3.
+- Johansson et al. (1996) Modeling of the anaerobic reactor in a biological phosphate removal process.
+- Koch et al. (1998) Final Report: Nitrogen removal in activated sludge plants. Studies at the WWTPs Werdhölzli and Neugut.
+- Koch et al. (2000) Calibration and validation of activated sludge model no. 3 for Swiss municipal wastewater.
+- Koch et al. (2001) Calibration and validation of an ASM3-based steady state model for activated sludge systems—Part II: Prediction of phosphorus removal.
+- Kunst (1991) Investigations of enhanced biological phosphorus removal with regard to waste water treatment.
+- Maurer (1996) Enhanced biological phosphorus removal. Modelling of the biological and chemical processes.
+- Maurer et al. (1999) Kinetics of biologically induced phosphorus precipitation in waste-water treatment.
+- Mino et al. (1995) Modelling glycogen storage and denitrification capability of microorganisms in enhanced biological phosphate removal processes.
+- Mino et al. (1998) Review paper: Microbiology and biochemistry of the enhanced biological phosphate removal process.
+- Reichert (1998) AQUASIM 2.0—Computer program for the identification and simulation of aquatic systems.
+- Satoh et al. (1996) Anaerobic substrate uptake by the enhanced biological phosphorus removal activated sludge treating real sewage.
+- Siegrist et al. (1999) Reduction of biomass decay rate under anoxic and anaerobic conditions.
+- Smolders et al. (1994) Stoichiometry of the aerobic metabolism.
+- Van Veldhuizen et al. (1999) Modeling biological phosphorus and nitrogen removal in a full-scale activated sludge process.
+- Wild (1997) Nutrient fluxes in WWTPs with enhanced biological phosphorus removal.
+
+
+
+------
+
+
+
 **Kimi:**
 论文《EAWAG BIO-P模块用于活性污泥模型第3号》引用了许多相关研究，这些研究为Bio-P模块的开发和验证提供了支持。以下是论文中提到的一些关键相关研究：
 
 1. **Henze等人（2000）**：这是关于活性污泥模型第3号（ASM3）的原始工作，为EAWAG Bio-P模块提供了基础。它是一个全面的模型，用于模拟市政废水处理过程。
-
 2. **Koch等人（2000）**：这项研究介绍了ASM3针对瑞士市政废水的校准和验证，这对于Bio-P模块的开发至关重要，因为它建立在校准版本的ASM3之上。
-
 3. **Maurer等人（1999）**：这项研究调查了废水处理中生物诱导磷沉淀的动力学，这对于理解Bio-P模块旨在捕捉的生物过程非常重要。
-
 4. **Mino等人（1995, 1998）**：这些研究关注增强生物除磷（EBPR）过程的微生物学和生物化学，为Bio-P模块试图捕捉的微生物机制提供了洞见。
-
 5. **Carucci等人（1999）**：这项工作检查了微生物对有机底物的竞争及其对EBPR系统的影响，在变化的碳源条件下，这对Bio-P模块中底物竞争的表示非常重要。
-
 6. **Brdjanovic等人（1998）**：这项研究讨论了过度曝气对废水中生物除磷的影响，这对于理解影响除磷效率的操作条件具有相关性。
-
 7. **Crocetti等人（2000）**：这项研究识别了聚磷酸盐积累菌，并开发了用于其检测和定量的16S rRNA导向探针，有助于理解参与EBPR的特定微生物。
-
 8. **Johansson等人（1996）**：这篇论文对生物除磷过程中的厌氧反应器进行了建模，为Bio-P模块中包含的厌氧过程提供了基础。
-
 9. **Kunst（1991）**：这项工作调查了针对废水处理的增强生物除磷，为EBPR在全尺度系统中应用提供了实际洞见。
-
 10. **Satoh等人（1996）**：这项研究检查了处理真实污水的增强生物除磷活性污泥中的厌氧底物吸收，有助于理解EBPR系统中底物动态。
-
 11. **Smolders等人（1994）**：这项研究提供了有关好氧代谢化学计量的信息，这对于考虑在Bio-P模块中的生化过程至关重要。
-
 12. **Van Veldhuizen等人（1999）**：这篇论文对全尺度活性污泥过程中的生物磷和氮去除进行了建模，为Bio-P模块在全尺度系统中的应用提供了更广泛的背景。
 
 这些研究共同为EAWAG Bio-P模块的开发提供了理论基础、实证数据和实际洞见，涉及增强生物除磷过程中的生物和化学过程。

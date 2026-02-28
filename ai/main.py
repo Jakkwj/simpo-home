@@ -533,7 +533,7 @@ def get_question(
             else result[f"{answer_models[answer_model]}zh_{question_key}"]
         )
         if answer_model == "Gemini 3.1 Pro":
-            answer = answer.replace(" - ", "\n - ")  # Gemini 的回答里经常不换行, 需要手动加上换行
+            answer = answer.replace("\\n", "\n").replace(" - ", "\n- ")  # Gemini 的回答里换行
 
         question += f"""
 
@@ -547,6 +547,8 @@ def get_question(
         """
         # if index < len_ - 1:
         #     question += "\n------\n"
+
+    # question += "\n------\n"
 
     return question
 
@@ -576,7 +578,7 @@ def get_content(
     )
     question_6 = get_question("What_are_the_relevant_studies", answer_models, result, is_en)
 
-    return f"""---
+    content = f"""---
         slug: /{result["DOI"]}
         title: {result["Title"].replace(": ", "-")}
         ---
@@ -682,6 +684,20 @@ def get_content(
 
     """.replace("        ", "")
 
+    return (
+        content
+        .replace("<0", "< 0")
+        .replace("<1", "< 1")
+        .replace("<2", "< 2")
+        .replace("<3", "< 3")
+        .replace("<4", "< 4")
+        .replace("<5", "< 5")
+        .replace("<6", "< 6")
+        .replace("<7", "< 7")
+        .replace("<8", "< 8")
+        .replace("<9", "< 9")
+    )
+
 
 def main(
     pdf_file: str,
@@ -784,28 +800,33 @@ def main(
 
 if __name__ == "__main__":
     main(
-        # "Simulation of the performance of aerobic granular sludge SBR using modiﬁed ASM3 model.pdf"
-        # "Simultaneous removal of sulﬁde, nitrate and acetate under denitrifying sulﬁde removal condition: Modeling and experimental validation.pdf"
-        #
-        # "Achieving Complete Nitrogen Removal by Coupling Nitritation-Anammox and Methane-Dependent Denitrification: A Model-Based Study.pdf"
-        # "A modeling approach to describe ZVI-based anaerobic system.pdf"
-        # "Competitive dynamics of anaerobes during long-term biological sulfate reduction process in a UASB reactor.pdf"
-        # "Development of a kinetic model to evaluate thiosulfate-driven denitriﬁcation and anammox (TDDA) process.pdf"
-        # "Development of an Extended ASM3 Model for Predicting the Nitrous Oxide Emissions in a Full-Scale Wastewater Treatment Plant.pdf"
+        # "Simulation of the performance of aerobic granular sludge SBR using modiﬁed ASM3 model.pdf",
+        # "approved/Simultaneous removal of sulﬁde, nitrate and acetate under denitrifying sulﬁde removal condition: Modeling and experimental validation.pdf",
+        # "approved/Achieving Complete Nitrogen Removal by Coupling Nitritation-Anammox and Methane-Dependent Denitrification: A Model-Based Study.pdf",
+        # "unapproved/A modeling approach to describe ZVI-based anaerobic system.pdf",
+        # "unreadable/Competitive dynamics of anaerobes during long-term biological sulfate reduction process in a UASB reactor.pdf",
+        # "approved/Development of a kinetic model to evaluate thiosulfate-driven denitriﬁcation and anammox (TDDA) process.pdf",
+        # "unreadable/Development of an Extended ASM3 Model for Predicting the Nitrous Oxide Emissions in a Full-Scale Wastewater Treatment Plant.pdf",
         # "unapproved/Expanding ASM models towards integrated processes for short-cut nitrogen removal and bioplastic recovery.pdf",
-        # "Mathematical modeling of simultaneous carbon-nitrogen-sulfur removal from industrial wastewater.pdf"
-        # "Modeling Nitrous Oxide Production during Biological Nitrogen Removal via Nitrification and Denitrification: Extensions to the General ASM Models.pdf"
-        # "Modelling Methane Production and Sulfate Reduction in Anaerobic Granular Sludge Reactor with Ethanol as Electron Donor.pdf"
-        # "Phosphate release involving PAOs activity during anaerobic fermentation of EBPR sludge and the extension of ADM1.pdf"
-        # "Physics-informed neural network-based serial hybrid model capturing the hidden kinetics for sulfur-driven autotrophic denitrification proces.pdf"
-        # "Quantifying sensitivity and uncertainty analysis of a new mathematical model for the evaluation of greenhouse gas emissions from.pdf"
-        # "Simulation of the performance of aerobic granular sludge SBR using modiﬁed ASM3 model.pdf"
-        # "Simultaneous removal of sulﬁde, nitrate and acetate under denitrifying sulﬁde removal condition: Modeling and experimental validation.pdf"
-        # "Sulfate-reduction, sulﬁde-oxidation and elemental sulfur bioreduction process: Modeling and experimental validation.pdf"
-        # "Strategies for mitigating nitrous oxide production and decreasing the carbon footprint of a full-scale combined nitrogen and phosphorus removal activated sludge system.pdf",
-        # "An Updated Process Model for Carbon Oxidation, Nitrification, and Denitrification.pdf",
+        # "unapproved/Mathematical modeling of simultaneous carbon-nitrogen-sulfur removal from industrial wastewater.pdf",
+        # "approved/Modeling Nitrous Oxide Production during Biological Nitrogen Removal via Nitrification and Denitrification: Extensions to the General ASM Models.pdf",
+        # "approved/Modelling Methane Production and Sulfate Reduction in Anaerobic Granular Sludge Reactor with Ethanol as Electron Donor.pdf",
+        # "unapproved/Phosphate release involving PAOs activity during anaerobic fermentation of EBPR sludge and the extension of ADM1.pdf",
+        # "approved/Evaluation of Nitrous Oxide Emission from Sulﬁde- and Sulfur-Based Autotrophic Denitriﬁcation Processes.pdf",
+        # "Physics-informed neural network-based serial hybrid model capturing the hidden kinetics for sulfur-driven autotrophic denitrification proces.pdf",
+        # "unapproved/Quantifying sensitivity and uncertainty analysis of a new mathematical model for the evaluation of greenhouse gas emissions from membrane bioreactors.pdf",
+        # "approved/Evaluating two concepts for the modelling of intermediates accumulation during biological denitrification in wastewater treatment.pdf",
+        # "approved/Simulation of the performance of aerobic granular sludge SBR using modiﬁed ASM3 model.pdf",
+        # "Simultaneous removal of sulﬁde, nitrate and acetate under denitrifying sulﬁde removal condition: Modeling and experimental validation.pdf",
+        # "unreadable/Sulfate-reduction, sulﬁde-oxidation and elemental sulfur bioreduction process: Modeling and experimental validation.pdf",
+        # "approved/Modeling Electron Competition among Nitrogen Oxides Reduction and N2O Accumulation in Denitriﬁcation.pdf",
+        # "unreadable/Strategies for mitigating nitrous oxide production and decreasing the carbon footprint of a full-scale combined nitrogen and phosphorus removal activated sludge system.pdf",
+        # "unapproved/An Updated Process Model for Carbon Oxidation, Nitrification, and Denitrification.pdf",
+        # "approved/Modelling nitrification, heterotrophic growth and predation in activated sludge.pdf",
+        # "approved/Growth, maintenance and product formation of autotrophs in activated sludge: Taking the nitrite-oxidizing bacteria as an example.pdf",
+        "approved/The EAWAG Bio-P module for activated sludge model No. 3.pdf",
         # "unapproved/Physics-informed neural network-based serial hybrid model capturing the hidden kinetics for sulfur-driven autotrophic denitrification proces.pdf",
-        "unapproved/A quantified nitrogen metabolic network by reaction kinetics and mathematical model in a single-stage microaerobic system treating low COD_TN wastewater.pdf",
+        # "unapproved/A quantified nitrogen metabolic network by reaction kinetics and mathematical model in a single-stage microaerobic system treating low COD_TN wastewater.pdf",
         # "approved/Mathematical modeling of autotrophic denitriﬁcation (AD) process with sulphide as electron donor.pdf",
         # prompt_content_1_add="""你之前已经提取了一次Component和Parameter，不用重复提取，只需要检查一下即可：
         #     {
