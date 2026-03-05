@@ -112,10 +112,10 @@ const config = {
     imgUrlCaseStudyBWTEE2_3_4DHO: 'https://i.postimg.cc/zBNMGgf1/2-3-4-Chemostat-3.jpg',
 
     // imgUrlWechatJakk: 'https://i.postimg.cc/yxKhZxM0/jakk-QR.jpg',
-    // imgUrlWechatAccount: 'https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg',
-    // imgUrlSimpoQR: 'https://i.postimg.cc/DZRM3JpM/SIMPO-QR.jpg',
-    imgUrlWechatAccount: 'https://i.postimg.cc/gcyDBqtk/gzh_qrcode_50cm.jpg',
-    imgUrlSimpoQR: 'https://i.postimg.cc/qvqxqfJy/SIMPO_QR2.jpg',
+    imgUrlWechatAccount: 'https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg',
+    imgUrlSimpoQR: 'https://i.postimg.cc/DZRM3JpM/SIMPO-QR.jpg',
+    // imgUrlWechatAccount: 'https://i.postimg.cc/gcyDBqtk/gzh_qrcode_50cm.jpg',
+    // imgUrlSimpoQR: 'https://i.postimg.cc/qvqxqfJy/SIMPO_QR2.jpg',
 
     imgUrlBlogEurekAlertSIMPO: 'https://i.postimg.cc/9fyxpKQ8/eurek-Alert-SIMPO.png',
     imgUrlBlogSIMPOHighlights: 'https://i.postimg.cc/s2t4tcvv/SIMPO-highlights.png',
