@@ -16,6 +16,7 @@ import config from '@generated/docusaurus.config'
 
 <iframe
   src="//player.bilibili.com/player.html?isOutside=true&aid=116102864568852&bvid=BV1DnfGBYEg6&cid=36179019522&p=1"
+  style={{marginTop: '1.5rem', marginBottom: '1.5rem'}}
   scrolling="no"
   border="0"
   frameborder="no"
@@ -25,10 +26,12 @@ import config from '@generated/docusaurus.config'
   height="500">
 </iframe>
 
+
 **SIMPO** 的3个核心元素是：**BioModel** （生化模型）, **DataSet** （数据集）和 **Project** （项目）：
 - **BioModel**：生化模型，储存模型的组分、参数、计量学矩阵、速率方程等。
 - **DataSet**：数据集，储存工艺的水质、流量、连接方式、反应器类型等。
 - **Project**：项目，控制仿真计算的初值、范围、计算模式和分析类型（数值模拟、敏感性分析、不确定性分析、参数估值）。
+
 
 :::info 任意组合
 
@@ -36,9 +39,12 @@ import config from '@generated/docusaurus.config'
 这一机制不仅能实现不同生化机理的快速验证与横向对比，更能针对特定工艺进行精准模拟与策略寻优。
 这种**即插即用**的高效建模架构，极大地降低了重复配置模型的时间成本。
 
-
 :::
 
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src="https://i.postimg.cc/jqhVd07m/combine.png" width="50%"/>
+</div>
 
 
 一个完整的计算过程步骤如下：
