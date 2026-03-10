@@ -578,6 +578,28 @@ def get_content(
     )
     question_6 = get_question("What_are_the_relevant_studies", answer_models, result, is_en)
 
+    hint = """
+        {/* - `0.57` 替换为 `8/14`。 */}
+        {/* - `1.71` 替换为 `24/14`。 */}
+        {/* - `2.29` 替换为 `32/14`。 */}
+        {/* - `3.43` 替换为 `48/14`。 */}
+        {/* - `4.57` 替换为 `64/14`。 */}
+        {/* - `6.85` 替换为 `96/14`。 */}
+
+        {/* ThOD */}
+        {/* S_NO3 -64/14 */}
+        {/* S_NO2 -48/14 */}
+        {/* S_NO -40/14 */}
+        {/* S_N2O -32/14 */}
+        {/* S_N2 -24/14 */}
+        {/* S_NH2OH -16/14 */}
+
+        {/* S_S0 -0.5 */}
+        {/* S_SO4 -2.0 */}
+
+        {/* S_CH4 1 */}
+    """
+
     content = f"""---
         slug: /{result["DOI"]}
         title: {result["Title"].replace(": ", "-")}
@@ -619,6 +641,9 @@ def get_content(
         height="400"
         style={{{{ border: 'none', marginBottom: '0.8rem' }}}}
         ></iframe> */}}
+
+
+        {hint}
 
 
         ------
@@ -685,8 +710,7 @@ def get_content(
     """.replace("        ", "")
 
     return (
-        content
-        .replace("<0", "< 0")
+        content.replace("<0", "< 0")
         .replace("<1", "< 1")
         .replace("<2", "< 2")
         .replace("<3", "< 3")
@@ -824,10 +848,11 @@ if __name__ == "__main__":
         # "unapproved/An Updated Process Model for Carbon Oxidation, Nitrification, and Denitrification.pdf",
         # "approved/Modelling nitrification, heterotrophic growth and predation in activated sludge.pdf",
         # "approved/Growth, maintenance and product formation of autotrophs in activated sludge: Taking the nitrite-oxidizing bacteria as an example.pdf",
-        "approved/The EAWAG Bio-P module for activated sludge model No. 3.pdf",
+        # "approved/The EAWAG Bio-P module for activated sludge model No. 3.pdf",
         # "unapproved/Physics-informed neural network-based serial hybrid model capturing the hidden kinetics for sulfur-driven autotrophic denitrification proces.pdf",
         # "unapproved/A quantified nitrogen metabolic network by reaction kinetics and mathematical model in a single-stage microaerobic system treating low COD_TN wastewater.pdf",
         # "approved/Mathematical modeling of autotrophic denitriﬁcation (AD) process with sulphide as electron donor.pdf",
+        "An approach for modeling two-step denitrification in activated sludge systems.pdf",
         # prompt_content_1_add="""你之前已经提取了一次Component和Parameter，不用重复提取，只需要检查一下即可：
         #     {
         #     "Component": [
@@ -836,7 +861,8 @@ if __name__ == "__main__":
         # """,
         # models_get_BioModel = "gemini-3.1-pro-preview",
         models_get_BioModel="claude-opus-4-6",
-        is_get_BioModel=False,
+        # is_get_BioModel=False,
+        is_get_BioModel=True,
     )
 
     # result_claude = asy_run(
