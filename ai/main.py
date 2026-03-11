@@ -598,7 +598,29 @@ def get_content(
         {/* S_SO4 -2.0 */}
 
         {/* S_CH4 1 */}
+
     """
+
+    if is_en:
+        hint += """
+
+        {/* This Public version's main revisions include: */}
+
+        {/* 1. To accurately perform the `Balance` accounting, replace the following stoichiometric coefficients in the stoichiometry matrix: */}
+        {/*     - `1.14` with `16/14`. */}
+        {/*     - `1.71` with `24/14`. */}
+
+        """
+    else:
+        hint += """
+
+        {/* 这个 Public version 的主要修订内容包括： */}
+
+        {/* 1. 为了准确进行Balance核算，将计量学矩阵中的: */}
+        {/*     - `1.14` 替换为 `16/14`。 */}
+        {/*     - `1.71` 替换为 `24/14`。 */}
+
+        """
 
     content = f"""---
         slug: /{result["DOI"]}
@@ -852,7 +874,8 @@ if __name__ == "__main__":
         # "unapproved/Physics-informed neural network-based serial hybrid model capturing the hidden kinetics for sulfur-driven autotrophic denitrification proces.pdf",
         # "unapproved/A quantified nitrogen metabolic network by reaction kinetics and mathematical model in a single-stage microaerobic system treating low COD_TN wastewater.pdf",
         # "approved/Mathematical modeling of autotrophic denitriﬁcation (AD) process with sulphide as electron donor.pdf",
-        "An approach for modeling two-step denitrification in activated sludge systems.pdf",
+        # "An approach for modeling two-step denitrification in activated sludge systems.pdf",
+        "unapproved/Model-based identification of the dominant N2O emission pathway in a full-scale activated sludge system.pdf",
         # prompt_content_1_add="""你之前已经提取了一次Component和Parameter，不用重复提取，只需要检查一下即可：
         #     {
         #     "Component": [
@@ -861,8 +884,8 @@ if __name__ == "__main__":
         # """,
         # models_get_BioModel = "gemini-3.1-pro-preview",
         models_get_BioModel="claude-opus-4-6",
-        # is_get_BioModel=False,
-        is_get_BioModel=True,
+        is_get_BioModel=False,
+        # is_get_BioModel=True,
     )
 
     # result_claude = asy_run(

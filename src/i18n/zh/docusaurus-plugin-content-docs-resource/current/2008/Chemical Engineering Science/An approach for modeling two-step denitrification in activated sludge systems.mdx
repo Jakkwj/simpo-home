@@ -1,0 +1,383 @@
+---
+slug: /10.1016/j.ces.2007.12.003
+title: An approach for modeling two-step denitrification in activated sludge systems
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# [An approach for modeling two-step denitrification in activated sludge systems](https://doi.org/10.1016/j.ces.2007.12.003)
+
+
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/approved-brightgreen?style=for-the-badge" />
+
+
+<img style={{marginBottom: '0.8rem', marginRight: '0.8rem'}} alt="" src="https://img.shields.io/badge/access-subscription-orange?style=for-the-badge" />
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+    DOI: [10.1016/j.ces.2007.12.003](https://doi.org/10.1016/j.ces.2007.12.003)
+
+    作者: Bing-Jie Ni, Han-Qing Yu
+  </div>
+</div>
+
+
+----
+
+[SIMPO Dashboard](https://dash.simpowater.com/dashboard/biomodels/public/name/10.1016-j.ces.2007.12.003/id/914/did/910):
+
+<iframe
+src="https://dash.simpowater.com/dashboard/biomodels/iframe/public/name/10.1016-j.ces.2007.12.003/id/914/did/910"
+
+width="100%"
+height="400"
+style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+
+
+{/* - `0.57` 替换为 `8/14`。 */}
+{/* - `1.71` 替换为 `24/14`。 */}
+{/* - `2.29` 替换为 `32/14`。 */}
+{/* - `3.43` 替换为 `48/14`。 */}
+{/* - `4.57` 替换为 `64/14`。 */}
+{/* - `6.85` 替换为 `96/14`。 */}
+
+{/* ThOD */}
+{/* S_NO3 -64/14 */}
+{/* S_NO2 -48/14 */}
+{/* S_NO -40/14 */}
+{/* S_N2O -32/14 */}
+{/* S_N2 -24/14 */}
+{/* S_NH2OH -16/14 */}
+
+{/* S_S0 -0.5 */}
+{/* S_SO4 -2.0 */}
+
+{/* S_CH4 1 */}
+
+
+这个 Public version 的主要修订内容包括：
+
+1. 为了准确进行Balance核算，将计量学矩阵中的:
+    - `1.14` 替换为 `16/14`。
+    - `1.71` 替换为 `24/14`。
+1. 参数 `K_NO3` 的单位是 `gN/m3`，而不是原来的 `gCOD/m3`。
+1. 参数 `K_NO2` 的单位是 `gN/m3`，而不是原来的 `gCOD/m3`。
+
+------
+
+<Tabs>
+
+<TabItem value="abstract" label="摘要" >
+
+在广泛用于生物污水处理的活性污泥模型（ASMs）中，反硝化通常被假设为一个单步过程，但这在系统中积累了大量亚硝酸盐的情况下并不成立。这限制了ASMs的应用。在这项工作中，考虑到硝酸盐和亚硝酸盐的两步反硝化，并引入同步储能与生长的概念，建立了一个基于ASM3的两步反硝化模型。分析了出水化学需氧量（COD）、$NO_2^-$-N和$NO_3^-$-N浓度对化学计量和动力学系数的敏感性。通过比较模型组分的测量值和预测值来进行模型校准。此后，利用四个不同的反硝化案例研究的实验结果对该模型进行了评估，并与原始的ASM3进行了比较。评估和比较结果表明，所开发的模型能够更好、更具机制性地描述活性污泥系统中的反硝化过程。
+
+</TabItem>
+
+<TabItem value="objective" label="目标" >
+
+**Q：这篇论文试图解决什么问题？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文试图解决以下几个关键问题：
+
+- **ASMs中单步反硝化假设的局限性**：在广泛使用的活性污泥模型（ASM1、ASM3等）中，反硝化被建模为单步过程（直接从 $NO_3^-$ 到 $N_2$），完全忽略了亚硝酸盐（$NO_2^-$）作为中间产物的存在。
+- **无法描述亚硝酸盐积累现象**：在某些条件下（如反硝化菌活性受抑制、碳源受限、特定COD/N比、pH和温度等），系统中会积累大量 $NO_2^-$。原始ASM3无法描述这一现象。
+- **缺乏缺氧条件下储存-生长耦合机制**：原始ASM3假设所有易生物降解底物先被储存再用于生长，这不足以描述序批式反应器（SBR）中的盛宴-饥饿行为。与好氧条件相比，缺氧条件下同步储存与生长的建模研究较少。
+- **NUR（硝酸盐利用速率）解释不准确**：当发生显著的 $NO_2^-$ 积累时，仅测量 $NO_x^-$-N 或 $NO_3^-$-N 无法得到可接受的结果，导致实验数据解释出现误差。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 广泛使用的活性污泥模型（如ASM3）假设反硝化是一个单步过程（直接从$NO_3^-$还原为$N_2$）。
+- 当系统中出现大量亚硝酸盐（$NO_2^-$）积累时，这种假设是不成立的，从而限制了ASMs的实际应用。
+- 现有的模型缺乏对缺氧条件下异养微生物同步储能和生长现象的机制性描述。
+
+
+
+
+</TabItem >
+
+<TabItem value="solution" label="解决" >
+
+**Q：论文如何解决这个问题？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文通过以下方法解决上述问题：
+
+- **两步反硝化框架**：模型明确将反硝化视为两步顺序过程：
+  - 第一步：$\frac{1}{2}NO_3^- \rightarrow \frac{1}{2}NO_2^-$（硝酸盐还原为亚硝酸盐）
+  - 第二步：$\frac{1}{3}NO_2^- \rightarrow \frac{1}{6}N_2$（亚硝酸盐还原为氮气）
+  每个反硝化过程（储存、在 $S_S$ 上生长、在 $X_{STO}$ 上生长、内源呼吸）均被拆分为两个并行动力学表达式——分别以 $S_{NO_3}$ 和 $S_{NO_2}$ 作为电子受体。
+
+- **引入同步储存与生长概念**：基于Karahan et al. (2006)提出的概念，模型允许异养菌同时将外部底物储存为内部聚合物（$X_{STO}$，如PHB/糖原）并直接利用外部底物生长。使用三个独立的产率系数：$Y_{STO,D}$（储存）、$Y_{HD,S}$（直接在 $S_S$ 上生长）和 $Y_{HD,STO}$（在 $X_{STO}$ 上生长）。
+
+- **基于ASM3的矩阵模型结构**：模型包含8个状态变量（$X_{HD}$、$X_{STO}$、$S_S$、$X_S$、$S_{N_2}$、$S_{NO_3}$、$S_{NO_2}$、$X_I$、$S_O$）和9个微生物过程，以标准化学计量矩阵格式呈现（表1和表2），与ASM框架兼容。
+
+- **带切换函数的Monod型动力学**：生长和储存采用Monod型表达式描述。引入反向切换函数（$\frac{K_S}{K_S + S_S}$），仅在外部底物 $S_S$ 耗尽时（饥饿阶段）激活 $X_{STO}$ 的消耗。
+
+- **灵敏度分析**：采用单变量逐一变化法进行灵敏度分析，识别出对模型校准最重要的参数（如 $k_{STO,D}$、$\mu_{HD,STO}$、$\mu_{HD,S}$、$b_{HD}$、$K_S$、$K_{NO_2}$、$K_{NO_3}$）。
+
+- **使用AQUASIM 2.0进行模型校准**：通过最小化测量值与预测值之间的偏差平方和，利用AQUASIM 2.0软件平台对模型进行校准。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 开发了一个基于ASM3的两步反硝化模型，明确将硝酸盐（$NO_3^-$）和亚硝酸盐（$NO_2^-$）均作为电子受体纳入考量。
+- 引入了缺氧条件下的微生物同步储能与生长概念，将过程分为“丰盛（feast）”和“饥荒（famine）”两个阶段。
+- 为9个微生物过程（包括在外部底物和内部储存聚合物上的缺氧储能和生长）构建了化学计量矩阵和动力学速率表达式。
+- 利用AQUASIM 2.0软件进行模型模拟、敏感性分析和参数校准。
+- 通过将模型预测结果与四个独立案例研究的实验数据进行对比，并与原始ASM3模型进行基准测试，验证了所提出模型的有效性。
+
+
+
+
+</TabItem >
+
+<TabItem value="experiment" label="实验" >
+
+**Q：论文做了哪些实验？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文未开展新的原创实验，而是使用**四个已发表案例研究**的实验数据进行模型评估，并与原始ASM3进行比较：
+
+- **案例1 — Cokgor et al. (1998)**：
+  - 对市政污水处理进行缺氧呼吸测量分析。
+  - 在缺氧批式反应器中进行NUR（硝酸盐利用速率）测量。
+  - 评估污水中易生物降解COD组分。
+  - 实验过程中观察到显著的 $NO_2^-$-N 积累，使得单独测量 $NO_x^-$-N 或 $NO_3^-$-N 不准确。
+  - 模型用于模拟有无 $NO_2^-$-N 校正的 $NO_3^-$-N 浓度变化曲线。
+
+- **案例2 — Beun et al. (2000)**：
+  - 研究活性污泥培养物在反硝化条件下聚-β-羟基丁酸（PHB）的储存与降解。
+  - 使用2 L工作体积的SBR，以4小时为一个周期连续运行，水力停留时间为8小时。
+  - 测量指标：一个周期内乙酸、PHB、$NO_3^-$-N 和 $NO_2^-$-N 的浓度变化曲线。
+  - 观察到盛宴阶段亚硝酸盐积累，饥饿阶段亚硝酸盐被消耗的现象。
+
+- **案例3 — Oh and Silverstein (1999)**：
+  - 在碳源/电子供体（乙酸）受限条件下，研究SBR中反硝化活性污泥的亚硝酸盐积累。
+  - 均匀缺氧混合，恒定底物和矿物质投加，恒定SRT和MLVSS。
+  - 初始硝酸盐浓度：50 mg N L$^{-1}$；C/N = 1:1（乙酸受限）。
+  - 测量指标：$NO_3^-$-N、$NO_2^-$-N 和乙酸（COD）浓度变化曲线。
+
+- **案例4 — Buys et al. (2000)**：
+  - 通过追踪密封瓶顶空的压力和气体组成来测量 $N_2$ 气体产生速率，评估活性污泥的反硝化活性。
+  - 实验室规模反应器，合成进水：1000 mg $NO_3^-$-N L$^{-1}$，1300 mg 乙酸-C L$^{-1}$（COD/N = 3.5 g COD g$^{-1}$ N）。
+  - 测试两种初始底物浓度：100 mg N L$^{-1}$ 和 1000 mg N L$^{-1}$。
+  - 模拟并比较了开发模型与原始ASM3的 $N_2$ 产生曲线。
+
+此外，还利用AQUASIM 2.0进行了**计算灵敏度分析**（非实验），将所有动力学和化学计量参数在标称值基础上变化±50%，评估其对出水COD、$NO_3^-$-N 和 $NO_2^-$-N 浓度的影响。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 本文主要进行的是计算建模和模拟实验，而非新的湿法实验室实验。
+- **敏感性分析**：评估了化学计量和动力学参数（如水解速率、产率系数、亲和常数）对模型输出（出水COD、$NO_3^-$-N、$NO_2^-$-N）的影响。
+- **模型校准与评估**：使用了来自既往文献的四组实验数据来验证模型：
+  1. 城市污水的缺氧呼吸测量分析（Cokgor et al., 1998）。
+  2. 序批式反应器（SBR）中缺氧条件下PHB的储存与降解（Beun et al., 2000）。
+  3. 乙酸受限的SBR中反硝化活性污泥的亚硝酸盐积累（Oh and Silverstein, 1999）。
+  4. 通过追踪产气量来测量反硝化活性（Buys et al., 2000）。
+
+
+
+
+</TabItem >
+
+<TabItem value="exploration" label="探索" >
+
+**Q：有什么可以进一步探索的点？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+基于本文内容和局限性，以下几点可进一步探索：
+
+- **扩展至完整生物脱氮（BNR）系统**：当前模型仅关注缺氧条件下的反硝化。将其与两步硝化（氨氧化至亚硝酸盐，再氧化至硝酸盐）相结合，可建立适用于SHARON-Anammox或部分亚硝化工艺的完整两步氮循环模型。
+
+- **纳入好氧条件**：同步储存与生长概念在好氧条件下已有较多研究，但当前模型仅限于缺氧反硝化。建立涵盖好氧和缺氧阶段的统一模型（如用于交替好氧/缺氧循环的SBR系统）将更为全面。
+
+- **中间氮化合物（NO、$N_2O$）的建模**：反硝化途径包含NO和 $N_2O$ 作为中间产物（$NO_3^- \Rightarrow NO_2^- \Rightarrow NO \Rightarrow 0.5N_2O \Rightarrow 0.5N_2$）。当前模型仅考虑两步（$NO_3^-$ 到 $NO_2^-$，$NO_2^-$ 到 $N_2$）。对 $N_2O$ 排放的建模在污水处理温室气体核算中日益重要。
+
+- **微生物群落差异化**：模型使用单一反硝化菌群（$X_{HD}$）同时还原硝酸盐和亚硝酸盐。实际上，不同微生物种群可能优先还原硝酸盐或亚硝酸盐，引入不同微生物群体可提高机理准确性。
+
+- **不同环境条件下的动态参数估计**：四个案例研究中模型参数（如 $k_{STO,D}$、$\mu_{HD,S}$、$b_{HD}$）差异显著（表4），表明其对污水特性、温度、pH和污泥类型有强烈依赖性。开发这些参数的温度和pH校正函数将提高模型的普适性。
+
+- **连续流系统的应用**：模型评估主要基于SBR批式数据，在连续流系统（如推流式反应器、CSTR）的稳态和动态条件下进行验证将拓宽其适用范围。
+
+- **与除磷模型（ASM2d）的整合**：将两步反硝化概念与生物除磷（EBPR）过程（如ASM2d）相结合，对于同步脱氮除磷系统的建模具有重要价值。
+
+- **不确定性和可辨识性分析**：虽然进行了灵敏度分析，但正式的不确定性分析和参数可辨识性研究（如蒙特卡洛方法或Fisher信息矩阵）将为校准参数提供更严格的置信区间。
+
+- **实时控制应用**：该模型可作为开发反硝化过程模型预测控制策略的基础，特别适用于易发生亚硝酸盐积累的系统。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 将该两步反硝化模型应用于全尺寸的城市和工业污水处理厂并进行验证。
+- 将提出的模型与其他生物营养物去除（BNR）过程（如强化生物除磷，EBPR）进行整合。
+- 进一步研究微生物群落动态以及不同物种如何促进亚硝酸盐积累和聚合物储存。
+- 进一步优化亲和常数（如$K_S$）的校准，这些常数在不同的废水特性和反应器操作条件下表现出较大的差异。
+
+
+
+
+</TabItem >
+
+<TabItem value="summary" label="总结" >
+
+**Q： 总结一下论文的主要内容。**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+本文提出、校准并评估了一个用于活性污泥系统的**基于ASM3的两步反硝化模型**。主要内容如下：
+
+1. **研究动机**：标准ASMs（尤其是ASM3）将反硝化建模为单步过程（$NO_3^- \rightarrow N_2$），忽略了 $NO_2^-$ 作为中间产物的存在。当系统中发生显著亚硝酸盐积累时，这种假设不再适用。
+
+2. **模型结构**：所提模型包括：
+   - **8个状态变量**：$X_{HD}$、$X_{STO}$、$S_S$、$X_S$、$S_{N_2}$、$S_{NO_3}$、$S_{NO_2}$、$X_I$（及 $S_O$）
+   - **9个微生物过程**：$X_S$ 水解；$S_S$ 在 $S_{NO_3}$ 和 $S_{NO_2}$ 上的缺氧储存；$S_S$ 与 $S_{NO_3}$ 和 $S_{NO_2}$ 的缺氧生长；$X_{STO}$ 与 $S_{NO_3}$ 和 $S_{NO_2}$ 的缺氧生长；$S_{NO_3}$ 和 $S_{NO_2}$ 上的缺氧内源呼吸
+   - 以标准ASM化学计量矩阵格式呈现（表1和表2）
+
+3. **同步储存与生长**：模型引入缺氧条件下底物同步储存与生长的概念，使用三个独立产率系数：$Y_{STO,D}$、$Y_{HD,S}$ 和 $Y_{HD,STO}$。
+
+4. **灵敏度分析**：单变量逐一变化法灵敏度分析表明：
+   - 缺氧储存（$k_{STO,D}$）、内源衰减（$b_{HD}$）和生长（$\mu_{HD,S}$、$\mu_{HD,STO}$）相关参数对 $NO_3^-$-N 和 $NO_2^-$-N 输出影响显著。
+   - 出水COD主要对水解参数（$k_{HD}$、$K_X$）敏感。
+   - $K_{NO_2}$ 和 $K_{NO_3}$ 对 $NO_2^-$-N 和 $NO_3^-$-N 输出具有相反的影响。
+
+5. **模型校准**：使用AQUASIM 2.0，通过最小化测量值与预测值之间的偏差平方和，对五个关键参数（$k_{STO,D}$、$\mu_{HD,STO}$、$\mu_{HD,S}$、$b_{HD}$、$K_S$）进行校准。
+
+6. **四个案例研究的模型评估**：
+   - **案例1（Cokgor et al., 1998）**：模型在 $NO_2^-$-N 校正后能正确模拟NUR数据；ASM3高估硝酸盐浓度。
+   - **案例2（Beun et al., 2000）**：模型准确模拟SBR一个周期内乙酸、PHB、$NO_3^-$-N 和 $NO_2^-$-N 的浓度变化，包括盛宴阶段亚硝酸盐积累和饥饿阶段消耗；ASM3无法实现。
+   - **案例3（Oh and Silverstein, 1999）**：模型模拟了乙酸受限条件下的亚硝酸盐积累；ASM3高估硝酸盐和乙酸浓度。
+   - **案例4（Buys et al., 2000）**：模型准确预测两种初始底物浓度下的 $N_2$ 气体产生量；ASM3低估 $N_2$ 产生量。
+
+7. **结论**：所开发的两步反硝化模型在描述亚硝酸盐积累、储存动力学和整体反硝化行为方面均优于原始ASM3。
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- 成功开发了一种基于ASM3的新型两步反硝化模型，以解决单步反硝化假设的局限性。
+- 该模型在机制上结合了缺氧条件下的同步储能与生长概念，并同时利用硝酸盐和亚硝酸盐作为电子受体。
+- 敏感性分析表明，与缺氧储能、内源衰减以及在储存聚合物上生长相关的参数对出水氮浓度有显著影响。
+- 使用四个不同实验案例研究进行的模型评估表明，所开发的模型能够准确预测亚硝酸盐积累和储能过程，性能优于原始的ASM3模型。
+
+
+
+
+</TabItem>
+
+<TabItem value="related" label="相关" >
+
+
+**Q： 有哪些相关研究？**
+
+
+
+------
+
+**Claude Sonnet 4.6:**
+
+以下相关研究均出现在本文的参考文献列表中：
+
+- Henze et al. (2000) — *Activated Sludge Models ASM1, ASM2, ASM2d, and ASM3. IWA Scientific and Technical Report No. 9*
+- Gujer et al. (1999) — *Activated sludge model No. 3. Water Science and Technology 39, 183–193*
+- Gernaey et al. (2004) — *Activated sludge wastewater treatment plant modelling and simulation: state of the art. Environmental Modelling & Software 19, 763–783*
+- Krishna and van Loosdrecht (1999) — *Substrate flux into storage and growth in relation to activated sludge modelling. Water Research 33, 3149–3161*
+- Karahan et al. (2006) — *Modeling the utilization of starch by activated sludge for simultaneous substrate storage and microbial growth. Biotechnology and Bioengineering 94, 43–53*
+- Beun et al. (2000) — *Stoichiometry and kinetics of poly-hydroxybutyrate metabolism under denitrifying conditions in activated sludge culture. Biotechnology and Bioengineering 68, 496–507*
+- Carucci et al. (2001) — *Aerobic storage by activated sludge on real wastewater. Water Research 35, 3833–3844*
+- Dircks et al. (2001) — *Storage and degradation of poly-ß-hydroxybutyrate in activated sludge under aerobic conditions. Water Research 35, 2277–2285*
+- Dionisi et al. (2001) — *The storage of acetate under anoxic conditions. Water Research 35, 2661–2668*
+- Sin (2004) — *Systematic calibration of activated sludge model. Ph.D. Thesis, The University of Ghent, Ghent, Belgium*
+- Sozen and Orhon (1999) — *The effect of nitrite correction on the evaluation of the rate of nitrate utilization under anoxic conditions. Journal of Chemical Technology and Biotechnology 74, 790–800*
+- Oh and Silverstein (1999) — *Acetate limitation and nitrite accumulation during denitrification. Journal of Environmental Engineering 125, 234–242*
+- Thomsen et al. (1994) — *Mass spectrometric studies of the effect of pH on the accumulation of intermediates in denitrification by Paracoccus denitrificans. Applied and Environmental Microbiology 60, 536–541*
+- Almeida et al. (1995) — *Competition between nitrate and nitrite reduction in denitrification by Pseudomonas Fluorescens. Biotechnology and Bioengineering 46, 476–484*
+- Hellinga et al. (1999) — *Model based design of a novel process for nitrogen removal from concentrated flows. Mathematical and Computer Modelling of Dynamical Systems 5, 351–371*
+- Orhon and Artan (1994) — *Modelling of Activated Sludge Systems. Technomics Publishing Co. Inc., Basel*
+- Marsili-Libelli et al. (2001) — *Implementation, study and calibration of a modified ASM2d for the simulation of SBR processes. Water Science and Technology 43, 69–76*
+- Cokgor et al. (1998) — *Respirometric analysis of activated sludge behaviour—I. Assessment of the readily biodegradable substrate. Water Research 32, 461–475*
+- Buys et al. (2000) — *Development and application of a denitrification test based on gas production. Water Science and Technology 41, 113–120*
+- van Loosdrecht et al. (1997) — *Importance of bacterial storage polymers in bioprocesses. Water Science and Technology 35, 41–47*
+- van Loosdrecht and Henze (1999) — *Maintenance, endogeneous respiration, lysis decay and predation. Water Science and Technology 39, 107–117*
+- Pratt et al. (2004) — *Modelling aerobic carbon oxidation and storage by integrating respirometric, titrimetric, and off-gas CO2 measurements. Biotechnology and Bioengineering 88, 135–147*
+- Gujer and Larsen (1995) — *The implementation of biokinetics and conservation principles in ASIM. Water Science and Technology 31, 257–266*
+- Reichert (1998) — *AQUASIM 2.0—User Manual, Computer Program for the Identification and Simulation of Aquatic Systems. Swiss Federal Institute for Environmental Science and Technology (EAWAG)*
+- Xu and Hultman (1996) — *Experiences in wastewater characterization and model calibration for the activated sludge process. Water Science and Technology 33, 89–98*
+- Shahalam et al. (1996) — *Parametric sensitivity of comprehensive model of aerobic fluidized-bed biofilm process. Journal of Environmental Engineering—ASCE 122, 1085–1093*
+- Abasaeed (1997) — *Sensitivity analysis on a sequencing batch reactor model. I. Effect of kinetic parameters. Journal of Chemical Technology and Biotechnology 70, 379–383*
+
+
+
+
+------
+
+**Gemini 3.1 Pro:**
+
+- Henze et al. (2000) Activated Sludge Models ASM1, ASM2, ASM2d, and ASM3.
+- Gujer et al. (1999) Activated sludge model No. 3.
+- Krishna et al. (1999) Substrate flux into storage and growth in relation to activated sludge modelling.
+- Beun et al. (2000) Stoichiometry and kinetics of poly-$\beta$-hydroxybutyrate metabolism under denitrifying conditions in activated sludge culture.
+- Karahan et al. (2006) Modeling the utilization of starch by activated sludge for simultaneous substrate storage and microbial growth.
+- Cokgor et al. (1998) Respirometric analysis of activated sludge behaviour—I. Assessment of the readily biodegradable substrate.
+- Oh et al. (1999) Acetate limitation and nitrite accumulation during denitrification.
+- Buys et al. (2000) Development and application of a denitrification test based on gas production.
+- Sin (2004) Systematic calibration of activated sludge model.
+
+
+
+
+</TabItem >
+
+</Tabs>
+
