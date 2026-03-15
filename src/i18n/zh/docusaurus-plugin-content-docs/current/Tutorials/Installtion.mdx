@@ -4,21 +4,18 @@ import TabItem from "@theme/TabItem";
 
 # 安装
 
-作为一个跨平台的网络平台，**SIMPO** 可在 **Windows** 和 **Linux** 操作系统上运行
-。因此，它可以利用超级计算机的强大性能，因为它们的系统通常是基于 Linux 的。
-
 要计算 **SIMPO** 项目，您需要下载并安装计算客户端，然后注册并登录到 <a href={config.customFields.urlDashHome}>Dashboard</a>。
 
 :::warning 注意
 
-计算开始后，客户端将自动运行，请<b>不要双击运行客户端</b>。
+<b>请不要在安装后双击运行客户端</b>，计算开始后，客户端将自动运行。
 
 :::
 
 
 
 {/* 在运行计算任务时，客户端会停留在系统托盘中。右键点击客户端图标可以获取相关信息。例如，如果计算出错了，日志文件将就变得非常重要，点击 **Log**，打开 `run.log` 查看错误。 */}
-如果计算出错了，日志文件将自动弹出，请查看日志内容进行问题排查。
+如果主程序运行出错，日志文件 `SimpoClient_error.log` 将自动弹出，请查看日志内容进行问题排查。
 
 :::tip 提示
 
@@ -26,22 +23,32 @@ import TabItem from "@theme/TabItem";
 
 :::
 
+
+作为一个跨平台的网络平台，**SIMPO** 可在 **Windows** 和 **Linux** 操作系统上运行。
+因此，它可以利用超级计算机的强大性能，因为它们的系统通常是基于 **Linux** 的。
+
+
 <Tabs>
 
   <TabItem value="windows" label="Windows" default>
 
   <ul>
     <li>
-      下载和安装客户端：<a href={config.customFields.urlDownloadClientWindows} target="_blank" download>Windows</a>.
+      **下载和安装**：<a href={config.customFields.urlDownloadClientWindows} target="_blank" download>Windows</a>，支持 <b>Windows 10</b> 及以上版本。
        {/* or <a href={config.customFields.urlDownloalNetdiskWindows} target="_blank" download>Windows (Netdist)</a>. */}
     </li>
     <li>
-      卸载: 在开始菜单点击 <code>Uninstall SimpoClient</code>，或者点击运行 <code>C:\Program Files\SimpoClient\unins000.exe</code>。
+      **卸载**: 在开始菜单点击 <code>Uninstall SimpoClient</code>，或者点击运行 <code>C:\Program Files\SimpoClient\unins000.exe</code>。
     </li>
     <li>
-      可用版本：<b>Windows 10</b> 及以上版本。
+      **目录**：
+        - 程序安装目录：<code>C:\Program Files\SimpoClient</code>。
+        - 项目数据目录：<code>C:\Users\YOURUSERNAME\AppData\Roaming\SimpoClient</code>。
+          - 注意: `YOURUSERNAME` 是您的系统用户名。
+          - 此目录可以在 `Project` 的 `Calculation` 页面下的 `Simulation`/`Sensitivity`/`Uncertainty`/`Estimation` 内直接打开。
+          - 此目录下存放着各项目的计算数据，包括计算结果源数据，结果图片和运行日志。
+          - 如果主程序运行错误，这个目录下将产生日志文件 `SimpoClient_error.log`，便于排除错误原因。
     </li>
-
   </ul>
 
   </TabItem>
@@ -52,31 +59,31 @@ import TabItem from "@theme/TabItem";
 
 <ul>
   <li>
-    安装：
+    **下载和安装**，支持 <b>Ubuntu 20</b> 及以上版本：
 
     <ul>
-
       <li>
-      下载客户端：<a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>Ubuntu</a>.
+      下载：<a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>Ubuntu</a>.
        {/* or <a href={config.customFields.urlDownloalNetdiskUbuntu} target="_blank" download>Ubuntu (Netdist)</a>. */}
-
-
       </li>
       <li>
-        运行：<code>sudo dpkg -i SimpoClient_1.0.0_amd64.deb</code>。
-
+        运行此命令进行安装：<code>sudo dpkg -i SimpoClient_VERSION_amd64.deb</code>。`VERSION`是最新版本号。
       </li>
-
-
     </ul>
+  </li>
+  <li>
+    **卸载**：运行命令 <code>sudo dpkg -r SimpoClient</code> 或者 <code>sudo bash /opt/SimpoClient/uninstall.sh</code>。
+  </li>
+  <li>
+    **目录**：
+      - 程序安装目录：<code>/opt/SimpoClient</code>。
+      - 项目数据目录：<code>/home/YOURUSERNAME/.SimpoClient</code>。
+        - 注意: `YOURUSERNAME` 是您的系统用户名。
+        - 此目录可以在 `Project` 的 `Calculation` 页面下的 `Simulation`/`Sensitivity`/`Uncertainty`/`Estimation` 内直接打开。
+        - 此目录下存放着各项目的计算数据，包括计算结果源数据，结果图片和运行日志。
+        - 如果主程序运行错误，这个目录下将产生日志文件 `SimpoClient_error.log`，便于排除错误原因。
+  </li>
 
-  </li>
-  <li>
-    卸载：<code>sudo dpkg -r SimpoClient</code> 或者 <code>sudo bash /opt/SimpoClient//uninstall.sh</code>。
-  </li>
-  <li>
-    支持系统：<b>Ubuntu 20</b> 及以上版本。
-  </li>
 </ul>
 
   </TabItem>

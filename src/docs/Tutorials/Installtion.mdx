@@ -4,24 +4,30 @@ import TabItem from "@theme/TabItem";
 
 # Installtion
 
-As a cross-platform web-based platform, **SIMPO** works on **Windows** and **Linux** operating
-systems. Therefore, it can leverage the power of supercomputers, as their systems are usually
-Linux-based.
-
 To calculate a **SIMPO** project, you need to download and install the calculation client, and then sign up and sign in to <a href={config.customFields.urlDashHome}>Dashboard</a>.
 
 :::warning NOTE
-The client will automatically run once you start calculating, you <b>cannot run it by double click it</b>.
+
+<b>Please do not double-click to run the client after installation</b>, it will start automatically once calculation begins.
+
 :::
 
 {/* While running a calcualtion task, the client will stay in the system tray. Right click the client icon can get relevant informations. For instance, log file becomes very important if your calcualtion goes wrong, click **Log** and open the `run.log` to see what happened. */}
 
-If a calculation error occurs, the log file will now automatically open. Please check the log contents for troubleshooting.
+If the main program encounters an error during operation, the log file `SimpoClient_error.log` will automatically pop up. Please review the log contents to troubleshoot the issue.
+
 
 :::tip Tip
+
 You will not be able to run calculations if you don't install the client, but you can still sign in and use the other functions (i.e. editting you own repositories, browsing and cloning the public repositories).
 
 :::
+
+
+As a cross-platform web-based platform, **SIMPO** works on **Windows** and **Linux** operating
+systems. Therefore, it can leverage the power of supercomputers, as their systems are usually
+**Linux-based**.
+
 
 <Tabs>
 
@@ -29,16 +35,21 @@ You will not be able to run calculations if you don't install the client, but yo
 
   <ul>
     <li>
-      Download and install the client in: <a href={config.customFields.urlDownloadClientWindows} target="_blank" download>Windows</a>.
+      **Download and install**: <a href={config.customFields.urlDownloadClientWindows} target="_blank" download>Windows</a>, supports <b>Windows 10</b> and later versions.
        {/* or <a href={config.customFields.urlDownloalNetdiskWindows} target="_blank" download>Windows (Netdist)</a>. */}
     </li>
     <li>
-      Uninstall: click the <code>Uninstall SimpoClient</code> in startup menu, or click <code>C:\Program Files\SimpoClient\unins000.exe</code>.
+      **Uninstall**: click the <code>Uninstall SimpoClient</code> in startup menu, or click <code>C:\Program Files\SimpoClient\unins000.exe</code>.
     </li>
     <li>
-      Available: <b>Windows 10</b> and above.
+      **Directories**:
+        - Program installation directory: `C:\Program Files\SimpoClient`.
+        - Project data directory: `C:\Users\YOURUSERNAME\AppData\Roaming\SimpoClient`.
+          - Note: `YOURUSERNAME` refers to your system user account name.
+          - This directory can be opened directly from the `Project`'s `Calculation` page under the `Simulation`/`Sensitivity`/`Uncertainty`/`Estimation` sections.
+          - This directory stores the calculation data for each project, including raw calculation results, result figures, and runtime logs.
+          - If the main program encounters an error, the log file `SimpoClient_error.log` will be generated in this directory to facilitate troubleshooting the cause of the error.
     </li>
-
   </ul>
 
   </TabItem>
@@ -49,19 +60,28 @@ You will not be able to run calculations if you don't install the client, but yo
 
 <ul>
   <li>
-    Install:
+    **Download and install**, supports <b>Ubuntu 20</b> and later versions:
 
     <ul>
 
       <li>
-      Download the client in: <a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>Ubuntu</a>.
+      Download: <a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>Ubuntu</a>.
        {/* or <a href={config.customFields.urlDownloalNetdiskUbuntu} target="_blank" download>Ubuntu (Netdist)</a>. */}
 
 
       </li>
       <li>
-        then run: <code>sudo dpkg -i SimpoClient_1.0.0_amd64.deb</code>.
+        Run this command to install: <code>sudo dpkg -i SimpoClient_VERSION_amd64.deb</code>, where `VERSION` is the latest version number.
 
+      </li>
+      <li>
+        **Directories**:
+          - Program installation directory: `/opt/SimpoClient`.
+          - Project data directory: `/home/YOURUSERNAME/.SimpoClient`.
+            - Note: `YOURUSERNAME` refers to your system user account name.
+            - This directory can be opened directly from the `Project`'s `Calculation` page under the `Simulation`/`Sensitivity`/`Uncertainty`/`Estimation` sections.
+            - This directory stores the calculation data for each project, including raw calculation results, result figures, and runtime logs.
+            - If the main program encounters an error, the log file `SimpoClient_error.log` will be generated in this directory to facilitate troubleshooting the cause of the error.
       </li>
 
 
@@ -69,11 +89,9 @@ You will not be able to run calculations if you don't install the client, but yo
 
   </li>
   <li>
-    Uninstall: <code>sudo dpkg -r SimpoClient</code> or <code>sudo bash /opt/SimpoClient//uninstall.sh</code>.
+    **Uninstall**: run commands <code>sudo dpkg -r SimpoClient</code> or <code>sudo bash /opt/SimpoClient/uninstall.sh</code>.
   </li>
-  <li>
-    Available: <b>Ubuntu 20</b> and above.
-  </li>
+
 </ul>
 
   </TabItem>
