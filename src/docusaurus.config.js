@@ -133,8 +133,8 @@ const config = {
 
     // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v1.0.0/SimpoClient_1.0.0.exe',
     // urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v1.0.0/SimpoClient_1.0.0_amd64.deb',
-    urlDownloadClientWindows: 'https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.0.2.exe',
-    urlDownloalClientUbuntu: 'https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.0.2_amd64.deb',
+    urlDownloadClientWindows: 'https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.1.0.exe',
+    urlDownloalClientUbuntu: 'https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.1.0_amd64.deb',
 
     // urlDownloalBaidu: 'https://pan.baidu.com/s/1N89lx1xbCvoIwvbc-Qdl8g?pwd=spwt',
     // urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp',
@@ -150,9 +150,14 @@ const config = {
     // urlDownloadUrlplateBioModel: 'https://sludge.readthedocs.io/en/latest/_downloads/fe952779792f1eab732422dd1492e15f/BioModel.xlsx',
     // urlDownloadUrlplateDataSet: 'https://sludge.readthedocs.io/en/latest/_downloads/ce5b40856b1e6d339bc3e8055a65ed80/DataSet.xlsx',
     // urlDownloadUrlplateProject: 'https://sludge.readthedocs.io/en/latest/_downloads/cdbae577b8f73a4be69004f393d76da6/Solution.xlsx',
-    urlDownloadUrlplateBioModel: 'https://github.com/Jakkwj/simpo-home/releases/download/template/BioModel.xlsx',
-    urlDownloadUrlplateDataSet: 'https://github.com/Jakkwj/simpo-home/releases/download/template/DataSet.xlsx',
-    urlDownloadUrlplateProject: 'https://github.com/Jakkwj/simpo-home/releases/download/template/Solution.xlsx',
+
+    // urlDownloadUrlplateBioModel: 'https://github.com/Jakkwj/simpo-home/releases/download/template/BioModel.xlsx',
+    // urlDownloadUrlplateDataSet: 'https://github.com/Jakkwj/simpo-home/releases/download/template/DataSet.xlsx',
+    // urlDownloadUrlplateProject: 'https://github.com/Jakkwj/simpo-home/releases/download/template/Solution.xlsx',
+
+    urlDownloadUrlplateBioModel: 'https://gitee.com/Jakkwj/simpo-home/releases/download/template/BioModel.xlsx',
+    urlDownloadUrlplateDataSet: 'https://gitee.com/Jakkwj/simpo-home/releases/download/template/DataSet.xlsx',
+    urlDownloadUrlplateProject: 'https://gitee.com/Jakkwj/simpo-home/releases/download/template/Solution.xlsx',
 
     iframeIfSignSrc: 'https://dash.simpowater.org/ifsign',
 
@@ -399,7 +404,7 @@ const config = {
       announcementBar: {
         id: 'announcementBar',
         content:
-          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2026">SimpoClient v1.0.2</a> has been released!</strong>',
+          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2026">SimpoClient v1.1.0</a> has been released!</strong>',
         isCloseable: true,
         // backgroundColor: '#5e72e4',
         // textColor: '#ffffff',
