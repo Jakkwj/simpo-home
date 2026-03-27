@@ -7,7 +7,7 @@ import config from '@generated/docusaurus.config'
 :::danger 补充材料
 - 本书的在线补充材料可以在以下位置找到：<a href="https://cwis.un-ihe.org/cwis/cwis%20olc/supplementary%20material%20-%20zipped.zip">supplementary material-zipped.zip</a>, 此下载链接在以下位置找到：<a href="https://www.iwapublishing.com/books/9781789062298/biological-wastewater-treatment-examples-exercises">Biological Wastewater Treatment: Examples & Exercises</a>, <a href="https://www.iwapublishing.com/printpdf/72437">Download book flyer</a>。
 - 然而，所有这些下载链接已不再可用（2024年12月28日），我们尚未找到有效的在线补充材料链接。
-- 如果您找到新的有效链接，请告知我们(<a href="mailto: shutupwj@163.com">shutupwj@163.com</a>)。谢谢！
+- 如果您找到新的有效链接，请告知我们(<a href="mailto: support@simpowater.org。">support@simpowater.org。</a>)。谢谢！
 
 :::
 
@@ -24,29 +24,22 @@ import config from '@generated/docusaurus.config'
 ## Batch
 
 
-### 新建
-请按照 AQUASIM 项目文件中的内容（而不是书中的内容），创建 BioModel, DataSet 和 Project。
+{/* ### 新建 */}
+请按照 AQUASIM 项目文件中的内容（而不是书中的内容），创建 BioModel, DataSet 和 Project：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Batch/id/407/did/406">BWTEE 2.3.4 Batch</a>。
 
-### 结果
+{/* ### 结果 */}
 :::tip 提示
 测量数据来自于 AQUASIM 的计算结果。
 :::
 
 
 
-  <div align="center" style={{marginTop: "0vh"}}>
+  {/* <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlCaseStudyBWTEE2_3_4Batch} width="100%"/>
-  </div>
+  </div> */}
 
 
-``Weighted NSE``为1.0，这意味着从SIMPO的模拟结果与在AQUASIM中的结果几乎相同。
 
-
-----
-
-### SIMPO Dashboard
-
-这个例子的**SIMPO**项目：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Batch/id/407/did/406">BWTEE 2.3.4 Batch</a>。
 
 <iframe
   src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/BWTEE%202.3.4/id/369/did/368"
@@ -62,27 +55,221 @@ import config from '@generated/docusaurus.config'
   style={{ border: 'none', marginBottom: '0.8rem' }}
 ></iframe>
 
+
+
+从计算结果中可见，``Weighted NSE`` 为 `1.0 `，这意味着从 **SIMPO** 的模拟结果与在 AQUASIM 中的结果几乎相同。
+
+
+
 ----
 
 ## Chemostat
 
-### 新建
-请按照 AQUASIM 项目文件中的内容（而不是书中的内容），创建 BioModel, DataSet 和 Project。
+{/* ### 新建 */}
+请按照 AQUASIM 项目文件中的内容（而不是书中的内容），创建 BioModel, DataSet 和 Project：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Chemostat/id/414/did/409">BWTEE 2.3.4 Chemostat</a>。
 
-### 结果
+{/* ### 结果 */}
 :::tip 提示
-测量数据同样来自于 AQUASIM 的计算结果，但结果采样率较低。为了提高计算速度，采样率从每小时1个点降低到每5小时1个点。
+测量数据来自于 AQUASIM 的计算结果。
 :::
 
 
 
-  <div align="center" style={{marginTop: "0vh"}}>
+  {/* <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlCaseStudyBWTEE2_3_4Chemostat} width="100%"/>
+  </div> */}
+
+
+### 曝气计算方式：BioModel
+
+
+在原案例中，曝气计算的方式：
+- 在 `BioModel` 中添加了一行`曝气反应`：$k_{L}a·(S_{O2,sat} - S_{O2})$，其中 $k_{L}a$ 为 $100 h^{-1}$
+- 在 `Project.Activator` 中的曝气池中激活这个反应，从而达到给系统持续供氧的目的
+
+具体内容见下：
+
+
+{/* <iframe
+  src="http://127.0.0.0:9000/dashboard/datasets/iframe/public/name/pH_temp/id/49/did/48"
+  width="100%"
+  height="660"
+  style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe> */}
+
+
+<iframe
+  src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/BWTEE%202.3.4/id/369/did/368"
+  width="100%"
+  height="660"
+  style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+<iframe
+  src="https://dash.simpowater.org/dashboard/datasets/iframe/public/name/BWTEE%202.3.4/id/475/did/454"
+  width="100%"
+  height="660"
+  style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+
+<iframe
+  src="https://dash.simpowater.org/dashboard/projects/iframe/public/name/BWTEE%202.3.4%20Chemostat/id/414/did/409"
+  width="100%"
+  height="520"
+  style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+从计算结果中可见，``Weighted NSE``为``0.99994``，轻微的差异来自于：
+- ``S_O2``（``NSE`` 为 `0.99922`，`0.28` vs `0.27995`）
+- ``X_NO2``（``NSE`` 为 `0.99998`，`0.05415` vs `0.05415`）
+- ``X_DHO``（``NSE`` 为 `0.99999`，`1.232` vs `1.23248`）
+- 其他所有的 ``NSE`` 均为 `1.0`
+
+这意味着从 **SIMPO** 的模拟结果与在 AQUASIM 中的结果几乎相同。
+
+
+### 曝气计算方式：DataSet
+
+上述计算方式更适合简单的实验室模拟。
+在实际工程中，曝气计算的方式通常需要在 `DataSet` 中进行。
+
+
+:::info **SIMPO** 中的曝气计算流程
+
+##### SOTR
+
+
+
+- 在标准条件下，即 20℃，1 个 atm 下空气的密度约为 1.204 kg/m³，质量占比约23.15%，即 `1 m³` 空气中大约含有 $1.204 * 23.15 = 0.279 kgO_2$。
+- 暂不考虑温度和气压变化的影响，则标准传氧速率（Standard Oxygen Transfer Rate，SOTR）：
+
+  $$
+    SOTR (mgO2/d) = 0.279 (kgO_2/m³) * Qair (m³/d) * STOE (\%) * 10^{6}
+  $$
+- 其中：
+  - $Qair$为空气流量，m³/d
+  - SOTE为标准传氧效率（Standard Oxygen Transfer Efficiency，SOTE），%
+
+##### FOTR
+
+- 实际反应器中通常是非标准温度的污水，所以要对 $SOTR$ 进行修正得到实际传氧速率（Field Oxygen Transfer Rate，FOTR）：
+
+  $$
+    FOTR = dS_{O2}/dt = SOTR * θ^{(T - 20)} * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std} / V
+  $$
+- 其中：
+  - θ 为温度影响因子
+  - T 为温度，℃
+  - $S_{O2,sat,std}$ 为标准条件下的清水中饱和溶解氧浓度，约 9.08~9.17 mg/L，工程上常取 9.08 mg/L
+  - α 氧传递修正系数（Oxygen Transfer Ratio）：$k_{L}a(Wastewater)/k_{L}a(Clean Water)$
+  - β 氧溶解修正系数（Oxygen Solubility Ratio）：$S_{O2,sat}(Wastewater)/S_{O2,sat}(Clean Water)$
+  - V 为反应器体积，m³
+
+##### FOTE
+
+- 风机厂家会提供 `SOTE-流量` 标准条件曲线，同样需要修正为实际传氧效率（Field Oxygen Transfer Efficiency，FOTE）。在 **SIMPO**中，可以根据 `SOTE-流量` 标准条件曲线拟合下式，求解 a，b，c（这个公式保证了进气流量与 SOTE 是非线性衰减递增）。
+  $$
+    FOTE = a * (Q_d)^{-b} * H^c = a * (Qair / d / 24)^{-b} * H^c
+  $$
+- 其中：
+  - $Q_d$ 为单头通气量，m³/h/个曝气头
+  - d 为曝气头数量
+  - H 为曝气头安装深度，m
+
+##### 求解方程
+- 在暂不考虑温度和气压变化的影响时，合并上述3式可得，:
+    $$
+      dS_{O2}/dt = 279 * Qair * a * (Qair / d / 24)^{-b} * H^c * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std} / V
+    $$
+- 注意此时，$dS_{O2}/dt$ 的单位为 **$mgO_2/L/d$**。
+:::
+
+在这个案例中，为了保持 $k_{L}a$ 为 $100 h^{-1}$，我们选取了以下这组参数（FOTE为14.1%）：
+
+
+
+  <div align="center" style={{marginTop: "0vh"}}>
+    <img src="https://i.postimg.cc/qqL72VGG/tank-para.png" width="100%"/>
   </div>
 
-``Weighted NSE``为``0.99999``，轻微的差异来自于 ``S_O2``（``NSE`` 为0.99992），``X_DHO``（``NSE`` 为0.99999），其他所有的 ``NSE`` 均为1。
+
+  <div align="center" style={{marginTop: "0vh"}}>
+    <img src="https://i.postimg.cc/jdw9WQdw/pump-para.png" width="100%"/>
+  </div>
 
 
+ - Qair：3215 m³/d
+ - d（`Tank` 参数 `Diffuser Number`）：1
+ - H（`Tank` 参数 `Diffuser Depth`）：0.5 m
+ - α（`Tank` 参数 `Alpha Factor`）：0.55
+ - β（`Tank` 参数 `Beta Factor`）：1
+ - a（`Pump` 参数 `SOTEa`）：0.3259
+ - b（`Pump` 参数 `SOTEb`）：0.1342
+ - c（`Pump` 参数 `SOTEc`）：0.2567
+ - V：0.1 m³
+ - $S_{O2,sat,std}$：9.08 mg/L
+
+则：
+$$
+ k_{L}a = 279 * 3215 * 0.3259 * (3215 / 1 / 24) ^ {-0.1342} * 0.5 ^ {0.2567} * 0.55 / 9.08 / 0.1 = 76812.63 d^{-1}
+$$
+
+注意到案例中的氧气的单位为 mmol/L，则:
+$$
+ k_{L}a = 76812.63 / 32 / 24 ≈ 100 h^{-1}
+$$
+
+
+具体内容见下：
+
+<iframe
+  src="https://dash.simpowater.org/dashboard/datasets/iframe/public/name/BWTEE%202.3.4/id/1004/did/454"
+  width="100%"
+  height="660"
+  style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+
+<iframe
+  src="https://dash.simpowater.org/dashboard/projects/iframe/public/name/BWTEE%202.3.4%20Chemostat/id/983/did/409"
+  width="100%"
+  height="520"
+  style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+从计算结果中可见，``Weighted NSE``为``0.99232``，轻微的差异来自于：
+- ``S_O2``（``NSE`` 为 `0.90021`，`0.28` vs `0.27877`）
+- ``X_NO2``（``NSE`` 为 `0.99999`，`0.05415` vs `0.05416`）
+- ``X_DHO``（``NSE`` 为 `0.99999`，`1.232` vs `1.23246`）
+- 其他所有的 ``NSE`` 均为 `1.0`
+
+这意味着，这种方式的模拟结果也与在 AQUASIM 中的结果几乎相同。
+
+
+### 总结
+
+在实际使用中，可以根据实际情况选择不同的方式进行曝气计算：
+
+**1. 在实验室中进行简单模拟：**
+
+    - `DataSet.Tank` 使用默认参数（即 d 为 0，H 为 0，α 为 1，β 为 1）即可；
+    - 在 `BioModel` 中添加了一行`曝气反应`：$k_{L}a·(S_{O2,sat} - S_{O2})$；
+    - 在 `Project.Activator` 中的曝气池中激活这个反应。
+
+
+**2. 在工程项目中进行更精确地模拟：**
+
+    - 根据厂家提供的 `SOTE-流量` 标准条件曲线，在 **SIMPO** 直接拟合求解参数 a，b，c；
+    - 将 `DataSet.Pump` 连接到 `DataSet.Tank`，设置进气风量 Qair；
+    - 根据实际情况设置 `DataSet.Tank` 的参数：d，H，α，β。
+
+
+
+
+
+
+{/*
 
 #### ``S_O2``
 - **SIMPO** 会动态调整时间间隔，以提高计算速度并确保准确性。如果模拟变得越来越稳定，时间间隔将变得越来越大。
@@ -103,26 +290,4 @@ import config from '@generated/docusaurus.config'
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlCaseStudyBWTEE2_3_4DHO} width="100%"/>
   </div>
-
-
-----
-
-### SIMPO Dashboard
-
-
-这个例子的**SIMPO**项目：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Chemostat/id/414/did/409">BWTEE 2.3.4 Chemostat</a>。
-
-
-<iframe
-  src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/BWTEE%202.3.4/id/369/did/368"
-  width="100%"
-  height="660"
-  style={{ border: 'none', marginBottom: '0.8rem' }}
-></iframe>
-
-<iframe
-  src="https://dash.simpowater.org/dashboard/projects/iframe/public/name/BWTEE%202.3.4%20Chemostat/id/414/did/409"
-  width="100%"
-  height="520"
-  style={{ border: 'none', marginBottom: '0.8rem' }}
-></iframe>
+ */}

@@ -8,7 +8,7 @@ This example comes from [Biological Wastewater Treatment: Examples and Exercises
 :::danger supplementary materials
 - Online supplementary materials of this book can used to be found in <a href="https://cwis.un-ihe.org/cwis/cwis%20olc/supplementary%20material%20-%20zipped.zip">supplementary material-zipped.zip</a>, this download link was found in <a href="https://www.iwapublishing.com/books/9781789062298/biological-wastewater-treatment-examples-exercises">Biological Wastewater Treatment: Examples & Exercises</a>, the <a href="https://www.iwapublishing.com/printpdf/72437">Download book flyer</a> link.
 - However, all these download links are no longer available (2024.12.28), and we have not yet located a valid online link for supplementary materials.
-- IF ANYONE FIND THE LINK, PLEASE LET US KNOW (<a href="mailto: shutupwj@163.com">shutupwj@163.com</a>). THANKS!
+- IF ANYONE FIND THE LINK, PLEASE LET US KNOW (<a href="mailto: support@simpowater.org。">support@simpowater.org。</a>). THANKS!
 :::
 
 You could find the corresponding AQUASIM project file in ``Chapter 2/SI_Chapter_2_Aquasim_BNR-Guilds-Growth-Models_Batch-Chemostat.aqu``.
@@ -24,30 +24,23 @@ Because the AQUASIM project details are not the same as in the book.
 
 
 
-### Create
-Create the BioModel, DataSet and Project exactly as in AQUASIM project file (not the book).
+{/* ### Create */}
+Create the BioModel, DataSet and Project exactly as in AQUASIM project file (not the book): <a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Batch/id/407/did/406">BWTEE 2.3.4 Batch</a>.
 
-### Result
+
+{/* ### Result */}
 :::tip Tip
 The measured data come from the AQUASIM calculation results.
 
 :::
 
 
-
+{/*
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlCaseStudyBWTEE2_3_4Batch} width="100%"/>
-  </div>
-
-The ``Weighted NSE`` is ``1.0``, which means the simulation result generated from **SIMPO** is almost the same as in ``AQUASIM``.
+  </div> */}
 
 
-
-----
-
-### SIMPO Dashboard
-
-**SIMPO** project for this example could be found in <a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Batch/id/407/did/406">BWTEE 2.3.4 Batch</a>:
 
 <iframe
   src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/BWTEE%202.3.4/id/369/did/368"
@@ -63,28 +56,217 @@ The ``Weighted NSE`` is ``1.0``, which means the simulation result generated fro
   style={{ border: 'none', marginBottom: '0.8rem' }}
 ></iframe>
 
+
+The calculation results show that, the ``Weighted NSE`` is ``1.0``, which means the simulation result generated from **SIMPO** is almost the same as in AQUASIM.
+
+
+
 ------
 
 ## Chemostat
 
-### Create
-Create the BioModel, DataSet and Project exactly as in AQUASIM project file (not the book).
+{/* ### Create */}
+Create the BioModel, DataSet and Project exactly as in AQUASIM project file (not the book): <a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Chemostat/id/414/did/409">BWTEE 2.3.4 Chemostat</a>.
 
 
-### Result
+{/* ### Result */}
 :::tip Tip
-The measured data also come from the AQUASIM calculation, but with less result sampling rate. To increse the calculation speed, the sampling rate decrease from 1h/point to 5h/point.
-
+The measured data come from the AQUASIM calculation results.
 :::
 
 
 
-  <div align="center" style={{marginTop: "0vh"}}>
+  {/* <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlCaseStudyBWTEE2_3_4Chemostat} width="100%"/>
   </div>
+ */}
 
-The ``Weighted NSE`` is ``0.99999``, the slight difference comes from ``S_O2`` (``NSE`` is 0.99992) and ``X_DHO`` (``NSE`` is ``0.99999``), and all of the ``NSE`` of the others are ``1``.
 
+### Aeration Calculation Method: BioModel
+
+In the original case, the aeration calculation method was as follows:
+*   An 'aeration reaction' line was added in `BioModel`: $k_{L}a·(S_{O2,sat} - S_{O2})$, where $k_{L}a$ was $100 h^{-1}$.
+*   This reaction was then activated in the aeration tank within `Project.Activator`, thereby achieving the objective of continuously supplying oxygen to the system.
+
+Specifics are detailed below:
+
+
+
+<iframe
+  src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/BWTEE%202.3.4/id/369/did/368"
+  width="100%"
+  height="660"
+  style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+<iframe
+  src="https://dash.simpowater.org/dashboard/datasets/iframe/public/name/BWTEE%202.3.4/id/475/did/454"
+  width="100%"
+  height="660"
+  style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+
+<iframe
+  src="https://dash.simpowater.org/dashboard/projects/iframe/public/name/BWTEE%202.3.4%20Chemostat/id/414/did/409"
+  width="100%"
+  height="520"
+  style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+
+
+The ``Weighted NSE`` is ``0.99994``, the slight difference mainly comes from ``S_O2`` (``NSE`` is 0.99922), ``X_NO2`` (``NSE`` is 0.99998) and ``X_DHO`` (``NSE`` is ``0.99999``), and all of the ``NSE`` of the others are ``1.0``.
+
+
+
+From the calculation results, it is evident that the `Weighted NSE` is `0.99994`, with minor discrepancies stemming from:
+*   `S_O2` (with an `NSE` of `0.99922`, `0.28` vs `0.27995`)
+*   `X_NO2` (with an `NSE` of `0.99998`, `0.05415` vs `0.05415`)
+*   `X_DHO` (with an `NSE` of `0.99999`, `1.232` vs `1.23248`)
+*    All other `NSE` values are `1.0`.
+
+This indicates that the simulation results from **SIMPO** are almost identical to those obtained in AQUASIM.
+
+
+
+### Aeration Calculation Method: DataSet
+
+The aforementioned calculation method is more suitable for simple laboratory simulations. In actual engineering, aeration calculations are typically performed within `DataSet`.
+
+
+:::info Aeration Calculation Process in **SIMPO**
+
+
+##### SOTR
+
+*   Under standard conditions (i.e., 20°C and 1 atm), the density of air is approximately 1.204 kg/m³, with an oxygen mass fraction of about 23.15%. This means that `1 m³` of air contains approximately $1.204 * 23.15\% = 0.279 kgO_2$.
+*   Neglecting the influence of temperature and pressure changes for now, the Standard Oxygen Transfer Rate (SOTR) is:
+
+  $$
+    SOTR (mgO_2/d) = 0.279 (kgO_2/m³) * Q_{air} (m³/d) * SOTE (\%) * 10^{6}
+  $$
+*   Where:
+    *   $Q_{air}$ is the air flow rate, m³/d
+    *   SOTE is the Standard Oxygen Transfer Efficiency, %
+
+##### FOTR
+
+*   Actual reactors typically contain wastewater at non-standard temperatures. Therefore, SOTR must be corrected to obtain the Field Oxygen Transfer Rate (FOTR):
+
+  $$
+    FOTR = dS_{O2}/dt = SOTR * θ^{(T - 20)} * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std} / V
+  $$
+*   Where:
+    *   θ is the temperature correction factor
+    *   T is the temperature, ℃
+    *   $S_{O2,sat,std}$ is the saturated dissolved oxygen concentration in clean water under standard conditions,approximately 9.08~9.17 mg/L, often taken as 9.08 mg/L in engineering practice.
+    *   α is the Oxygen Transfer Ratio: $k_{L}a(Wastewater)/k_{L}a(Clean Water)$
+    *   β is the Oxygen Solubility Ratio: $S_{O2,sat}(Wastewater)/S_{O2,sat}(Clean Water)$
+    *   V is the reactor volume, m³
+
+##### FOTE
+
+*   Blower manufacturers provide `SOTE-flow` curves under standard conditions, which also need to be corrected to the Field Oxygen Transfer Efficiency (FOTE). In **SIMPO**, the following formula can be fitted based on the `SOTE-flow` standard condition curve to solve for a, b, and c (this formula ensures a non-linear relationship between air inflow and SOTE, with a decaying-increasing characteristic).
+  $$
+    FOTE = a * (Q_d)^{-b} * H^c = a * (Q_{air} / d / 24)^{-b} * H^c
+  $$
+*   Where:
+    *   $Q_d$ is the air flow rate per diffuser, m³/h/diffuser
+    *   d is the number of diffusers
+    *   H is the diffuser installation depth, m
+
+##### Solving the Equation
+
+*   Neglecting the influence of temperature and pressure changes for now, combining the above three equations yields:
+    $$
+      dS_{O2}/dt = 279 * Q_{air} * a * (Q_{air} / d / 24)^{-b} * H^c * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std} / V
+    $$
+*    Note that at this point, the unit of $dS_{O2}/dt$ is **$mgO_2/L/d$**.
+
+
+
+:::
+
+
+In this case, to maintain a $k_{L}a$ of $100 h^{-1}$, we selected the following set of parameters (with an FOTE of 14.1%):
+
+  <div align="center" style={{marginTop: "0vh"}}>
+    <img src="https://i.postimg.cc/qqL72VGG/tank-para.png" width="100%"/>
+  </div>
+
+
+  <div align="center" style={{marginTop: "0vh"}}>
+    <img src="https://i.postimg.cc/jdw9WQdw/pump-para.png" width="100%"/>
+  </div>
+
+
+
+*   Qair: 3215 m³/d
+*   d (`Tank` parameter `Diffuser Number`): 1
+*   H (`Tank` parameter `Diffuser Depth`): 0.5 m
+*   α (`Tank` parameter `Alpha Factor`): 0.55
+*   β (`Tank` parameter `Beta Factor`): 1
+*   a (`Pump` parameter `SOTEa`): 0.3259
+*   b (`Pump` parameter `SOTEb`): 0.1342
+*   c (`Pump` parameter `SOTEc`): 0.2567
+*   V: 0.1 m³
+*   $S_{O2,sat,std}$: 9.08 mg/L
+
+Then:
+$$
+ k_{L}a = 279 * 3215 * 0.3259 * (3215 / 1 / 24) ^ {-0.1342} * 0.5 ^ {0.2567} * 0.55 / 9.08 / 0.1 = 76812.63 d^{-1}
+$$
+
+Note that the oxygen unit in the case is mmol/L, thus:
+$$
+ k_{L}a = 76812.63 / 32 / 24 ≈ 100 h^{-1}
+$$
+
+Specifics are detailed below:
+
+<iframe
+  src="https://dash.simpowater.org/dashboard/datasets/iframe/public/name/BWTEE%202.3.4/id/1004/did/454"
+  width="100%"
+  height="660"
+  style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+
+<iframe
+  src="https://dash.simpowater.org/dashboard/projects/iframe/public/name/BWTEE%202.3.4%20Chemostat/id/983/did/409"
+  width="100%"
+  height="520"
+  style={{ border: 'none', marginBottom: '0.8rem' }}
+></iframe>
+
+
+From the calculation results, it is evident that the `Weighted NSE` is `0.99232`, with minor discrepancies stemming from:
+*   `S_O2` (with an `NSE` of `0.90021`, `0.28` vs `0.27877`)
+*   `X_NO2` (with an `NSE` of `0.99999`, `0.05415` vs `0.05416`)
+*   `X_DHO` (with an `NSE` of `0.99999`, `1.232` vs `1.23246`)
+*   All other `NSE` values are `1.0`.
+
+This indicates that the simulation results obtained using this method are also almost identical to those from AQUASIM.
+
+### Summary
+
+In practical use, different methods for aeration calculation can be selected based on the actual situation:
+
+**1. For simple laboratory simulations:**
+
+*   Use default parameters for `DataSet.Tank` (i.e., d=0, H=0, α=1, β=1).
+*   Add an 'aeration reaction' line in `BioModel`: $k_{L}a·(S_{O2,sat} - S_{O2})$.
+*   Activate this reaction in the aeration tank within `Project.Activator`.
+
+**2. For more precise simulations in engineering projects:**
+
+*   Directly fit the parameters a, b, and c in **SIMPO** based on the manufacturer's `SOTE-flow` standard condition curve.
+*   Connect `DataSet.Pump` to `DataSet.Tank` and set the air inflow rate `Qair`.
+*   Set the `DataSet.Tank` parameters (d, H, α, β) according to actual conditions.
+
+
+{/*
 #### ``S_O2``
 - **SIMPO** will dynamically adjust the time interval to improve calculation speed and ensure accuracy in the mean time, if the simulation become more and more stable, the time interval will become larger.
 - The volumetric mass transfer coefficient (``k_L_a``) of ``S_O2`` in this example is ``100 mmolO2/h`` and the rate expression is ``k_L_a*(S_O2_sat-S_O2)``, which makes the rate of Aeration process won't decrease and could be very large if the time interval become large, and this is the reason that cause the difference.
@@ -101,30 +283,11 @@ The ``Weighted NSE`` is ``0.99999``, the slight difference comes from ``S_O2`` (
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlCaseStudyBWTEE2_3_4DHO} width="100%"/>
-  </div>
+  </div> */}
 
 
 
 
-----
-
-### SIMPO Dashboard
-
-**SIMPO** project for this example could be found in <a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Chemostat/id/414/did/409">BWTEE 2.3.4 Chemostat</a>.
 
 
-
-<iframe
-  src="https://dash.simpowater.org/dashboard/biomodels/iframe/public/name/BWTEE%202.3.4/id/369/did/368"
-  width="100%"
-  height="660"
-  style={{ border: 'none', marginBottom: '0.8rem' }}
-></iframe>
-
-<iframe
-  src="https://dash.simpowater.org/dashboard/projects/iframe/public/name/BWTEE%202.3.4%20Chemostat/id/414/did/409"
-  width="100%"
-  height="520"
-  style={{ border: 'none', marginBottom: '0.8rem' }}
-></iframe>
 

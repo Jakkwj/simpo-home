@@ -1,0 +1,105 @@
+---
+slug: SIMPO-blog-2026-03-27
+title: "SIMPO 1.1.0: Unlock Aeration Calculations"
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+
+Dear research partners, today, we are officially launching **Version 1.1.0**, a major functional upgrade centered around **aeration calculation**! The brand-new `Pump` module is now available, making wastewater treatment simulation more comprehensive and precise.
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+  **SIMPO**, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is an intelligent platform for code-free and shareable wastewater treatment process modelling. For specific update details, please see: [SIMPO 1.1.0 Changelog](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)。
+  </div>
+</div>
+
+
+
+---
+
+### Core Highlights: New Pump Module for Streamlined Aeration Calculations
+
+In the previous version, handling aeration-related calculations often required cumbersome settings:
+  - Adding a separate aeration reaction in **BioModel**: $k_{L}a·(S_{O2,sat} - S_{O2})$
+  - Controlling this reaction in **Project.Activator** to only take effect in aeration tanks
+
+Now, we have directly integrated aeration calculation functionality into **DataSet**:
+
+- **Intuitive User Interface**: A dedicated `Pump` module has been added to the interactive interface of `DataSet.FlowChart`, allowing for clear, drag-and-drop connections.
+- **Closer to Practical Engineering**: The `Pump` module supports interpolation fitting using the `SOTE-Flow Rate curve` of aeration blowers, making calculation results more accurate and better aligned with actual operating conditions.
+- **Dedicated Preset Templates**: To help users get started quickly, four new preset `Layouts` with built-in `Pump` modules have been added when creating a new `DataSet`: CAS-Pump, AO-Pump, AAO-Pump, and UCT-Pump. Create with one click, saving time and effort!
+
+---
+
+### New Features
+
+In addition to the core `Pump` module, this update also significantly enriches the underlying parameter configuration:
+
+- **New Unit Support**: `DataSet.Unit` now supports `Aera` and `Height` units, meeting data requirements across more dimensions.
+- **More Precise Target Settings**: `DataSet.Target` now supports specifying `Oxygen`.
+- **Expanded Tank Parameters**: `DataSet.Tank` has added 4 key engineering parameters:
+  - DiffuserNumber (number of diffusers)
+  - DiffuserDepth (diffuser installation depth)
+  - AlphaFactor (α correction factor)
+  - BetaFactor (β correction factor)
+
+---
+
+### Experience Enhancements
+
+This update also refines and optimizes several details, improving the daily user experience:
+
+*   **AI Duplicate Check for BioModel Creation**: When creating a new **BioModel** via AI, the system automatically checks if an identical model already exists in the `Public` library. If so, a thoughtful reminder will pop up, providing a **quick jump button** to allow you to directly clone it, avoiding reinventing the wheel.
+*   **Smoother Page Interactions**:
+    *   The interaction experience and pop-up prompts for `SetToEvaluation` on the `Rank Variable` page have been fully optimized.
+    *   The interaction experience and pop-up prompts for `SetToValue` on the `Best Variable` page have been fully optimized.
+*   **Smarter Routing**: After clicking the Edit button on the Detail page to change a name, the system will automatically and smoothly navigate to the new path with the updated name.
+
+---
+
+### Bug Fixes
+
+This version also fixes several known issues affecting user experience and data accuracy:
+
+*   **Enhanced Robustness of Formula Input**: The `cleanInvisibleChars` function has been upgraded. Now, when entering and saving formulas on the Matrix / Compositions / Connections / Conversions pages, it can remove various invisible illegal spaces, eliminating mysterious errors.
+*   **Fixed `BioModel.Public` Page Display Issue**: Clicking the `CLASSIC` button now correctly counts and displays the total number of classic models.
+*   **Corrected Logic Judgment in `BioModelDetail` Schema**: Addressed issues when `composition` and `ionization` fields are empty.
+*   **Fixed Abnormal `initial_value` Assignment**: Resolved an issue in the underlying function `_get_empty_variable_row`.
+
+
+**Version 1.1.0** represents a significant step forward in our **aeration simulation** capabilities. From parameter settings and process layout to blower curve fitting, we aim to put more comprehensive engineering capabilities into the hands of every partner.
+
+
+
+
+
+
+{/*
+1. Achieving Complete Nitrogen Removal by Coupling Nitritation-Anammox and Methane-Dependent Denitrification: A Model-Based Study
+1. Development of a kinetic model to evaluate thiosulfate-driven denitriﬁcation and anammox (TDDA) process
+1. Evaluation of Nitrous Oxide Emission from Sulﬁde- and Sulfur-Based Autotrophic Denitriﬁcation Processes
+1. Growth, maintenance and product formation of autotrophs in activated sludge: Taking the nitrite-oxidizing bacteria as an example
+1. Model-based evaluation of N2O recovery as an energy source in sulfur-driven NO-based autotrophic denitrification
+1. Modeling Nitrous Oxide Production during Biological Nitrogen Removal via Nitrification and Denitrification: Extensions to the General ASM Models
+1. Modelling Methane Production and Sulfate Reduction in Anaerobic Granular Sludge Reactor with Ethanol as Electron Donor
+1. Modelling nitrification, heterotrophic growth and predation in activated sludge
+1. The crucial role of activated sludge models (ASMs) on wastewater treatment processes: Developments, applications, and future perspectives */}
+
+
+
+---
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Add friend, with the note “SIMPO” to join the group chat</b></div>
+  <img src={config.customFields.imgUrlSimpoQR}  width="25%"/>
+</div>
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Welcome to follow our WeChat official account</b></div>
+  <img src={config.customFields.imgUrlWechatAccount}  width="25%"/>
+</div>
+
+
