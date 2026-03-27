@@ -2,11 +2,76 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.simpowater.org/zh/blog</id>
     <title>SIMPO Blog</title>
-    <updated>2026-02-28T00:00:00.000Z</updated>
+    <updated>2026-03-27T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.simpowater.org/zh/blog"/>
     <subtitle>SIMPO Blog</subtitle>
     <icon>https://www.simpowater.org/zh/img/logo3.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[SIMPO 1.1.0 发布：解锁曝气计算]]></title>
+        <id>https://www.simpowater.org/zh/blog/SIMPO-blog-2026-03-27</id>
+        <link href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-03-27"/>
+        <updated>2026-03-27T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[各位科研伙伴们，今天我们正式推出 版本 1.1.0，这是一次围绕曝气计算的重磅功能升级！全新的 Pump 模块正式亮相，让污水处理模拟更加完整、精准。]]></summary>
+        <content type="html"><![CDATA[<p>各位科研伙伴们，今天我们正式推出 <strong>版本 1.1.0</strong>，这是一次围绕<strong>曝气计算</strong>的重磅功能升级！全新的 <code>Pump</code> 模块正式亮相，让污水处理模拟更加完整、精准。</p>
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p><strong>SIMPO</strong> 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：<a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">SIMPO 1.1.0 更新日志</a>。</p></div></div>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="核心亮点全新-pump-模块曝气计算一步到位">核心亮点：全新 Pump 模块，曝气计算一步到位<a href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-03-27#%E6%A0%B8%E5%BF%83%E4%BA%AE%E7%82%B9%E5%85%A8%E6%96%B0-pump-%E6%A8%A1%E5%9D%97%E6%9B%9D%E6%B0%94%E8%AE%A1%E7%AE%97%E4%B8%80%E6%AD%A5%E5%88%B0%E4%BD%8D" class="hash-link" aria-label="核心亮点：全新 Pump 模块，曝气计算一步到位的直接链接" title="核心亮点：全新 Pump 模块，曝气计算一步到位的直接链接" translate="no">​</a></h3>
+<p>在旧版本中，处理曝气相关的计算往往需要繁琐的设定：</p>
+<ul>
+<li class="">在 <strong>BioModel</strong> 中添加一个单独的曝气反应：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>L</mi></msub><mi>a</mi><mo separator="true">⋅</mo><mo stretchy="false">(</mo><msub><mi>S</mi><mrow><mi>O</mi><mn>2</mn><mo separator="true">,</mo><mi>s</mi><mi>a</mi><mi>t</mi></mrow></msub><mo>−</mo><msub><mi>S</mi><mrow><mi>O</mi><mn>2</mn></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">k_{L}a·(S_{O2,sat} - S_{O2})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mord mathnormal">a</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em">O</span><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em">O</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></li>
+<li class="">在 <strong>Project.Activator</strong> 中控制这个反应只在曝气池中生效</li>
+</ul>
+<p>现在，我们在 <strong>DataSet</strong> 中直接集成了曝气计算功能：</p>
+<ul>
+<li class=""><strong>直观的交互界面</strong>：<code>DataSet.FlowChart</code> 的交互界面中新增了专属的 <code>Pump</code> 模块，拖拽连线，一目了然。</li>
+<li class=""><strong>贴近实际工程</strong>：<code>Pump</code> 模块支持使用曝气风机的 <code>SOTE-流量曲线</code> 进行插值拟合，让计算结果更精准、更符合实际工况。</li>
+<li class=""><strong>专属预设模板</strong>：为了让大家快速上手，新建 <code>DataSet</code> 时新增了 4 种自带 <code>Pump</code> 的预设 <code>Layout</code>：CAS-Pump、AO-Pump、AAO-Pump 以及 UCT-Pump，一键创建，省时省力！</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="新增功能">新增功能<a href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-03-27#%E6%96%B0%E5%A2%9E%E5%8A%9F%E8%83%BD" class="hash-link" aria-label="新增功能的直接链接" title="新增功能的直接链接" translate="no">​</a></h3>
+<p>除了核心的 <code>Pump</code> 模块，本次更新还为底层参数配置带来了极大的丰富：</p>
+<ul>
+<li class=""><strong>全新 Unit 支持</strong>：<code>DataSet.Unit</code> 新增了 <code>Aera</code> 和 <code>Height</code> 的单位支持，满足更多维度的数据需求。</li>
+<li class=""><strong>Target 设定更精准</strong>：<code>DataSet.Target</code> 中现支持指定 <code>Oxygen</code>（氧气）。</li>
+<li class=""><strong>Tank 参数扩充</strong>：<code>DataSet.Tank</code> 中新增了 4 个关键工程参数：<!-- -->
+<ul>
+<li class="">DiffuserNumber（曝气头数量）</li>
+<li class="">DiffuserDepth（曝气头安装深度）</li>
+<li class="">AlphaFactor（ α 修正系数）</li>
+<li class="">BetaFactor（β 修正系数）</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="体验升级">体验升级<a href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-03-27#%E4%BD%93%E9%AA%8C%E5%8D%87%E7%BA%A7" class="hash-link" aria-label="体验升级的直接链接" title="体验升级的直接链接" translate="no">​</a></h3>
+<p>本次更新也对多个细节进行了打磨优化，提升日常使用体验：</p>
+<ul>
+<li class=""><strong>AI 模型新建防撞车</strong>：通过 AI 新建 <strong>BioModel</strong> 时，系统会自动检测 <code>Public</code> 库中是否已有相同模型。如果有，会贴心地弹出提醒，并提供<strong>快捷跳转按钮</strong>，方便您直接克隆，拒绝重复造轮子。</li>
+<li class=""><strong>页面交互更顺滑</strong>：<!-- -->
+<ul>
+<li class="">全面优化了 <code>Rank Variable</code> 页面中 <code>SetToEvaluation</code> 的交互体验与弹窗提示。</li>
+<li class="">全面优化了 <code>Best Variable</code> 页面中 <code>SetToValue</code> 的交互体验与弹窗提示。</li>
+</ul>
+</li>
+<li class=""><strong>路由跳转更智能</strong>：在 Detail 页面点击 Edit 按钮修改名称后，系统将自动平滑跳转至改名后的新路径。</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="问题修复">问题修复<a href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-03-27#%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D" class="hash-link" aria-label="问题修复的直接链接" title="问题修复的直接链接" translate="no">​</a></h3>
+<p>本次版本还修复了多个影响使用体验与数据准确性的已知问题：</p>
+<ul>
+<li class="">增强了公式输入的鲁棒性：<code>cleanInvisibleChars</code> 函数升级，现在在 Matrix / Compositions / Connections / Conversions 页面输入并保存公式时，能够去除各种看不见的非法空格，告别玄学报错。</li>
+<li class="">修复了 <code>BioModel.Public</code> 页面显示问题，现在点击 <code>CLASSIC</code> 按钮后，能够正确统计并显示经典模型的总数量。</li>
+<li class="">修正了 <code>BioModelDetail</code> schema 中 <code>composition</code> 和 <code>ionization</code> 字段为空时的逻辑判断。</li>
+<li class="">修复了底层函数 <code>_get_empty_variable_row</code> 中 <code>initial_value</code> 的赋值异常问题。</li>
+</ul>
+<p><strong>版本 1.1.0</strong> 是我们在<strong>曝气模拟</strong>方向迈出的重要一步。从参数设置、工艺布局到风机曲线拟合，我们希望将更完整的工程能力交到每一位伙伴手中。</p>
+<!-- -->
+<hr>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>添加好友，备注SIMPO加入交流群</b></div><img src="https://i.postimg.cc/DZRM3JpM/SIMPO-QR.jpg" width="25%"></div>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>欢迎关注微信公众号</b></div><img src="https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg" width="25%"></div>]]></content>
+        <category label="SIMPO" term="SIMPO"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[SIMPO 1.0.2 发布：更多AI大语言模型支持]]></title>
         <id>https://www.simpowater.org/zh/blog/SIMPO-blog-2026-02-28</id>
@@ -62,7 +127,7 @@
 <p>在 <strong>SIMPO</strong> 中，每次计算完成后，程序都会基于计算引擎自动生成一系列复杂的图形。为了最大化绘图效率，我们引入了多进程（利用多核 CPU 并行处理）来加速这一过程。</p>
 <p>然而，在某些特定场景下，多进程绘图可能会触发 <code>BrokenProcessPool</code> 错误，导致绘图中断。为了解决这一痛点，我们在 <strong>SIMPO 1.0.1</strong> 版本中对绘图功能进行了优化，
 确保程序在遇到这个错误时能<strong>自动切换至主进程</strong>，确保绘图过程的完成。</p>
-<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="系统平台差异与建议">系统平台差异与建议<a href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-02-01#%E7%B3%BB%E7%BB%9F%E5%B9%B3%E5%8F%B0%EF%BF%BD%EF%BF%BD%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BB%BA%E8%AE%AE" class="hash-link" aria-label="系统平台差异与建议的直接链接" title="系统平台差异与建议的直接链接" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="系统平台差异与建议">系统平台差异与建议<a href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-02-01#%E7%B3%BB%E7%BB%9F%E5%B9%B3%E5%8F%B0%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BB%BA%E8%AE%AE" class="hash-link" aria-label="系统平台差异与建议的直接链接" title="系统平台差异与建议的直接链接" translate="no">​</a></h3>
 <p>我们注意到，<code>BrokenProcessPool</code> 错误在 <code>Windows</code> 系统上更为常见（在 <code>Ubuntu</code> 系统中则鲜有出现）。
 这可能与 <code>Windows</code> 使用 <code>spawn</code> 方式启动子进程，而 <code>Linux</code> 采用 <code>fork</code> 方式有关。</p>
 <p>因此，在 <code>Ubuntu</code> 系统下，用户通常能获得<strong>更快的计算速度、更稳定的多进程运行以及更佳的兼容性</strong>。</p>
@@ -87,7 +152,7 @@
 <div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p><strong>SIMPO</strong> 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：<a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">SIMPO 1.0.0 更新日志</a>。</p></div></div>
 <hr>
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="更新亮点">更新亮点<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E6%9B%B4%E6%96%B0%E4%BA%AE%E7%82%B9" class="hash-link" aria-label="更新亮点的直接链接" title="更新亮点的直接链接" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="亮点一ai-赋能论文直接变模型速度直接起飞">亮点一：AI 赋能，论文直接变模型，速度直接起飞<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E4%BA%AE%E7%82%B9%E4%B8%80ai-%E8%B5%8B%E8%83%BD%E8%AE%BA%E6%96%87%E7%9B%B4%E6%8E%A5%E5%8F%98%E6%A8%A1%E5%9E%8B%E9%80%9F%E5%BA%A6%E7%9B%B4%E6%8E%A5%E8%B5%B7%E9%A3%9E" class="hash-link" aria-label="亮点一：AI 赋��能，论文直接变模型，速度直接起飞的直接链接" title="亮点一：AI 赋能，论文直接变模型，速度直接起飞的直接链接" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="亮点一ai-赋能论文直接变模型速度直接起飞">亮点一：AI 赋能，论文直接变模型，速度直接起飞<a href="https://www.simpowater.org/zh/blog/SIMPO%201.0.0%20Officially%20Released#%E4%BA%AE%E7%82%B9%E4%B8%80ai-%E8%B5%8B%E8%83%BD%E8%AE%BA%E6%96%87%E7%9B%B4%E6%8E%A5%E5%8F%98%E6%A8%A1%E5%9E%8B%E9%80%9F%E5%BA%A6%E7%9B%B4%E6%8E%A5%E8%B5%B7%E9%A3%9E" class="hash-link" aria-label="亮点一：AI 赋能，论文直接变模型，速度直接起飞的直接链接" title="亮点一：AI 赋能，论文直接变模型，速度直接起飞的直接链接" translate="no">​</a></h3>
 <p>还在手动把论文里的模型参数一个个搬进软件？现在不需要了。</p>
 <p><strong>SIMPO 1.0.0</strong> 全面接入 <strong>Gemini 3</strong>。现在的你，只需将 SCI 论文的 PDF 文件拖入软件，AI 将自动解析并提取关键信息，一键生成 <strong>BioModel</strong>！</p>
 <ul>

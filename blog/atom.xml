@@ -2,11 +2,76 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.simpowater.org/blog</id>
     <title>SIMPO Blog</title>
-    <updated>2026-02-28T00:00:00.000Z</updated>
+    <updated>2026-03-27T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.simpowater.org/blog"/>
     <subtitle>SIMPO Blog</subtitle>
     <icon>https://www.simpowater.org/img/logo3.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[SIMPO 1.1.0: Unlock Aeration Calculations]]></title>
+        <id>https://www.simpowater.org/blog/SIMPO-blog-2026-03-27</id>
+        <link href="https://www.simpowater.org/blog/SIMPO-blog-2026-03-27"/>
+        <updated>2026-03-27T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Dear research partners, today, we are officially launching Version 1.1.0, a major functional upgrade centered around aeration calculation! The brand-new Pump module is now available, making wastewater treatment simulation more comprehensive and precise.]]></summary>
+        <content type="html"><![CDATA[<p>Dear research partners, today, we are officially launching <strong>Version 1.1.0</strong>, a major functional upgrade centered around <strong>aeration calculation</strong>! The brand-new <code>Pump</code> module is now available, making wastewater treatment simulation more comprehensive and precise.</p>
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p><strong>SIMPO</strong>, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is an intelligent platform for code-free and shareable wastewater treatment process modelling. For specific update details, please see: <a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">SIMPO 1.1.0 Changelog</a>。</p></div></div>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="core-highlights-new-pump-module-for-streamlined-aeration-calculations">Core Highlights: New Pump Module for Streamlined Aeration Calculations<a href="https://www.simpowater.org/blog/SIMPO-blog-2026-03-27#core-highlights-new-pump-module-for-streamlined-aeration-calculations" class="hash-link" aria-label="Direct link to Core Highlights: New Pump Module for Streamlined Aeration Calculations" title="Direct link to Core Highlights: New Pump Module for Streamlined Aeration Calculations" translate="no">​</a></h3>
+<p>In the previous version, handling aeration-related calculations often required cumbersome settings:</p>
+<ul>
+<li class="">Adding a separate aeration reaction in <strong>BioModel</strong>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>L</mi></msub><mi>a</mi><mo separator="true">⋅</mo><mo stretchy="false">(</mo><msub><mi>S</mi><mrow><mi>O</mi><mn>2</mn><mo separator="true">,</mo><mi>s</mi><mi>a</mi><mi>t</mi></mrow></msub><mo>−</mo><msub><mi>S</mi><mrow><mi>O</mi><mn>2</mn></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">k_{L}a·(S_{O2,sat} - S_{O2})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mord mathnormal">a</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em">O</span><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">s</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em">O</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></li>
+<li class="">Controlling this reaction in <strong>Project.Activator</strong> to only take effect in aeration tanks</li>
+</ul>
+<p>Now, we have directly integrated aeration calculation functionality into <strong>DataSet</strong>:</p>
+<ul>
+<li class=""><strong>Intuitive User Interface</strong>: A dedicated <code>Pump</code> module has been added to the interactive interface of <code>DataSet.FlowChart</code>, allowing for clear, drag-and-drop connections.</li>
+<li class=""><strong>Closer to Practical Engineering</strong>: The <code>Pump</code> module supports interpolation fitting using the <code>SOTE-Flow Rate curve</code> of aeration blowers, making calculation results more accurate and better aligned with actual operating conditions.</li>
+<li class=""><strong>Dedicated Preset Templates</strong>: To help users get started quickly, four new preset <code>Layouts</code> with built-in <code>Pump</code> modules have been added when creating a new <code>DataSet</code>: CAS-Pump, AO-Pump, AAO-Pump, and UCT-Pump. Create with one click, saving time and effort!</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="new-features">New Features<a href="https://www.simpowater.org/blog/SIMPO-blog-2026-03-27#new-features" class="hash-link" aria-label="Direct link to New Features" title="Direct link to New Features" translate="no">​</a></h3>
+<p>In addition to the core <code>Pump</code> module, this update also significantly enriches the underlying parameter configuration:</p>
+<ul>
+<li class=""><strong>New Unit Support</strong>: <code>DataSet.Unit</code> now supports <code>Aera</code> and <code>Height</code> units, meeting data requirements across more dimensions.</li>
+<li class=""><strong>More Precise Target Settings</strong>: <code>DataSet.Target</code> now supports specifying <code>Oxygen</code>.</li>
+<li class=""><strong>Expanded Tank Parameters</strong>: <code>DataSet.Tank</code> has added 4 key engineering parameters:<!-- -->
+<ul>
+<li class="">DiffuserNumber (number of diffusers)</li>
+<li class="">DiffuserDepth (diffuser installation depth)</li>
+<li class="">AlphaFactor (α correction factor)</li>
+<li class="">BetaFactor (β correction factor)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="experience-enhancements">Experience Enhancements<a href="https://www.simpowater.org/blog/SIMPO-blog-2026-03-27#experience-enhancements" class="hash-link" aria-label="Direct link to Experience Enhancements" title="Direct link to Experience Enhancements" translate="no">​</a></h3>
+<p>This update also refines and optimizes several details, improving the daily user experience:</p>
+<ul>
+<li class=""><strong>AI Duplicate Check for BioModel Creation</strong>: When creating a new <strong>BioModel</strong> via AI, the system automatically checks if an identical model already exists in the <code>Public</code> library. If so, a thoughtful reminder will pop up, providing a <strong>quick jump button</strong> to allow you to directly clone it, avoiding reinventing the wheel.</li>
+<li class=""><strong>Smoother Page Interactions</strong>:<!-- -->
+<ul>
+<li class="">The interaction experience and pop-up prompts for <code>SetToEvaluation</code> on the <code>Rank Variable</code> page have been fully optimized.</li>
+<li class="">The interaction experience and pop-up prompts for <code>SetToValue</code> on the <code>Best Variable</code> page have been fully optimized.</li>
+</ul>
+</li>
+<li class=""><strong>Smarter Routing</strong>: After clicking the Edit button on the Detail page to change a name, the system will automatically and smoothly navigate to the new path with the updated name.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="bug-fixes">Bug Fixes<a href="https://www.simpowater.org/blog/SIMPO-blog-2026-03-27#bug-fixes" class="hash-link" aria-label="Direct link to Bug Fixes" title="Direct link to Bug Fixes" translate="no">​</a></h3>
+<p>This version also fixes several known issues affecting user experience and data accuracy:</p>
+<ul>
+<li class=""><strong>Enhanced Robustness of Formula Input</strong>: The <code>cleanInvisibleChars</code> function has been upgraded. Now, when entering and saving formulas on the Matrix / Compositions / Connections / Conversions pages, it can remove various invisible illegal spaces, eliminating mysterious errors.</li>
+<li class=""><strong>Fixed <code>BioModel.Public</code> Page Display Issue</strong>: Clicking the <code>CLASSIC</code> button now correctly counts and displays the total number of classic models.</li>
+<li class=""><strong>Corrected Logic Judgment in <code>BioModelDetail</code> Schema</strong>: Addressed issues when <code>composition</code> and <code>ionization</code> fields are empty.</li>
+<li class=""><strong>Fixed Abnormal <code>initial_value</code> Assignment</strong>: Resolved an issue in the underlying function <code>_get_empty_variable_row</code>.</li>
+</ul>
+<p><strong>Version 1.1.0</strong> represents a significant step forward in our <strong>aeration simulation</strong> capabilities. From parameter settings and process layout to blower curve fitting, we aim to put more comprehensive engineering capabilities into the hands of every partner.</p>
+<!-- -->
+<hr>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>Add friend, with the note “SIMPO” to join the group chat</b></div><img src="https://i.postimg.cc/DZRM3JpM/SIMPO-QR.jpg" width="25%"></div>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>Welcome to follow our WeChat official account</b></div><img src="https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg" width="25%"></div>]]></content>
+        <category label="SIMPO" term="SIMPO"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[SIMPO 1.0.2: Expanded Support for AI Large Language Models]]></title>
         <id>https://www.simpowater.org/blog/SIMPO-blog-2026-02-28</id>
@@ -14,7 +79,6 @@
         <updated>2026-02-28T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[SIMPO, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is an intelligent platform for code-free and shareable wastewater treatment process modelling. For specific update details, please see: SIMPO 1.0.2 Changelog。]]></summary>
         <content type="html"><![CDATA[<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p><strong>SIMPO</strong>, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is an intelligent platform for code-free and shareable wastewater treatment process modelling. For specific update details, please see: <a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">SIMPO 1.0.2 Changelog</a>。</p></div></div>
-<p>Here's the optimized English translation for your WeChat official account post:</p>
 <hr>
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="massive-ai-upgrade-a-new-chapter-with-6-top-llms-integrated">Massive AI Upgrade: A New Chapter with 6 Top LLMs Integrated!<a href="https://www.simpowater.org/blog/SIMPO-blog-2026-02-28#massive-ai-upgrade-a-new-chapter-with-6-top-llms-integrated" class="hash-link" aria-label="Direct link to Massive AI Upgrade: A New Chapter with 6 Top LLMs Integrated!" title="Direct link to Massive AI Upgrade: A New Chapter with 6 Top LLMs Integrated!" translate="no">​</a></h2>
 <p>Hello, Fellow Researchers! <strong>SIMPO</strong> is thrilled to announce a significant upgrade, dramatically expanding our support for <strong>Large Language Models (LLMs)</strong>. This empowers you to achieve unprecedented efficiency in model construction and literature interpretation!</p>
