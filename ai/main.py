@@ -15,7 +15,8 @@ from pathlib2 import Path
 from psutil import virtual_memory
 from simpo import ic  # , logger
 
-if virtual_memory().total > 33470000000:
+# if virtual_memory().total > 33470000000:
+if os.path.exists("/media/Data/SynologyDrive/GitHub"):
     COMPUTER_PATH = "/media/Data/SynologyDrive/GitHub"  # 家里台式机
 else:
     COMPUTER_PATH = "/media/Cloud/SynologyDrive/GitHub"  # 座机
@@ -875,7 +876,8 @@ if __name__ == "__main__":
         # "unapproved/A quantified nitrogen metabolic network by reaction kinetics and mathematical model in a single-stage microaerobic system treating low COD_TN wastewater.pdf",
         # "approved/Mathematical modeling of autotrophic denitriﬁcation (AD) process with sulphide as electron donor.pdf",
         # "An approach for modeling two-step denitrification in activated sludge systems.pdf",
-        "unapproved/Model-based identification of the dominant N2O emission pathway in a full-scale activated sludge system.pdf",
+        # "unapproved/Model-based identification of the dominant N2O emission pathway in a full-scale activated sludge system.pdf",
+        "approved/Modelling Methane Production and Sulfate Reduction in Anaerobic Granular Sludge Reactor with Ethanol as Electron Donor.pdf",
         # prompt_content_1_add="""你之前已经提取了一次Component和Parameter，不用重复提取，只需要检查一下即可：
         #     {
         #     "Component": [

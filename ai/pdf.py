@@ -1,8 +1,10 @@
+import os
 import sys
 
-from psutil import virtual_memory
+# from psutil import virtual_memory
 
-if virtual_memory().total > 33470000000:
+# if virtual_memory().total > 33470000000:
+if os.path.exists("/media/Data/SynologyDrive/GitHub"):
     COMPUTER_PATH = "/media/Data/SynologyDrive/GitHub"  # 家里台式机
 else:
     COMPUTER_PATH = "/media/Cloud/SynologyDrive/GitHub"  # 座机
