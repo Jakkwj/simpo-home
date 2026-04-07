@@ -1,0 +1,68 @@
+---
+slug: SIMPO-blog-2026-04-07
+title: "SIMPO 1.1.1: Enhanced Formula Support"
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+
+
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+  **SIMPO**, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is an intelligent platform for code-free and shareable wastewater treatment process modelling. For specific update details, please see: [SIMPO 1.1.1 Changelog](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)。
+  </div>
+</div>
+
+
+
+---
+
+
+
+### Enhanced Formula Support
+
+Functional relationships are essential when building complex `BioModel`s. The `BioModel.Matrix.Rate` module now supports `If()`, `Log()`, `Ln()`, and `Exp()` functions. This empowers you to freely define conditional logic and exponential/logarithmic relationships, simplifying the modeling of complex biochemical reaction kinetics scenarios.
+
+- The `If()` function operates with the same logic as in Excel: `If(condition, condition_true_value, condition_false_value)`. For example, this function:
+
+$$
+I_{pH,aa} = \begin{cases}
+\exp\left(-3\left(\frac{pH - pH_{UL,aa}}{pH_{UL,aa} - pH_{LL,aa}}\right)^2\right), & pH < pH_{UL,aa} \\
+1, & pH >= pH_{UL,aa}
+\end{cases}
+$$
+
+- can be expressed as:
+
+$$
+If(pH<pH_{UL,aa}, \exp(-3*((pH-pH_{UL,aa})/(pH_{UL,aa}-pH_{LL,aa}))**2), 1)
+$$
+
+- Furthermore, these functions support nesting. For instance, `If()` functions can be nested within each other to create multi-segment functions.
+
+---
+
+### New Features and Optimizations
+
+- The automatic layout algorithm in `DataSet` has been updated, resulting in tidier and clearer arrangement of nodes and connections.
+- The `Description` fields for `BioModel`, `DataSet`, and `Project` now fully support **Markdown** format. This allows you to record and describe your version information in a more elegant and structured manner. Additionally, the `Description` in `Version` can now be directly printed and exported as a PDF file, facilitating easier sharing.
+- A warning will now be issued when a `Pump` is connected to a `Tank` if `DO` is not specified in `DataSet.Target`, or if there's no conversion relationship involving `DO` between `Solution.Conversion` and `Target`.
+- The `BioMatrix.get_BioStoichoimetric()` function now uniformly initializes `stoichiometric` values to `0.0D0`, leading to improved computation speed.
+
+
+---
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Add friend, with the note “SIMPO” to join the group chat</b></div>
+  <img src={config.customFields.imgUrlSimpoQR}  width="25%"/>
+</div>
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Welcome to follow our WeChat official account</b></div>
+  <img src={config.customFields.imgUrlWechatAccount}  width="25%"/>
+</div>
+
+

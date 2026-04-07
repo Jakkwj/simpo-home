@@ -1,0 +1,75 @@
+---
+slug: SIMPO-blog-2026-04-07
+title: SIMPO 1.1.1 发布：更多公式支持
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+
+
+
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+  **SIMPO** 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：[SIMPO 1.1.1 更新日志](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)。
+  </div>
+</div>
+
+----
+
+
+
+### 更多公式支持
+
+在构建复杂的 `BioModel` 时，函数关系必不可少。现在，`BioModel.Matrix.Rate` 模块支持 `If()`、`Log()`、`Ln()` 以及 `Exp()` 函数。这意味着您可以更自由地编写条件判断和指数/对数关系，轻松应对更复杂的生化反应动力学场景。
+- `If()` 函数与 excel 中的逻辑一样：`If(condction, condiction_true_value, condiction_false_value)`，比如这个函数：
+
+$$
+I_{pH,aa} = \begin{cases}
+\exp\left(-3\left(\frac{pH - pH_{UL,aa}}{pH_{UL,aa} - pH_{LL,aa}}\right)^2\right), & pH < pH_{UL,aa} \\
+1, & pH >= pH_{UL,aa}
+\end{cases}
+$$
+
+- 可写为：
+
+$$
+If(pH<pH_{UL,aa}, \exp(-3*((pH-pH_{UL,aa})/(pH_{UL,aa}-pH_{LL,aa}))**2), 1)
+$$
+
+
+- 此外，这些函数支持嵌套。比如，`If()` 函数可以再次嵌套 `If()` 从而达到多段函数的目的。
+
+
+
+
+---
+
+### 新增和优化
+
+
+- `DataSet` 中的自动布局算法更新，现在节点和连线将更加规整、清晰。
+- `BioModel`/`DataSet`/`Project` 的 `Description` 全面支持 **Markdown** 格式，您可以用更优雅、更有条理的方式来记录和描述您的版本信息。此外 `Version` 中的 `Description` 现在支持直接打印导出为 PDF 文件，更加方便分享。
+- 当 `Pump` 连接到 `Tank` 时，如果没有在 `DataSet.Target` 中标注 `DO`，或者没有在 `Solution.Conversion` 与 `Target` 中的 `DO` 有转化关系时，将发出提醒。
+- `BioMatrix.get_BioStoichoimetric()` 函数现在会对 `stoichiometric` 统一赋初始值 `0.0D0`, 计算速度提高。
+
+
+
+
+
+
+
+
+---
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>添加好友，备注SIMPO加入交流群</b></div>
+  <img src={config.customFields.imgUrlSimpoQR}  width="25%"/>
+</div>
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>欢迎关注微信公众号</b></div>
+  <img src={config.customFields.imgUrlWechatAccount}  width="25%"/>
+</div>
