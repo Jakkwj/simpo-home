@@ -1,0 +1,44 @@
+---
+slug: SIMPO-blog-2026-04-07
+title: SIMPO 1.2.0 发布：稳态计算
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+
+
+
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+  **SIMPO** 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：[SIMPO 1.2.0 更新日志](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)。
+  </div>
+</div>
+
+----
+
+
+- TimeUnit 固定为 "day".
+- Measured 最多算到 10000 天.
+- Measured 只保留首行和尾行.
+- Inflow 和 Flow 只保留首行.
+- 将每一轮的计算结果截断到 4位小数点（保存到一个额外的变量，不影响原计算结果），如果这个截断结果连续 10000 次相同，则达到计算终点，得到稳态解.
+
+
+
+
+
+
+---
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>添加好友，备注SIMPO加入交流群</b></div>
+  <img src={config.customFields.imgUrlSimpoQR}  width="25%"/>
+</div>
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>欢迎关注微信公众号</b></div>
+  <img src={config.customFields.imgUrlWechatAccount}  width="25%"/>
+</div>
