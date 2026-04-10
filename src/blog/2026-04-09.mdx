@@ -20,11 +20,30 @@ import config from '@generated/docusaurus.config'
 
 
 
--   `TimeUnit` is fixed to "day".
--   `Measured` is calculated up to a maximum of 10,000 days.
--   Only the first and last rows of `Measured` are kept.
--   Only the first row of `Inflow` and `Flow` is kept.
--   Each round's calculation result is truncated to 4 decimal places (saved to an auxiliary variable, without affecting the original calculation result). If this truncated result remains the same for 10,000 consecutive times, the calculation terminates, yielding a steady-state solution.
+
+### **Key Highlights: Introducing Steady State Calculation**
+
+Before performing complex dynamic simulations, obtaining accurate initial values is often a challenging step. Previously, users might have had to manually extend calculation times repeatedly to "brute-force" a steady-state solution, which was time-consuming and laborious.
+
+In this new version, we are officially introducing an automated **Steady State Calculation** feature. It's incredibly simple to use: simply enable the **Steady State** toggle in the **Console** and run the calculation to obtain the steady-state solution. Furthermore, the steady-state solution can be assigned with one click to the initial values of `Variables` to directly proceed with subsequent dynamic simulations.
+
+To ensure efficient and accurate calculations, the Steady State calculation engine employs the following logic:
+*   **Unified Time Basis:** During calculation, `TimeUnit` will be forcibly set to "day".
+*   **Intelligent Loop Prevention:** The maximum calculation period for `Measured` is set to 10,000 days.
+*   **Stable Inputs:** Steady-state calculation requires stable input values. Thus, only the first and last rows of `Measured` results are retained; while only the first row of `Inflow` and `Flow` is retained.
+*   **Precise Stopping Criterion:** The system truncates the calculation results of each round to **4 decimal places** (this operation is stored in a separate variable and absolutely does not affect the original calculation precision). When this truncated result remains unchanged for **10,000 consecutive times**, the system will determine that equilibrium has been reached, automatically stop the calculation, and output the final steady-state solution.
+
+-----
+
+### **Performance Boost: Intelligent Common Factor Extraction – The More Complex, The Faster!**
+
+In the world of computation, speed is paramount.
+
+In the new version, the calculation engine for `BioModel.Matrix.Rate` has received an upgrade: the system will now automatically extract common factors when calculating rate equations, an algorithmic improvement that significantly reduces redundant calculations. Typically, the more complex the rate equation, the more pronounced the performance improvement.
+
+**Key Takeaway: The more complex and deeply nested your model's rate equations are, the more significant the speedup brought by this optimization will be!**
+
+Go ahead and experience the smooth performance of the new version firsthand.
 
 
 
