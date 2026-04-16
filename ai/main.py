@@ -13,7 +13,7 @@ from aiohttp import ClientSession, ClientTimeout
 from loguru import logger
 from pathlib2 import Path
 from psutil import virtual_memory
-from simpo import ic  # , logger
+from simpo.ic import ic  # , logger
 
 # if virtual_memory().total > 33470000000:
 if os.path.exists("/media/Data/SynologyDrive/GitHub"):

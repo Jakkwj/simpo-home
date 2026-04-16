@@ -11,7 +11,7 @@ from aiohttp import ClientSession, ClientTimeout
 from loguru import logger
 from pathlib2 import Path
 from psutil import virtual_memory
-from simpo import ic
+from simpo.ic import ic
 
 if virtual_memory().total > 33470000000:
     COMPUTER_PATH = "/media/Data/SynologyDrive/GitHub"  # 家里台式机

@@ -6,6 +6,9 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
 // pH Calculation                          :active, c4apH, after c4aComposition, 30d
 // Standard Repositories                   :crit, c5, after c4a03, 360d
 // GARF                                    :c4a03a, after b3, 120d
+// Basic Function Stable                   :milestone, mc1, after c1, 0d
+// Enhanced Function Stable                :milestone, mc2, after b4, 0d
+// Mechanism + Blackbox Model              :milestone, mc3, after c6, 0d
 
 <Mermaid
   chart={`gantt
@@ -27,30 +30,30 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
     Connected to Simpo Dash                 :done, b2, after b1c, 2022-12-01
 
     pH Calculation                          :done, b3, after c4a02, 2025-11-27
-    AI Paper Resource                       :crit, b3a, after b3, 60d
+    AI Paper Resource                       :done, b3a, after b3, 60d
+    Steady State                            :done, c4StedayState, after b3a, 2026-04-10
 
-    SCE-UA                                  :c4a03a, after b3a, 120d
+    SCE-UA                                  :c4a03a, after c4StedayState, 120d
     10 Layer Settling Reactor               :b4, after c4a03a, 90d
-    Enhanced Function Stable                :milestone, mc2, after b4, 0d
 
-    Automatic Evaluation                    :crit, c4a04, after b4, 60d
+
+    Automatic Evaluation                    :c4a04, after b4, 60d
     Standardized Repositories               :c5Repositories, after c4a04, 30d
-    Standardized Rate                       :crit, c5Rate, after c5Repositories, 30d
-    Automatic Construct BioModel            :crit, c5, after c5Rate, 30d
+    Standardized Rate                       :c5Rate, after c5Repositories, 30d
+    Automatic Construct BioModel            :c5, after c5Rate, 30d
 
     GPU capacity                            :c9, after c5, 300d
-    AI Algorithm                            :crit, c6, after c9, 300d
-    Mechanism + Blackbox Model              :milestone, mc3, after c6, 0d
+    AI Algorithm                            :c6, after c9, 300d
+
     PlugFlow Reactor                        :c4c, after c6, 60d
     BioFilm Reactor                         :c4d, after c4c, 90d
     Sewer Reactor                           :c4e, after c4d, 90d
     Real-Time Support                       :c5a, after c4e, 300d
-    Steady State                            :c4StedayState, after c4e, 120d
-    CFD Algorithm                           :c7, after c4StedayState, 300d
+    CFD Algorithm                           :c7, after c5a, 300d
 
     section SIMPO Dash
     Web Frontend/Backend Core Function      :done, c1, 2018-10-01, 2023-01-01
-    Basic Function Stable                   :milestone, mc1, after c1, 0d
+
     FlowChart                               :done, c12, after c1, 90d
     Http to Https                           :done, c2, 2023-05-01, 2023-06-10
     Estimaiton Engine                       :done, c3, after c2, 2023-12-31
