@@ -80,8 +80,10 @@ async def main(
 
         biomodel_pickle = b64decode(bm_str)
         bm: SimpoBioModel = ploads(biomodel_pickle)  # 将 pickle 结果解码后加载
-        replacer_parameter = bm.replacer[bm.replacer["type"] == "BioParameter"].index.tolist()
-        replacer_component = bm.replacer[bm.replacer["type"] == "BioComponent"].index.tolist()
+        # replacer_parameter = bm.replacer[bm.replacer["type"] == "BioParameter"].index.tolist()
+        # replacer_component = bm.replacer[bm.replacer["type"] == "BioComponent"].index.tolist()
+        # replacer_parameter = bm.replacer_parameter_namelist
+        # replacer_component = bm.replacer_component_namelist
 
         SessionLocal = get_sync_session()
         session = SessionLocal()
@@ -98,8 +100,8 @@ async def main(
             BioModel(
                 name=name,
                 abbreviate=f"empty_{int(time() + random() * 1000)}",  # only Standard needs abbreviate
-                replacer_parameter=replacer_parameter,
-                replacer_component=replacer_component,
+                replacer_parameter=bm.replacer_parameter_namelist,
+                replacer_component=bm.replacer_component_namelist,
                 state=state,  # Draft/Release/Standard
                 privacy="Private",  #  Private/Public
                 version=version,
