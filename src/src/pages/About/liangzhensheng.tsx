@@ -25,8 +25,8 @@ export default function AboutLiangzhensheng() {
                     "Ph.D. in Environmental Chemistry, Guangdong University of Education. Email: "
                   }
                 </Translate>
-                <a href="mailto: liangzhensheng@gdei.edu.cn">
-                  liangzhensheng@gdei.edu.cn
+                <a href="mailto: liangzhensheng88@sina.com">
+                  liangzhensheng88@sina.com
                 </a>
                 <Translate>.</Translate>
               </p>
