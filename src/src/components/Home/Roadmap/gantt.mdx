@@ -5,7 +5,7 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
 // Maintaining                         :active, after d1, 2028-10-01
 // pH Calculation                          :active, c4apH, after c4aComposition, 30d
 // Standard Repositories                   :crit, c5, after c4a03, 360d
-// GARF                                    :c4a03a, after b3, 120d
+// RFGA                                    :c4a03a, after b3, 120d
 // Basic Function Stable                   :milestone, mc1, after c1, 0d
 // Enhanced Function Stable                :milestone, mc2, after b4, 0d
 // Mechanism + Blackbox Model              :milestone, mc3, after c6, 0d
@@ -33,8 +33,10 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
     AI Paper Resource                       :done, b3a, after b3, 60d
     Steady State                            :done, c4StedayState, after b3a, 2026-04-10
 
-    SCE-UA                                  :c4a03a, after c4StedayState, 120d
-    10 Layer Settling Reactor               :b4, after c4a03a, 90d
+    NSGA-II                                 :c4a03a, after c4StedayState, 60d
+    10 Layer Settling Reactor               :b4Layer, after c4a03a, 30d
+    BMS1                                    :b4BMS1, after b4Layer, 30d
+    SCE-UA                                  :b4, after b4BMS1, 90d
 
 
     Automatic Evaluation                    :c4a04, after b4, 60d
