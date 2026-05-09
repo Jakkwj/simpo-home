@@ -2,11 +2,53 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.simpowater.org/zh/blog</id>
     <title>SIMPO Blog</title>
-    <updated>2026-04-09T00:00:00.000Z</updated>
+    <updated>2026-05-09T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.simpowater.org/zh/blog"/>
     <subtitle>SIMPO Blog</subtitle>
     <icon>https://www.simpowater.org/zh/img/logo3.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[SIMPO 1.3.0 发布：性能大幅提升]]></title>
+        <id>https://www.simpowater.org/zh/blog/SIMPO-blog-2026-05-09</id>
+        <link href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-05-09"/>
+        <updated>2026-05-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[SIMPO 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：SIMPO 1.3.0 更新日志。]]></summary>
+        <content type="html"><![CDATA[<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info"><div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module"><p><strong>SIMPO</strong> 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：<a href="http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026" target="_blank" rel="noopener noreferrer" class="">SIMPO 1.3.0 更新日志</a>。</p></div></div>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="性能引擎重构">性能引擎重构<a href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-05-09#%E6%80%A7%E8%83%BD%E5%BC%95%E6%93%8E%E9%87%8D%E6%9E%84" class="hash-link" aria-label="性能引擎重构的直接链接" title="性能引擎重构的直接链接" translate="no">​</a></h3>
+<p>本次更新是一次深入底层的核心优化。
+我们不仅将底层引擎升级至 <strong>Python 3.13</strong> 的首个稳定版本，
+更在多线程并发、算法扩充、建模自由度以及工艺模拟准确性上带来了新的提升。</p>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="多线程性能深度优化">多线程性能深度优化<a href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-05-09#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%80%A7%E8%83%BD%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%8C%96" class="hash-link" aria-label="多线程性能深度优化的直接链接" title="多线程性能深度优化的直接链接" translate="no">​</a></h3>
+<p>在<strong>1.3.0 版本</strong>中，我们对底层的线程管理进行重构优化，你的电脑多核性能将被进一步榨干：</p>
+<ul>
+<li class=""><strong>Simulation</strong>：方程求解优化，计算速度提升。</li>
+<li class=""><strong>Sensitivity/Uncertainty/Estimation</strong>：并行计算线程大幅优化，面对海量参数评估，告别漫长等待。</li>
+<li class=""><strong>动态绘图</strong>：计算过程中的动态绘图将减少对计算主线程计算速度的影响。如果在计算时关闭 <strong>Real-Time Plotting</strong>，计算速度将进一步提升。</li>
+</ul>
+<p>在论文 <a href="https://www.sciengine.com/WE/doi/10.1016/j.wateco.2025.100021" target="_blank" rel="noopener noreferrer" class="">SIMPO—A Simplified Intelligent Modelling Platform Online for Code-free and Shareable Wastewater Treatment Process Modelling</a> 的案例中：</p>
+<ul>
+<li class="">100万次的 <strong>Uncertainty</strong> 计算速度从 <strong>4658s</strong> 降低至 <strong>25s</strong>，性能提升 <strong>99%</strong>。</li>
+<li class="">大规模的 <strong>Estimation</strong> 计算速度从 <strong>267s</strong> 降低至 <strong>5s</strong>，性能提升 <strong>98%</strong>。</li>
+</ul>
+<p>具体计算结果请查看：<a href="https://dash.simpowater.com/dashboard/projects/public/name/AD%20with%20sulphide/id/1484/did/415" target="_blank" rel="noopener noreferrer" class="">AD with sulphide V21</a>。</p>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="rfga-算法">RFGA 算法<a href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-05-09#rfga-%E7%AE%97%E6%B3%95" class="hash-link" aria-label="RFGA 算法的直接链接" title="RFGA 算法的直接链接" translate="no">​</a></h3>
+<p>为了提供更强大的参数估计和寻优能力，我们在 <strong>Estimation</strong> 计算引擎中引入了 <strong>RFGA</strong> 算法。
+新算法将为您在处理复杂模型参数求解时，提供更多维度的求解选择与更高的收敛效率。</p>
+<hr>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="其它优化">其它优化<a href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-05-09#%E5%85%B6%E5%AE%83%E4%BC%98%E5%8C%96" class="hash-link" aria-label="其它优化的直接链接" title="其它优化的直接链接" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>SBR 模拟</strong>：修正了变体积（<code>Constant Volume 为 False</code>）状态下的计算公式，现在可以准确地使用 <strong>CAS</strong> 工艺近似模拟 <strong>SBR</strong> 工艺。</li>
+<li class=""><strong>更宽的参数范围</strong>：<code>BioModel.Parameter</code> 与 <code>Solution.Variable</code> 的参数范围现已支持负数，满足更多场景需求。</li>
+<li class=""><strong>Solution 支持缓存</strong>：节省计算初始化时间。</li>
+</ul>
+<hr>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>添加好友，备注SIMPO加入交流群</b></div><img src="https://i.postimg.cc/DZRM3JpM/SIMPO-QR.jpg" width="25%"></div>
+<div align="center" style="margin-top:2vh;margin-bottom:2vh"><div><b>欢迎关注微信公众号</b></div><img src="https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg" width="25%"></div>]]></content>
+        <category label="SIMPO" term="SIMPO"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[SIMPO 1.2.0 发布：稳态计算]]></title>
         <id>https://www.simpowater.org/zh/blog/SIMPO-blog-2026-04-07</id>
