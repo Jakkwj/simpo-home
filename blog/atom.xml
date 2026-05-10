@@ -140,7 +140,7 @@ This new algorithm will offer you more dimensional solution choices and higher c
 <h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="new-features">New Features<a href="https://www.simpowater.org/blog/SIMPO-blog-2026-03-27#new-features" class="hash-link" aria-label="Direct link to New Features" title="Direct link to New Features" translate="no">​</a></h3>
 <p>In addition to the core <code>Pump</code> module, this update also significantly enriches the underlying parameter configuration:</p>
 <ul>
-<li class=""><strong>New Unit Support</strong>: <code>DataSet.Unit</code> now supports <code>Aera</code> and <code>Height</code> units, meeting data requirements across more dimensions.</li>
+<li class=""><strong>New Unit Support</strong>: <code>DataSet.Unit</code> now supports <code>Area</code> and <code>Height</code> units, meeting data requirements across more dimensions.</li>
 <li class=""><strong>More Precise Target Settings</strong>: <code>DataSet.Target</code> now supports specifying <code>Oxygen</code>.</li>
 <li class=""><strong>Expanded Tank Parameters</strong>: <code>DataSet.Tank</code> has added 4 key engineering parameters:<!-- -->
 <ul>

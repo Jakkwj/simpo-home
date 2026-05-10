@@ -133,7 +133,7 @@
 <h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="新增功能">新增功能<a href="https://www.simpowater.org/zh/blog/SIMPO-blog-2026-03-27#%E6%96%B0%E5%A2%9E%E5%8A%9F%E8%83%BD" class="hash-link" aria-label="新增功能的直接链接" title="新增功能的直接链接" translate="no">​</a></h3>
 <p>除了核心的 <code>Pump</code> 模块，本次更新还为底层参数配置带来了极大的丰富：</p>
 <ul>
-<li class=""><strong>全新 Unit 支持</strong>：<code>DataSet.Unit</code> 新增了 <code>Aera</code> 和 <code>Height</code> 的单位支持，满足更多维度的数据需求。</li>
+<li class=""><strong>全新 Unit 支持</strong>：<code>DataSet.Unit</code> 新增了 <code>Area</code> 和 <code>Height</code> 的单位支持，满足更多维度的数据需求。</li>
 <li class=""><strong>Target 设定更精准</strong>：<code>DataSet.Target</code> 中现支持指定 <code>Oxygen</code>（氧气）。</li>
 <li class=""><strong>Tank 参数扩充</strong>：<code>DataSet.Tank</code> 中新增了 4 个关键工程参数：<!-- -->
 <ul>
