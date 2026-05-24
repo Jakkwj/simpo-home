@@ -3,20 +3,22 @@
 
 // const lightCodeTheme = require('prism-react-renderer/themes/github');
 // const darkCodeTheme = require('prism-react-renderer/themes/dracula');
-import remarkMath from 'remark-math'; // 公式
-import rehypeKatex from 'rehype-katex'; // 公式
-const {themes} = require('prism-react-renderer');
+import remarkMath from "remark-math"; // 公式
+import rehypeKatex from "rehype-katex"; // 公式
+const { themes } = require("prism-react-renderer");
 const lightTheme = themes.github;
 const darkTheme = themes.dracula;
 
-const title = 'SIMPO'
+const title = "SIMPO";
 // const urlConsole = 'https://dashboard.simpowater.org/dashboard/home'
 
-const urlHome = 'https://www.simpowater.org'
-const urlConsole = 'https://dash.simpowater.org/dashboard/home'
-const urlLogo = 'https://i.postimg.cc/rsPqvJNJ/logo3.png'
-const imgWechat = 'https://i.postimg.cc/QMH7KHW2/qrcode-for-gh-5d1b634e9478-1280.jpg'
-const urlWechat = 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzE5MTU1NzAyMQ==&action=getalbum&album_id=4062069451808489491#wechat_redirect'
+const urlHome = "https://www.simpowater.org";
+const urlConsole = "https://dash.simpowater.org/dashboard/home";
+const urlLogo = "https://i.postimg.cc/rsPqvJNJ/logo3.png";
+const imgWechat =
+  "https://i.postimg.cc/QMH7KHW2/qrcode-for-gh-5d1b634e9478-1280.jpg";
+const urlWechat =
+  "https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzE5MTU1NzAyMQ==&action=getalbum&album_id=4062069451808489491#wechat_redirect";
 /**
  * 登录后台显示 Dashboard, 未登录时显示 Sign In 的功能实现参看: https://github.com/facebook/docusaurus/discussions/5307
  * 1.手动 swizzle Root 组件
@@ -28,120 +30,133 @@ const urlWechat = 'https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzE5MTU1NzAyMQ=
  *
  */
 
-const fs = require('fs');
+const fs = require("fs");
 // const resourcesHTML = fs.readFileSync('./src/snippets/resources.html', 'utf-8');
 
 /** @type {import('@docusaurus/types').Config} */
 
-
-
 const config = {
-
   customFields: {
     // global variable
 
     imgUrlLogo: urlLogo,
-    imgUrlBanner: 'https://i.postimg.cc/3w15s1Kv/banner3.png',
+    imgUrlBanner: "https://i.postimg.cc/3w15s1Kv/banner3.png",
     // imgUrlPowerful: 'https://i.postimg.cc/8CRPjLTp/Powerful.png',
     // imgUrlPowerful: 'https://i.postimg.cc/XY3TRNyp/Powerful2.png',
-    imgUrlPowerful: 'https://i.postimg.cc/XqTqxG2H/Powerful2b.png',
+    imgUrlPowerful: "https://i.postimg.cc/XqTqxG2H/Powerful2b.png",
     // imgUrlOpen: 'https://i.postimg.cc/dthsGbJS/Fig6.png',
-    imgUrlOpen: 'https://i.postimg.cc/NfHhGfvg/Fig5-LHS-Density.png',
-    imgUrlTrackable: 'https://i.postimg.cc/85TkWsCh/matrix2.png',
+    imgUrlOpen: "https://i.postimg.cc/NfHhGfvg/Fig5-LHS-Density.png",
+    imgUrlTrackable: "https://i.postimg.cc/85TkWsCh/matrix2.png",
     // imgUrlResource: 'https://i.postimg.cc/FHPRnBnk/resource.png',
-    imgUrlResource: 'https://i.postimg.cc/HL2FXpF6/resource.png',
+    imgUrlResource: "https://i.postimg.cc/HL2FXpF6/resource.png",
 
-    imgUrlFeature_2: 'https://i.postimg.cc/cHN584Qz/Figure-6a.png',
-    imgUrlFeature_3: 'https://i.postimg.cc/prSfzqwd/Figure-7c.png',
-    imgUrlFeature_4: 'https://i.postimg.cc/Z5XVNK8S/Advanced.gif',
-    imgUrlFeature_5: 'https://i.postimg.cc/Gp2K6TbG/Collaboration.gif',
+    imgUrlFeature_2: "https://i.postimg.cc/cHN584Qz/Figure-6a.png",
+    imgUrlFeature_3: "https://i.postimg.cc/prSfzqwd/Figure-7c.png",
+    imgUrlFeature_4: "https://i.postimg.cc/Z5XVNK8S/Advanced.gif",
+    imgUrlFeature_5: "https://i.postimg.cc/Gp2K6TbG/Collaboration.gif",
 
-    imgUrlAlgorithm_1: 'https://i.postimg.cc/T3MbB4cx/Figure-32-The-simulation-result-with-the-optimum-using-GA-method-in-SIMPO.png',
-    imgUrlAlgorithm_2: 'https://i.postimg.cc/QxW5431S/Figure-11bb.png',
-    imgUrlAlgorithm_3: 'https://i.postimg.cc/W4sk1qKf/Figure-14c.png',
-    imgUrlAlgorithm_4: 'https://i.postimg.cc/T3VbxJkD/Figure-14bb.png',
+    imgUrlAlgorithm_1:
+      "https://i.postimg.cc/T3MbB4cx/Figure-32-The-simulation-result-with-the-optimum-using-GA-method-in-SIMPO.png",
+    imgUrlAlgorithm_2: "https://i.postimg.cc/QxW5431S/Figure-11bb.png",
+    imgUrlAlgorithm_3: "https://i.postimg.cc/W4sk1qKf/Figure-14c.png",
+    imgUrlAlgorithm_4: "https://i.postimg.cc/T3VbxJkD/Figure-14bb.png",
 
-    imgUrlPaper_1: 'https://i.postimg.cc/g0TtXr81/SIMPO-A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareab.png',
+    imgUrlPaper_1:
+      "https://i.postimg.cc/g0TtXr81/SIMPO-A-Simplified-Intelligent-Modelling-Platform-Online-for-Code-free-and-Shareab.png",
 
-    imgUrlIntroduction_1: 'https://i.postimg.cc/kgNkSsRp/Fig5-Sim-Targets.png',
-    imgUrlIntroduction_2: 'https://i.postimg.cc/8zg2s9cv/Project-Eva-Uncertainty-PCDF-59.png',
+    imgUrlIntroduction_1: "https://i.postimg.cc/kgNkSsRp/Fig5-Sim-Targets.png",
+    imgUrlIntroduction_2:
+      "https://i.postimg.cc/8zg2s9cv/Project-Eva-Uncertainty-PCDF-59.png",
 
-    imgUrlJiangfeng: 'https://i.postimg.cc/CKmXPKNC/jiangfeng.jpg',
+    imgUrlJiangfeng: "https://i.postimg.cc/CKmXPKNC/jiangfeng.jpg",
     // imgUrlWangjun: 'https://i.postimg.cc/sXx8tR6k/Jakk2b.jpg',
-    imgUrlWangjun: 'https://i.postimg.cc/Jz9DJRFp/jakk-2.png',
+    imgUrlWangjun: "https://i.postimg.cc/Jz9DJRFp/jakk-2.png",
     // imgUrlLihao: 'https://i.postimg.cc/YSpTzF1q/lihao.jpg',
     // imgUrlLihao: 'https://i.postimg.cc/CMQFdm9M/lihao-2.png',
-    imgUrlLihao: 'https://i.postimg.cc/rwcFLzv4/lihao-3.jpg',
-    imgUrlHuangzhaowei: 'https://i.postimg.cc/zX3SYGFD/huangzhaowei.jpg',
-    imgUrlLiangzhensheng: 'https://i.postimg.cc/RCDNqPvc/liangzhensheng.jpg',
+    imgUrlLihao: "https://i.postimg.cc/rwcFLzv4/lihao-3.jpg",
+    imgUrlHuangzhaowei: "https://i.postimg.cc/zX3SYGFD/huangzhaowei.jpg",
+    imgUrlLiangzhensheng: "https://i.postimg.cc/RCDNqPvc/liangzhensheng.jpg",
 
-    imgUrlTheEasiestWay: 'https://i.postimg.cc/bvV8GgKj/The-Easiest-Way.gif',
+    imgUrlTheEasiestWay: "https://i.postimg.cc/bvV8GgKj/The-Easiest-Way.gif",
 
-    imgUrlASM3_1: 'https://i.postimg.cc/mkJGdrTp/ASM3-1.gif',
+    imgUrlASM3_1: "https://i.postimg.cc/mkJGdrTp/ASM3-1.gif",
     imgUrlASM3_2: "https://i.postimg.cc/DfMFfx1Q/ASM3-2.gif",
-    imgUrlASM3_3: 'https://i.postimg.cc/SRJh79bz/ASM3-3.gif',
-    imgUrlASM3_4: 'https://i.postimg.cc/xCsQzRh2/ASM3-4.gif',
+    imgUrlASM3_3: "https://i.postimg.cc/SRJh79bz/ASM3-3.gif",
+    imgUrlASM3_4: "https://i.postimg.cc/xCsQzRh2/ASM3-4.gif",
 
-    imgUrlBioModel_1: 'https://i.postimg.cc/ZRq8Hb7d/biomodel-1.gif',
-    imgUrlBioModel_2: 'https://i.postimg.cc/25GdnbwY/biomodel-2.gif',
-    imgUrlBioModel_3: 'https://i.postimg.cc/pLDJX15p/biomodel-3.gif',
-    imgUrlBioModel_4: 'https://i.postimg.cc/TPfqyqnQ/biomodel-4.gif',
+    imgUrlBioModel_1: "https://i.postimg.cc/ZRq8Hb7d/biomodel-1.gif",
+    imgUrlBioModel_2: "https://i.postimg.cc/25GdnbwY/biomodel-2.gif",
+    imgUrlBioModel_3: "https://i.postimg.cc/pLDJX15p/biomodel-3.gif",
+    imgUrlBioModel_4: "https://i.postimg.cc/TPfqyqnQ/biomodel-4.gif",
 
-    imgUrlDataSet_1: 'https://i.postimg.cc/KY2QPyhP/dataset-1.gif',
-    imgUrlDataSet_2: 'https://i.postimg.cc/4xtBHxq4/dataset-2.gif',
-    imgUrlDataSet_3: 'https://i.postimg.cc/fT18b9Hg/dataset-3.gif',
-    imgUrlDataSet_4: 'https://i.postimg.cc/WpW9QK0V/dataset-4.gif',
-    imgUrlDataSet_5: 'https://i.postimg.cc/7Y5BDVN2/dataset-5.gif',
+    imgUrlDataSet_1: "https://i.postimg.cc/KY2QPyhP/dataset-1.gif",
+    imgUrlDataSet_2: "https://i.postimg.cc/4xtBHxq4/dataset-2.gif",
+    imgUrlDataSet_3: "https://i.postimg.cc/fT18b9Hg/dataset-3.gif",
+    imgUrlDataSet_4: "https://i.postimg.cc/WpW9QK0V/dataset-4.gif",
+    imgUrlDataSet_5: "https://i.postimg.cc/7Y5BDVN2/dataset-5.gif",
 
-    imgUrlProject_1: 'https://i.postimg.cc/RVYDn80d/project-1.gif',
-    imgUrlProject_2: 'https://i.postimg.cc/SxztLr2h/project-2.gif',
-    imgUrlProject_3: 'https://i.postimg.cc/MKHLHxzX/project-3.gif',
-    imgUrlProject_4: 'https://i.postimg.cc/FK5CTL3J/project-4.gif',
+    imgUrlProject_1: "https://i.postimg.cc/RVYDn80d/project-1.gif",
+    imgUrlProject_2: "https://i.postimg.cc/SxztLr2h/project-2.gif",
+    imgUrlProject_3: "https://i.postimg.cc/MKHLHxzX/project-3.gif",
+    imgUrlProject_4: "https://i.postimg.cc/FK5CTL3J/project-4.gif",
 
+    imgUrlCaseStudyAQUASIMT2P17_1: "https://i.postimg.cc/8k48stWX/T2P17-1.jpg",
+    imgUrlCaseStudyAQUASIMT2P17_2: "https://i.postimg.cc/BQnrFHBS/T2P17-2.jpg",
+    imgUrlCaseStudyAQUASIMT2P17_3: "https://i.postimg.cc/QxYRJCfp/T2P17-3.jpg",
+    imgUrlCaseStudyAQUASIMT2P17_4: "https://i.postimg.cc/3xPVz65N/T2P17-4.jpg",
+    imgUrlCaseStudyAQUASIMT2P17_5: "https://i.postimg.cc/RZ32smY2/T2P17-5.jpg",
 
-    imgUrlCaseStudyAQUASIMT2P17_1: 'https://i.postimg.cc/8k48stWX/T2P17-1.jpg',
-    imgUrlCaseStudyAQUASIMT2P17_2: 'https://i.postimg.cc/BQnrFHBS/T2P17-2.jpg',
-    imgUrlCaseStudyAQUASIMT2P17_3: 'https://i.postimg.cc/QxYRJCfp/T2P17-3.jpg',
-    imgUrlCaseStudyAQUASIMT2P17_4: 'https://i.postimg.cc/3xPVz65N/T2P17-4.jpg',
-    imgUrlCaseStudyAQUASIMT2P17_5: 'https://i.postimg.cc/RZ32smY2/T2P17-5.jpg',
+    imgUrlCaseStudyBWTEE2_3_4Batch:
+      "https://i.postimg.cc/YSYZ73M3/2-3-4-Batch-1.jpg",
 
-    imgUrlCaseStudyBWTEE2_3_4Batch: 'https://i.postimg.cc/YSYZ73M3/2-3-4-Batch-1.jpg',
-
-    imgUrlCaseStudyBWTEE2_3_4Chemostat: 'https://i.postimg.cc/7hYWgr7s/2-3-4-Chemostat-1.jpg',
-    imgUrlCaseStudyBWTEE2_3_4O2: 'https://i.postimg.cc/76NRGZCJ/2-3-4-Chemostat-2.jpg',
-    imgUrlCaseStudyBWTEE2_3_4DHO: 'https://i.postimg.cc/zBNMGgf1/2-3-4-Chemostat-3.jpg',
+    imgUrlCaseStudyBWTEE2_3_4Chemostat:
+      "https://i.postimg.cc/7hYWgr7s/2-3-4-Chemostat-1.jpg",
+    imgUrlCaseStudyBWTEE2_3_4O2:
+      "https://i.postimg.cc/76NRGZCJ/2-3-4-Chemostat-2.jpg",
+    imgUrlCaseStudyBWTEE2_3_4DHO:
+      "https://i.postimg.cc/zBNMGgf1/2-3-4-Chemostat-3.jpg",
 
     // imgUrlWechatJakk: 'https://i.postimg.cc/yxKhZxM0/jakk-QR.jpg',
-    imgUrlWechatAccount: 'https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg',
-    imgUrlSimpoQR: 'https://i.postimg.cc/DZRM3JpM/SIMPO-QR.jpg',
+    imgUrlWechatAccount:
+      "https://i.postimg.cc/kGyQF9Cz/qrcode-for-gh-5d1b634e9478-1280.jpg",
+    imgUrlSimpoQR: "https://i.postimg.cc/DZRM3JpM/SIMPO-QR.jpg",
     // imgUrlWechatAccount: 'https://i.postimg.cc/gcyDBqtk/gzh_qrcode_50cm.jpg',
     // imgUrlSimpoQR: 'https://i.postimg.cc/qvqxqfJy/SIMPO_QR2.jpg',
 
-    imgUrlBlogEurekAlertSIMPO: 'https://i.postimg.cc/9fyxpKQ8/eurek-Alert-SIMPO.png',
-    imgUrlBlogSIMPOHighlights: 'https://i.postimg.cc/s2t4tcvv/SIMPO-highlights.png',
-    imgUrlBlogGAResultTable: 'https://i.postimg.cc/GtbFLd63/GA-result-table.png',
-    imgUrlBlogCover: 'https://i.postimg.cc/xdCqNLBM/cover.jpg',
-    imgUrlBlogComparisonTable: 'https://i.postimg.cc/WzCg4X9R/Comparison-table.png',
+    imgUrlBlogEurekAlertSIMPO:
+      "https://i.postimg.cc/9fyxpKQ8/eurek-Alert-SIMPO.png",
+    imgUrlBlogSIMPOHighlights:
+      "https://i.postimg.cc/s2t4tcvv/SIMPO-highlights.png",
+    imgUrlBlogGAResultTable:
+      "https://i.postimg.cc/GtbFLd63/GA-result-table.png",
+    imgUrlBlogCover: "https://i.postimg.cc/xdCqNLBM/cover.jpg",
+    imgUrlBlogComparisonTable:
+      "https://i.postimg.cc/WzCg4X9R/Comparison-table.png",
 
-    urlDashHome: 'https://dash.simpowater.org/dashboard/home',
+    urlDashHome: "https://dash.simpowater.org/dashboard/home",
 
-    urlDashASM3: 'https://dash.simpowater.org/dashboard/biomodels/public/name/ASM3/id/45/did/41',
-
+    urlDashASM3:
+      "https://dash.simpowater.org/dashboard/biomodels/public/name/ASM3/id/45/did/41",
 
     // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.5/SimpoClient_installer.exe',
     // urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.11.5/SimpoClient_installer.sh',
 
     // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v1.0.0/SimpoClient_1.0.0.exe',
     // urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v1.0.0/SimpoClient_1.0.0_amd64.deb',
-    urlDownloadClientWindows: 'https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.3.4.exe',
-    urlDownloalClientUbuntu: 'https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.3.4_amd64.deb',
+    urlDownloadClientWindows:
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.3.5.exe",
+    urlDownloalClientUbuntu:
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.3.5_amd64.deb",
 
     // urlDownloalBaidu: 'https://pan.baidu.com/s/1N89lx1xbCvoIwvbc-Qdl8g?pwd=spwt',
     // urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp',
-    urlDownloalNetdisk: 'https://pan.baidu.com/s/1dV37ANzonYqQKorJkyX5Ig?pwd=simp',
+    urlDownloalNetdisk:
+      "https://pan.baidu.com/s/1dV37ANzonYqQKorJkyX5Ig?pwd=simp",
 
-    urlDownloalNetdiskWindows: 'https://pan.baidu.com/s/1dV37ANzonYqQKorJkyX5Ig?pwd=simp#list/path=%2FSimpoClient%2Fwindows',
-    urlDownloalNetdiskUbuntu: 'https://pan.baidu.com/s/1dV37ANzonYqQKorJkyX5Ig?pwd=simp#list/path=%2FSimpoClient%2Flinux',
+    urlDownloalNetdiskWindows:
+      "https://pan.baidu.com/s/1dV37ANzonYqQKorJkyX5Ig?pwd=simp#list/path=%2FSimpoClient%2Fwindows",
+    urlDownloalNetdiskUbuntu:
+      "https://pan.baidu.com/s/1dV37ANzonYqQKorJkyX5Ig?pwd=simp#list/path=%2FSimpoClient%2Flinux",
     // urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp#list/path=%2Fsharelink1245391030-65267744155022%2Fwindows&parentPath=%2Fsharelink1245391030-65267744155022',
 
     // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v0.6.0/SimpoClient_installer.exe',
@@ -155,12 +170,14 @@ const config = {
     // urlDownloadUrlplateDataSet: 'https://github.com/Jakkwj/simpo-home/releases/download/template/DataSet.xlsx',
     // urlDownloadUrlplateProject: 'https://github.com/Jakkwj/simpo-home/releases/download/template/Solution.xlsx',
 
-    urlDownloadUrlplateBioModel: 'https://gitee.com/Jakkwj/simpo-home/releases/download/template/BioModel.xlsx',
-    urlDownloadUrlplateDataSet: 'https://gitee.com/Jakkwj/simpo-home/releases/download/template/DataSet.xlsx',
-    urlDownloadUrlplateProject: 'https://gitee.com/Jakkwj/simpo-home/releases/download/template/Solution.xlsx',
+    urlDownloadUrlplateBioModel:
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/template/BioModel.xlsx",
+    urlDownloadUrlplateDataSet:
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/template/DataSet.xlsx",
+    urlDownloadUrlplateProject:
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/template/Solution.xlsx",
 
-    iframeIfSignSrc: 'https://dash.simpowater.org/ifsign',
-
+    iframeIfSignSrc: "https://dash.simpowater.org/ifsign",
   },
 
   // urlDownloadClientWindows: 'https://sludge.readthedocs.io/en/latest/_downloads/4269e5ad1fd14053bd80f03977e51dad/SimpoClient_installer.exe',
@@ -174,17 +191,17 @@ const config = {
   // tagline: 'A Scientific Computing SaaS Platform for Wastewater Treatment Process Modelling',
   // tagline: 'An Intelligent Computing SaaS Platform for Wastewater Treatment Process Modelling',
   // tagline: 'An Intelligent Cloud Platform for Code-free and Shareable Wastewater Treatment Process Modelling',
-  tagline: 'An Intelligent Platform for Code-free and Shareable Wastewater Treatment Process Modelling',
+  tagline:
+    "An Intelligent Platform for Code-free and Shareable Wastewater Treatment Process Modelling",
   // 污水处理数学模拟无代码智能建模与共享平台
   // is a code-free and Shareable platform for mathematical simulation of wastewater treatment
   // An Intelligent Modelling Platform for Code-free and Shareable
-// Wastewater Treatment Process Modelling
+  // Wastewater Treatment Process Modelling
 
   // tagline: 'An Intelligent Computing SaaS Platform Specifically designed for wastewater treatment process modelling',
   // tagline: 'A SaaS platform for wastewater treatment modeling',
 
-
-  favicon: 'img/logo3.ico',
+  favicon: "img/logo3.ico",
   // favicon: 'https://cdn.jsdelivr.net/gh/Jakkwj/simpo_resource@master/simpo_resource/source/_static/images/ico/logo3.ico',
 
   // Set the production url of your site here
@@ -194,32 +211,28 @@ const config = {
   // 'https://www.simpowater.org',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: "/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   // organizationName: title, // Usually your GitHub org/user name.
   // projectName: 'Sludge', // Usually your repo name.
-  organizationName: 'Jakkwj', // Usually your GitHub org/user name.
+  organizationName: "Jakkwj", // Usually your GitHub org/user name.
   // projectName: 'jakkwj.github.io', // Usually your repo name.
   // projectName: 'simpo_home', // Usually your repo name.
-  projectName: 'simpo-home', // Usually your repo name.
+  projectName: "simpo-home", // Usually your repo name.
   trailingSlash: false,
-  deploymentBranch: 'gh-pages',
+  deploymentBranch: "gh-pages",
 
   // onBrokenLinks: 'throw', // 检测到无效链接时的行为, 抛出错误, v3 升级后 build 时会报错
-  onBrokenLinks: 'ignore',
-
-
-
-
+  onBrokenLinks: "ignore",
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'zh'], // zh-Hans 简体中文, 注意不能通过 localeConfigs 进行 simpowater.org 和 simpowater.com 的切换, 这里只能控制同一域名的跳转
+    defaultLocale: "en",
+    locales: ["en", "zh"], // zh-Hans 简体中文, 注意不能通过 localeConfigs 进行 simpowater.org 和 simpowater.com 的切换, 这里只能控制同一域名的跳转
 
     // localeConfigs: {
     //   en: {
@@ -235,7 +248,6 @@ const config = {
     // locales: ['en'],
     // locales: ['en', 'zh-Hans'], // zh-Hans 简体中文
 
-
     // locales: ['en', 'zh-Hans', 'fa'],
     // localeConfigs: {
     //   en: {
@@ -246,23 +258,18 @@ const config = {
     //     direction: 'rtl',
     //   },
     // },
-
   },
 
   presets: [
     [
       // 'classic',
-      '@docusaurus/preset-classic',
+      "@docusaurus/preset-classic",
       // '@docusaurus/preset-live-codeblock',
-
-
-
-
 
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebarsDocs.js'),
+          sidebarPath: require.resolve("./sidebarsDocs.js"),
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
           // Please change this to your repo.
@@ -273,7 +280,7 @@ const config = {
         // blog: false,
         blog: {
           showReadingTime: true,
-          onUntruncatedBlogPosts: 'ignore',
+          onUntruncatedBlogPosts: "ignore",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
           // Please change this to your repo.
@@ -281,17 +288,16 @@ const config = {
           // editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
           // customCss: require.resolve('./src/css/custom.scss'),
         },
 
         sitemap: {
-          changefreq: 'weekly',
+          changefreq: "weekly",
           priority: 0.5,
-          ignorePatterns: ['/tags/**'],
-          filename: 'sitemap.xml',
+          ignorePatterns: ["/tags/**"],
+          filename: "sitemap.xml",
         },
-
       }),
     ],
   ],
@@ -315,7 +321,7 @@ const config = {
     //   },
     // ],
     [
-      '@docusaurus/plugin-content-docs',
+      "@docusaurus/plugin-content-docs",
       // {
       //   id: 'library',
       //   path: 'library',
@@ -323,50 +329,47 @@ const config = {
       //   sidebarPath: require.resolve('./sidebarsLibrary.js'),
       // },
       {
-        id: 'resource',
-        path: 'resource',
-        routeBasePath: 'resource',
-        sidebarPath: require.resolve('./sidebarsResource.js'),
+        id: "resource",
+        path: "resource",
+        routeBasePath: "resource",
+        sidebarPath: require.resolve("./sidebarsResource.js"),
         remarkPlugins: [remarkMath],
         rehypePlugins: [rehypeKatex],
       },
     ],
 
     [
-      '@docusaurus/plugin-content-docs',
+      "@docusaurus/plugin-content-docs",
       {
-        id: 'changelog',
-        path: 'changelog',
-        routeBasePath: 'changelog',
-        sidebarPath: require.resolve('./sidebarsChangelog.js'),
+        id: "changelog",
+        path: "changelog",
+        routeBasePath: "changelog",
+        sidebarPath: require.resolve("./sidebarsChangelog.js"),
         remarkPlugins: [remarkMath],
         rehypePlugins: [rehypeKatex],
       },
     ],
-
-
   ],
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-
       metadata: [
-        {name: 'keywords', content: 'water, wastewater, treatment, modeling'},
+        { name: "keywords", content: "water, wastewater, treatment, modeling" },
       ],
 
       zoom: {
-        selector: '.markdown :not(em) > img', // 仅限 marddown 中的 img 点击放大
+        selector: ".markdown :not(em) > img", // 仅限 marddown 中的 img 点击放大
         // selector: 'img', // 所有 img
         background: {
-            // light: 'rgb(255, 255, 255)',
-            // light: "#ebedf0",
-            light: "#F5F5F5",
-            // light: "#EEEEEE",
-            // light: "#E0E0E0",
-            // light: "#BDBDBD",
-            dark: 'rgb(50, 50, 50)'
-          },
+          // light: 'rgb(255, 255, 255)',
+          // light: "#ebedf0",
+          light: "#F5F5F5",
+          // light: "#EEEEEE",
+          // light: "#E0E0E0",
+          // light: "#BDBDBD",
+          dark: "rgb(50, 50, 50)",
+        },
 
         config: {
           // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
@@ -378,22 +381,21 @@ const config = {
           // background: "#00a400",
           scrollOffset: 0, // The number of pixels to scroll to close the zoom
           margin: 65,
-        }
+        },
       },
 
       colorMode: {
         disableSwitch: true,
-        defaultMode: 'light',
+        defaultMode: "light",
         // respectPrefersColorScheme: true,
       },
-
 
       liveCodeBlock: {
         /**
          * 实时效果显示的位置，在编辑器上方还是下方。
          * 可为："top" | "bottom"
          */
-        playgroundPosition: 'bottom',
+        playgroundPosition: "bottom",
       },
 
       // Replace with your project's social card
@@ -402,25 +404,25 @@ const config = {
       // 'https://i.postimg.cc/rsPqvJNJ/logo3.png',
 
       announcementBar: {
-        id: 'announcementBar',
+        id: "announcementBar",
         content:
-          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2026">SimpoClient v1.3.4</a> has been released!</strong>',
+          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2026">SimpoClient v1.3.5</a> has been released!</strong>',
         isCloseable: true,
         // backgroundColor: '#5e72e4',
         // textColor: '#ffffff',
-        backgroundColor: '#eee',
-        textColor: '#5e72e4',
+        backgroundColor: "#eee",
+        textColor: "#5e72e4",
         // backgroundColor: '#ffffff',
         // textColor: '#5e72e4',
       },
 
       algolia: {
         // If Algolia did not provide you any appId, use 'BH4D9OD16A'
-        appId: '11LZNE9YBJ',
+        appId: "11LZNE9YBJ",
         // Public API key: it is safe to commit it
-        apiKey: '841fa2f7f6ced4b0b5f3743465da2ff8', // Search-Only API Key
+        apiKey: "841fa2f7f6ced4b0b5f3743465da2ff8", // Search-Only API Key
         // apiKey: '641c7fdb7f7c5cbc823ca21c58f155d0', // email key
-        indexName: 'simpowater',  // must the same as Algolia index name
+        indexName: "simpowater", // must the same as Algolia index name
         // Optional: see doc section below
         contextualSearch: false, // 必须为false, 否则无法访问
         // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
@@ -433,11 +435,11 @@ const config = {
         hideOnScroll: true,
         title: title,
         logo: {
-          alt: 'Logo',
+          alt: "Logo",
           // src: 'img/logo.svg',
           // src: 'img/logo.png',
           // src: 'img/logo3.png',
-          src: 'https://i.postimg.cc/rsPqvJNJ/logo3.png',
+          src: "https://i.postimg.cc/rsPqvJNJ/logo3.png",
         },
         items: [
           // {
@@ -453,20 +455,19 @@ const config = {
           // },
 
           {
-            type: 'localeDropdown',
-            position: 'right',
+            type: "localeDropdown",
+            position: "right",
           },
           {
             // label: 'Tutorials',
             // label: 'Documentation',
-            label: 'Docs',
-            type: 'doc',
+            label: "Docs",
+            type: "doc",
             // docId: 'Introduction',
-            docId: 'QucikStart',
+            docId: "QucikStart",
             // to: 'docs',
-            position: 'left',
+            position: "left",
             // label: 'Guides',
-
           },
           // {
           //   label: 'Library',
@@ -475,30 +476,29 @@ const config = {
           //   // label: 'Guides',
           // },
           {
-            label: 'Resource',
-            to: 'resource',
-            position: 'left',
+            label: "Resource",
+            to: "resource",
+            position: "left",
             // label: 'Guides',
           },
           {
-            label: 'Blog',
-            to: 'blog',
-            position: 'left',
+            label: "Blog",
+            to: "blog",
+            position: "left",
             // label: 'Guides',
           },
           {
-            label: 'Changelog',
-            to: 'changelog',
-            position: 'left',
+            label: "Changelog",
+            to: "changelog",
+            position: "left",
             // label: 'Guides',
           },
           {
             // to: 'https://hasura.io/changelog',
             label: "About",
-            to: '/about',
-            position: 'left',
+            to: "/about",
+            position: "left",
           },
-
 
           // {
           //   label: 'Client',
@@ -524,18 +524,16 @@ const config = {
           //   to: 'https://dyte.io/contact',
           // },
           {
-            type: 'search',
-            position: 'right',
+            type: "search",
+            position: "right",
           },
 
-
-
           {
-            href: 'https://github.com/jakkwj/simpo_home',
-            position: 'right',
-            className: 'header-github-link',
-            'aria-label': 'GitHub repository',
-            docspluginid: 'GitHub'
+            href: "https://github.com/jakkwj/simpo_home",
+            position: "right",
+            className: "header-github-link",
+            "aria-label": "GitHub repository",
+            docspluginid: "GitHub",
           },
 
           // { href: `${urlConsole}`, label: true ? 'Dashboard' : 'Login', position: 'right'},
@@ -544,8 +542,18 @@ const config = {
 
           // { href: `${urlConsole}`, label: 'Dashboard', position: 'right', docspluginid: 'Dashboard'},
           // { href: `${urlConsole}`, label: 'Sign In', position: 'right', docspluginid: 'SignIn'},
-          { href: `${urlConsole}`, label: 'Dashboard', position: 'right', docspluginid: 'Dashboard'},
-          { href: `${urlConsole}`, label: 'Sign In', position: 'right', docspluginid: 'SignIn'},
+          {
+            href: `${urlConsole}`,
+            label: "Dashboard",
+            position: "right",
+            docspluginid: "Dashboard",
+          },
+          {
+            href: `${urlConsole}`,
+            label: "Sign In",
+            position: "right",
+            docspluginid: "SignIn",
+          },
 
           // {
           //   href: 'https://github.com/facebook/docusaurus',
@@ -555,10 +563,8 @@ const config = {
         ],
       },
 
-
-
       footer: {
-        style: 'dark',
+        style: "dark",
         // style: 'light',
 
         // logo: {
@@ -568,23 +574,21 @@ const config = {
         //   height: 30,
         // },
 
-
         links: [
-
           {
-              title: 'WeChat',
-              items: [
-                // {
-                //   label: 'Tutorial',
-                //   to: '/docs/intro',
-                // },
-                // {
-                //   html: `
-                //       <a href="https://www.netlify.com" target="_blank" rel="noreferrer noopener" aria-label="Deploys by Netlify">
-                //         <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
-                //       </a>
-                //     `,
-                // },
+            title: "WeChat",
+            items: [
+              // {
+              //   label: 'Tutorial',
+              //   to: '/docs/intro',
+              // },
+              // {
+              //   html: `
+              //       <a href="https://www.netlify.com" target="_blank" rel="noreferrer noopener" aria-label="Deploys by Netlify">
+              //         <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
+              //       </a>
+              //     `,
+              // },
               //   {
               //     html: `
               //         <a href="${urlHome}">
@@ -604,54 +608,49 @@ const config = {
               //   Join WeChat Group
               // </div>
               {
-                  html: `
+                html: `
                       <a href="${urlWechat}">
                         <img src="${imgWechat}" alt="SIMPO" width="60" height="60" />
                       </a>
                     `,
-              }
-              ],
-            },
+              },
+            ],
+          },
 
-            {
-              title: 'Learn',
-              items: [
-                // {
-                //   label: 'Introduction',
-                //   to: '/docs/intro',
-                // },
-                {
-                  label: 'Installation',
-                  to: '/docs/Tutorials/Installtion',
-                },
+          {
+            title: "Learn",
+            items: [
+              // {
+              //   label: 'Introduction',
+              //   to: '/docs/intro',
+              // },
+              {
+                label: "Installation",
+                to: "/docs/Tutorials/Installtion",
+              },
 
-                {
-                  label: 'Case Study',
-                  to: '/docs/category/case-study',
-                },
+              {
+                label: "Case Study",
+                to: "/docs/category/case-study",
+              },
+            ],
+          },
 
-              ],
-            },
-
-
-
-            {
-              title: 'Legal',
-              items: [
-                {
-                  // label: 'Terms of Service',
-                  label: 'Terms',
-                  to: '/legal/terms',
-                },
-                {
-                  // label: 'Privacy Policy',
-                  label: 'Privacy',
-                  to: '/legal/privacy',
-                },
-
-              ],
-            },
-
+          {
+            title: "Legal",
+            items: [
+              {
+                // label: 'Terms of Service',
+                label: "Terms",
+                to: "/legal/terms",
+              },
+              {
+                // label: 'Privacy Policy',
+                label: "Privacy",
+                to: "/legal/privacy",
+              },
+            ],
+          },
 
           // {
           //   title: 'Docs',
@@ -682,31 +681,30 @@ const config = {
           // },
 
           {
-            title: 'Support',
+            title: "Support",
             items: [
               {
                 // label: 'Contact Us',
-                label: 'Contact',
-                to: '/support/contact',
+                label: "Contact",
+                to: "/support/contact",
               },
-
             ],
           },
           {
-            title: 'More',
+            title: "More",
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: "Blog",
+                to: "/blog",
               },
               {
-                label: 'Changelog',
+                label: "Changelog",
                 // to: '/docs/category/changelog',
-                to: '/changelog',
+                to: "/changelog",
               },
               {
-                label: 'GitHub',
-                href: 'https://github.com/jakkwj/simpo_home',
+                label: "GitHub",
+                href: "https://github.com/jakkwj/simpo_home",
               },
             ],
           },
@@ -719,8 +717,7 @@ const config = {
         //   height: 30,
         // },
 
-        copyright: `<span style="color: grey;">Copyright © ${new Date().getFullYear()} SIMPO. All Rights Reserved. <a style="color: grey;" href="https://beian.mps.gov.cn/#/query/webSearch?code=44011302005105" target="_blank" rel="noreferrer"> <img src="https://qcloudimg.tencent-cloud.cn/raw/eed02831a0e201b8d794c8282c40cf2e.png" style="width: 14px; margin-right: 5px;"> <span>粤公网安备44011302005105号 </span></a> <a style="color: grey;" href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2025444806号-2</a></span>`
-
+        copyright: `<span style="color: grey;">Copyright © ${new Date().getFullYear()} SIMPO. All Rights Reserved. <a style="color: grey;" href="https://beian.mps.gov.cn/#/query/webSearch?code=44011302005105" target="_blank" rel="noreferrer"> <img src="https://qcloudimg.tencent-cloud.cn/raw/eed02831a0e201b8d794c8282c40cf2e.png" style="width: 14px; margin-right: 5px;"> <span>粤公网安备44011302005105号 </span></a> <a style="color: grey;" href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2025444806号-2</a></span>`,
 
         // Built with Docusaurus.
       },
@@ -730,17 +727,17 @@ const config = {
       },
     }),
 
-
   // onBrokenMarkdownLinks: 'warn', // 检测到无效 Markdown 链接时的行为 警告
-  markdown: { // 加入 mermaid https://docusaurus.io/zh-CN/docs/markdown-features/diagrams
+  markdown: {
+    // 加入 mermaid https://docusaurus.io/zh-CN/docs/markdown-features/diagrams
     // yarn add @docusaurus/theme-mermaid@next  # 通过 @ next 选择正确的版本 2.4.0
     // yarn add mdx-mermaid mermaid  # mermaid in mdx
     mermaid: true,
     hooks: {
-      onBrokenMarkdownLinks: 'warn', // 检测到无效 Markdown 链接时的行为 警告
-    }
+      onBrokenMarkdownLinks: "warn", // 检测到无效 Markdown 链接时的行为 警告
+    },
   },
-  themes: ['@docusaurus/theme-mermaid'],
+  themes: ["@docusaurus/theme-mermaid"],
 
   // <head link>
   // stylesheets: [
@@ -753,7 +750,6 @@ const config = {
   //   }
   // //   'antd/dist/antd.css', // 或者 antd/dist/antd.min.css
   // ],
-
 };
 
 module.exports = config;
