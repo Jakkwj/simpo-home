@@ -144,9 +144,9 @@ const config = {
     // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v1.0.0/SimpoClient_1.0.0.exe',
     // urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v1.0.0/SimpoClient_1.0.0_amd64.deb',
     urlDownloadClientWindows:
-      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.3.5.exe",
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.3.6.exe",
     urlDownloalClientUbuntu:
-      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.3.5_amd64.deb",
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.3.6_amd64.deb",
 
     // urlDownloalBaidu: 'https://pan.baidu.com/s/1N89lx1xbCvoIwvbc-Qdl8g?pwd=spwt',
     // urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp',
@@ -406,7 +406,7 @@ const config = {
       announcementBar: {
         id: "announcementBar",
         content:
-          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2026">SimpoClient v1.3.5</a> has been released!</strong>',
+          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2026">SimpoClient v1.3.6</a> has been released!</strong>',
         isCloseable: true,
         // backgroundColor: '#5e72e4',
         // textColor: '#ffffff',
