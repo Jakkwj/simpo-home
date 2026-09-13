@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-Tutorials/BioModel_" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">BioModel | SIMPO</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://i.postimg.cc/rsPqvJNJ/logo3.png"><meta data-rh="true" name="twitter:image" content="https://i.postimg.cc/rsPqvJNJ/logo3.png"><meta data-rh="true" property="og:url" content="https://www.simpowater.org/zh/docs/Tutorials/BioModel_"><meta data-rh="true" property="og:locale" content="zh"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" name="docusaurus_locale" content="zh"><meta data-rh="true" name="docsearch:language" content="zh"><meta data-rh="true" name="keywords" content="water, wastewater, treatment, modeling"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="BioModel | SIMPO"><meta data-rh="true" name="description" content="BioModel 是您建立自己的生化模型的地方。"><meta data-rh="true" property="og:description" content="BioModel 是您建立自己的生化模型的地方。"><link data-rh="true" rel="icon" href="/zh/img/logo3.ico"><link data-rh="true" rel="canonical" href="https://www.simpowater.org/zh/docs/Tutorials/BioModel_"><link data-rh="true" rel="alternate" href="https://www.simpowater.org/docs/Tutorials/BioModel_" hreflang="en"><link data-rh="true" rel="alternate" href="https://www.simpowater.org/zh/docs/Tutorials/BioModel_" hreflang="zh"><link data-rh="true" rel="alternate" href="https://www.simpowater.org/docs/Tutorials/BioModel_" hreflang="x-default"><link data-rh="true" rel="preconnect" href="https://11LZNE9YBJ-dsn.algolia.net" crossorigin="anonymous"><link rel="alternate" type="application/rss+xml" href="/zh/blog/rss.xml" title="SIMPO RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/zh/blog/atom.xml" title="SIMPO Atom Feed">
+
+
+
+
+<link rel="search" type="application/opensearchdescription+xml" title="SIMPO" href="/zh/opensearch.xml"><link rel="stylesheet" href="/zh/assets/css/styles.a3e1ec75.css">
+<script src="/zh/assets/js/runtime~main.12c9a7d2.js" defer="defer"></script>
+<script src="/zh/assets/js/main.54e817ee.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>document.documentElement.setAttribute("data-theme","light"),document.documentElement.setAttribute("data-theme-choice","light"),function(){try{const n=new URLSearchParams(window.location.search).entries();for(var[t,e]of n)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}(),document.documentElement.setAttribute("data-announcement-bar-initially-dismissed",function(){try{return"true"===localStorage.getItem("docusaurus.announcement.dismiss")}catch(t){}return!1}())</script><div id="__docusaurus"><div role="region" aria-label="跳到主要内容"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">跳到主要内容</a></div><div class="theme-announcement-bar announcementBar_mb4j" style="background-color:#eee;color:#5e72e4" role="banner"><div class="announcementBarPlaceholder_vyr4"></div><div class="content_knG7 announcementBarContent_xLdY"><strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2026">SimpoClient v1.3.8</a> has been released!</strong></div><button type="button" aria-label="关闭" class="clean-btn close closeButton_CVFx announcementBarClose_gvF7"><svg viewBox="0 0 15 15" width="14" height="14"><g stroke="currentColor" stroke-width="3.1"><path d="M.75.75l13.5 13.5M14.25.75L.75 14.25"></path></g></svg></button></div><nav aria-label="主导航" class="theme-layout-navbar navbar navbar--fixed-top navbarHideable_m1mJ"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="切换导航栏" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/zh/"><div class="navbar__logo"><img src="https://i.postimg.cc/rsPqvJNJ/logo3.png" alt="Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="https://i.postimg.cc/rsPqvJNJ/logo3.png" alt="Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">SIMPO</b></a><a class="navbar__item navbar__link" href="/zh/docs">文档</a><a class="navbar__item navbar__link" href="/zh/resource">资料库</a><a class="navbar__item navbar__link" href="/zh/blog">博客</a><a class="navbar__item navbar__link" href="/zh/changelog">更新日志</a><a class="navbar__item navbar__link" href="/zh/about">关于</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="iconLanguage_nlXk"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"></path></svg>中文</a><ul class="dropdown__menu"><li><a href="/docs/Tutorials/BioModel_" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="en">English</a></li><li><a href="/zh/docs/Tutorials/BioModel_" target="_self" rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang="zh">中文</a></li></ul></div><div class="navbarSearchContainer_Bca1"><button type="button" class="DocSearch DocSearch-Button" aria-label="搜索 (Meta+k)" aria-keyshortcuts="Meta+k"><span class="DocSearch-Button-Container"><svg width="20" height="20" class="DocSearch-Search-Icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8" stroke="currentColor" fill="none" stroke-width="1.4"></circle><path d="m21 21-4.3-4.3" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="DocSearch-Button-Placeholder">搜索</span></span><span class="DocSearch-Button-Keys"></span></button></div><a href="https://github.com/jakkwj/simpo_home" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link header-github-link" aria-label="GitHub repository" docspluginid="GitHub"></a><a href="https://dash.simpowater.org/dashboard/home" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link" docspluginid="Dashboard">控制台<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><a href="https://dash.simpowater.org/dashboard/home" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link" docspluginid="SignIn">登录<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="回到顶部" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><main class="docMainContainer_TBSr docMainContainerEnhanced_lQrH"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>BioModel</h1></header>
+<p>BioModel 是您建立自己的生化模型的地方。</p>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="detail"><a id="Detail"></a>Detail<a href="#detail" class="hash-link" aria-label="detail的直接链接" title="detail的直接链接" translate="no">​</a></h2>
+<p>BioModel 包含了 Components，Parameters，Compositions，Ionization 和 Processes 等组件。
+在 BioModel 的 Detail 页面中可以查看和编辑它们。</p>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="1-components"><a id="Components"></a>1. Components<a href="#1-components" class="hash-link" aria-label="1-components的直接链接" title="1-components的直接链接" translate="no">​</a></h3>
+<p>Components 是模型的组分，是模型模拟计算的主要对象，通常包括各种溶解态（Soluble）和颗粒态（Particulate）的基质和  微生物。</p>
+<ul>
+<li class="">Components 组件弹窗中可以查看和编辑组分的详细信息：<!-- -->
+<ul>
+<li class="">具体内容包括命名符号，单位，单位，名称，描述。</li>
+<li class="">组分可以进行新建，复制，删除，移动排序操作。</li>
+<li class="">可以通过 ctrl/shift + 鼠标左键选择多个组分进行批量操作。</li>
+</ul>
+</li>
+<li class="">组分的命名符号（Symbol）只能由英文字母，数字和下划线（下划线不能连续）组成。</li>
+<li class="">Soluble 组分必须以 “S_” 为前缀进行命名，如 溶解氧（DO） 应命名为 S_O2。</li>
+<li class="">Particulate 组分必须以 “X_” 为前缀进行命名，如 普通异养菌（OHO） 应命名为 X_OHO。</li>
+<li class="">Soluble 组分 和 Particulate 组分在沉淀行为上有不同的特性。</li>
+<li class="">组分的单位会显示在计算结果的图片中。</li>
+<li class="">保存时，会自动把 Soluble 组分放在 Particulate 组分的前面。</li>
+</ul>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="2-parameters"><a id="Parameters"></a>2. Parameters<a href="#2-parameters" class="hash-link" aria-label="2-parameters的直接链接" title="2-parameters的直接链接" translate="no">​</a></h3>
+<p>Parameters 是模型中使用的参数，通常包括各种化学计量学参数（Stoichoimetry）和动力学参数（Kinetic）和常数，是调参 （Parameter Estimation）的主要对象。</p>
+<ul>
+<li class="">
+<p>Parameters 组件弹窗中可以查看和编辑（新建，复制，删除，移动排序）组分的详细信息，包括组分的命名符号，单位，默认值，取值下限，取值上限，名称，描述等。</p>
+</li>
+<li class="">
+<p>参数的命名符号（Symbol）只能由英文字母，数字和下划线（下划线不能连续）组成。</p>
+</li>
+<li class="">
+<p>参数必须以字母为开头。</p>
+</li>
+<li class="">
+<p>单位：</p>
+<ul>
+<li class="">如果参数是动力学参数，其单 位<strong>必须以</strong>：<code>/d</code>, <code>d-1</code>, <code>/day</code>, <code>day-1</code>, <code>1/d</code>, <code>1/day</code>, <code>/h</code>, <code>h-1</code>, <code>/hour</code>, <code>hour-1</code>, <code>1/h</code>, <code>1/hour</code>, <code>/m</code>, <code>m-1</code>, <code>/minute</code>, <code>minute-1</code>, <code>1/m</code>, <code>1/minute</code>, <code>/s</code>, <code>s-1</code>, <code>/second</code>, <code>second-1</code>, <code>1/s</code> or <code>1/second</code> 为结尾，这样才能保证整个计算过程中时间单位的统一。</li>
+<li class="">比如某动力学参数 <code>u_max</code> 的默认值为 <code>10 /d</code>， 则可以输入：<!-- -->
+<ul>
+<li class=""><code>DefaultValue</code> 为 <code>10</code>，<code>Unit</code> 为 <code>/d</code>（或者 <code>d-1</code>, <code>/day</code>, <code>day-1</code>, <code>1/d</code>, <code>1/day</code>）。</li>
+<li class="">或者 <code>DefaultValue</code> 为 <code>10/24</code>，<code>Unit</code> 为 <code>/h</code>（或者 <code>h-1</code>, <code>/hour</code>, <code>hour-1</code>, <code>1/h</code>, <code>1/hour</code>）。</li>
+<li class="">或者 <code>DefaultValue</code> 为 <code>10/24/60</code>，<code>Unit</code> 为 <code>/m</code>（或者 <code>m-1</code>, <code>/minute</code>, <code>minute-1</code>, <code>1/m</code>, <code>1/minute</code>）。</li>
+<li class="">或者 <code>DefaultValue</code> 为 <code>10/24/60/60</code>，<code>Unit</code> 为 <code>/s</code>（或者 <code>s-1</code>, <code>/second</code>, <code>second-1</code>, <code>1/s</code>, <code>1/second</code>）。</li>
+<li class="">动力学参数的单位以这些为结尾即，即 <code>/d</code> 与 <code>mgCOD/d</code> 效果相同。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="">
+<p>组分的单位会显示在计算结果的图片中。</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="3-compositions"><a id="Compositions"></a>3. Compositions<a href="#3-compositions" class="hash-link" aria-label="3-compositions  的直接链接" title="3-compositions的直接链接" translate="no">​</a></h3>
+<ul>
+<li class="">Compositions 用于检查模型的各物质平衡，通常包括 ThOD，N，P，S，Charge 和 TSS 平衡。</li>
+</ul>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="4-ionization"><a id="Ionization"></a>4. Ionization<a href="#4-ionization" class="hash-link" aria-label="4-ionization的直接链接" title="4-ionization的直接链接" translate="no">​</a></h3>
+<ul>
+<li class="">Ionization 用于描述 Components 在水中的电离状态，用于 pH 计算。</li>
+</ul>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="5-processes"><a id="Processes"></a>5. Processes<a href="#5-processes" class="hash-link" aria-label="5-processes的直接链接" title="5-processes的直接链接" translate="no">​</a></h3>
+<ul>
+<li class="">Processes 用于描述模型中发生的各种生化过程，通过矩阵（Matrix）的方式进行描述，矩阵的行是 Processes，列是 Components（除最后一列），矩阵中的元素是各个组分在各个过程中的化学计量学参数（Stoichoimetric），最后一列是每个 Processe 的速率方程。</li>
+</ul>
+<h4 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="51-公式"><a id="Processes_Matrix"></a>5.1 公式<a href="#51-公式" class="hash-link" aria-label="51-公式的直接链接" title="51-公式的直接链接" translate="no">​</a></h4>
+<p>乘方</p>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="新建"><a id="Create"></a>新建<a href="#新建" class="hash-link" aria-label="新建的直接链接" title="新建的直接链接" translate="no">​</a></h2>
+<p>创建 BioModel 有几种方法（从下面的 6 种方法中选择一种）：</p>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="1-空白新建"><a id="way_1"></a>1. 空白新建<a href="#1-空白新建" class="hash-link" aria-label="1-空白新建的直接链接" title="1-空白新建的直接链接" translate="no">​</a></h3>
+<p>创建一个空的 BioModel，编辑并解析保存后使其生效。</p>
+<ul>
+<li class="">
+<p>添加新 components。</p>
+</li>
+<li class="">
+<p>添加新 parameters。</p>
+</li>
+<li class="">
+<p>添加新 processes（在 Matrix选项卡中）。</p>
+<br>
+<div align="center" style="margin-top:0vh"><img src="https://i.postimg.cc/ZRq8Hb7d/biomodel-1.gif" width="80%"></div>
+</li>
+</ul>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="2-在-project-新建时同时新建"><a id="way_2"></a>2. 在 Project 新建时同时新建<a href="#2-在-project-新建时同时新建" class="hash-link" aria-label="2-在-project-新建时同时新建的直接链接" title="2-在-project-新建时同时新建的直接链接" translate="no">​</a></h3>
+<p>如果在创建新 Project 时没有指定 BioModel，则会相应地创建一个空的 BioModel。</p>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="3-从模板导入"><a id="way_3"></a>3. 从模板导入<a href="#3-从模板导入" class="hash-link" aria-label="3-从模板导入的直接链接" title="3-从模板导入的直接链接" translate="no">​</a></h3>
+<p>从模板导入一个 BioModel：<a href="https://gitee.com/Jakkwj/simpo-home/releases/download/template/BioModel.xlsx" target="_blank" download="">BioModel template xlsx file</a></p>
+<div align="center" style="margin-top:0vh"><img src="https://i.postimg.cc/25GdnbwY/biomodel-2.gif" width="80%"></div>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="4-从公开-biomodel-库克隆新建"><a id="way_4"></a>4. 从公开 BioModel 库克隆新建<a href="#4-从公开-biomodel-库克隆新建" class="hash-link" aria-label="4-从公开-biomodel-库克隆新建的直接链接" title="4-从公开-biomodel-库克隆新建的直接链接" translate="no">​</a></h3>
+<p>从公开 BioModel 库克隆一个 BioModel。</p>
+<div align="center" style="margin-top:0vh"><img src="https://i.postimg.cc/pLDJX15p/biomodel-3.gif" width="80%"></div>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="5-从公开-project-  库克隆新建"><a id="way_5"></a>5. 从公开 Project 库克隆新建<a href="#5-从公开-project-库克隆新建" class="hash-link" aria-label="5-从公开-project-库克隆新建的直接链接" title="5-从公开-project-库克隆新建的直接链接" translate="no">​</a></h3>
+<p>从公开 Project 库克隆一个 Project 时，也会克隆相应的 BioModel。</p>
+<div align="center" style="margin-top:0vh"><img src="https://i.postimg.cc/TPfqyqnQ/biomodel-4.gif" width="80%"></div>
+<h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="6-利用-ai-通过论文新建"><a id="way_6"></a>6. 利用 AI 通过论文新建<a href="#6-利用-ai-通过论文新建" class="hash-link" aria-label="6-利用-ai-通过论文新建的直接链接" title="6-利用-ai-通过论文新建的直接链接" translate="no">​</a></h3>
+<p>从公开 Project 库克隆一个 Project 时，也会克隆相应的 BioModel。</p>
+<div align="center" style="margin-top:0vh"><img src="https://i.postimg.cc/TPfqyqnQ/biomodel-4.gif" width="80%"></div>
+<!-- -->
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="version"><a id="Version"></a>Version<a href="#version" class="hash-link" aria-label="version的直接链接" title="version的直接链接" translate="no">​</a></h2>
+<p>在 Version 选项卡中可以发布不同的版本，每个版本都有一个版本号。</p>
+<h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="profile"><a id="Profile"></a>Profile<a href="#profile" class="hash-link" aria-label="profile的直接链接" title="profile的直接链接" translate="no">​</a></h2>
+<p>在 Version 选项卡中可以发布不同的版本，每个版本都有一个版本号。</p></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="文档分页导航"></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#detail" class="table-of-contents__link toc-highlight"><a></a>Detail</a><ul><li><a href="#1-components" class="table-of-contents__link toc-highlight"><a></a>1. Components</a></li><li><a href="#2-parameters" class="table-of-contents__link toc-highlight"><a></a>2. Parameters</a></li><li><a href="#3-compositions" class="table-of-contents__link toc-highlight"><a></a>3. Compositions</a></li><li><a href="#4-ionization" class="table-of-contents__link toc-highlight"><a></a>4. Ionization</a></li><li><a href="#5-processes" class="table-of-contents__link toc-highlight"><a></a>5. Processes</a></li></ul></li><li><a href="#新建" class="table-of-contents__link toc-highlight"><a></a>新建</a><ul><li><a href="#1-空白新建" class="table-of-contents__link toc-highlight"><a></a>1. 空白新建</a></li><li><a href="#2-在-project-新建时同时新建" class="table-of-contents__link toc-highlight"><a></a>2. 在 Project 新建时同时新建</a></li><li><a href="#3-从模板导入" class="table-of-contents__link toc-highlight"><a></a>3. 从模板导入</a></li><li><a href="#4-从公开-biomodel-库克隆新建" class="table-of-contents__link toc-highlight"><a></a>4. 从公开 BioModel 库克隆新建</a></li><li><a href="#5-从公开-project-库克隆新建" class="table-of-contents__link toc-highlight"><a></a>5. 从公开 Project 库克隆新建</a></li><li><a href="#6-利用-ai-通过论文新建" class="table-of-contents__link toc-highlight"><a></a>6. 利用 AI 通过论文新建</a></li></ul></li><li><a href="#version" class="table-of-contents__link toc-highlight"><a></a>Version</a></li><li><a href="#profile" class="table-of-contents__link toc-highlight"><a></a>Profile</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">微信公众号</div><ul class="footer__items clean-list"><li class="footer__item">
+                      <a href="https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzE5MTU1NzAyMQ==&action=getalbum&album_id=4062069451808489491#wechat_redirect">
+                        <img src="https://i.postimg.cc/QMH7KHW2/qrcode-for-gh-5d1b634e9478-1280.jpg" alt="SIMPO" width="60" height="60">
+                      </a>
+                    </li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">学习</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/zh/docs/Tutorials/Installtion">安装</a></li><li class="footer__item"><a class="footer__link-item" href="/zh/docs/category/case-study">案例</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">法律</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/zh/legal/terms">条款</a></li><li class="footer__item"><a class="footer__link-item" href="/zh/legal/privacy">隐私</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">支持</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/zh/support/contact">联系</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">更多</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/zh/blog">博客</a></li><li class="footer__item"><a class="footer__link-item" href="/zh/changelog">更新日志</a></li><li class="footer__item"><a href="https://github.com/jakkwj/simpo_home" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright"><span style="color: grey;">Copyright © 2026 SIMPO. All Rights Reserved. <a style="color: grey;" href="https://beian.mps.gov.cn/#/query/webSearch?code=44011302005105" target="_blank" rel="noreferrer"> <img src="https://qcloudimg.tencent-cloud.cn/raw/eed02831a0e201b8d794c8282c40cf2e.png" style="width: 14px; margin-right: 5px;"> <span>粤公网安备44011302005105号 </span></a> <a style="color: grey;" href="https://beian.miit.gov.cn/" target="_blank">粤ICP备2025444806号-2</a></span></div></div></div></footer><iframe id="iframeIfSign" src="https://dash.simpowater.org/ifsign"></iframe></div>
+</body>
+</html>
