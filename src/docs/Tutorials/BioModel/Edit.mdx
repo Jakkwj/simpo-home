@@ -1,0 +1,170 @@
+---
+title: Edit
+---
+
+
+import config from '@generated/docusaurus.config'
+
+
+The editable parts of a BioModel include Detail, Version, and Profile.
+
+
+## <a id="Detail"></a>Detail
+
+The Detail page of a BioModel contains Components, Parameters, Compositions, Ionization, and Processes.
+
+
+### <a id="Components"></a>1. Components
+
+Components are the constituents of a model and the main objects used in model simulations. They generally include soluble and particulate substrates and microorganisms.
+
+- The Components dialog supports viewing and editing:
+  - Editing operations include creating, duplicating, deleting, and reordering.
+  - Hold Ctrl or Shift and click with the left mouse button to select multiple rows for batch operations.
+- The details include:
+  - Symbol can contain only letters, numbers, and underscores (underscores cannot be consecutive):
+    - Soluble components must be named with the `S_` prefix. For example, dissolved oxygen (DO) should be named `S_O2`.
+    - Particulate components must be named with the `X_` prefix. For example, ordinary heterotrophs (OHO) should be named `X_OHO`.
+    - Soluble and particulate components have different settling behavior.
+    - The unit of a component is shown in plots of the calculation results.
+    - When saving, soluble components are automatically placed before particulate components.
+  - Unit:
+    - Unit cannot be empty.
+    - Unit is shown in plots of the calculation results.
+  - Name can be empty.
+  - Description can be empty.
+
+### <a id="Parameters"></a>2. Parameters
+
+Parameters are used in the model, including stoichiometric and kinetic parameters. They are the main objects used in parameter estimation.
+
+- The Parameters dialog supports viewing and editing:
+  - Editing operations include creating, duplicating, deleting, and reordering.
+  - Hold Ctrl or Shift and click with the left mouse button to select multiple rows for batch operations.
+- The details include:
+  - Symbol can contain only letters, numbers, and underscores (underscores cannot be consecutive), and must start with a letter.
+  - Unit:
+    - Unit cannot be empty.
+    - If a parameter is a kinetic parameter, its unit **must end with**: ``/d``, ``d-1``, ``/day``, ``day-1``, ``1/d``, ``1/day``, ``/h``, ``h-1``, ``/hour``, ``hour-1``, ``1/h``, ``1/hour``, ``/m``, ``m-1``, ``/minute``, ``minute-1``, ``1/m``, ``1/minute``, ``/s``, ``s-1``, ``/second``, ``second-1``, ``1/s`` or ``1/second``. This ensures consistent time units throughout the calculation.
+    - For example, if the default value of the kinetic parameter `u_max` is `10 /d`, you can enter:
+      - `DefaultValue` = `10` and `Unit` = `/d` (or ``d-1``, ``/day``, ``day-1``, ``1/d``, ``1/day``).
+      - `DefaultValue` = `10/24` and `Unit` = `/h` (or ``h-1``, ``/hour``, ``hour-1``, ``1/h``, ``1/hour``).
+      - `DefaultValue` = `10/24/60` and `Unit` = `/m` (or ``m-1``, ``/minute``, ``minute-1``, ``1/m``, ``1/minute``).
+      - `DefaultValue` = `10/24/60/60` and `Unit` = `/s` (or ``s-1``, ``/second``, ``second-1``, ``1/s``, ``1/second``).
+      - A kinetic parameter's unit only needs to end with one of these suffixes; `/d` and `mgCOD/d`, for example, have the same effect.
+  - DefaultValue:
+    - DefaultValue cannot be empty. If no value is provided for the parameter when a Project is created, this default value is used.
+    - **Note: During calculation, the value in `Project.Solution` takes precedence.**
+  - LowerBound:
+    - Can be empty.
+    - **Note: During calculation, the value in `Project.Solution` takes precedence.**
+  - UpperBound:
+    - Can be empty.
+    - **Note: During calculation, the value in `Project.Solution` takes precedence.**
+  - Name can be empty.
+  - Description can be empty.
+
+### <a id="Compositions"></a>3. Compositions
+
+Compositions are used to check the model's material balances. Six balances are available: ThOD, N, P, S, Charge, and TSS.
+
+- The Compositions dialog supports viewing and editing.
+- You can select any one or more of the six balances above, or leave them all empty (a balance is not checked if it is not selected).
+- If all material-balance checks in Compositions pass, meaning that all balance results are zero, the Balances component is not displayed.
+- If any material-balance result in Compositions is nonzero, the Balances component displays the Processes with nonzero results, and a warning dialog appears each time you enter the BioModel page.
+- Because balance checks use zero as the reference, when a material balance is nonzero, first try converting the coefficients in the Processes matrix and Compositions to fractions to determine whether rounding errors are causing the imbalance.
+- If an imbalance does exist, adjust the coefficients in the Processes matrix and Compositions until the material balance is zero.
+- An imbalance may sometimes result from omitting a process description from the model. If you are sure that your model is balanced, you can ignore the warning.
+
+
+
+
+### <a id="Ionization"></a>4. Ionization
+- Ionization describes the ionization states of Components in water and is used for pH calculations.
+- pH is a special component. It does not need to be defined in Components and can be used directly in the Rate column of the matrix.
+- In a DataSet, pH must be explicitly defined as a Target. Then, on the Project Conversion page, convert the Components and Target (the coefficient is usually 1) so that pH is displayed clearly in the calculation results.
+- The Ionization component supports viewing and editing:
+  - Editing operations include creating, duplicating, deleting, and reordering.
+  - Hold Ctrl or Shift and click with the left mouse button to select multiple rows for batch operations.
+- The details include:
+  - Symbol: the Symbol of a Component, selected from the drop-down list.
+  - Compound: determines whether the Component is a Weak/Strong Acid/Base.
+  - Step: determines the number of ionization steps (1, 2, or 3; Mono/Di/Tri).
+  - Factor: conversion factor, in mol/mg.
+  - pK1/pK2/pK3: the ionization constant for each step.
+  - pKw: the ionization constant of water, usually 14. This value can be edited only in the first row.
+
+
+| Symbol | Compound | Step | Ionization | Factor (mol/mg) | pK1 | pK2 | pK3 |
+|---|---|---|---|---|---|--|--|
+| Borate | Weak Acid   | Mono  | One Step  | 1/(10.8*1000) | 9.24(9.23) | | |
+| Nitrite | Weak Acid   | Mono  | One Step  | 1/(14*1000) | 3.15(3.35) | | |
+| Arsenite | Weak Acid   | Mono  | One Step  | 1/(75*1000) | 9.29 | | |
+| Formate | Weak Acid   | Mono  | One Step  | 1/(16*1000) | 3.74(3.77) | | |
+| Acetate | Weak Acid   | Mono  | One Step  | 1/(64*1000) | 4.76(4.77) | | |
+| Propionate | Weak Acid   | Mono  | One Step  | 1/(112*1000) | 4.87(4.89) | | |
+| Butyrate | Weak Acid   | Mono  | One Step  | 1/(160*1000) | 4.82 | | |
+| Valerate | Weak Acid  | Mono  | One Step  | 1/(208*1000) | 4.84 | | |
+| Hexanoate | Weak Acid  | Mono  | One Step  | 1/(256*1000) | 4.86 | | |
+| Lactate | Weak Acid  | Mono  | One Step  | 1/(96*1000) | 3.86(3.89) | | |
+| Carbonate | Weak Acid  | Di  | Stepwise  | 1/(12*1000) | 6.35(6.37) | 10.33(10.31) | |
+| Sulfide | Weak Acid  | Di | Stepwise  | 1/(32*1000) | 7.02(7.05) | 13.9(12.92)| |
+| Silicate | Weak Acid  | Di  | Stepwise  | 1/(28*1000) | 9.84 | 13.2 | |
+| Sulfite | Weak Acid  | Di  | Stepwise  | 1/(32*1000) | 1.86(1.89) | 7.19(7.20) | |
+| Thiosulfate | Weak Acid  |Di  | Stepwise | 1/(64*1000) | 0.6 | 1.6 | |
+| Oxalate | Weak Acid  | Di  | Stepwise  | 1/(16*1000) | 1.25 | 4.72(4.29) | |
+| Phosphate | Weak Acid  | Tri  | Stepwise  | 1/(31*1000) | 2.15(2.16) | 7.20(7.21) | 12.38(12.32) |
+| Arsenate | Weak Acid  | Tri | Stepwise  | 1/(75*1000) | 2.24(2.19) | 6.96(6.92) | 11.50(11.49) |
+| Ammonium | Weak Base  | Mono | One Step  | 1/(14*1000) | 4.76(4.74) | |
+| Nitrate | Strong Acid  | Mono  | Complete | 1/(14*1000) | | |
+| Chloride | Strong Acid  | Mono  | Complete  | 1/(35.5*1000) | | |
+| Sulfate | Strong Acid  | Di  | Complete  | 1/(32*1000) | | |
+| Magnesium | Weak Base  | Di  | Complete  | 1/(24*1000) | | |
+| Calcium | Weak Base  | Di  | Complete  | 1/(40*1000) | | |
+
+
+
+
+### <a id="Processes"></a>5. Processes
+- Processes describe the biochemical processes that occur in a model using a matrix. The rows of the matrix are Processes, and the columns are Components (except for the last column). The matrix elements are the stoichiometric parameters of each Component in each Process, and the last column contains the rate equation for each Process.
+- Matrix elements can be left empty; an empty element is equivalent to 0.
+
+#### <a id="5.1"></a>5.1 Formulas
+- The formulas currently available in the Rate column include:
+  - Max: Excel-style `Max(value1, value2, ...)`, returning the maximum value.
+  - Min: Excel-style `Min(value1, value2, ...)`, returning the minimum value.
+  - Ln: Excel-style `Ln(value)`, the natural logarithm.
+  - Exp: Excel-style `Exp(value)`, the exponential function with base *e*.
+  - Log: Excel-style `Log(value)`, the base-10 logarithm.
+  - If: Excel-style `If(condition, value_if_true, value_if_false)`, returning different values based on a condition.
+- Exponentiation is represented by `**`; for example, `x**2` is the square of x and `x**0.5` is the square root of x.
+
+#### <a id="5.2"></a>5.2 pH
+- pH is a special component. It does not need to be defined in Components and can be used directly in the Rate column of the matrix.
+
+#### <a id="5.3"></a>5.3 Negative-Value Errors
+- In the matrix, a negative coefficient for a Component means that the Component is consumed by that Process.
+- In this case, add a switch term for that Component to the Rate expression (`S_S/(K_S+S_S)`). This makes the Process rate zero when the Component is zero and prevents negative-value errors.
+
+
+### <a id="OtherActions"></a>6. Other Actions
+- Temp button: temporary save. The format is not checked, so this is useful for saving quickly; you can correct the format later.
+- Parse button: parse and save. The format is checked during saving, and the file cannot be saved if the format is invalid.
+- Edit button: edit the BioModel details. You can upload an xlsx file here to modify the entire BioModel.
+- Export button: export an xlsx file.
+- Note: cloning and deleting must be performed from the BioModel list.
+
+
+
+## <a id="Version"></a>Version
+
+- In the Version tab, you can publish the current Draft as different versions. Each version has a unique version number, assigned in ascending numerical order.
+- Published versions can be Public or Private:
+  - Public versions can be cloned by other users.
+  - Private versions can be used only by you.
+- Sync button: synchronize the content of the current version to the Draft.
+
+
+## <a id="Profile"></a>Profile
+
+- The Profile tab displays the basic information about the BioModel.

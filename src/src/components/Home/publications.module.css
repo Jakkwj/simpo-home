@@ -1,0 +1,59 @@
+.citationPrompt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.copyButton {
+  display: inline-flex;
+  width: 8.5rem;
+  min-height: 2rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--ifm-color-primary);
+  border-radius: 6px;
+  color: var(--ifm-color-primary);
+  background: transparent;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.copyButton:hover {
+  color: var(--ifm-color-white);
+  background: var(--ifm-color-primary);
+}
+
+.copyButton:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+.copyButton svg {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+}
+
+.copyButtonSuccess,
+.copyButtonSuccess:hover {
+  color: var(--ifm-color-white);
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+}
+
+.copyButtonError,
+.copyButtonError:hover {
+  color: var(--ifm-color-white);
+  background: var(--ifm-color-danger-dark);
+  border-color: var(--ifm-color-danger-dark);
+}

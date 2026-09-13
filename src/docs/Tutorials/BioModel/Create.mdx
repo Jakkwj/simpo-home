@@ -1,0 +1,66 @@
+---
+title: Create
+---
+
+
+import config from '@generated/docusaurus.config'
+
+
+BioModel is where you build your own biochemical models.
+
+
+There are several ways to create a BioModel (choose one of the six methods below):
+
+## <a id="way_1"></a>1. Create from Blank
+
+Create an empty BioModel, edit it, and save it with Parse so it takes effect.
+- Add new components.
+- Add new parameters.
+- Add new processes (in the Matrix tab).
+
+
+  <br />
+  <div align="center" style={{marginTop: "0vh"}}>
+    <img src={config.customFields.imgUrlBioModel_1} width="80%"/>
+  </div>
+
+
+
+## <a id="way_2"></a>2. Create Along with a New Project
+
+If you do not specify a BioModel when creating a new Project, an empty BioModel will be created automatically.
+
+## <a id="way_3"></a>3. Import from a Template
+
+
+Import a BioModel from a template: <a href={config.customFields.urlDownloadUrlplateBioModel} target="_blank" download>BioModel template xlsx file</a>
+
+
+  <div align="center" style={{marginTop: "0vh"}}>
+    <img src={config.customFields.imgUrlBioModel_2} width="80%"/>
+  </div>
+
+
+## <a id="way_4"></a>4. Create by Cloning from the Public BioModel Repository
+
+Clone a BioModel from the public BioModel repository.
+
+  <div align="center" style={{marginTop: "0vh"}}>
+    <img src={config.customFields.imgUrlBioModel_3} width="80%"/>
+  </div>
+
+
+## <a id="way_5"></a>5. Create by Cloning from the Public Project Repository
+
+When you clone a Project from the public Project repository, its corresponding BioModel is cloned as well.
+
+
+  <div align="center" style={{marginTop: "0vh"}}>
+    <img src={config.customFields.imgUrlBioModel_4} width="80%"/>
+  </div>
+
+
+## <a id="way_6"></a>6. Create from a Paper Using AI
+
+
+To create a BioModel, select an AI model and upload the PDF of an SCI paper. The AI will attempt to parse the paper and generate a BioModel.

@@ -29,7 +29,7 @@ export default function FeaturesOpen() {
         <h1 className="text-center">
           <Translate>Roadmap</Translate>
         </h1>
-        <Translate>This is the raodmap of</Translate>
+        <Translate>This is the raodmap of </Translate>
         <b>SIMPO</b>
         <Translate>. For more details please refer to: </Translate>
         <a href="changelog">

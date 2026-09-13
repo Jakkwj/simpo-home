@@ -1,0 +1,173 @@
+---
+title: 编辑
+---
+
+
+import config from '@generated/docusaurus.config'
+
+
+BioModel 可编辑的内容包括 Detail，Version 和 Profile。
+
+
+## <a id="Detail"></a>Detail
+
+BioModel 的 Detail 页面包含了 Components，Parameters，Compositions，Ionization 和 Processes 等组件。
+
+
+### <a id="Components"></a>1. Components
+
+Components 是模型的组分，是模型模拟计算的主要对象，通常包括各种溶解态（Soluble）和颗粒态（Particulate）的基质和微生物。
+
+- Components 组件弹窗中可以进行查看和编辑操作：
+  - 编辑操作包括新建，复制，删除和移动排序。
+  - 可以通过 ctrl/shift + 鼠标左键选择多行进行批量操作。
+- 具体内容包括：
+  - Symbol 只能由英文字母，数字和下划线（下划线不能连续）组成：
+    - Soluble 组分必须以 “S_” 为前缀进行命名，如 溶解氧（DO） 应命名为 S_O2。
+    - Particulate 组分必须以 “X_” 为前缀进行命名，如 普通异养菌（OHO） 应命名为 X_OHO。
+    - Soluble 组分 和 Particulate 组分在沉淀行为上有不同的特性。
+    - 组分的单位会显示在计算结果的图片中。
+    - 保存时，会自动把 Soluble 组分放在 Particulate 组分的前面。
+  - Unit:
+    - Unit 不可为空。
+    - Unit 会显示在计算结果的图片中。
+  - Name 可以为空。
+  - Description 可以为空。
+
+### <a id="Parameters"></a>2. Parameters
+
+Parameters 是模型中使用的参数，包括化学计量学参数（Stoichoimetry）和动力学参数（Kinetic），是调参 （Parameter Estimation）的主要对象。
+
+- Parameters 组件弹窗中可以进行查看和编辑操作：
+  - 编辑操作包括新建，复制，删除和移动排序。
+  - 可以通过 ctrl/shift + 鼠标左键选择多行进行批量操作。
+- 具体内容包括：
+  - Symbol 只能由英文字母，数字和下划线（下划线不能连续）组成，且必须以字母为开头。
+  - Unit：
+    - Unit 不可为空。
+    - 如果参数是动力学参数，其单位**必须以**：``/d``, ``d-1``, ``/day``, ``day-1``, ``1/d``, ``1/day``, ``/h``, ``h-1``, ``/hour``, ``hour-1``, ``1/h``, ``1/hour``, ``/m``, ``m-1``, ``/minute``, ``minute-1``, ``1/m``, ``1/minute``, ``/s``, ``s-1``, ``/second``, ``second-1``, ``1/s`` or ``1/second`` 为结尾，这样才能保证整个计算过程中时间单位的统一。
+    - 比如某动力学参数 `u_max` 的默认值为 `10 /d`， 则可以输入：
+      - `DefaultValue` 为 `10`，`Unit` 为 `/d`（或者 ``d-1``, ``/day``, ``day-1``, ``1/d``, ``1/day``）。
+      - 或者 `DefaultValue` 为 `10/24`，`Unit` 为 `/h`（或者 ``h-1``, ``/hour``, ``hour-1``, ``1/h``, ``1/hour``）。
+      - 或者 `DefaultValue` 为 `10/24/60`，`Unit` 为 `/m`（或者 ``m-1``, ``/minute``, ``minute-1``, ``1/m``, ``1/minute``）。
+      - 或者 `DefaultValue` 为 `10/24/60/60`，`Unit` 为 `/s`（或者 ``s-1``, ``/second``, ``second-1``, ``1/s``, ``1/second``）。
+      - 动力学参数的单位以这些为结尾即，即 `/d` 与 `mgCOD/d` 效果相同。
+  - DefaultValue：
+    - DefaultValue 不可为空，如果新建 Project 时没有该参数的值会使用这个默认值。
+    - **注意：计算时，以 Project.Solution 中的值为准。**
+  - LowerBound：
+    - 可以为空。
+    - **注意：计算时，以 Project.Solution 中的值为准。**
+  - UpperBound：
+    - 可以为空。
+    - **注意：计算时，以 Project.Solution 中的值为准。**
+  - Name 可以为空。
+  - Description 可以为空。
+
+### <a id="Compositions"></a>3. Compositions
+
+Compositions 用于检查模型的各物质平衡，包括 ThOD，N，P，S，Charge 和 TSS 共 6 种平衡。
+
+- Compositions 组件弹窗中可以进行查看和编辑操作：
+- Compositions 可以选择上述 6 种平衡中的任意一种/多种，也可以全部为空（不选择某平衡则不进行该平衡检查）。
+- 如果 Compositions 中的物质平衡检查都通过，即平衡计算结果全部为零，Balances 组件将不会显示。
+- 如果 Compositions 中的某个物质平衡计算结果不为零，会通过 Balances 组件显示不为零的 Process，且每次进入 BioModel 页面时都会弹窗警告提醒。
+- 由于平衡检查以零为准，所以物质平衡不为零时，可以先尝试把 Processes 矩阵中的系数和 Compositions 中的系数转化为分数形式，检查是否存在四舍五入误差导致的不平衡。
+- 如果确实存在不平衡的情况，可以通过修改 Processes 矩阵中的系数和 Compositions 中的系数来进行调整，直到物质平衡为零为止。
+- 有时候是由于模型省略了某过程的描述而导致的不平衡，或者你确定你的模型是守恒的，可以无视警告提醒。
+
+
+
+
+### <a id="Ionization"></a>4. Ionization
+- Ionization 用于描述 Components 在水中的电离状态，用于 pH 计算。
+- pH 作为一个特殊的组分，不需要在 Components 中进行定义，在矩阵的 Rate 列可以直接使用 pH 进行计算。
+- pH 在 DataSet 中需要被明确地定义为一个 Target，然后在 Project Conversion 页面中将 Components 和 Target 进行转化（系数通常为1），才能明确地显示在计算结果中。
+- Ionization 组件中可以进行查看和编辑操作：
+  - 编辑操作包括新建，复制，删除和移动排序。
+  - 可以通过 ctrl/shift + 鼠标左键选择多行进行批量操作。
+- 具体内容包括：
+  - Symbol：即 Components 的 Symbol，下拉选择。
+  - Compound：确定该 Component 是 Weak/Strong Acid/Base。
+  - Step：确定是电离步数 （1/2/3步），Mono/Di/Tri。
+  - Factor：转化系数，单位为 mol/mg。
+  - pK1/pK2/pK3：每一步的电离常数。
+  - pKw：水的电离常数，通常为 14。该值只在第一行可以编辑。
+
+
+| Symbol | Compound | Step | Ionizaiton | Factor（mol/mg） | pK1 | pK2 | pK3 |
+|---|---|---|---|---|---|--|--|
+| 硼酸盐（Borate） | Weak Acid   | Mono  | One Step  | 1/(10.8*1000) | 9.24(9.23) | | |
+| 亚硝酸盐（Nitrite） | Weak Acid   | Mono  | One Step  | 1/(14*1000) | 3.15(3.35) | | |
+| 亚砷酸盐（Arsenite） | Weak Acid   | Mono  | One Step  | 1/(75*1000) | 9.29 | | |
+| 甲酸盐（Formate） | Weak Acid   | Mono  | One Step  | 1/(16*1000) | 3.74(3.77) | | |
+| 乙酸盐（Acetate） | Weak Acid   | Mono  | One Step  | 1/(64*1000) | 4.76(4.77) | | |
+| 丙酸盐（Propionate） | Weak Acid   | Mono  | One Step  | 1/(112*1000) | 4.87(4.89) | | |
+| 丁酸盐（Butyrate） | Weak Acid   | Mono  | One Step  | 1/(160*1000) | 4.82 | | |
+| 戊酸盐（Valerate） | Weak Acid  | Mono  | One Step  | 1/(208*1000) | 4.84 | | |
+| 己酸盐（Hexanoate） | Weak Acid  | Mono  | One Step  | 1/(256*1000) | 4.86 | | |
+| 乳酸盐（Lactate） | Weak Acid  | Mono  | One Step  | 1/(96*1000) | 3.86(3.89) | | |
+| 碳酸盐（Carbonate） | Weak Acid  | Di  | Stepwise  | 1/(12*1000) | 6.35(6.37) | 10.33(10.31) | |
+| 硫化物（Sulfide） | Weak Acid  | Di | Stepwise  | 1/(32*1000) | 7.02(7.05) | 13.9(12.92)| |
+| 硅酸盐（Silicate） | Weak Acid  | Di  | Stepwise  | 1/(28*1000) | 9.84 | 13.2 | |
+| 亚硫酸盐（Sulfite） | Weak Acid  | Di  | Stepwise  | 1/(32*1000) | 1.86(1.89) | 7.19(7.20) | |
+| 硫代硫酸盐（Thiosulfate） | Weak Acid  |Di  | Stepwise | 1/(64*1000) | 0.6 | 1.6 | |
+| 草酸盐（Oxalate） | Weak Acid  | Di  | Stepwise  | 1/(16*1000) | 1.25 | 4.72(4.29) | |
+| 磷酸盐（Phosphate） | Weak Acid  | Tri  | Stepwise  | 1/(31*1000) | 2.15(2.16) | 7.20(7.21) | 12.38(12.32) |
+| 砷酸盐（Arsenate） | Weak Acid  | Tri | Stepwise  | 1/(75*1000) | 2.24(2.19) | 6.96(6.92) | 11.50(11.49) |
+| 铵盐（Ammonium） | Weak Base  | Mono | One Step  | 1/(14*1000) | 4.76(4.74) | |
+| 硝酸盐（Nitrate） | Strong Acid  | Mono  | Complete | 1/(14*1000) | | |
+| 氯化物（Chloride） | Strong Acid  | Mono  | Complete  | 1/(35.5*1000) | | |
+| 硫酸盐（Sulfate） | Strong Acid  | Di  | Complete  | 1/(32*1000) | | |
+| 镁盐（Magnesium） | Weak Base  | Di  | Complete  | 1/(24*1000) | | |
+| 钙盐（Calcium） | Weak Base  | Di  | Complete  | 1/(40*1000) | | |
+
+
+
+
+
+
+
+### <a id="Processes"></a>5. Processes
+- Processes 用于描述模型中发生的各种生化过程，通过矩阵（Matrix）的方式进行描述，矩阵的行是 Processes，列是 Components（除最后一列），矩阵中的元素是各个组分在各个过程中的化学计量学参数（Stoichoimetric），最后一列是每个 Processe 的速率方程。
+- 矩阵中的元素可以留空，等同于0。
+
+#### <a id="5.1"></a>5.1 公式
+- 目前在 Rate 列中可以使用的公式包括：
+  - Max：Excel 风格 Max(value1, value2, ...): 返回最大值。
+  - Min：Excel 风格 Min(value1, value2, ...): 返回最小值。
+  - Ln：Excel 风格 Ln(value)：自然对数。
+  - Exp：Excel 风格 Exp(value): e 的指数。
+  - Log：Excel 风格 Log(value): 以10为底的对数。
+  - If：Excel 风格 If(condition, value_if_true, value_if_false): 根据条件返回不同的值。
+- 乘方用 `**` 表示，如 `x**2` 表示 x 的平方，`x**0.5` 表示 x 的平方根。
+
+#### <a id="5.2"></a>5.2 pH
+- pH 作为一个特殊的组分，不需要在 Components 中进行定义，在矩阵的 Rate 列可以直接使用 pH 进行计算。
+
+#### <a id="5.3"></a>5.3 负数错误
+- 在矩阵中，某些 Component 的系数为负数时，表示该组分在该 Process 中被消耗。
+- 此时，需要注意在 Rate 中补充该 Component 的开关项（S_S/(K_S+S_S)），表示该组分为0时，该 Process 的速率为0，避免出现负数错误。
+
+
+### <a id="OtherActions"></a>6. 其它操作
+- Temp 按钮：临时保存，保存时不会检查格式，用于快速保存，可以后续在修改格式。
+- Parse 按钮：解析保存，保存时会解析格式是否正确，格式不通过将无法保存。
+- Edit 按钮：编辑 BioModel 的详情，此处可以通过上传导入 xlsx 格式文件进行整体内容修改。
+- Export 按钮：导出 xlsx 格式文件。
+- 注意：克隆和删除操作需要在 BioModel 列表中进行。
+
+
+
+## <a id="Version"></a>Version
+
+- 在 Version 选项卡中可以把当前的 Draft 发布为不同的版本，每个版本都有一个唯一的版本号（按数字递增）。
+- 发布的版本分为 Public/Private 两种：
+  - Public 版本可以被其它用户克隆。
+  - Private 版本只能被自己使用。
+- Sync 按钮：同步当前版本的内容到 Draft 中。
+
+
+## <a id="Profile"></a>Profile
+
+- Profile 选项卡中可以查看 BioModel 的基本信息。

@@ -36,9 +36,43 @@ const sidebars = {
       },
       items: [
         'Tutorials/Installtion',
-        'Tutorials/BioModel',
+
+
+        {
+          type: 'category',
+          label: 'BioModel',
+          key: 'Tutorials/BioModel',
+          collapsible: true,
+          collapsed: true, // 默认折叠
+          items: [
+            'Tutorials/BioModel/Create',
+            'Tutorials/BioModel/Edit',
+          ],
+        },
+
+        // 'Tutorials/BioModel',
         'Tutorials/DataSet',
         'Tutorials/Project',
+        // 'Tutorials/BioModel/Create',
+        // 'Tutorials/BioModel/Edit',
+
+        // {
+        //   type: 'category',
+        //   label: 'BioModel',
+        //   collapsible: true,
+        //   collapsed: true,
+        //   "link": {
+        //     type: "generated-index",
+        //     description: "BioModel.",
+        //     // type: 'doc',
+        //     id: "BioModel1",
+        //   },
+        //   items: [
+        //     'BioModel/Create',
+        //     'BioModel/Edit',
+        //   ]
+        // },
+
 
       //   {
       //     type: 'category',

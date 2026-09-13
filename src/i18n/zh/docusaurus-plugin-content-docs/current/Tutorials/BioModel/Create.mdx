@@ -1,16 +1,19 @@
+---
+title: 新建
+---
+
+
 import config from '@generated/docusaurus.config'
 
-# BioModel
 
 
 
 BioModel 是您建立自己的生化模型的地方。
 
-## <a id="Create"></a>新建
 
-创建 BioModel 有几种方法（从下面的 5 种方法中选择一种）：
+创建 BioModel 有几种方法（从下面的 6 种方法中选择一种）：
 
-### <a id="way_1"></a>1. 空白新建
+## <a id="way_1"></a>1. 空白新建
 
 创建一个空的 BioModel，编辑并解析保存后使其生效。
 - 添加新 components。
@@ -25,11 +28,11 @@ BioModel 是您建立自己的生化模型的地方。
 
 
 
-### <a id="way_2"></a>2. 在 Project 新建时同时新建
+## <a id="way_2"></a>2. 在 Project 新建时同时新建
 
 如果在创建新 Project 时没有指定 BioModel，则会相应地创建一个空的 BioModel。
 
-### <a id="way_3"></a>3. 从模板导入
+## <a id="way_3"></a>3. 从模板导入
 
 
 从模板导入一个 BioModel：<a href={config.customFields.urlDownloadUrlplateBioModel} target="_blank" download>BioModel template xlsx file</a>
@@ -40,7 +43,7 @@ BioModel 是您建立自己的生化模型的地方。
   </div>
 
 
-### <a id="way_4"></a>4. 从公开 BioModel 库克隆新建
+## <a id="way_4"></a>4. 从公开 BioModel 库克隆新建
 
 从公开 BioModel 库克隆一个 BioModel。
 
@@ -49,7 +52,7 @@ BioModel 是您建立自己的生化模型的地方。
   </div>
 
 
-### <a id="way_5"></a>5. 从公开 Project 库克隆新建
+## <a id="way_5"></a>5. 从公开 Project 库克隆新建
 
 从公开 Project 库克隆一个 Project 时，也会克隆相应的 BioModel。
 
@@ -59,14 +62,7 @@ BioModel 是您建立自己的生化模型的地方。
   </div>
 
 
+## <a id="way_6"></a>6. 利用 AI 通过论文新建
 
 
-
-## <a id="Edit"></a>编辑
-
-如果 parameter 是速率参数（如 `u_max` 的单位为`/day`），其单位**必须以**：``/d``, ``d-1``, ``/day``, ``day-1``, ``1/d``, ``1/day``, ``/h``, ``h-1``, ``/hour``, ``hour-1``, ``1/h``, ``1/hour``, ``/m``, ``m-1``, ``/minute``, ``minute-1``, ``1/m``, ``1/minute``, ``/s``, ``s-1``, ``/second``, ``second-1``, ``1/s`` or ``1/second`` 为结尾，这将有助于在整个计算过程中统一时间单位。
-
-
-## <a id="Release"></a>发布
-
-在 Version 选项卡中可以发布不同的版本，每个版本都有一个版本号。
+新建是选择一个 AI，然后上传 SCI 论文的 PDF 文件，AI 会尝试解析论文并生成 BioModel。

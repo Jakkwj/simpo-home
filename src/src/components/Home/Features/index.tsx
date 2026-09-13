@@ -52,7 +52,7 @@ export default function Features() {
           {/* <p> */}
           <ul>
             <li style={{ marginBottom: "0.5rem" }}>
-              <strong>SIMPO </strong>
+              <strong>SIMPO</strong>
               <Translate>
                 {/* is initiated by JiangLab (a research team in the School of
                 Environmental Science and Engineering, Sun Yat-sen University,
