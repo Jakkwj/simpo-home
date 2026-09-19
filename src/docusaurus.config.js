@@ -148,6 +148,17 @@ const config = {
     urlDownloalClientUbuntu:
       "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.3.8_amd64.deb",
 
+    // SimpoCLI 与 SimpoClient 使用同一个长期 package release。构建脚本
+    // 发布的文件名必须与这里完全一致；更新 CLI 版本时同步更新这两个地址。
+    urlDownloadCLIWindows:
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.1.0_windows_x64.exe",
+    urlDownloadCLILinux:
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.1.0_amd64.deb",
+
+    // 登录用户在此创建、查看和撤销属于自己的 OpenAPI Token。
+    urlDashApiTokens:
+      "https://dash.simpowater.org/dashboard/account/api-tokens",
+
     // urlDownloalBaidu: 'https://pan.baidu.com/s/1N89lx1xbCvoIwvbc-Qdl8g?pwd=spwt',
     // urlDownloalNetdisk: 'https://pan.baidu.com/s/1oVqOzanzFKDnSHHkkH_v3g?pwd=simp',
     urlDownloalNetdisk:

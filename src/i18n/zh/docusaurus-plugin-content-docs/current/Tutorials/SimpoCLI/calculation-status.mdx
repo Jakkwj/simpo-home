@@ -1,0 +1,53 @@
+---
+id: calculation-status
+title: 查询计算状态
+sidebar_label: calculation-status — 查询状态
+---
+
+# `calculation-status`：查询计算状态
+
+读取指定 Project 当前暂存的编译和计算状态。
+
+## 使用条件
+
+- Token scope：`calculate`
+- Project 必须属于当前 Token 用户。
+
+后端只会临时保存正在进行或近期计算的状态；此命令不是永久计算历史查询。
+
+## 命令格式
+
+```text
+simpo calculation-status PROJECT_ID [OPTIONS]
+```
+
+示例：
+
+```text
+simpo calculation-status 706
+```
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+
+## 状态值
+
+常见状态包括：
+
+| 状态 | 含义 |
+| --- | --- |
+| `idle` | 没有活动状态记录，或临时记录已经过期 |
+| `running` | 正在准备或计算 |
+| `completed` | 计算成功完成 |
+| `failed` | 准备、编译或计算失败 |
+| `stopped` | 计算已被明确停止 |
+
+响应还可能包含进度、已用计算时间、预计剩余时间和安全的计算错误消息。
+除 `success`、`projectId` 和 `status` 外，其它字段应视当前状态决定是否存在。
+
+停止活动任务请使用 [`stop-calculation`](./stop-calculation)。

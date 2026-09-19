@@ -1,0 +1,55 @@
+---
+id: calculation-status
+title: Check calculation status
+sidebar_label: calculation-status — check status
+---
+
+# `calculation-status`: check calculation status
+
+Read the transient compilation and calculation status for a Project.
+
+## Requirements
+
+- Token scope: `calculate`
+- The Project must belong to the Token user.
+
+Status is stored temporarily by the backend for active or recent calculations;
+this command does not query permanent calculation history.
+
+## Syntax
+
+```text
+simpo calculation-status PROJECT_ID [OPTIONS]
+```
+
+Example:
+
+```text
+simpo calculation-status 706
+```
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | Maximum time for the HTTP request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+## Status values
+
+Typical values are:
+
+| Status | Meaning |
+| --- | --- |
+| `idle` | No active status record exists or the temporary record expired |
+| `running` | Preparation or calculation is active |
+| `completed` | Calculation completed successfully |
+| `failed` | Preparation, compilation, or calculation failed |
+| `stopped` | The calculation was explicitly stopped |
+
+The response may also include progress, elapsed calculation time, estimated
+remaining time, and a safe calculation error message. Treat fields other than
+`success`, `projectId`, and `status` as state-dependent.
+
+To stop active work, use [`stop-calculation`](./stop-calculation).

@@ -1,0 +1,79 @@
+---
+id: configure
+title: Configure an API Token
+sidebar_label: configure — save a Token
+---
+
+import config from "@generated/docusaurus.config";
+
+# `configure`: save an API Token
+
+Use `configure` after copying a newly created OpenAPI Token from the Dashboard.
+The command hides terminal input, validates the Token through `/openapi/v1/me`,
+and saves it only when validation succeeds.
+
+## Obtain a personal Token from the Dashboard
+
+1. Sign in and open <a href={config.customFields.urlDashApiTokens} target="_blank" rel="noopener noreferrer"><strong>Account → API Tokens</strong></a>.
+2. Select **Create Token** and enter a name that identifies this computer or
+   integration.
+3. Select the minimum required scopes: `read`, `write`, and/or `calculate`.
+4. Set an expiry from `1` to `365` days and select **Create Token**.
+5. Copy the complete Token immediately from the **Token Created** dialog. It is
+   shown only once.
+
+The API Tokens page displays `tokenPrefix` later so that a Token can be
+identified and revoked. That prefix is not the secret and cannot be configured
+in SimpoCLI. If the complete Token was not copied, revoke it and create a
+replacement.
+
+## Syntax
+
+```text
+simpo configure [--timeout SECONDS] [--base-url URL]
+```
+
+Run it interactively and paste the complete Token when prompted:
+
+```text
+simpo configure
+Paste OpenAPI Token:
+```
+
+Do not enter the public `tokenPrefix` or a Dashboard login JWT. The required
+value is the complete personal OpenAPI Token shown once when it is created.
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | Maximum time for Token validation |
+| `--base-url URL` | URL selected by the packaged environment | Override the backend for this command |
+
+## Saved file
+
+| Platform | Path |
+| --- | --- |
+| Linux | `~/.SimpoCLI/SIMPO_API_TOKEN.json` |
+| Windows | `%APPDATA%\SimpoCLI\SIMPO_API_TOKEN.json` |
+
+The JSON key is `SIMPO_API_TOKEN`. SimpoCLI creates the file if needed;
+on Linux it restricts the directory and file permissions to the current user.
+Never commit or publish this file.
+
+## Successful result
+
+The JSON response confirms the file path, user, Token ID, and granted scopes,
+but never echoes the Token secret:
+
+```json
+{
+  "success": true,
+  "tokenFile": "/home/user/.SimpoCLI/SIMPO_API_TOKEN.json",
+  "userId": 123,
+  "tokenId": 7,
+  "scopes": ["read", "write", "calculate"]
+}
+```
+
+Next, run [`simpo me`](./me) to verify the saved configuration.

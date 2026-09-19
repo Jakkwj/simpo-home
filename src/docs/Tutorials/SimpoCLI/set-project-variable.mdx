@@ -1,0 +1,53 @@
+---
+id: set-project-variable
+title: Update a Project variable
+sidebar_label: set-project-variable — update a value
+---
+
+# `set-project-variable`: update a Variable
+
+Update one numeric Variable value in a version `0` Draft Project.
+
+## Requirements and validation
+
+- Token scope: `write`
+- The Project must belong to the Token user.
+- Only Project version `0` can be modified.
+- `VALUE` is required and must be a finite number without a unit.
+- The backend requires `LowerBound <= VALUE <= UpperBound`.
+- Use `--tank` for a tank-specific Variable; omit it for a global Variable.
+
+## Syntax
+
+```text
+simpo set-project-variable PROJECT_ID VARIABLE VALUE [--tank TANK] [OPTIONS]
+```
+
+Examples:
+
+```text
+simpo set-project-variable 706 S_O2 95.8 --tank AnoxicTank
+simpo set-project-variable 706 Temperature 20
+```
+
+Names are exact and case-sensitive. Use
+[`project-variables`](./project-variables) to inspect the Project first.
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--tank TANK` | omitted | Tank containing a tank-specific Variable |
+| `--timeout SECONDS` | `10.0` | Maximum time for the HTTP request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+## Success and errors
+
+The successful JSON result has `success: true` and identifies the Project,
+Variable, old value, new value, and bounds used for validation. A non-zero exit
+code means no successful update was confirmed.
+
+Common failures include an unknown Variable or Tank, a nonnumeric value, a
+value outside the inclusive bounds, a Project version other than `0`, missing
+`write` scope, or Project ownership failure.

@@ -1,175 +1,131 @@
 import React from "react";
 import clsx from "clsx";
-// import styles from './styles.module.css';
 import Link from "@docusaurus/Link";
-import ThemedImage from "@theme/ThemedImage";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import Translate, { translate } from "@docusaurus/Translate";
-import type { MenuProps } from "antd";
-import { Button, Dropdown, Tooltip, Space } from "antd";
-import { AiOutlineDown } from "react-icons/ai";
+import Translate from "@docusaurus/Translate";
+import { Dropdown } from "antd";
+import { FaLinux, FaWindows } from "react-icons/fa";
+import {
+  FiChevronDown,
+  FiDownload,
+  FiMonitor,
+  FiTerminal,
+} from "react-icons/fi";
+
+import styles from "./styles.module.css";
 
 export default function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
-  const items: MenuProps["items"] = [
-    // {
-    //   key: "1",
-    //   children: [
-    //     {
-    //       key: "1-1",
-    //       label: (
-    //         <a
-    //           target="_blank"
-    //           rel="noopener noreferrer"
-    //           href={siteConfig.customFields.urlDownloalNetdiskWindows as string}
-    //           style={{
-    //             textDecoration: "none",
-    //             // color: "var(--ifm-color-primary)",
-    //             fontWeight: 400,
-    //           }}
-    //         >
-    //           Windows &nbsp;&nbsp;
-    //         </a>
-    //       ),
-    //     },
-    //     {
-    //       key: "1-2",
-    //       label: (
-    //         <a
-    //           target="_blank"
-    //           rel="noopener noreferrer"
-    //           href={siteConfig.customFields.urlDownloalNetdiskUbuntu as string}
-    //           style={{
-    //             textDecoration: "none",
-    //             // color: "var(--ifm-color-primary)",
-    //             fontWeight: 400,
-    //           }}
-    //         >
-    //           Ubuntu &nbsp;&nbsp;
-    //         </a>
-    //       ),
-    //     },
-    //   ],
-    //   label: (
-    //     <a
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //       // href={siteConfig.customFields.urlDownloalNetdiskUbuntu as string}
-    //       style={{
-    //         textDecoration: "none",
-    //         // color: "var(--ifm-color-primary)",
-    //         fontWeight: 400,
-    //       }}
-    //     >
-    //       <Translate id="ChinaRegion">China Region</Translate>
-    //     </a>
-    //   ),
-    // },
+  const [downloadOpen, setDownloadOpen] = React.useState(false);
 
-    // {
-    //   key: "2",
-    //   children: [
-    //     {
-    //       key: "2-1",
-    //       label: (
-    //         <a
-    //           target="_blank"
-    //           rel="noopener noreferrer"
-    //           href={siteConfig.customFields.urlDownloadClientWindows as string}
-    //           style={{
-    //             textDecoration: "none",
-    //             // color: "var(--ifm-color-primary)",
-    //             fontWeight: 400,
-    //           }}
-    //         >
-    //           Windows &nbsp;&nbsp;
-    //         </a>
-    //       ),
-    //     },
-    //     {
-    //       key: "2-2",
-    //       label: (
-    //         <a
-    //           target="_blank"
-    //           rel="noopener noreferrer"
-    //           href={siteConfig.customFields.urlDownloalClientUbuntu as string}
-    //           style={{
-    //             textDecoration: "none",
-    //             // color: "var(--ifm-color-primary)",
-    //             fontWeight: 400,
-    //           }}
-    //         >
-    //           Ubuntu &nbsp;&nbsp;
-    //         </a>
-    //       ),
-    //     },
-    //   ],
-    //   label: (
-    //     <a
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //       style={{
-    //         textDecoration: "none",
-    //         // color: "var(--ifm-color-primary)",
-    //         fontWeight: 400,
-    //       }}
-    //     >
-    //       <Translate id="OtherRegion">Other Regions</Translate>
-    //     </a>
-    //   ),
-    // },
+  // 每个产品使用一个紧凑区块，区块内横向排列 Windows 和 Linux 下载项。
+  const downloadPanel = (
+    <div className={styles.downloadPanel} role="menu">
+      <section className={styles.productSection} aria-labelledby="simpoclient-title">
+        <div className={styles.productHeader}>
+          <span className={styles.productIcon} aria-hidden="true">
+            <FiMonitor />
+          </span>
+          <span>
+            <strong id="simpoclient-title" className={styles.productTitle}>
+              SimpoClient
+            </strong>
+            <span className={styles.productDescription}>
+              <Translate id="home.client.calculationDescription">
+                Calculation client
+              </Translate>
+            </span>
+          </span>
+        </div>
+        <div className={styles.platformGrid}>
+          <a
+            className={styles.platformLink}
+            href={siteConfig.customFields.urlDownloadClientWindows as string}
+            target="_self"
+            rel="noopener noreferrer"
+            role="menuitem"
+            download
+            onClick={() => setDownloadOpen(false)}
+          >
+            <FaWindows className={styles.windowsIcon} aria-hidden="true" />
+            <span className={styles.platformText}>
+              <strong>Windows</strong>
+              <small>.exe · x64</small>
+            </span>
+            <FiDownload className={styles.linkDownloadIcon} aria-hidden="true" />
+          </a>
+          <a
+            className={styles.platformLink}
+            href={siteConfig.customFields.urlDownloalClientUbuntu as string}
+            target="_self"
+            rel="noopener noreferrer"
+            role="menuitem"
+            download
+            onClick={() => setDownloadOpen(false)}
+          >
+            <FaLinux className={styles.linuxIcon} aria-hidden="true" />
+            <span className={styles.platformText}>
+              <strong>Linux</strong>
+              <small>.deb · amd64</small>
+            </span>
+            <FiDownload className={styles.linkDownloadIcon} aria-hidden="true" />
+          </a>
+        </div>
+      </section>
 
-    {
-      key: "2",
-      label: (
-        <a
-          href={siteConfig.customFields.urlDownloadClientWindows as string}
-          style={{
-            textDecoration: "none",
-            // color: "var(--ifm-color-primary)",
-            fontWeight: 400,
-          }}
-          download
-        >
-          Windows
-        </a>
-      ),
-    },
-    {
-      key: "3",
-      label: (
-        <a
-          href={siteConfig.customFields.urlDownloalClientUbuntu as string}
-          style={{
-            textDecoration: "none",
-            // color: "var(--ifm-color-primary)",
-            fontWeight: 400,
-          }}
-          download
-        >
-          Ubuntu
-        </a>
-      ),
-    },
-    // {
-    //   key: "4",
-    //   disabled: true,
-    //   label: (
-    //     <a
-    //       href="#"
-    //       style={{
-    //         cursor: "default",
-    //         color: "gray",
-    //         textDecoration: "none",
-    //         // color: "var(--ifm-color-primary)",
-    //         fontWeight: 400,
-    //       }}
-    //     >
-    //       Mac (pending...)
-    //     </a>
-    //   ),
-    // },
-  ];
+      <section className={styles.productSection} aria-labelledby="simpo-cli-title">
+        <div className={styles.productHeader}>
+          <span className={styles.productIcon} aria-hidden="true">
+            <FiTerminal />
+          </span>
+          <span>
+            <strong id="simpo-cli-title" className={styles.productTitle}>
+              SimpoCLI
+            </strong>
+            <span className={styles.productDescription}>
+              <Translate id="home.client.cliDescription">
+                Command-line application
+              </Translate>
+            </span>
+          </span>
+        </div>
+        <div className={styles.platformGrid}>
+          <a
+            className={styles.platformLink}
+            href={siteConfig.customFields.urlDownloadCLIWindows as string}
+            target="_self"
+            rel="noopener noreferrer"
+            role="menuitem"
+            download
+            onClick={() => setDownloadOpen(false)}
+          >
+            <FaWindows className={styles.windowsIcon} aria-hidden="true" />
+            <span className={styles.platformText}>
+              <strong>Windows</strong>
+              <small>.exe · x64</small>
+            </span>
+            <FiDownload className={styles.linkDownloadIcon} aria-hidden="true" />
+          </a>
+          <a
+            className={styles.platformLink}
+            href={siteConfig.customFields.urlDownloadCLILinux as string}
+            target="_self"
+            rel="noopener noreferrer"
+            role="menuitem"
+            download
+            onClick={() => setDownloadOpen(false)}
+          >
+            <FaLinux className={styles.linuxIcon} aria-hidden="true" />
+            <span className={styles.platformText}>
+              <strong>Linux</strong>
+              <small>.deb · amd64</small>
+            </span>
+            <FiDownload className={styles.linkDownloadIcon} aria-hidden="true" />
+          </a>
+        </div>
+      </section>
+    </div>
+  );
 
   return (
     <div>
@@ -224,7 +180,7 @@ export default function HomepageHeader() {
                 </Translate>
               </p>
 
-              <div className="tw-flex tw-flex-wrap tw-gap-4">
+              <div className="tw-flex tw-flex-wrap tw-items-center tw-gap-4">
                 <div
                 // style={{
                 //   display: "flex",
@@ -267,51 +223,38 @@ export default function HomepageHeader() {
               </Link> */}
 
                 <Dropdown
-                  // className="dropdown-button"
-                  menu={{ items }}
+                  menu={{ items: [] }}
+                  popupRender={() => downloadPanel}
                   placement="bottomLeft"
                   trigger={["click"]}
-                  // style={{
-                  //   padding: "1.3rem",
-                  //   color: "var(--ifm-color-primary)",
-                  //   borderColor: "var(--ifm-color-primary)",
-                  //   fontWeight: 600,
-                  //   fontSize: "1.0rem",
-                  // }}
+                  open={downloadOpen}
+                  onOpenChange={setDownloadOpen}
+                  rootClassName={styles.downloadDropdown}
                 >
                   <button
-                    // className="refine-button refine-button--secondary"
-                    className="refine-button2"
-                    // style={{
-                    //   // width: "20%",
-                    //   padding: "1.3rem",
-                    //   color: "var(--ifm-color-primary)",
-                    //   borderColor: "var(--ifm-color-primary)",
-                    //   fontWeight: 600,
-                    //   border: "none",
-                    //   borderRadius: "10px",
-                    //   // padding: 0.3rem 1rem;
-                    //   // text-decoration: none;
-                    //   // align-items: center;
-                    //   // gap: 0.5rem;
-                    //   transition: "all 0.3s ease";
-                    //   // box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
-                    // }}
+                    type="button"
+                    className={clsx(
+                      styles.downloadButton,
+                      downloadOpen && styles.downloadButtonOpen,
+                    )}
+                    aria-haspopup="menu"
+                    aria-expanded={downloadOpen}
                   >
-                    <span>
-                      {/* <Translate>Installtion</Translate> */}
-                      &nbsp;<Translate>Client</Translate>&nbsp;
+                    <span
+                      className={styles.downloadButtonIcon}
+                      aria-hidden="true"
+                    >
+                      <FiDownload />
                     </span>
-                    {/* <DownOutlined
-                      style={{
-                        color: "var(--ifm-color-primary)",
-                      }}
-                    /> */}
-                    {/* &nbsp; */}
-                    {/* </a> */}
-                    {/* <FaHome /> */}
-                    {/* <MdHome /> */}
-                    <AiOutlineDown />
+                    <span>
+                      <Translate id="home.client.download">
+                        Download clients
+                      </Translate>
+                    </span>
+                    <FiChevronDown
+                      className={styles.downloadChevron}
+                      aria-hidden="true"
+                    />
                   </button>
                 </Dropdown>
               </div>

@@ -1,0 +1,52 @@
+---
+id: stop-calculation
+title: 停止计算
+sidebar_label: stop-calculation — 停止计算
+---
+
+# `stop-calculation`：停止计算
+
+停止指定 Project 的计算，并尽可能终止本机匹配的 SimpoClient 和计算进程。
+
+## 使用条件
+
+- Token scope：`calculate`
+- Project 必须属于当前 Token 用户。
+
+## 命令格式
+
+```text
+simpo stop-calculation PROJECT_ID [OPTIONS]
+```
+
+示例：
+
+```text
+simpo stop-calculation 706
+```
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+
+## 命令会停止什么
+
+1. 后端把任务标记为 stopped，并撤销 upload Token。
+2. CLI 在当前电脑查找由这个准确 Project ID 启动的 SimpoClient，尝试终止其
+   进程树。
+3. 停止匹配的本地计算进程，同时避免主动结束其它 Project ID 的计算。
+
+后端撤销凭证后，旧客户端退出前可能短暂输出 `upload token does not match`。
+这是成功停止过程中的预期现象。
+
+## 返回结果
+
+成功响应的 `success` 为 `true`、`status` 为 `"stopped"`，并通过
+`localProcessesStopped` 表示找到并停止了多少个本地匹配进程。后端停止成功
+不保证 CLI 能终止无权访问或运行在其它电脑上的进程。
+
+使用 [`calculation-status`](./calculation-status) 确认最终状态。

@@ -1,0 +1,207 @@
+---
+id: SimpoCLI
+title: SimpoCLI command-line guide
+sidebar_label: Overview
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# SimpoCLI command-line guide
+
+`SimpoCLI` is the command-line interface for the SIMPO OpenAPI. It reads
+and updates Project data, prepares calculations, starts the locally installed
+`SimpoClient`, monitors calculation status, and stops calculations.
+Its terminal command is the short, lowercase `simpo`.
+
+Each command has its own page in the collapsible **SimpoCLI** section.
+Every command also supports `--help`, so a user or automation agent can inspect
+the installed version before invoking it.
+
+## Prerequisites
+
+- A SIMPO account and an OpenAPI Token created on the Dashboard's **API Tokens**
+  page.
+- The minimum Token scope required by the command:
+  - `read`: read Project variables;
+  - `write`: update a variable in a version `0` Draft Project;
+  - `calculate`: prepare, inspect, or stop a calculation.
+- The [`calculate`](./SimpoCLI/calculate) command additionally requires
+  the matching platform version of `SimpoClient` on the same computer.
+
+## Download and install
+
+SimpoCLI is independent from SimpoClient, but the `calculate` command
+starts SimpoClient to perform the actual local calculation. Install both
+applications if this computer will run calculations.
+
+### SimpoClient
+
+- **Windows:** <a href={config.customFields.urlDownloadClientWindows} target="_self" rel="noopener noreferrer" download>download the Windows installer</a>.
+- **Linux:** <a href={config.customFields.urlDownloalClientUbuntu} target="_self" rel="noopener noreferrer" download>download the Debian package</a>.
+
+### SimpoCLI
+
+<Tabs>
+
+  <TabItem value="windows" label="Windows" default>
+
+**Download:** <a href={config.customFields.urlDownloadCLIWindows} target="_self" rel="noopener noreferrer" download>download the Windows x64 installer</a>.
+
+**Install:** double-click the installer, or run the downloaded file from CMD
+or PowerShell:
+
+```powershell
+.\SimpoCLI_VERSION_windows_x64.exe
+```
+
+`VERSION` is the version number in the downloaded filename. After installation,
+open a new CMD or PowerShell window so the updated `PATH` is available.
+
+**Verify:**
+
+```powershell
+simpo --version
+simpo --help
+```
+
+**Uninstall:** remove `SimpoCLI` from **Settings → Apps → Installed apps**, or run:
+
+```text
+C:\Program Files\SimpoCLI\unins000.exe
+```
+
+Uninstallation removes the program and its `PATH` entry, but preserves
+`%APPDATA%\SimpoCLI\SIMPO_API_TOKEN.json`. To remove the saved Token, run
+`simpo logout` before uninstalling, or manually delete the user data directory
+afterwards.
+
+  </TabItem>
+
+  <TabItem value="linux" label="Linux">
+
+Ubuntu 20 and later are supported.
+
+**Download:** <a href={config.customFields.urlDownloadCLILinux} target="_self" rel="noopener noreferrer" download>download the amd64 Debian package</a>.
+
+**Install:** run this command in the download directory:
+
+```bash
+sudo apt install ./SimpoCLI_VERSION_amd64.deb
+```
+
+`VERSION` is the version number in the downloaded filename. To install with
+`dpkg` instead, run:
+
+```bash
+sudo dpkg -i SimpoCLI_VERSION_amd64.deb
+sudo apt install -f
+```
+
+**Verify:**
+
+```bash
+simpo --version
+simpo --help
+```
+
+**Uninstall:**
+
+```bash
+sudo apt remove simpo-cli
+```
+
+You can also run `sudo dpkg -r simpo-cli`. Standard uninstallation removes
+the program but preserves `~/.SimpoCLI/SIMPO_API_TOKEN.json`. To remove the
+saved Token, run `simpo logout` first, or manually delete `~/.SimpoCLI` after
+uninstalling.
+
+  </TabItem>
+
+</Tabs>
+
+## Obtain your personal API Token
+
+1. Sign in to the SIMPO Dashboard.
+2. Open <a href={config.customFields.urlDashApiTokens} target="_blank" rel="noopener noreferrer"><strong>Account → API Tokens</strong></a>.
+3. Select **Create Token**.
+4. Enter a recognizable name, choose an expiry from `1` to `365` days, and
+   grant only the scopes you need:
+   - `read` for `project-variables`;
+   - `write` for `set-project-variable`;
+   - `calculate` for calculation preparation, status, and stop commands.
+5. Select **Create Token**, then immediately copy the complete Token from the
+   **Token Created** dialog.
+
+:::warning Copy the complete Token now
+
+For security, the complete Token is displayed only once. The Token list later
+shows only `tokenPrefix`, which cannot authenticate API requests. If the secret
+is lost, revoke that Token and create a new one. Do not use a Dashboard login
+JWT as an OpenAPI Token.
+
+:::
+
+## Configure and verify the Token
+
+Save the copied personal Token and verify it before accessing a Project:
+
+```text
+simpo configure
+simpo me
+```
+
+To remove only the saved API Token while keeping the CLI data directory, run:
+
+```text
+simpo logout
+```
+
+Token lookup order is:
+
+1. the command's `--api-token` option;
+2. the `SIMPO_API_TOKEN` environment variable;
+3. the per-user `SIMPO_API_TOKEN.json` file.
+
+The saved file is `~/.SimpoCLI/SIMPO_API_TOKEN.json` on Linux and
+`%APPDATA%\SimpoCLI\SIMPO_API_TOKEN.json` on Windows. Protect this file;
+it contains the complete secret Token.
+
+For the complete configuration procedure, see [`configure`](./SimpoCLI/configure).
+
+## Command reference
+
+| Command | Purpose | Required scope |
+| --- | --- | --- |
+| [`configure`](./SimpoCLI/configure) | Validate and save an OpenAPI Token | none for the local action; Token validation must succeed |
+| [`me`](./SimpoCLI/me) | Verify the Token and show its identity and scopes | authenticated Token |
+| [`project-variables`](./SimpoCLI/project-variables) | Read all current Solution Variable values | `read` |
+| [`set-project-variable`](./SimpoCLI/set-project-variable) | Update one numeric Variable in a Draft Project | `write` |
+| [`calculate`](./SimpoCLI/calculate) | Prepare a calculation and start SimpoClient | `calculate` |
+| [`calculation-status`](./SimpoCLI/calculation-status) | Read current calculation status | `calculate` |
+| [`stop-calculation`](./SimpoCLI/stop-calculation) | Stop a calculation and matching local processes | `calculate` |
+
+## Output contract
+
+- Successful results are formatted JSON on **stdout**.
+- Progress and errors are written to **stderr**.
+- Exit code `0` means success; a non-zero code means the command failed.
+- HTTP errors contain the status code and a safe backend message. `401` usually
+  indicates an invalid, expired, revoked, or environment-mismatched Token;
+  `403` indicates a missing scope.
+
+This makes stdout safe to parse in automation:
+
+```bash
+result="$(simpo project-variables 706)" || exit $?
+printf '%s\n' "$result"
+```
+
+Use `--base-url` only for a one-command development override, for example:
+
+```text
+simpo me --base-url http://127.0.0.1:8888
+```
+
+The Token must belong to the selected backend environment.

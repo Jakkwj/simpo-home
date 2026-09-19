@@ -1,0 +1,127 @@
+---
+id: calculate
+title: 启动计算
+sidebar_label: calculate — 启动计算
+---
+
+# `calculate`：准备并启动计算
+
+命令先请求 OpenAPI 校验 Project 并编译计算文件。默认随后把后端返回的启动
+协议传给本机安装的 `SimpoClient`，并在客户端启动后直接退出，不等待计算
+完成。
+
+## 使用条件
+
+- Token scope：`calculate`
+- Project 属于当前 Token 用户
+- Project version 为 `0`（Draft）
+- 同一台电脑安装兼容版本的 `SimpoClient`，使用 `--no-launch` 时除外
+
+## 命令格式和示例
+
+```text
+simpo calculate PROJECT_ID [OPTIONS]
+```
+
+启动 Simulation，并在 SimpoClient 启动后返回：
+
+```text
+simpo calculate 706 --engine SIM
+```
+
+启动 OAT 敏感性分析并等待终态：
+
+```text
+simpo calculate 706 --engine OAT_AR --wait --wait-timeout 86400
+```
+
+只准备文件，不启动 SimpoClient：
+
+```text
+simpo calculate 706 --no-launch
+```
+
+## 计算引擎
+
+`--engine` 区分大小写，默认值为 `SIM`。
+
+| 代码 | 分析类型 |
+| --- | --- |
+| `SIM` | Simulation 仿真 |
+| `OAT_AA` | 敏感性分析：绝对输出 / 绝对输入 |
+| `OAT_RA` | 敏感性分析：相对输出 / 绝对输入 |
+| `OAT_AR` | 敏感性分析：绝对输出 / 相对输入；推荐的 OAT 变体 |
+| `OAT_RR` | 敏感性分析：相对输出 / 相对输入 |
+| `LHS` | Latin Hypercube Sampling 不确定性分析 |
+| `GA` | Genetic Algorithm 参数估值 |
+| `RFGA` | RFGA 参数估值 |
+
+通用的 `OAT` 不是 CLI 的公开选项。
+
+## 常用计算参数
+
+| 选项 | 默认值 | 可接受值 |
+| --- | --- | --- |
+| `--threads INTEGER` | 逻辑 CPU 数量 | `1` 到本机逻辑 CPU 数量 |
+| `--resolution-rate FLOAT` | `1.0` | `0.05` 到 `10.0`，对应 Dashboard 的 `5%` 到 `1000%` |
+| `--ode-solver TEXT` | `Forward_Euler` | 仅支持 `Forward_Euler` |
+| `--step-tolerance FLOAT` | `0.05` | `0.0001` 到 `0.2` |
+| `--auto-plot / --no-auto-plot` | 关闭 | 是否实时绘制本地图表 |
+| `--force-recalculate / --no-force-recalculate` | 关闭 | 强制重新计算，不允许复用相同设置的结果 |
+| `--steady-state / --no-steady-state` | 关闭 | 是否计算稳态 |
+| `--platform TEXT` | 安装包对应平台 | `linux`、`windows` 或 `mac`；通常不传 |
+
+## 分析专用参数
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--intensity-oat FLOAT` | `0.01` | OAT 扰动比例，范围 `0.01` 到 `0.1`（`1%` 到 `10%`） |
+| `--amount-lhs INTEGER` | `10` | LHS 样本数，至少为 `2` |
+| `--amount-ga INTEGER` | `1` | GA/RFGA 并行运行次数，至少为 `1` |
+| `--individual-ga INTEGER` | 逻辑 CPU 数量 | 种群数量，至少为 `1`；建议为 `--threads` 的整数倍 |
+| `--generation-ga INTEGER` | `200` | 最大迭代代数，至少为 `1` |
+| `--escaped-threshold-ga INTEGER` | `100` | 连续多少代没有改善时提前结束，至少为 `1` |
+| `--ga-initial-value / --no-ga-initial-value` | 关闭 | 是否使用当前 Variable Value 作为 GA/RFGA 初始值 |
+| `--auto-plot-correlation / --no-auto-plot-correlation` | 关闭 | 是否自动绘制相关性图 |
+| `--auto-plot-skeleton / --no-auto-plot-skeleton` | 开启 | 是否自动绘制骨架图 |
+
+## 启动和等待参数
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--no-launch` | 关闭 | 只准备文件，不启动本机 SimpoClient |
+| `--print-protocol` | 关闭 | 在 JSON 中包含带短期凭证的启动协议 |
+| `--client-main PATH` | 已安装 SimpoClient | 开发环境覆盖可执行文件或源码 `main.py` |
+| `--wait / --no-wait` | 不等待 | 轮询直到 `completed`、`failed`、`stopped` 或 `idle` |
+| `--poll-interval SECONDS` | `2.0` | 等待时两次状态请求的间隔 |
+| `--wait-timeout SECONDS` | `86400` | CLI 最长轮询时间；不会停止实际计算 |
+| `--timeout SECONDS` | `3700` | 单次后端准备和编译请求的超时时间 |
+
+`--no-launch` 不能与 `--wait` 同时使用。达到 `--wait-timeout` 时，只是当前
+等待中的 CLI 退出，SimpoClient 和计算仍会继续。之后可使用
+[`calculation-status`](./calculation-status) 查询，或使用
+[`stop-calculation`](./stop-calculation) 明确停止。
+
+`--print-protocol` 仅供明确的集成场景使用。启动协议包含短期凭证，不要公开
+或写入公共日志。
+
+## 返回结果
+
+没有使用 `--wait` 时，成功只表示文件准备完成并启动了本地客户端，不表示
+计算已经完成：
+
+```json
+{
+  "success": true,
+  "projectId": 706,
+  "projectName": "Example",
+  "projectVersion": 0,
+  "engine": "SIM",
+  "clientPid": 12345,
+  "launched": true,
+  "launchBeforeSeconds": 3600,
+  "finalStatus": null
+}
+```
+
+使用 `--wait` 时，`finalStatus` 包含后端最终状态。

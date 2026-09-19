@@ -1,0 +1,55 @@
+---
+id: project-variables
+title: Read Project variables
+sidebar_label: project-variables — read values
+---
+
+# `project-variables`: read Variable values
+
+Read all current Variable values from the Solution of a Project owned by the
+Token user.
+
+## Requirements
+
+- Token scope: `read`
+- `PROJECT_ID`: a positive Project database ID owned by the Token user
+
+Projects owned by other users are not enumerated. The backend returns
+`HTTP 404 Project not found` for an inaccessible or nonexistent Project.
+
+## Syntax
+
+```text
+simpo project-variables PROJECT_ID [OPTIONS]
+```
+
+Example:
+
+```text
+simpo project-variables 706
+```
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | Maximum time for the HTTP request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+## Result
+
+The JSON response contains Project metadata and a `variables` array. Each item
+identifies the Variable and its current `Value`; tank-specific variables also
+include their tank context. Consume field names exactly as returned by the
+installed backend version.
+
+For automation, keep progress/errors separate and parse stdout:
+
+```bash
+variables="$(simpo project-variables 706)" || exit $?
+printf '%s\n' "$variables"
+```
+
+To change one value, use
+[`set-project-variable`](./set-project-variable).

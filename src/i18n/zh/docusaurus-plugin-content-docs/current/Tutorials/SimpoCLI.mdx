@@ -1,0 +1,200 @@
+---
+id: SimpoCLI
+title: SimpoCLI 命令行使用指南
+sidebar_label: 总览
+---
+
+import config from "@generated/docusaurus.config";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# SimpoCLI 命令行使用指南
+
+`SimpoCLI` 是 SIMPO OpenAPI 的命令行客户端，可以读取和修改 Project
+数据、准备计算、启动本机安装的 `SimpoClient`、查询计算状态以及停止计算。
+安装后的终端命令统一为简短的小写 `simpo`。
+
+每个命令都拆分为独立页面，位于左侧可折叠的 **SimpoCLI** 目录中。
+所有命令也都支持 `--help`，用户或自动化 AI 可以先读取当前安装版本的帮助，
+再准确调用命令。
+
+## 使用条件
+
+- 拥有 SIMPO 账户，并在 Dashboard 的 **API Tokens** 页面创建 OpenAPI
+  Token。
+- Token 拥有命令要求的最小 scope：
+  - `read`：读取 Project Variable；
+  - `write`：修改 version 为 `0` 的 Draft Project Variable；
+  - `calculate`：准备、查询或停止计算。
+- [`calculate`](./SimpoCLI/calculate) 命令还要求同一台电脑上安装对应
+  平台版本的 `SimpoClient`。
+
+## 下载和安装
+
+SimpoCLI 与 SimpoClient 相互独立，但是 `calculate` 命令会启动
+SimpoClient 执行实际的本地计算。如果这台电脑需要运行计算，应同时安装两个
+应用。
+
+### SimpoClient
+
+- **Windows：**<a href={config.customFields.urlDownloadClientWindows} target="_self" rel="noopener noreferrer" download>下载 Windows 安装程序</a>。
+- **Linux：**<a href={config.customFields.urlDownloalClientUbuntu} target="_self" rel="noopener noreferrer" download>下载 Debian 安装包</a>。
+
+### SimpoCLI
+
+<Tabs>
+
+  <TabItem value="windows" label="Windows" default>
+
+**下载：**<a href={config.customFields.urlDownloadCLIWindows} target="_self" rel="noopener noreferrer" download>下载 Windows x64 安装程序</a>。
+
+**安装：** 双击安装程序；也可以在 CMD 或 PowerShell 中运行下载的文件：
+
+```powershell
+.\SimpoCLI_VERSION_windows_x64.exe
+```
+
+`VERSION` 是下载文件中的版本号。安装完成后请重新打开 CMD 或 PowerShell，
+使更新后的 `PATH` 生效。
+
+**验证安装：**
+
+```powershell
+simpo --version
+simpo --help
+```
+
+**卸载：** 在 **设置 → 应用 → 已安装的应用** 中卸载 `SimpoCLI`；也可以运行：
+
+```text
+C:\Program Files\SimpoCLI\unins000.exe
+```
+
+卸载会删除程序及其 `PATH` 项，但保留
+`%APPDATA%\SimpoCLI\SIMPO_API_TOKEN.json`。如需删除保存的 Token，可先运行
+`simpo logout`，或者在卸载后手动删除该用户数据目录。
+
+  </TabItem>
+
+  <TabItem value="linux" label="Linux">
+
+支持 Ubuntu 20 及以上版本。
+
+**下载：**<a href={config.customFields.urlDownloadCLILinux} target="_self" rel="noopener noreferrer" download>下载 amd64 Debian 安装包</a>。
+
+**安装：** 在下载目录中运行：
+
+```bash
+sudo apt install ./SimpoCLI_VERSION_amd64.deb
+```
+
+`VERSION` 是下载文件中的版本号。如果使用 `dpkg` 安装，可运行：
+
+```bash
+sudo dpkg -i SimpoCLI_VERSION_amd64.deb
+sudo apt install -f
+```
+
+**验证安装：**
+
+```bash
+simpo --version
+simpo --help
+```
+
+**卸载：**
+
+```bash
+sudo apt remove simpo-cli
+```
+
+也可以运行 `sudo dpkg -r simpo-cli`。标准卸载会删除程序，但保留
+`~/.SimpoCLI/SIMPO_API_TOKEN.json`。如需删除保存的 Token，可先运行
+`simpo logout`，或者在卸载后手动删除 `~/.SimpoCLI`。
+
+  </TabItem>
+
+</Tabs>
+
+## 获取个人 API Token
+
+1. 登录 SIMPO Dashboard。
+2. 打开 <a href={config.customFields.urlDashApiTokens} target="_blank" rel="noopener noreferrer"><strong>Account → API Tokens</strong></a>。
+3. 点击 **Create Token**。
+4. 输入便于识别的名称，设置 `1` 到 `365` 天的有效期，并且只选择需要的
+   scope：
+   - `read`：用于 `project-variables`；
+   - `write`：用于 `set-project-variable`；
+   - `calculate`：用于准备计算、查询状态和停止计算。
+5. 点击 **Create Token**，然后在 **Token Created** 弹窗中立即复制完整
+   Token。
+
+:::warning 立即复制完整 Token
+
+出于安全原因，完整 Token 只显示一次。之后列表中只能看到 `tokenPrefix`，
+它不能用于 API 认证。如果完整 Token 丢失，请撤销旧 Token 并重新创建。
+Dashboard 登录 JWT 也不能作为 OpenAPI Token 使用。
+
+:::
+
+## 配置并验证 Token
+
+访问 Project 前，保存刚才复制的个人 Token 并完成验证：
+
+```text
+simpo configure
+simpo me
+```
+
+如需只删除已保存的 API Token、保留 CLI 数据目录，可运行：
+
+```text
+simpo logout
+```
+
+Token 查找顺序为：
+
+1. 当前命令的 `--api-token`；
+2. `SIMPO_API_TOKEN` 环境变量；
+3. 当前用户的 `SIMPO_API_TOKEN.json` 文件。
+
+Linux 保存路径为 `~/.SimpoCLI/SIMPO_API_TOKEN.json`，Windows 保存路径
+为 `%APPDATA%\SimpoCLI\SIMPO_API_TOKEN.json`。文件中包含完整 Token，
+必须妥善保护。
+
+完整配置过程请查看 [`configure`](./SimpoCLI/configure)。
+
+## 命令索引
+
+| 命令 | 功能 | 所需 scope |
+| --- | --- | --- |
+| [`configure`](./SimpoCLI/configure) | 验证并保存 OpenAPI Token | 本地写入不需要 scope，但 Token 验证必须成功 |
+| [`me`](./SimpoCLI/me) | 验证 Token，并显示身份和 scope | 有效 Token |
+| [`project-variables`](./SimpoCLI/project-variables) | 读取 Solution 的全部 Variable Value | `read` |
+| [`set-project-variable`](./SimpoCLI/set-project-variable) | 修改 Draft Project 中一个数值 Variable | `write` |
+| [`calculate`](./SimpoCLI/calculate) | 准备计算并启动 SimpoClient | `calculate` |
+| [`calculation-status`](./SimpoCLI/calculation-status) | 查询当前计算状态 | `calculate` |
+| [`stop-calculation`](./SimpoCLI/stop-calculation) | 停止计算和匹配的本地进程 | `calculate` |
+
+## 输出约定
+
+- 成功结果以格式化 JSON 写入 **stdout**。
+- 进度提示和错误写入 **stderr**。
+- 退出码 `0` 表示成功；非零退出码表示命令失败。
+- HTTP 错误包含状态码和安全的后端消息。`401` 通常表示 Token 无效、过期、
+  被撤销或与后端环境不匹配；`403` 表示缺少所需 scope。
+
+因此自动化脚本可以只解析 stdout：
+
+```bash
+result="$(simpo project-variables 706)" || exit $?
+printf '%s\n' "$result"
+```
+
+`--base-url` 只建议用于单次开发环境覆盖，例如：
+
+```text
+simpo me --base-url http://127.0.0.1:8888
+```
+
+Token 必须属于当前选择的后端环境。

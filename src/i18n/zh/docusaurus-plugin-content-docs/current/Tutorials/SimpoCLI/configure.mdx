@@ -1,0 +1,74 @@
+---
+id: configure
+title: 配置 API Token
+sidebar_label: configure — 保存 Token
+---
+
+import config from "@generated/docusaurus.config";
+
+# `configure`：保存 API Token
+
+从 Dashboard 复制新创建的 OpenAPI Token 后，使用 `configure` 完成本地配置。
+命令会隐藏终端输入，通过 `/openapi/v1/me` 验证 Token，并且只在验证成功后
+保存。
+
+## 从 Dashboard 获取个人 Token
+
+1. 登录并打开 <a href={config.customFields.urlDashApiTokens} target="_blank" rel="noopener noreferrer"><strong>Account → API Tokens</strong></a>。
+2. 点击 **Create Token**，输入能够识别当前电脑或集成程序的名称。
+3. 根据用途选择最小权限：`read`、`write` 和/或 `calculate`。
+4. 设置 `1` 到 `365` 天的有效期，然后点击 **Create Token**。
+5. 在 **Token Created** 弹窗中立即复制完整 Token；它只会显示一次。
+
+以后 API Tokens 页面只显示用于识别和撤销 Token 的 `tokenPrefix`。这个前缀
+不是密钥，不能配置到 SimpoCLI。如果创建时没有复制完整 Token，请撤销
+它并重新创建。
+
+## 命令格式
+
+```text
+simpo configure [--timeout SECONDS] [--base-url URL]
+```
+
+交互执行，并在提示后粘贴完整 Token：
+
+```text
+simpo configure
+Paste OpenAPI Token:
+```
+
+不要输入公开的 `tokenPrefix`，也不要输入 Dashboard 登录 JWT。这里必须使用
+创建时仅完整显示一次的个人 OpenAPI Token。
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | Token 验证请求的最长等待时间 |
+| `--base-url URL` | 安装包环境对应的地址 | 仅为本次命令覆盖后端地址 |
+
+## 保存文件
+
+| 平台 | 路径 |
+| --- | --- |
+| Linux | `~/.SimpoCLI/SIMPO_API_TOKEN.json` |
+| Windows | `%APPDATA%\SimpoCLI\SIMPO_API_TOKEN.json` |
+
+JSON 字段名为 `SIMPO_API_TOKEN`。SimpoCLI 会在需要时创建文件；Linux
+下会把目录和文件权限限制为当前用户。不要提交或公开该文件。
+
+## 成功结果
+
+返回 JSON 会确认文件路径、用户、Token ID 和 scope，但不会回显 Token：
+
+```json
+{
+  "success": true,
+  "tokenFile": "/home/user/.SimpoCLI/SIMPO_API_TOKEN.json",
+  "userId": 123,
+  "tokenId": 7,
+  "scopes": ["read", "write", "calculate"]
+}
+```
+
+下一步运行 [`simpo me`](./me) 验证已保存的配置。

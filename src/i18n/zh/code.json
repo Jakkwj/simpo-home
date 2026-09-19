@@ -342,6 +342,18 @@
   "Client": {
     "message": "客户端"
   },
+  "home.client.download": {
+    "message": "下载客户端"
+  },
+  "home.client.downloadHint": {
+    "message": "选择应用和操作系统"
+  },
+  "home.client.calculationDescription": {
+    "message": "计算客户端"
+  },
+  "home.client.cliDescription": {
+    "message": "命令行应用"
+  },
   "home.open": {
     "message": "开放"
   },
@@ -756,6 +768,5 @@
   },
   "OtherRegion": {
     "message": "其它地区"
-
   }
 }

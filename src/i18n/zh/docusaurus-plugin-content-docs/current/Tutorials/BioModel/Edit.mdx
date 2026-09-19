@@ -6,7 +6,7 @@ title: 编辑
 import config from '@generated/docusaurus.config'
 
 
-BioModel 可编辑的内容包括 Detail，Version 和 Profile。
+BioModel 中可编辑的内容包括 Detail，Version 和 Profile。
 
 
 ## <a id="Detail"></a>Detail
@@ -18,16 +18,23 @@ BioModel 的 Detail 页面包含了 Components，Parameters，Compositions，Ion
 
 Components 是模型的组分，是模型模拟计算的主要对象，通常包括各种溶解态（Soluble）和颗粒态（Particulate）的基质和微生物。
 
+{/* <div align="center" style={{marginTop: "1rem", marginBottom: "1rem"}}> */}
+  {/* <video width="100%" controls playsInline preload="metadata" aria-label="Components 编辑演示"> */}
+    {/* <source src="/videos/tutorials/biomodel/components-edit.mp4" type="video/mp4" /> */}
+    {/* <track src="/videos/tutorials/biomodel/components-edit.zh.vtt" kind="subtitles" srcLang="zh" label="中文" default /> */}
+    {/* <track src="/videos/tutorials/biomodel/components-edit.en.vtt" kind="subtitles" srcLang="en" label="English" /> */}
+  {/* </video> */}
+{/* </div> */}
+
 - Components 组件弹窗中可以进行查看和编辑操作：
   - 编辑操作包括新建，复制，删除和移动排序。
   - 可以通过 ctrl/shift + 鼠标左键选择多行进行批量操作。
 - 具体内容包括：
   - Symbol 只能由英文字母，数字和下划线（下划线不能连续）组成：
-    - Soluble 组分必须以 “S_” 为前缀进行命名，如 溶解氧（DO） 应命名为 S_O2。
-    - Particulate 组分必须以 “X_” 为前缀进行命名，如 普通异养菌（OHO） 应命名为 X_OHO。
-    - Soluble 组分 和 Particulate 组分在沉淀行为上有不同的特性。
-    - 组分的单位会显示在计算结果的图片中。
+    - Soluble 组分必须以“S_”为前缀进行命名，如溶解氧（DO）应命名为 S_O2。
+    - Particulate 组分必须以“X_”为前缀进行命名，如普通异养菌（OHO）应命名为 X_OHO。
     - 保存时，会自动把 Soluble 组分放在 Particulate 组分的前面。
+    - Soluble 组分 和 Particulate 组分在沉淀行为上有不同的特性。
   - Unit:
     - Unit 不可为空。
     - Unit 会显示在计算结果的图片中。
@@ -44,7 +51,7 @@ Parameters 是模型中使用的参数，包括化学计量学参数（Stoichoim
 - 具体内容包括：
   - Symbol 只能由英文字母，数字和下划线（下划线不能连续）组成，且必须以字母为开头。
   - Unit：
-    - Unit 不可为空。
+    - 不可为空。
     - 如果参数是动力学参数，其单位**必须以**：``/d``, ``d-1``, ``/day``, ``day-1``, ``1/d``, ``1/day``, ``/h``, ``h-1``, ``/hour``, ``hour-1``, ``1/h``, ``1/hour``, ``/m``, ``m-1``, ``/minute``, ``minute-1``, ``1/m``, ``1/minute``, ``/s``, ``s-1``, ``/second``, ``second-1``, ``1/s`` or ``1/second`` 为结尾，这样才能保证整个计算过程中时间单位的统一。
     - 比如某动力学参数 `u_max` 的默认值为 `10 /d`， 则可以输入：
       - `DefaultValue` 为 `10`，`Unit` 为 `/d`（或者 ``d-1``, ``/day``, ``day-1``, ``1/d``, ``1/day``）。
@@ -53,13 +60,15 @@ Parameters 是模型中使用的参数，包括化学计量学参数（Stoichoim
       - 或者 `DefaultValue` 为 `10/24/60/60`，`Unit` 为 `/s`（或者 ``s-1``, ``/second``, ``second-1``, ``1/s``, ``1/second``）。
       - 动力学参数的单位以这些为结尾即，即 `/d` 与 `mgCOD/d` 效果相同。
   - DefaultValue：
-    - DefaultValue 不可为空，如果新建 Project 时没有该参数的值会使用这个默认值。
+    - 不可为空。新建 Project 时 Solution.Variable 的 Value 会使用这个值。
     - **注意：计算时，以 Project.Solution 中的值为准。**
   - LowerBound：
-    - 可以为空。
+    - 非空时，新建 Project 时 Solution.Variable 的 LowerBound 会使用这个值。
+    - 为空时，新建 Project 时 Solution.Variable 的 LowerBound 会默认设置为 `Value * 0.1`。
     - **注意：计算时，以 Project.Solution 中的值为准。**
   - UpperBound：
-    - 可以为空。
+    - 非空时，新建 Project 时 Solution.Variable 的 UpperBound： 会使用这个值。
+    - 为空时，新建 Project 时 Solution.Variable 的 UpperBound： 会默认设置为 `Value * 1.1`。
     - **注意：计算时，以 Project.Solution 中的值为准。**
   - Name 可以为空。
   - Description 可以为空。
@@ -70,8 +79,8 @@ Compositions 用于检查模型的各物质平衡，包括 ThOD，N，P，S，Ch
 
 - Compositions 组件弹窗中可以进行查看和编辑操作：
 - Compositions 可以选择上述 6 种平衡中的任意一种/多种，也可以全部为空（不选择某平衡则不进行该平衡检查）。
-- 如果 Compositions 中的物质平衡检查都通过，即平衡计算结果全部为零，Balances 组件将不会显示。
 - 如果 Compositions 中的某个物质平衡计算结果不为零，会通过 Balances 组件显示不为零的 Process，且每次进入 BioModel 页面时都会弹窗警告提醒。
+- 如果 Compositions 中的物质平衡检查都通过，即平衡计算结果全部为零，Balances 组件将不会显示。
 - 由于平衡检查以零为准，所以物质平衡不为零时，可以先尝试把 Processes 矩阵中的系数和 Compositions 中的系数转化为分数形式，检查是否存在四舍五入误差导致的不平衡。
 - 如果确实存在不平衡的情况，可以通过修改 Processes 矩阵中的系数和 Compositions 中的系数来进行调整，直到物质平衡为零为止。
 - 有时候是由于模型省略了某过程的描述而导致的不平衡，或者你确定你的模型是守恒的，可以无视警告提醒。
@@ -151,10 +160,14 @@ Compositions 用于检查模型的各物质平衡，包括 ThOD，N，P，S，Ch
 
 
 ### <a id="OtherActions"></a>6. 其它操作
-- Temp 按钮：临时保存，保存时不会检查格式，用于快速保存，可以后续在修改格式。
+- Temp 按钮：临时保存，保存时不会检查格式，用于快速保存，可以后续再修改格式。
 - Parse 按钮：解析保存，保存时会解析格式是否正确，格式不通过将无法保存。
-- Edit 按钮：编辑 BioModel 的详情，此处可以通过上传导入 xlsx 格式文件进行整体内容修改。
-- Export 按钮：导出 xlsx 格式文件。
+- Edit 按钮：
+  - 修改 BioModel 的名称。
+  - 通过上传导入 xlsx 格式模版文件进行整体内容修改。
+  - 选择相关论文。
+  - 添加相关描述。
+- Export 按钮：导出 xlsx 格式文件。导出后可以在 Excel 中进行修改，然后再导入 BioModel 进行整体内容修改。
 - 注意：克隆和删除操作需要在 BioModel 列表中进行。
 
 
@@ -162,6 +175,7 @@ Compositions 用于检查模型的各物质平衡，包括 ThOD，N，P，S，Ch
 ## <a id="Version"></a>Version
 
 - 在 Version 选项卡中可以把当前的 Draft 发布为不同的版本，每个版本都有一个唯一的版本号（按数字递增）。
+- 只有在 Draft 中可以修改 Detail，版本发布后不可再次修改。
 - 发布的版本分为 Public/Private 两种：
   - Public 版本可以被其它用户克隆。
   - Private 版本只能被自己使用。

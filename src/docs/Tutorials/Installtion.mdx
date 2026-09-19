@@ -35,8 +35,8 @@ systems. Therefore, it can leverage the power of supercomputers, as their system
 
   <ul>
     <li>
-      **Download and install**: <a href={config.customFields.urlDownloadClientWindows} target="_blank" download>Windows</a>, supports <b>Windows 10</b> and later versions.
-       {/* or <a href={config.customFields.urlDownloalNetdiskWindows} target="_blank" download>Windows (Netdist)</a>. */}
+      **Download and install**: <a href={config.customFields.urlDownloadClientWindows} target="_self" download>Windows</a>, supports <b>Windows 10</b> and later versions.
+       {/* or <a href={config.customFields.urlDownloalNetdiskWindows} target="_self" download>Windows (Netdist)</a>. */}
     </li>
     <li>
       **Uninstall**: click the <code>Uninstall SimpoClient</code> in startup menu, or click <code>C:\Program Files\SimpoClient\unins000.exe</code>.
@@ -65,8 +65,8 @@ systems. Therefore, it can leverage the power of supercomputers, as their system
     <ul>
 
       <li>
-      Download: <a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>Ubuntu</a>.
-       {/* or <a href={config.customFields.urlDownloalNetdiskUbuntu} target="_blank" download>Ubuntu (Netdist)</a>. */}
+      Download: <a href={config.customFields.urlDownloalClientUbuntu} target="_self" download>Ubuntu</a>.
+       {/* or <a href={config.customFields.urlDownloalNetdiskUbuntu} target="_self" download>Ubuntu (Netdist)</a>. */}
 
 
       </li>
@@ -77,8 +77,7 @@ systems. Therefore, it can leverage the power of supercomputers, as their system
       <li>
         **Directories**:
           - Program installation directory: `/opt/SimpoClient`.
-          - Project data directory: `/home/YOURUSERNAME/.SimpoClient`.
-            - Note: `YOURUSERNAME` refers to your system user account name.
+          - Project data directory: `~/.SimpoClient`.
             - This directory can be opened directly from the `Project`'s `Calculation` page under the `Simulation`/`Sensitivity`/`Uncertainty`/`Estimation` sections.
             - This directory stores the calculation data for each project, including raw calculation results, result figures, and runtime logs.
             - If the main program encounters an error, the log file `SimpoClient_error.log` will be generated in this directory to facilitate troubleshooting the cause of the error.
@@ -89,7 +88,10 @@ systems. Therefore, it can leverage the power of supercomputers, as their system
 
   </li>
   <li>
-    **Uninstall**: run commands <code>sudo dpkg -r SimpoClient</code> or <code>sudo bash /opt/SimpoClient/uninstall.sh</code>.
+    **Uninstall**: run <code>sudo dpkg -r simpoclient</code>. The standard
+    uninstall removes the program but keeps <code>~/.SimpoClient</code> and its
+    project data. To delete that data explicitly, run
+    <code>sudo /opt/SimpoClient/uninstall.sh</code> before uninstalling the package.
   </li>
 
 </ul>

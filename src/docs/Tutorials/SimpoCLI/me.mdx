@@ -1,0 +1,55 @@
+---
+id: me
+title: Verify the current API Token
+sidebar_label: me — verify the Token
+---
+
+# `me`: verify the current API Token
+
+Use `me` to confirm that SimpoCLI can authenticate and to inspect the
+user, Token ID, and scopes associated with the selected Token.
+
+## Syntax
+
+```text
+simpo me [OPTIONS]
+```
+
+Typical use after [`configure`](./configure):
+
+```text
+simpo me
+```
+
+Use a temporary Token without changing the saved file:
+
+```bash
+simpo me --api-token "$SIMPO_API_TOKEN"
+```
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | Maximum time for the HTTP request |
+| `--api-token TOKEN` | saved configuration | Complete Token override |
+| `--base-url URL` | URL selected by the packaged environment | Backend override for this request |
+
+Token resolution follows `--api-token`, the `SIMPO_API_TOKEN` environment
+variable, then the saved JSON file.
+
+## Result
+
+The result contains identity and permissions, not the Token secret:
+
+```json
+{
+  "userId": 123,
+  "tokenId": 7,
+  "scopes": ["read", "write", "calculate"]
+}
+```
+
+A `401` error means the selected Token is not accepted by the selected backend.
+A successful response does not guarantee every command is permitted; inspect
+`scopes` for `read`, `write`, or `calculate` as required.

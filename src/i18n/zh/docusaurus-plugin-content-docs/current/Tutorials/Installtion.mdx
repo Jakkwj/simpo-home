@@ -34,8 +34,8 @@ import TabItem from "@theme/TabItem";
 
   <ul>
     <li>
-      **下载和安装**：<a href={config.customFields.urlDownloadClientWindows} target="_blank" download>Windows</a>，支持 <b>Windows 10</b> 及以上版本。
-       {/* or <a href={config.customFields.urlDownloalNetdiskWindows} target="_blank" download>Windows (Netdist)</a>. */}
+      **下载和安装**：<a href={config.customFields.urlDownloadClientWindows} target="_self" download>Windows</a>，支持 <b>Windows 10</b> 及以上版本。
+       {/* or <a href={config.customFields.urlDownloalNetdiskWindows} target="_self" download>Windows (Netdist)</a>. */}
     </li>
     <li>
       **卸载**: 在开始菜单点击 <code>Uninstall SimpoClient</code>，或者点击运行 <code>C:\Program Files\SimpoClient\unins000.exe</code>。
@@ -63,8 +63,8 @@ import TabItem from "@theme/TabItem";
 
     <ul>
       <li>
-      下载：<a href={config.customFields.urlDownloalClientUbuntu} target="_blank" download>Ubuntu</a>.
-       {/* or <a href={config.customFields.urlDownloalNetdiskUbuntu} target="_blank" download>Ubuntu (Netdist)</a>. */}
+      下载：<a href={config.customFields.urlDownloalClientUbuntu} target="_self" download>Ubuntu</a>.
+       {/* or <a href={config.customFields.urlDownloalNetdiskUbuntu} target="_self" download>Ubuntu (Netdist)</a>. */}
       </li>
       <li>
         运行此命令进行安装：<code>sudo dpkg -i SimpoClient_VERSION_amd64.deb</code>。`VERSION`是最新版本号。
@@ -72,13 +72,14 @@ import TabItem from "@theme/TabItem";
     </ul>
   </li>
   <li>
-    **卸载**：运行命令 <code>sudo dpkg -r SimpoClient</code> 或者 <code>sudo bash /opt/SimpoClient/uninstall.sh</code>。
+    **卸载**：运行 <code>sudo dpkg -r simpoclient</code>。标准卸载会删除程序，
+    但保留 <code>~/.SimpoClient</code> 及其中的项目数据。如需主动删除这些数据，
+    请在卸载软件包之前运行 <code>sudo /opt/SimpoClient/uninstall.sh</code>。
   </li>
   <li>
     **目录**：
       - 程序安装目录：<code>/opt/SimpoClient</code>。
-      - 项目数据目录：<code>/home/YOURUSERNAME/.SimpoClient</code>。
-        - 注意: `YOURUSERNAME` 是您的系统用户名。
+      - 项目数据目录：<code>~/.SimpoClient</code>。
         - 此目录可以在 `Project` 的 `Calculation` 页面下的 `Simulation`/`Sensitivity`/`Uncertainty`/`Estimation` 内直接打开。
         - 此目录下存放着各项目的计算数据，包括计算结果源数据，结果图片和运行日志。
         - 如果主程序运行错误，这个目录下将产生日志文件 `SimpoClient_error.log`，便于排除错误原因。

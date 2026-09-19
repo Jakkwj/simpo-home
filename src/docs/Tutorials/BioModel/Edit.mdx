@@ -18,6 +18,14 @@ The Detail page of a BioModel contains Components, Parameters, Compositions, Ion
 
 Components are the constituents of a model and the main objects used in model simulations. They generally include soluble and particulate substrates and microorganisms.
 
+{/* <div align="center" style={{marginTop: "1rem", marginBottom: "1rem"}}> */}
+  {/* <video width="100%" controls playsInline preload="metadata" aria-label="Components 编辑演示"> */}
+    {/* <source src="/videos/tutorials/biomodel/components-edit.mp4" type="video/mp4" /> */}
+    {/* <track src="/videos/tutorials/biomodel/components-edit.zh.vtt" kind="subtitles" srcLang="zh" label="中文" default /> */}
+    {/* <track src="/videos/tutorials/biomodel/components-edit.en.vtt" kind="subtitles" srcLang="en" label="English" /> */}
+  {/* </video> */}
+{/* </div> */}
+
 - The Components dialog supports viewing and editing:
   - Editing operations include creating, duplicating, deleting, and reordering.
   - Hold Ctrl or Shift and click with the left mouse button to select multiple rows for batch operations.
@@ -25,9 +33,8 @@ Components are the constituents of a model and the main objects used in model si
   - Symbol can contain only letters, numbers, and underscores (underscores cannot be consecutive):
     - Soluble components must be named with the `S_` prefix. For example, dissolved oxygen (DO) should be named `S_O2`.
     - Particulate components must be named with the `X_` prefix. For example, ordinary heterotrophs (OHO) should be named `X_OHO`.
-    - Soluble and particulate components have different settling behavior.
-    - The unit of a component is shown in plots of the calculation results.
     - When saving, soluble components are automatically placed before particulate components.
+    - Soluble and particulate components have different settling behavior.
   - Unit:
     - Unit cannot be empty.
     - Unit is shown in plots of the calculation results.
@@ -44,7 +51,7 @@ Parameters are used in the model, including stoichiometric and kinetic parameter
 - The details include:
   - Symbol can contain only letters, numbers, and underscores (underscores cannot be consecutive), and must start with a letter.
   - Unit:
-    - Unit cannot be empty.
+    - Cannot be empty.
     - If a parameter is a kinetic parameter, its unit **must end with**: ``/d``, ``d-1``, ``/day``, ``day-1``, ``1/d``, ``1/day``, ``/h``, ``h-1``, ``/hour``, ``hour-1``, ``1/h``, ``1/hour``, ``/m``, ``m-1``, ``/minute``, ``minute-1``, ``1/m``, ``1/minute``, ``/s``, ``s-1``, ``/second``, ``second-1``, ``1/s`` or ``1/second``. This ensures consistent time units throughout the calculation.
     - For example, if the default value of the kinetic parameter `u_max` is `10 /d`, you can enter:
       - `DefaultValue` = `10` and `Unit` = `/d` (or ``d-1``, ``/day``, ``day-1``, ``1/d``, ``1/day``).
@@ -53,13 +60,15 @@ Parameters are used in the model, including stoichiometric and kinetic parameter
       - `DefaultValue` = `10/24/60/60` and `Unit` = `/s` (or ``s-1``, ``/second``, ``second-1``, ``1/s``, ``1/second``).
       - A kinetic parameter's unit only needs to end with one of these suffixes; `/d` and `mgCOD/d`, for example, have the same effect.
   - DefaultValue:
-    - DefaultValue cannot be empty. If no value is provided for the parameter when a Project is created, this default value is used.
+    - Cannot be empty. When creating a new Project, the Value of Solution.Variable will use this value.
     - **Note: During calculation, the value in `Project.Solution` takes precedence.**
   - LowerBound:
-    - Can be empty.
+  - If non-empty: When creating a new Project, the `LowerBound` of `Solution.Variable` will use this value.
+  - If empty: When creating a new Project, the `LowerBound` of `Solution.Variable` will default to `Value * 0.1`.
     - **Note: During calculation, the value in `Project.Solution` takes precedence.**
   - UpperBound:
-    - Can be empty.
+    - If non-empty: When creating a new Project, the `UpperBound` of `Solution.Variable` will use this value.
+    - If empty: When creating a new Project, the `UpperBound` of `Solution.Variable` will default to `Value * 1.1`.
     - **Note: During calculation, the value in `Project.Solution` takes precedence.**
   - Name can be empty.
   - Description can be empty.
@@ -70,8 +79,8 @@ Compositions are used to check the model's material balances. Six balances are a
 
 - The Compositions dialog supports viewing and editing.
 - You can select any one or more of the six balances above, or leave them all empty (a balance is not checked if it is not selected).
-- If all material-balance checks in Compositions pass, meaning that all balance results are zero, the Balances component is not displayed.
 - If any material-balance result in Compositions is nonzero, the Balances component displays the Processes with nonzero results, and a warning dialog appears each time you enter the BioModel page.
+- If all material-balance checks in Compositions pass, meaning that all balance results are zero, the Balances component is not displayed.
 - Because balance checks use zero as the reference, when a material balance is nonzero, first try converting the coefficients in the Processes matrix and Compositions to fractions to determine whether rounding errors are causing the imbalance.
 - If an imbalance does exist, adjust the coefficients in the Processes matrix and Compositions until the material balance is zero.
 - An imbalance may sometimes result from omitting a process description from the model. If you are sure that your model is balanced, you can ignore the warning.
@@ -150,8 +159,12 @@ Compositions are used to check the model's material balances. Six balances are a
 ### <a id="OtherActions"></a>6. Other Actions
 - Temp button: temporary save. The format is not checked, so this is useful for saving quickly; you can correct the format later.
 - Parse button: parse and save. The format is checked during saving, and the file cannot be saved if the format is invalid.
-- Edit button: edit the BioModel details. You can upload an xlsx file here to modify the entire BioModel.
-- Export button: export an xlsx file.
+- Edit button:
+  - Modify the name of the BioModel.
+  - Upload and import an xlsx template file for overall content modification.
+  - Select related papers.
+  - Add relevant descriptions.
+- Export button: Export the file in xlsx format. After export, you can modify it in Excel and then import it back into the BioModel for overall content changes.
 - Note: cloning and deleting must be performed from the BioModel list.
 
 
@@ -159,6 +172,7 @@ Compositions are used to check the model's material balances. Six balances are a
 ## <a id="Version"></a>Version
 
 - In the Version tab, you can publish the current Draft as different versions. Each version has a unique version number, assigned in ascending numerical order.
+- Only in Draft can the Detail be modified, once the version is released, it cannot be modified again.
 - Published versions can be Public or Private:
   - Public versions can be cloned by other users.
   - Private versions can be used only by you.

@@ -1,0 +1,127 @@
+---
+id: calculate
+title: Start a calculation
+sidebar_label: calculate — start a calculation
+---
+
+# `calculate`: prepare and start a calculation
+
+The command asks the OpenAPI to validate the Project and compile the calculation
+files. By default it then passes the returned launch protocol to the locally
+installed `SimpoClient` and exits without waiting for the calculation to finish.
+
+## Requirements
+
+- Token scope: `calculate`
+- A Project owned by the Token user
+- Project version `0` (Draft)
+- A compatible `SimpoClient` installed on the same computer, unless
+  `--no-launch` is used
+
+## Syntax and examples
+
+```text
+simpo calculate PROJECT_ID [OPTIONS]
+```
+
+Start a Simulation and return after SimpoClient is launched:
+
+```text
+simpo calculate 706 --engine SIM
+```
+
+Start OAT sensitivity analysis and wait for a terminal status:
+
+```text
+simpo calculate 706 --engine OAT_AR --wait --wait-timeout 86400
+```
+
+Only prepare the files without launching SimpoClient:
+
+```text
+simpo calculate 706 --no-launch
+```
+
+## Calculation engines
+
+`--engine` is case-sensitive and defaults to `SIM`.
+
+| Code | Analysis |
+| --- | --- |
+| `SIM` | Simulation |
+| `OAT_AA` | Sensitivity: absolute output / absolute input |
+| `OAT_RA` | Sensitivity: relative output / absolute input |
+| `OAT_AR` | Sensitivity: absolute output / relative input; recommended OAT variant |
+| `OAT_RR` | Sensitivity: relative output / relative input |
+| `LHS` | Uncertainty analysis using Latin Hypercube Sampling |
+| `GA` | Parameter estimation with Genetic Algorithm |
+| `RFGA` | Parameter estimation with the RFGA engine |
+
+The generic `OAT` code is not a public CLI choice.
+
+## Common calculation options
+
+| Option | Default | Accepted value |
+| --- | --- | --- |
+| `--threads INTEGER` | logical CPU count | `1` to the machine's logical CPU count |
+| `--resolution-rate FLOAT` | `1.0` | `0.05` to `10.0`, corresponding to Dashboard `5%` to `1000%` |
+| `--ode-solver TEXT` | `Forward_Euler` | only `Forward_Euler` |
+| `--step-tolerance FLOAT` | `0.05` | `0.0001` to `0.2` |
+| `--auto-plot / --no-auto-plot` | disabled | Enable or disable real-time local plotting |
+| `--force-recalculate / --no-force-recalculate` | disabled | Force a new calculation instead of allowing result reuse |
+| `--steady-state / --no-steady-state` | disabled | Enable or disable steady-state calculation |
+| `--platform TEXT` | package platform | `linux`, `windows`, or `mac`; normally omit |
+
+## Analysis-specific options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--intensity-oat FLOAT` | `0.01` | OAT perturbation ratio from `0.01` to `0.1` (`1%` to `10%`) |
+| `--amount-lhs INTEGER` | `10` | LHS sample count, at least `2` |
+| `--amount-ga INTEGER` | `1` | Number of GA/RFGA runs, at least `1` |
+| `--individual-ga INTEGER` | logical CPU count | Population size, at least `1`; a multiple of `--threads` is recommended |
+| `--generation-ga INTEGER` | `200` | Maximum generations, at least `1` |
+| `--escaped-threshold-ga INTEGER` | `100` | Generations without improvement before early stop, at least `1` |
+| `--ga-initial-value / --no-ga-initial-value` | disabled | Use current Variable values as GA/RFGA initial values |
+| `--auto-plot-correlation / --no-auto-plot-correlation` | disabled | Automatic correlation plots |
+| `--auto-plot-skeleton / --no-auto-plot-skeleton` | enabled | Automatic skeleton plots |
+
+## Launch and wait options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--no-launch` | disabled | Prepare files but do not start local SimpoClient |
+| `--print-protocol` | disabled | Include the secret, short-lived launch protocol in JSON |
+| `--client-main PATH` | installed SimpoClient | Development override for the executable or source `main.py` |
+| `--wait / --no-wait` | disabled | Poll until `completed`, `failed`, `stopped`, or `idle` |
+| `--poll-interval SECONDS` | `2.0` | Delay between status requests while waiting |
+| `--wait-timeout SECONDS` | `86400` | Maximum time this CLI polls; does not stop the calculation |
+| `--timeout SECONDS` | `3700` | Timeout for the single backend preparation/compilation request |
+
+`--no-launch` cannot be combined with `--wait`. If `--wait-timeout` expires,
+only the waiting CLI exits; SimpoClient and the calculation continue. Check them
+later with [`calculation-status`](./calculation-status), or explicitly use
+[`stop-calculation`](./stop-calculation).
+
+`--print-protocol` is intended for explicit integrations. The protocol contains
+a short-lived credential and must not be published or written to public logs.
+
+## Result
+
+Without `--wait`, success confirms preparation and local launch, not completion:
+
+```json
+{
+  "success": true,
+  "projectId": 706,
+  "projectName": "Example",
+  "projectVersion": 0,
+  "engine": "SIM",
+  "clientPid": 12345,
+  "launched": true,
+  "launchBeforeSeconds": 3600,
+  "finalStatus": null
+}
+```
+
+With `--wait`, `finalStatus` contains the terminal backend status.

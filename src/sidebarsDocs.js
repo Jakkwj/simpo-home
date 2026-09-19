@@ -37,7 +37,6 @@ const sidebars = {
       items: [
         'Tutorials/Installtion',
 
-
         {
           type: 'category',
           label: 'BioModel',
@@ -109,6 +108,27 @@ const sidebars = {
         // },
 
 
+      ],
+    },
+
+    // SimpoCLI 是独立的产品使用文档，与 Tutorials 和 Case Study 同级。
+    // 目录默认折叠；进入总览或任一命令页时，Docusaurus 会自动展开当前分支。
+    {
+      type: 'category',
+      label: 'SimpoCLI',
+      key: 'SimpoCLI',
+      collapsible: true,
+      collapsed: true,
+      items: [
+        // 总览作为分类内明确的第一页，确保折叠目录展开后能看到全部分页。
+        'Tutorials/SimpoCLI',
+        'Tutorials/SimpoCLI/configure',
+        'Tutorials/SimpoCLI/me',
+        'Tutorials/SimpoCLI/project-variables',
+        'Tutorials/SimpoCLI/set-project-variable',
+        'Tutorials/SimpoCLI/calculate',
+        'Tutorials/SimpoCLI/calculation-status',
+        'Tutorials/SimpoCLI/stop-calculation',
       ],
     },
 

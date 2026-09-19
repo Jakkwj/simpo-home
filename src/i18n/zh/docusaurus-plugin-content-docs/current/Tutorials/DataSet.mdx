@@ -4,25 +4,28 @@ import config from '@generated/docusaurus.config'
 # DataSet
 
 
-DataSet 是存放您测量数据的地方。
+DataSet 用于存放 SIMPO Project 使用的测量数据和工艺布局，包含 Targets、Tanks、时间序列测量数据、Flows、Pumps 以及各对象之间的 Connections。
+
 
 :::tip 流程图
 
-添加反应及其链接关系（入流、流量和连接）后，流程图将自动生成。 您可以在此流程图中点击并编辑污染物目标、反应器、入流、流量和连接。
+流程图由 DataSet 中的反应器和连接关系自动生成。选择流程图中的节点或连线可以打开对应的编辑器，也可以通过列表菜单直接编辑各个数据表。
 
 :::
 
 
 ## <a id="Create"></a>新建
 
-创建 DataSet 有几种方法（从下面的 6 种方法中选择一种）：
+创建 DataSet 有以下几种方式，请根据已有数据选择合适的方法。
+
 
 ### <a id="way_1"></a>1. 空白新建
 
-创建一个空的 DataSet，编辑并解析保存后使其生效。
-- 添加新 targets。
-- 添加新 tanks。
-- 可选：添加新的链接（入流、流量和连接）。如果您只使用独立的反应器，则此步骤不是必需的。
+创建一个空的 DataSet，编辑详细内容后使用 Parse 保存，才能用于计算。
+
+- 添加必需的 Targets 和 Tanks。
+- 有测量数据时，为 Tanks 和 Inflows 添加时间序列数据。
+- 工艺中存在进流、回流、泵、出水或排泥时，添加 Flows 和 Connections。
 
   <br />
   <div align="center" style={{marginTop: "0vh"}}>
@@ -30,50 +33,196 @@ DataSet 是存放您测量数据的地方。
   </div>
 
 
-### <a id="way_2"></a>2. 在 Project 新建时同时新建
+### <a id="way_2"></a>2. 随新建 Project 一起新建
 
-如果在创建新 Project 时没有指定 DataSet，则会相应地创建一个空的 DataSet。
+如果创建 Project 时没有指定 DataSet，系统会自动创建一个空的 DataSet。
+
 
 ### <a id="way_3"></a>3. 从预设布局新建
 
-从预设布局新建，目标污染物可以从 BioModel 中指定。
+预设布局会创建一个初始工艺结构。当模板文件为空时，还可以选择一个 BioModel，并将其 Components 用作 DataSet 的 Targets。
 
+当前可选布局包括：
+
+- `Batch`
+- `Chemostat`
+- `CAS`
+- `CAS-Pump`
+- `AO`
+- `AO-Pump`
+- `AAO`
+- `AAO-Pump`
+- `UCT (AAAO)`
+- `UCT (AAAO)-Pump`
+
+名称带有 `-Pump` 的布局包含用于曝气计算的 Pump。新建后请检查系统生成的 Targets、Tanks 和 Connections。
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlDataSet_2} width="80%"/>
   </div>
 
-### <a id="way_4"></a>4. 从模板导入
 
-从模板导入一个 DataSet：<a href={config.customFields.urlDownloadUrlplateDataSet} target="_blank" download>DataSet template xlsx file</a>
+### <a id="way_4"></a>4. 从 XLSX 模板导入
+
+下载 <a href={config.customFields.urlDownloadUrlplateDataSet} target="_self" download>DataSet XLSX 模板文件</a>，填写各个工作表后，在新建 DataSet 时上传。已有 DataSet 也可以先导出该模板，在本地修改后再次导入。
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlDataSet_3} width="80%"/>
   </div>
 
-### <a id="way_5"></a>5. 从公开 DataSet 库克隆新建
 
-从公开 库克隆新建 库克隆一个 库克隆新建。
+### <a id="way_5"></a>5. 从公开 DataSet 库克隆
+
+将公开 DataSet 克隆到个人 DataSet 列表。克隆结果以 Draft 状态开始，可以继续编辑。
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlDataSet_4} width="80%"/>
   </div>
 
 
-### <a id="way_6"></a>6. 从公开 Project 库克隆新建
+### <a id="way_6"></a>6. 从公开 Project 库克隆
 
-从公开 Project 库克隆一个 Project 时，也会克隆相应的 DataSet
+克隆公开 Project 时，也会同时克隆其对应的 BioModel 和 DataSet。
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlDataSet_5} width="80%"/>
   </div>
 
 
+### <a id="way_7"></a>7. 使用 AI 新建
+
+在新建 DataSet 对话框中，点击名称输入框旁的 AI 按钮，选择可用的 Claude 模型，并详细填写 Design Conditions。AI 生成后请人工检查，再将 DataSet 用于计算。AI 创建最长可能需要 10 分钟。
+
+
+
 ## <a id="Edit"></a>编辑
 
-您可以通过拖拉拽编辑 DataSet 中的 目标污染物、反应器、入流、流量和连接。
+DataSet 可编辑的部分包括 Detail、Version 和 Profile。已发布版本以及公开/私有查看页面为只读；如果需要编辑，请先将 DataSet 克隆到个人列表，得到一个 Draft。
 
 
-## <a id="Release"></a>发布
+### <a id="Detail"></a>Detail
 
-In the Version tab you can publish different versions, each with a unique version number.
+Detail 页面包含 Flowchart、Targets、Tanks 和 Links 视图。以下表格编辑操作均适用于 Draft。
+
+
+#### <a id="Unit"></a>1. Unit
+
+在 Flowchart 的 `List` 菜单中打开 `Unit`。DataSet 使用的单位如下：
+
+- `Time`：`day`、`hour`、`minute` 或 `second`，只有该单位可以修改。
+- `Flow`：固定为 `m3/d`。
+- `Volume`：固定为 `m3`。
+- `Area`：固定为 `m2`。
+- `Height`：固定为 `m`。
+
+修改 Time 单位后，Tank 测量数据、Inflows 和 Flows 中的时间索引标签会同步更新。
+
+
+#### <a id="Targets"></a>2. Targets
+
+Targets 是测量变量，也是 DataSet 与 BioModel Components 之间的连接对象。表格包含 `Symbol`、`Unit`、`Name`、`Description` 和 `Oxygen`。
+
+- `Symbol` 和 `Unit` 必填。Symbol 必须以字母开头，只能使用字母、数字和下划线，不能连续使用下划线。
+- Symbol 必须唯一，不能与保留字或 DataSet 中的其他名称冲突。
+- 为溶解氧目标勾选 `Oxygen`，该标记会用于曝气计算。
+- 使用添加、复制、删除和排序按钮维护表格。按住 `Ctrl` 或 `Shift` 点击可以选择多行并执行批量操作。
+
+
+#### <a id="Tanks"></a>3. Tanks
+
+Tank 列表显示 `Name`、`Type`、`BioCalculated`、`Volume` 和 `Constant Volume`。可用的 Tank 类型为 `CSTR` 和 `Point Settling`。
+
+- `CSTR` 表示连续搅拌釜式反应器。可以设置是否进行生化计算，以及计算时是否保持体积不变。
+- `Point Settling` 由 `Outlet` 和 `Blanket` 两个区域组成。其 `Settling Factor` 范围为 0 到 1；由于它不是反应区，`BioCalculated` 会自动关闭。
+- Tank 名称遵循与 Target Symbol 相同的命名规则，Volume 不能为负数。
+- 打开 Tank 可以编辑其时间序列测量数据。表格第一列为 `Time`，后面每列对应一个 Target。支持添加、复制、删除、排序、Step Add，以及 CSV 导入和导出。
+- CSTR 的曝气参数包括：
+  - `Diffuser Number`：非负整数。设为 0 时不进行曝气。
+  - `Diffuser Depth (m)`：非负数，表示曝气头深度。设为 0 时不进行曝气。
+  - `Alpha Factor`：0 到 1 之间，表示污水中的传氧修正系数。
+  - `Beta Factor`：0 到 1 之间，表示污水中的氧溶解度修正系数。
+
+
+#### <a id="Pumps"></a>4. Pumps
+
+Pump 用于曝气计算。Pump 列表包含 `Name`、`Type`、`SOTEa`、`SOTEb` 和 `SOTEc`。
+
+在 Pump 行中打开 `Fit SOTE Curve` 可以维护曲线数据。曲线表包含：
+
+- `Qd (m3/h/Diffuser)`
+- `Diffuser Depth (m)`
+- `SOTE (%)`
+
+曲线数据支持 CSV 导入和导出。输入足够的有效数据后，点击 `Fit SOTE Curve` 计算系数。SIMPO 显示的拟合关系为：
+
+```text
+SOTEa * (Qair / DiffuserNumber)^(-SOTEb) * DiffuserDepth^(SOTEc)
+```
+
+
+#### <a id="Inflows"></a>5. Inflows 和测量数据
+
+选择 Inflow 名称可以打开其时间序列表。第一列为 `Time`，后续列为该时刻各 Target 的浓度或数值。
+
+- 根据需要添加、复制、删除、排序或 Step Add 行。
+- 可以将当前表格导出为 CSV，也可以导入由导出操作生成的 CSV。
+- 导入时不要修改第一行表头。
+- Time 索引不能为空、不能为负数，也不能重复。
+
+
+#### <a id="Flows"></a>6. Flows
+
+选择 Flow 名称可以打开其时间序列表。表格包含 `Time` 和 `Flow`，Flow 使用固定单位 `m3/d`。
+
+使用 `Unit`、`Step Add`、添加、删除以及 CSV 导入/导出按钮维护时间序列。Time 索引同样不能为空、不能为负数或重复。
+
+
+#### <a id="Connections"></a>7. Connections
+
+Connections 定义物质和流量在工艺中的流动关系。表格包含 `From`、`Flow` 和 `Into`。
+
+- `From` 可以选择 Tank、Point Settling 的 `Outlet` 或 `Blanket`、Inflow，或者 Pump。
+- `Into` 可以选择 Tank、`Outflow` 或 `Wasted`。
+- Pump 只能连接到 CSTR Tank。
+- 在 `Flow` 中选择已有的 Flow，并输入所需的流量表达式或关系。
+
+Connection 会同步反映在 Flowchart 中。保存前请检查流向和连接端点。
+
+
+#### <a id="FlowChart"></a>8. Flowchart
+
+Flowchart 提供 DataSet 的图形化视图。`Add` 菜单包含：
+
+- `New Tank`：选择 `CSTR` 或 `Point Settling`。
+- `New Pump`、`New Inflow`、`New Outflow` 和 `New Wasted`。
+- `New Flow`、`New Connection` 和 `New Target`。
+
+`List` 菜单可以打开 `Tanks`、`Pumps`、`Inflows`、`Flows`、`Connections`、`Targets` 或 `Unit`。`Tools` 菜单提供：
+
+- `Fit`：使流程图适应可见内容。使用 `Ctrl + 鼠标滚轮`缩放，使用 `Shift + 鼠标滚轮`左右平移，使用鼠标滚轮上下平移。
+- `Grid`：显示或隐藏背景网格。
+- `Layout`：DataSet 处于 Draft 时自动排列流程图。
+- `Export`：以 1x、2x、5x 或 10x PNG 导出流程图。
+- 全屏模式，便于编辑较大的工艺布局。
+
+
+#### <a id="OtherActions"></a>9. 其它操作
+
+- `Temp`：不检查格式，直接临时保存当前 Detail。适合录入尚未完成的数据，保存速度更快；引用该 DataSet Draft 的 Project 也会同步保存。
+- `Parse`：检查格式后保存 Detail。格式不正确时无法保存；引用该 DataSet Draft 的 Project 也会同步保存。解析可能耗时，刷新页面可以终止正在进行的解析。
+- `Edit`：修改 DataSet 名称、导入 XLSX 模板、选择相关论文或编辑描述。
+- `Export`：将 DataSet 导出为 XLSX 文件。可以在本地修改后，再通过 `Edit` 导入。
+- 克隆和删除操作需要在 DataSet 列表中执行。
+
+
+## <a id="Version"></a>Version
+
+- 在 Version 标签页中，可以将当前 Draft 发布为一个或多个版本。每个版本都有按数字递增的唯一版本号。
+- 可以对发布记录排序，并打印或导出发布记录。
+- 根据权限，已发布版本可以设置为 `Public` 或 `Private`。Public 版本可以被其他用户克隆，Private 版本保持受限访问。
+- 在已发布版本的操作菜单中使用 `Sync`，可以将该版本的内容同步回 Draft。
+
+
+## <a id="Profile"></a>Profile
+
+Profile 标签页显示 DataSet 的 Description、相关 Paper 和数量统计。数量统计包括 Targets、Tanks、Inflows 和 Flows 的数量；`Quoted By` 列表显示引用该 DataSet 的 Projects。

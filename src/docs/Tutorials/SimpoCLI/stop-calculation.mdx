@@ -1,0 +1,57 @@
+---
+id: stop-calculation
+title: Stop a calculation
+sidebar_label: stop-calculation — stop work
+---
+
+# `stop-calculation`: stop a calculation
+
+Stop a Project calculation and terminate matching local SimpoClient and
+calculation processes where possible.
+
+## Requirements
+
+- Token scope: `calculate`
+- The Project must belong to the Token user.
+
+## Syntax
+
+```text
+simpo stop-calculation PROJECT_ID [OPTIONS]
+```
+
+Example:
+
+```text
+simpo stop-calculation 706
+```
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | Maximum time for the HTTP request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+## What the command stops
+
+1. The backend marks the task as stopped and revokes its upload Token.
+2. The CLI searches the current computer for the SimpoClient process launched
+   for this exact Project ID and attempts to terminate its process tree.
+3. Matching local calculation processes are stopped without intentionally
+   terminating calculations for other Project IDs.
+
+An old client may briefly print `upload token does not match` while exiting
+after the backend revokes its credential. That message is expected during a
+successful stop.
+
+## Result
+
+A successful response has `success: true`, `status: "stopped"`, and
+`localProcessesStopped`, which reports how many matching local processes were
+found and stopped. Backend stop success does not guarantee that an inaccessible
+or externally hosted process could be terminated locally.
+
+Confirm the resulting state with
+[`calculation-status`](./calculation-status).

@@ -4,30 +4,28 @@ import config from '@generated/docusaurus.config'
 # DataSet
 
 
-<!-- As the 2nd essential element of **SIMPO**, -->
-DataSet is the place to put your measured data.
+DataSet stores the measured data and process layout used by a SIMPO Project. It contains targets, tanks, time-series measurements, flows, pumps, and the connections between them.
 
 
 :::tip Flow Chart
 
-Flow chart will be generated automatically after adding tanks and links (inflows, flows and connections). You can click and edit the targets, tanks, inflows, flows and connections in this flow chart.
+The Flowchart is generated from the tanks and links in the DataSet. Select a node or link in the chart to open its editor. You can also use the list menus to edit each table directly.
 
 :::
 
 
 ## <a id="Create"></a>Create
 
-There are a few ways to create a DataSet (choose 1 from 6 in below):
+There are several ways to create a DataSet. Choose the method that matches the data you already have.
 
 
-### <a id="way_1"></a>1. Create from Empty
-Create an empty DataSet, edit and parsed save the detial later to make it work.
-  - Add new targets.
-  - Add new tanks.
-  - Optional: add new links (inflows, flows and connections). This is unnecessary if you only get independent tanks.
+### <a id="way_1"></a>1. Create from Blank
 
-<!-- /img/quick_start/step3/1.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/11.gif" width="80%"/> -->
+Create an empty DataSet, edit its detail, and save it with Parse so it can be used in a calculation.
+
+- Add the required targets and tanks.
+- Add measured data for tanks and inflows when it is available.
+- Add flows and connections when the process contains inflows, recirculation, pumps, outflows, or wasted sludge.
 
   <br />
   <div align="center" style={{marginTop: "0vh"}}>
@@ -35,65 +33,196 @@ Create an empty DataSet, edit and parsed save the detial later to make it work.
   </div>
 
 
-### <a id="way_2"></a>2. Create from Project Creation
-If you don't specify a DataSet while creating a new Project, an empty DataSet will be crated accordingly.
+### <a id="way_2"></a>2. Create Along with a New Project
+
+If you do not specify a DataSet while creating a new Project, an empty DataSet is created automatically.
 
 
-### <a id="way_3"></a>3. Create from Preset
-Create a DataSet from a preset layout, target can be specified from a BioModel.
+### <a id="way_3"></a>3. Create from a Preset Layout
 
+Preset layouts create a starting process structure. When the template file is empty, you can also select a BioModel; its components are used as the DataSet targets.
 
+The available layouts are:
 
-<!-- /img/quick_start/step3/2.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/21.gif" width="80%"/> -->
+- `Batch`
+- `Chemostat`
+- `CAS`
+- `CAS-Pump`
+- `AO`
+- `AO-Pump`
+- `AAO`
+- `AAO-Pump`
+- `UCT (AAAO)`
+- `UCT (AAAO)-Pump`
+
+Layouts with `-Pump` include a pump for aeration calculations. Review the generated targets, tanks, and connections before saving.
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlDataSet_2} width="80%"/>
   </div>
 
-### <a id="way_4"></a>4. Import from Template
 
-<!-- /template_file/DataSet.xlsx -->
+### <a id="way_4"></a>4. Import from an XLSX Template
 
-Import a DataSet from a: <a href={config.customFields.urlDownloadUrlplateDataSet} target="_blank" download>DataSet template xlsx file</a>
-
-<!-- /img/quick_start/step3/3.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/31.gif" width="80%"/> -->
+Download the <a href={config.customFields.urlDownloadUrlplateDataSet} target="_self" download>DataSet template XLSX file</a>, fill in the sheets, and upload it when creating the DataSet. The same template can be exported from an existing DataSet, edited locally, and imported again.
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlDataSet_3} width="80%"/>
   </div>
 
-### <a id="way_5"></a>5. Clone from Public DataSet
-Clone a DataSet from the public DataSet repository.
 
-<!-- /img/quick_start/step3/4.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/41.gif" width="80%"/> -->
+### <a id="way_5"></a>5. Clone from the Public DataSet Repository
+
+Clone a public DataSet to your Personal DataSets. The clone starts as a Draft that you can edit.
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlDataSet_4} width="80%"/>
   </div>
 
 
-### <a id="way_6"></a>6. Clone from Public Project
-Clone a Project from the public Project repository would also clone the correspoding Dataset.
+### <a id="way_6"></a>6. Clone from the Public Project Repository
 
-<!-- /img/quick_start/step3/5.gif -->
-<!-- <img src="https://sludge.readthedocs.io/en/latest/_images/5.gif" width="80%"/> -->
+Cloning a public Project also clones its corresponding BioModel and DataSet.
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src={config.customFields.imgUrlDataSet_5} width="80%"/>
-
-
   </div>
 
+
+### <a id="way_7"></a>7. Create with AI
+
+In the New DataSet dialog, select the AI button next to the name field, choose an available Claude model, and enter the design conditions in detail. The generated DataSet should be checked manually before it is used. AI creation can take up to 10 minutes.
 
 
 
 ## <a id="Edit"></a>Edit
 
-You can edit the targets, tanks, inflows, flows, and connections in the DataSet by dragging and dropping.
+The editable parts of a DataSet include Detail, Version, and Profile. A released version and a public/private view are read-only; clone the DataSet to your Personal list if you need an editable Draft.
 
-## <a id="Release"></a>Release
 
-In the Version tab you can publish different versions, each with a unique version number.
+### <a id="Detail"></a>Detail
+
+The Detail page contains the Flowchart, Targets, Tanks, and Links views. All table editing operations below apply to a Draft.
+
+
+#### <a id="Unit"></a>1. Unit
+
+Open `Unit` from the Flowchart `List` menu. The units used by the DataSet are:
+
+- `Time`: `day`, `hour`, `minute`, or `second`. This is the only unit that can be changed.
+- `Flow`: fixed to `m3/d`.
+- `Volume`: fixed to `m3`.
+- `Area`: fixed to `m2`.
+- `Height`: fixed to `m`.
+
+Changing the time unit updates the time index labels in tank measurements, inflows, and flows.
+
+
+#### <a id="Targets"></a>2. Targets
+
+Targets are the measured variables that connect a DataSet to the BioModel components. The table contains `Symbol`, `Unit`, `Name`, `Description`, and `Oxygen`.
+
+- `Symbol` and `Unit` are required. A symbol must start with a letter, use only letters, numbers, and underscores, and must not contain consecutive underscores.
+- Symbols must be unique and must not conflict with a reserved word or another DataSet name.
+- Set `Oxygen` for the dissolved-oxygen target used by aeration calculations.
+- Use the add, copy, delete, and sort controls to maintain the table. Hold `Ctrl` or `Shift` while clicking to select multiple rows for batch operations.
+
+
+#### <a id="Tanks"></a>3. Tanks
+
+The tank list shows `Name`, `Type`, `BioCalculated`, `Volume`, and `Constant Volume`. The available tank types are `CSTR` and `Point Settling`.
+
+- `CSTR` means a continuous stirred-tank reactor. Set whether biochemical calculations are enabled and whether the volume remains constant.
+- `Point Settling` consists of `Outlet` and `Blanket` sections. Its `Settling Factor` is between 0 and 1, and `BioCalculated` is disabled automatically because the tank is not a reaction zone.
+- Tank names follow the same naming rules as target symbols, and volume cannot be negative.
+- Open a tank to edit its time-series measured data. The table contains `Time` followed by one column for each target. You can add, copy, delete, reorder, or step-add rows, and import or export CSV data.
+- For a CSTR, the aeration fields are:
+  - `Diffuser Number`: a non-negative integer. A value of 0 disables aeration.
+  - `Diffuser Depth (m)`: a non-negative diffuser depth. A value of 0 disables aeration.
+  - `Alpha Factor`: between 0 and 1; the oxygen-transfer correction for wastewater.
+  - `Beta Factor`: between 0 and 1; the oxygen-solubility correction for wastewater.
+
+
+#### <a id="Pumps"></a>4. Pumps
+
+Pumps are used for aeration calculations. The pump list contains `Name`, `Type`, `SOTEa`, `SOTEb`, and `SOTEc`.
+
+Open `Fit SOTE Curve` for a pump to maintain its curve data. The curve table uses:
+
+- `Qd (m3/h/Diffuser)`
+- `Diffuser Depth (m)`
+- `SOTE (%)`
+
+Curve data can be imported from or exported to CSV. After enough valid rows are entered, use `Fit SOTE Curve` to calculate the coefficients. SIMPO displays the fitted relationship as:
+
+```text
+SOTEa * (Qair / DiffuserNumber)^(-SOTEb) * DiffuserDepth^(SOTEc)
+```
+
+
+#### <a id="Inflows"></a>5. Inflows and measured data
+
+Open an inflow by selecting its name. The first column is `Time`; the remaining columns are the target concentrations or values at that time.
+
+- Add, copy, delete, reorder, and step-add rows as needed.
+- Export the current table to CSV, or import a CSV generated from the export control.
+- Do not change the first header row when importing.
+- Time indices must be present, non-negative, and unique.
+
+
+#### <a id="Flows"></a>6. Flows
+
+Open a flow by selecting its name. The table contains `Time` and `Flow`; flow values use the fixed unit `m3/d`.
+
+Use `Unit`, `Step Add`, add, delete, and CSV import/export controls to maintain the time series. As with inflows, time indices must be present, non-negative, and unique.
+
+
+#### <a id="Connections"></a>7. Connections
+
+Connections define how material and flow move through the process. The table contains `From`, `Flow`, and `Into`.
+
+- `From` can be a tank, a Point Settling `Outlet` or `Blanket`, an inflow, or a pump.
+- `Into` can be a tank, `Outflow`, or `Wasted`.
+- A pump can only be connected to a CSTR tank.
+- Select an existing Flow in the `Flow` field and enter the required flow expression or relationship.
+
+Connections are reflected in the Flowchart. Check the direction and endpoints before saving.
+
+
+#### <a id="FlowChart"></a>8. Flowchart
+
+The Flowchart provides a graphical view of the DataSet. Its `Add` menu contains:
+
+- `New Tank`: `CSTR` or `Point Settling`.
+- `New Pump`, `New Inflow`, `New Outflow`, and `New Wasted`.
+- `New Flow`, `New Connection`, and `New Target`.
+
+The `List` menu opens `Tanks`, `Pumps`, `Inflows`, `Flows`, `Connections`, `Targets`, or `Unit`. The `Tools` menu provides:
+
+- `Fit`: fit the chart to the visible content. Use `Ctrl + Mouse Wheel` to zoom, `Shift + Mouse Wheel` to pan left or right, and the mouse wheel to pan vertically.
+- `Grid`: show or hide the background grid.
+- `Layout`: automatically arrange the chart while the DataSet is a Draft.
+- `Export`: export the chart as a 1x, 2x, 5x, or 10x PNG.
+- Fullscreen mode for editing a large process layout.
+
+
+#### <a id="OtherActions"></a>9. Other Actions
+
+- `Temp`: save the current detail without format checking. It is faster and is useful while entering incomplete data. The Projects that quote this DataSet Draft are saved as well.
+- `Parse`: validate and save the detail. Invalid formats prevent the save. This also saves Projects that quote the DataSet Draft. Parsing may take time; refresh the page to stop a running parse operation.
+- `Edit`: change the DataSet name, import an XLSX template, select a related paper, or edit the description.
+- `Export`: download the DataSet as an XLSX file. Edit the file locally and import it again through `Edit`.
+- Clone and delete operations are available from the DataSet list.
+
+
+## <a id="Version"></a>Version
+
+- In the Version tab, release the current Draft as one or more versions. Each version has a unique number assigned in ascending order.
+- Sort the release list and print/export the release records when needed.
+- Depending on your permissions, a released version can be set to `Public` or `Private`. Public versions can be cloned by other users; private versions remain restricted.
+- Use `Sync` on a released version to copy that version back to the Draft.
+
+
+## <a id="Profile"></a>Profile
+
+The Profile tab displays the DataSet description, related paper, and amount summary. The amount summary includes the numbers of targets, tanks, inflows, and flows. `Quoted By` lists the Projects that use this DataSet.

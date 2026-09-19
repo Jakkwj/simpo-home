@@ -1,0 +1,53 @@
+---
+id: project-variables
+title: 读取 Project Variable
+sidebar_label: project-variables — 读取数值
+---
+
+# `project-variables`：读取 Variable Value
+
+读取当前 Token 用户所拥有 Project 的 Solution 中全部 Variable Value。
+
+## 使用条件
+
+- Token scope：`read`
+- `PROJECT_ID`：当前 Token 用户拥有的正整数 Project 数据库 ID
+
+系统不会枚举其他用户的 Project。无权访问或不存在的 Project 都会返回
+`HTTP 404 Project not found`。
+
+## 命令格式
+
+```text
+simpo project-variables PROJECT_ID [OPTIONS]
+```
+
+示例：
+
+```text
+simpo project-variables 706
+```
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+
+## 返回结果
+
+JSON 包含 Project 信息和 `variables` 数组。每一项标识 Variable 及当前
+`Value`，Tank 专属 Variable 还会包含所属 Tank 信息。自动化程序应按照当前
+后端实际返回的字段名读取。
+
+脚本可以只解析 stdout：
+
+```bash
+variables="$(simpo project-variables 706)" || exit $?
+printf '%s\n' "$variables"
+```
+
+修改单个数值请使用
+[`set-project-variable`](./set-project-variable)。

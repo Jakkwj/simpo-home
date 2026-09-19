@@ -1,0 +1,51 @@
+---
+id: set-project-variable
+title: 修改 Project Variable
+sidebar_label: set-project-variable — 修改数值
+---
+
+# `set-project-variable`：修改 Variable
+
+修改 version 为 `0` 的 Draft Project 中一个数值 Variable。
+
+## 使用条件和校验规则
+
+- Token scope：`write`
+- Project 必须属于当前 Token 用户。
+- 只能修改 Project version `0`。
+- `VALUE` 必填，并且必须是不带单位的有限数值。
+- 后端要求 `LowerBound <= VALUE <= UpperBound`。
+- Tank 专属 Variable 使用 `--tank`；全局 Variable 不要传该选项。
+
+## 命令格式
+
+```text
+simpo set-project-variable PROJECT_ID VARIABLE VALUE [--tank TANK] [OPTIONS]
+```
+
+示例：
+
+```text
+simpo set-project-variable 706 S_O2 95.8 --tank AnoxicTank
+simpo set-project-variable 706 Temperature 20
+```
+
+名称必须精确匹配并区分大小写。建议先使用
+[`project-variables`](./project-variables) 查看 Project。
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--tank TANK` | 不传 | Tank 专属 Variable 所属的 Tank |
+| `--timeout SECONDS` | `10.0` | HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+
+## 成功和错误
+
+成功 JSON 的 `success` 为 `true`，并包含 Project、Variable、旧值、新值以及
+校验所使用的上下界。非零退出码表示后端没有确认修改成功。
+
+常见错误包括 Variable 或 Tank 不存在、Value 不是数值、Value 超出闭区间、
+Project version 不是 `0`、缺少 `write` scope 或 Project 不属于当前用户。
