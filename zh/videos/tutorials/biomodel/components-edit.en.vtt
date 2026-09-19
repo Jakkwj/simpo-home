@@ -1,0 +1,22 @@
+WEBVTT
+
+00:00:02.200 --> 00:00:08.200
+On the BioModel Detail page, open Components from the matrix toolbar.
+
+00:00:08.500 --> 00:00:14.300
+The Components dialog lists each symbol, unit, name, and description.
+
+00:00:15.200 --> 00:00:20.400
+Select Add to create a new component. A draft row appears immediately.
+
+00:00:20.700 --> 00:00:24.500
+Select a row to reveal the Delete and Copy actions.
+
+00:00:25.000 --> 00:00:31.200
+Copy duplicates the selected component. Delete removes the duplicate from the draft.
+
+00:00:31.500 --> 00:00:39.300
+Select Sort to enable drag-and-drop reordering. Reload the page to discard these demonstration changes.
+
+00:00:39.300 --> 00:00:45.000
+The page is restored to its original data.
