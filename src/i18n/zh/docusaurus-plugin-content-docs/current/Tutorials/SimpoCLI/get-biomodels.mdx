@@ -1,0 +1,34 @@
+---
+id: get-biomodels
+title: 列出 BioModel
+sidebar_label: get-biomodels — 列出自己的 BioModel
+---
+
+# `get-biomodels`：列出自己的 BioModel
+
+列出当前 API Token 用户拥有的全部 BioModel 元数据。该命令不会下载体积可能
+较大的模型表格，也不会返回内部 pickle。
+
+## 使用条件和命令格式
+
+- Token scope：`read`
+- 只返回当前 Token 用户拥有的 BioModel。
+
+```text
+simpo get-biomodels [OPTIONS]
+```
+
+响应包含按新到旧排列的 `biomodels` 数组。每项包括 ID、名称、状态、隐私、
+版本、描述、来源论文 ID、各表数量以及创建和更新时间。没有 BioModel 时返回
+`{"biomodels": []}`。
+
+需要完整模型表格时，把返回的 `id` 传给 [`get-biomodel`](./get-biomodel)。
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+

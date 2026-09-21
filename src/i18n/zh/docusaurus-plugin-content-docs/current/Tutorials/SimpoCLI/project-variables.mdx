@@ -1,12 +1,13 @@
 ---
 id: project-variables
-title: 读取 Project Variable
-sidebar_label: project-variables — 读取数值
+title: 获取 Project Variable
+sidebar_label: get-project-variables — 读取全部字段
 ---
 
-# `project-variables`：读取 Variable Value
+# `get-project-variables`：读取 Variable 全部字段
 
-读取当前 Token 用户所拥有 Project 的 Solution 中全部 Variable Value。
+读取当前 Token 用户所拥有 Project 的完整 `Variable` 表。命令会返回原始
+字段名和每一行的完整内容，而不是只返回 `Value`。
 
 ## 使用条件
 
@@ -19,13 +20,13 @@ sidebar_label: project-variables — 读取数值
 ## 命令格式
 
 ```text
-simpo project-variables PROJECT_ID [OPTIONS]
+simpo get-project-variables PROJECT_ID [OPTIONS]
 ```
 
 示例：
 
 ```text
-simpo project-variables 706
+simpo get-project-variables 706
 ```
 
 ## 选项
@@ -38,16 +39,33 @@ simpo project-variables 706
 
 ## 返回结果
 
-JSON 包含 Project 信息和 `variables` 数组。每一项标识 Variable 及当前
-`Value`，Tank 专属 Variable 还会包含所属 Tank 信息。自动化程序应按照当前
-后端实际返回的字段名读取。
+JSON 包含 Project 信息、`columns` 数组和 `variables` 数组。每一项都是按返回
+字段名组织的完整数据行。标准字段包括：
+
+| 字段 | 含义 |
+| --- | --- |
+| `Variable` | Variable 名称 |
+| `Tank` | 所属 Tank；全局 Variable 为 `null` |
+| `Value` | 当前数值 |
+| `Evaluation` | 是否参与 Evaluation |
+| `InitialValue` | 计算使用的初始值 |
+| `DecimalPoint` | 显示/精度设置 |
+| `LowerBound` | 闭区间下限 |
+| `UpperBound` | 闭区间上限 |
+
+`Variable` 和 `Tank` 是只读定位字段。查询结果会保留它们，方便脚本准确定位
+数据行，但 `set-project-variable` 不能修改它们。只有修改来源 BioModel 或
+DataSet 的结构时，它们才会自动变化。
+
+后端未来可能增加字段。自动化程序应使用 `columns` 判断字段，不要假设上述
+标准字段列表永远固定。
 
 脚本可以只解析 stdout：
 
 ```bash
-variables="$(simpo project-variables 706)" || exit $?
+variables="$(simpo get-project-variables 706)" || exit $?
 printf '%s\n' "$variables"
 ```
 
-修改单个数值请使用
+修改单个可写字段请使用
 [`set-project-variable`](./set-project-variable)。

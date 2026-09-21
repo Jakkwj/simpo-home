@@ -10,7 +10,7 @@ import TabItem from "@theme/TabItem";
 
 # SimpoCLI 命令行使用指南
 
-`SimpoCLI` 是 SIMPO OpenAPI 的命令行客户端，可以读取和修改 Project
+`SimpoCLI` 是 SIMPO OpenAPI 的命令行客户端，可以新建 BioModel、读取和修改 Project
 数据、准备计算、启动本机安装的 `SimpoClient`、查询计算状态以及停止计算。
 安装后的终端命令统一为简短的小写 `simpo`。
 
@@ -23,8 +23,8 @@ import TabItem from "@theme/TabItem";
 - 拥有 SIMPO 账户，并在 Dashboard 的 **API Tokens** 页面创建 OpenAPI
   Token。
 - Token 拥有命令要求的最小 scope：
-  - `read`：读取 Project Variable；
-  - `write`：修改 version 为 `0` 的 Draft Project Variable；
+  - `read`：读取 Project Variable 的全部字段；
+  - `write`：新建 Draft BioModel，或修改 version 为 `0` 的 Draft Project Variable 字段；
   - `calculate`：准备、查询或停止计算。
 - [`calculate`](./SimpoCLI/calculate) 命令还要求同一台电脑上安装对应
   平台版本的 `SimpoClient`。
@@ -123,8 +123,8 @@ sudo apt remove simpo-cli
 3. 点击 **Create Token**。
 4. 输入便于识别的名称，设置 `1` 到 `365` 天的有效期，并且只选择需要的
    scope：
-   - `read`：用于 `project-variables`；
-   - `write`：用于 `set-project-variable`；
+   - `read`：用于 `get-biomodels`、`get-biomodel` 和 `get-project-variables`；
+   - `write`：用于 `create-biomodel`（空白、Excel 或 JSON）和 `set-project-variable`；
    - `calculate`：用于准备计算、查询状态和停止计算。
 5. 点击 **Create Token**，然后在 **Token Created** 弹窗中立即复制完整
    Token。
@@ -170,8 +170,11 @@ Linux 保存路径为 `~/.SimpoCLI/SIMPO_API_TOKEN.json`，Windows 保存路径
 | --- | --- | --- |
 | [`configure`](./SimpoCLI/configure) | 验证并保存 OpenAPI Token | 本地写入不需要 scope，但 Token 验证必须成功 |
 | [`me`](./SimpoCLI/me) | 验证 Token，并显示身份和 scope | 有效 Token |
-| [`project-variables`](./SimpoCLI/project-variables) | 读取 Solution 的全部 Variable Value | `read` |
-| [`set-project-variable`](./SimpoCLI/set-project-variable) | 修改 Draft Project 中一个数值 Variable | `write` |
+| [`create-biomodel`](./SimpoCLI/create-biomodel) | 新建空白、Excel 或 JSON Draft BioModel | `write` |
+| [`get-biomodels`](./SimpoCLI/get-biomodels) | 列出自己的 BioModel 元数据 | `read` |
+| [`get-biomodel`](./SimpoCLI/get-biomodel) | 读取一个 BioModel 及其完整模型表格 | `read` |
+| [`get-project-variables`](./SimpoCLI/project-variables) | 读取 Solution Variable 表的全部字段 | `read` |
+| [`set-project-variable`](./SimpoCLI/set-project-variable) | 修改 Draft Project 中一个 Variable 字段 | `write` |
 | [`calculate`](./SimpoCLI/calculate) | 准备计算并启动 SimpoClient | `calculate` |
 | [`calculation-status`](./SimpoCLI/calculation-status) | 查询当前计算状态 | `calculate` |
 | [`stop-calculation`](./SimpoCLI/stop-calculation) | 停止计算和匹配的本地进程 | `calculate` |
@@ -187,7 +190,7 @@ Linux 保存路径为 `~/.SimpoCLI/SIMPO_API_TOKEN.json`，Windows 保存路径
 因此自动化脚本可以只解析 stdout：
 
 ```bash
-result="$(simpo project-variables 706)" || exit $?
+result="$(simpo get-project-variables 706)" || exit $?
 printf '%s\n' "$result"
 ```
 

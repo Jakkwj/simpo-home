@@ -1,0 +1,41 @@
+---
+id: get-biomodel
+title: Get a BioModel
+sidebar_label: get-biomodel — read complete model tables
+---
+
+# `get-biomodel`: read one BioModel
+
+Read one BioModel owned by the current API Token user, including its parsed
+`Component`, `Parameter`, `Matrix`, `Composition`, and other available tables.
+
+## Requirements and syntax
+
+- Token scope: `read`
+- `BIOMODEL_ID`: a positive BioModel database ID owned by the Token user
+
+```text
+simpo get-biomodel BIOMODEL_ID [OPTIONS]
+```
+
+Example:
+
+```text
+simpo get-biomodel 1234
+```
+
+The JSON response contains metadata, replacer lists, table counts, and the
+complete parsed model under `detail`. The internal Python pickle and sharing
+credentials are never returned. A nonexistent BioModel or one owned by another
+user returns `HTTP 404 BioModel not found`.
+
+Use [`get-biomodels`](./get-biomodels) first when the BioModel ID is unknown.
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | Maximum time for the HTTP request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+

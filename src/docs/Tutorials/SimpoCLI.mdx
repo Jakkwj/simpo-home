@@ -10,8 +10,8 @@ import TabItem from "@theme/TabItem";
 
 # SimpoCLI command-line guide
 
-`SimpoCLI` is the command-line interface for the SIMPO OpenAPI. It reads
-and updates Project data, prepares calculations, starts the locally installed
+`SimpoCLI` is the command-line interface for the SIMPO OpenAPI. It creates
+BioModels, reads and updates Project data, prepares calculations, starts the locally installed
 `SimpoClient`, monitors calculation status, and stops calculations.
 Its terminal command is the short, lowercase `simpo`.
 
@@ -24,8 +24,8 @@ the installed version before invoking it.
 - A SIMPO account and an OpenAPI Token created on the Dashboard's **API Tokens**
   page.
 - The minimum Token scope required by the command:
-  - `read`: read Project variables;
-  - `write`: update a variable in a version `0` Draft Project;
+  - `read`: read all Project Variable fields;
+  - `write`: create a Draft BioModel or update a Variable field in a version `0` Draft Project;
   - `calculate`: prepare, inspect, or stop a calculation.
 - The [`calculate`](./SimpoCLI/calculate) command additionally requires
   the matching platform version of `SimpoClient` on the same computer.
@@ -128,8 +128,8 @@ uninstalling.
 3. Select **Create Token**.
 4. Enter a recognizable name, choose an expiry from `1` to `365` days, and
    grant only the scopes you need:
-   - `read` for `project-variables`;
-   - `write` for `set-project-variable`;
+   - `read` for `get-biomodels`, `get-biomodel`, and `get-project-variables`;
+   - `write` for `create-biomodel` (blank, Excel, or JSON) and `set-project-variable`;
    - `calculate` for calculation preparation, status, and stop commands.
 5. Select **Create Token**, then immediately copy the complete Token from the
    **Token Created** dialog.
@@ -176,8 +176,11 @@ For the complete configuration procedure, see [`configure`](./SimpoCLI/configure
 | --- | --- | --- |
 | [`configure`](./SimpoCLI/configure) | Validate and save an OpenAPI Token | none for the local action; Token validation must succeed |
 | [`me`](./SimpoCLI/me) | Verify the Token and show its identity and scopes | authenticated Token |
-| [`project-variables`](./SimpoCLI/project-variables) | Read all current Solution Variable values | `read` |
-| [`set-project-variable`](./SimpoCLI/set-project-variable) | Update one numeric Variable in a Draft Project | `write` |
+| [`create-biomodel`](./SimpoCLI/create-biomodel) | Create a blank, Excel-based, or JSON-based Draft BioModel | `write` |
+| [`get-biomodels`](./SimpoCLI/get-biomodels) | List metadata for your BioModels | `read` |
+| [`get-biomodel`](./SimpoCLI/get-biomodel) | Read one BioModel and its complete model tables | `read` |
+| [`get-project-variables`](./SimpoCLI/project-variables) | Read every field in the Solution Variable table | `read` |
+| [`set-project-variable`](./SimpoCLI/set-project-variable) | Update one Variable field in a Draft Project | `write` |
 | [`calculate`](./SimpoCLI/calculate) | Prepare a calculation and start SimpoClient | `calculate` |
 | [`calculation-status`](./SimpoCLI/calculation-status) | Read current calculation status | `calculate` |
 | [`stop-calculation`](./SimpoCLI/stop-calculation) | Stop a calculation and matching local processes | `calculate` |
@@ -194,7 +197,7 @@ For the complete configuration procedure, see [`configure`](./SimpoCLI/configure
 This makes stdout safe to parse in automation:
 
 ```bash
-result="$(simpo project-variables 706)" || exit $?
+result="$(simpo get-project-variables 706)" || exit $?
 printf '%s\n' "$result"
 ```
 

@@ -1,13 +1,13 @@
 ---
 id: project-variables
-title: Read Project variables
-sidebar_label: project-variables — read values
+title: Get Project variables
+sidebar_label: get-project-variables — read all fields
 ---
 
-# `project-variables`: read Variable values
+# `get-project-variables`: read all Variable fields
 
-Read all current Variable values from the Solution of a Project owned by the
-Token user.
+Read the complete `Variable` sheet from a Project owned by the Token user. The
+command returns the original field names and every row, not only `Value`.
 
 ## Requirements
 
@@ -20,13 +20,13 @@ Projects owned by other users are not enumerated. The backend returns
 ## Syntax
 
 ```text
-simpo project-variables PROJECT_ID [OPTIONS]
+simpo get-project-variables PROJECT_ID [OPTIONS]
 ```
 
 Example:
 
 ```text
-simpo project-variables 706
+simpo get-project-variables 706
 ```
 
 ## Options
@@ -39,17 +39,34 @@ simpo project-variables 706
 
 ## Result
 
-The JSON response contains Project metadata and a `variables` array. Each item
-identifies the Variable and its current `Value`; tank-specific variables also
-include their tank context. Consume field names exactly as returned by the
-installed backend version.
+The JSON response contains Project metadata, a `columns` array, and a
+`variables` array. Each item is a complete row keyed by the returned column
+names. A standard row can contain:
 
-For automation, keep progress/errors separate and parse stdout:
+| Field | Meaning |
+| --- | --- |
+| `Variable` | Variable name |
+| `Tank` | Tank context, or `null` for a global Variable |
+| `Value` | Current numeric value |
+| `Evaluation` | Whether this Variable participates in evaluation |
+| `InitialValue` | Initial value used by the calculation |
+| `DecimalPoint` | Display/precision setting |
+| `LowerBound` | Inclusive lower bound |
+| `UpperBound` | Inclusive upper bound |
+
+`Variable` and `Tank` are read-only identifiers. They remain in this query so
+scripts can locate a row, but `set-project-variable` cannot change them. They
+can only change when the source BioModel or DataSet structure is updated.
+
+The backend may add fields in future versions. Use `columns` instead of
+assuming that this standard list is exhaustive.
+
+For automation, parse stdout and keep errors on stderr:
 
 ```bash
-variables="$(simpo project-variables 706)" || exit $?
+variables="$(simpo get-project-variables 706)" || exit $?
 printf '%s\n' "$variables"
 ```
 
-To change one value, use
+To change one writable field, use
 [`set-project-variable`](./set-project-variable).

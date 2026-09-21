@@ -1,0 +1,36 @@
+---
+id: get-biomodels
+title: List BioModels
+sidebar_label: get-biomodels — list your BioModels
+---
+
+# `get-biomodels`: list your BioModels
+
+List metadata for every BioModel owned by the current API Token user. This
+command does not download the potentially large model tables or internal pickle.
+
+## Requirements and syntax
+
+- Token scope: `read`
+- Only BioModels owned by the Token user are returned.
+
+```text
+simpo get-biomodels [OPTIONS]
+```
+
+The response contains a `biomodels` array ordered from newest to oldest. Each
+item includes its ID, name, state, privacy, version, description, source paper
+ID, table counts, and creation/update timestamps. An account with no BioModels
+returns `{"biomodels": []}`.
+
+Use the returned `id` with [`get-biomodel`](./get-biomodel) when complete model
+tables are required.
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | Maximum time for the HTTP request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+

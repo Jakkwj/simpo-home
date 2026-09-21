@@ -1,0 +1,39 @@
+---
+id: get-biomodel
+title: 获取 BioModel
+sidebar_label: get-biomodel — 读取完整模型表格
+---
+
+# `get-biomodel`：读取一个 BioModel
+
+读取当前 API Token 用户拥有的一个 BioModel，包括解析后的 `Component`、
+`Parameter`、`Matrix`、`Composition` 以及其他已有表格。
+
+## 使用条件和命令格式
+
+- Token scope：`read`
+- `BIOMODEL_ID`：当前 Token 用户拥有的正整数 BioModel 数据库 ID
+
+```text
+simpo get-biomodel BIOMODEL_ID [OPTIONS]
+```
+
+示例：
+
+```text
+simpo get-biomodel 1234
+```
+
+JSON 响应包含元数据、replacer 列表、各表数量以及 `detail` 中的完整解析模型。
+内部 Python pickle 和分享凭据不会返回。BioModel 不存在或属于其他用户时，
+统一返回 `HTTP 404 BioModel not found`。
+
+不知道 BioModel ID 时，先使用 [`get-biomodels`](./get-biomodels) 查询。
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |

@@ -1,0 +1,112 @@
+---
+id: create-biomodel
+title: Create a BioModel
+sidebar_label: create-biomodel — create a Draft BioModel (blank, Excel, or JSON)
+---
+
+# `create-biomodel`: create a Draft BioModel
+
+Create a BioModel owned by the current API Token user. Without an import option,
+the command uses the standard SIMPO blank model. With `--template`, the backend
+parses the supplied Excel model; with `--json`, it parses JSON model tables.
+All three modes return the same JSON structure.
+
+## Requirements
+
+- Token scope: `write`
+- The name must be 1 to 230 characters and unique among all BioModels in your account.
+
+The first OpenAPI version creates only a Draft. The backend fixes its metadata
+to `state=Draft`, `privacy=Private`, and `version=0`.
+
+## Syntax
+
+```text
+simpo create-biomodel NAME [OPTIONS]
+```
+
+Examples:
+
+```text
+simpo create-biomodel MyModel
+simpo create-biomodel MyModel --description "Created by an automation script"
+simpo create-biomodel MyModel --sourcepaper-id 123
+simpo create-biomodel ImportedModel --template ./BioModel.xlsx
+simpo create-biomodel JsonModel --json ./BioModel.json
+```
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--description TEXT` | empty | Optional Markdown description |
+| `--sourcepaper-id ID` | no source paper | Source paper database ID |
+| `--template PATH` | standard blank model | `.xlsx` model template; non-empty and at most 20 MiB |
+| `--json PATH` | standard blank model | UTF-8 JSON model tables; at most 20 MiB; mutually exclusive with `--template` |
+| `--timeout SECONDS` | `3700.0` | Maximum wait; permits server-side Excel parsing |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+## Result
+
+On success, stdout contains JSON with `success: true`, the new BioModel `id`,
+name, Draft metadata, description, and `sourcepaperId`:
+
+```json
+{
+  "success": true,
+  "id": 1234,
+  "name": "MyModel",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "creationMode": "blank",
+  "description": "",
+  "sourcepaperId": null,
+  "amountParameter": 4,
+  "amountComponent": 3,
+  "amountRate": 2,
+  "amountComposition": 1
+}
+```
+
+`creationMode` is `blank`, `template`, or `json`. The amount fields report the
+parsed model size, and `sourcepaperId` is `null` when no source paper was supplied.
+
+With `--json`, the file must contain a model object under the following shape:
+
+```json
+{
+  "Component": [
+    {"0": "Symbol", "1": "Unit", "2": "Name", "3": "Description"},
+    {"0": "S_O2", "1": "gO2/m3", "2": "Dissolved oxygen", "3": null}
+  ],
+  "Parameter": [
+    {"0": "Symbol", "1": "Unit", "2": "DefaultValue", "3": "LowerBound", "4": "UpperBound", "5": "Name", "6": "Description"},
+    {"0": "k", "1": "/d", "2": 0.1, "3": 0, "4": 1, "5": "Rate coefficient", "6": null}
+  ],
+  "Matrix": [
+    {"0": "Name", "1": "S_O2", "2": "Rate"},
+    {"0": "Removal", "1": "-1", "2": "k*S_O2"}
+  ],
+  "Composition": [],
+  "Ionization": []
+}
+```
+
+`Component`, `Parameter`, and `Matrix` are required. `Composition` and
+`Ionization` are optional. `Balance` is read-only and must not be included in a
+JSON create request. The backend calculates it from `Matrix` and `Composition`;
+the CLI and backend reject requests that contain `Balance`. If you reuse the
+response from `get-biomodel`, remove its `Balance` field before submitting.
+The same BioModel parser validates headers, formulas, symbols, and matrix
+consistency as the Excel import path. The JSON import returns
+`creationMode: "json"`.
+
+The uploaded file is deleted from the backend temporary directory after parsing;
+the database stores the parsed model rather than the original Excel file. The
+backend verifies that the upload is a valid, unencrypted `.xlsx` workbook and
+limits its uncompressed size to 100 MiB before parsing. The
+command exits non-zero when the Token is missing or lacks `write`, the name
+already exists (`HTTP 409`), the template is invalid, parsing times out
+(`HTTP 504`), or the server cannot create the model.
