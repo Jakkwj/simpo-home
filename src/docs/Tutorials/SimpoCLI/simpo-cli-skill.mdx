@@ -1,0 +1,66 @@
+---
+id: simpo-cli-skill
+title: SimpoCLI Skill
+sidebar_label: Overview
+---
+
+# SimpoCLI Skill
+
+The SimpoCLI Skill is an on-demand operating guide for an AI coding assistant.
+It teaches the assistant how to discover the installed `simpo` interface,
+select the right command, protect API Tokens, obtain required scopes, review
+state-changing operations, parse JSON results, and handle ambiguous failures.
+
+Yes, it can reduce repeated prompt input. A Skill uses progressive disclosure:
+
+1. only its short name and description are normally available for task matching;
+2. the core `SKILL.md` is loaded when the Skill is invoked;
+3. only the relevant command-group reference is then read—for example,
+   BioModel or calculation guidance.
+
+You therefore no longer need to paste the complete CLI manual into every
+conversation. Invoking the Skill still consumes some context, and `simpo
+COMMAND --help` is deliberately checked because the installed CLI version is
+the source of truth. The benefit is less repeated and irrelevant context, not
+zero token usage.
+
+## Scope
+
+The current Skill source is shared by Codex and Claude Code and covers:
+
+- Token configuration, identity, scopes, logout, and JSON automation;
+- BioModel create, list, read, update, sync, and release workflows;
+- DataSet list/read workflows;
+- Project listing and Project Variable read/update workflows;
+- calculation preparation, engine selection, status, and stop workflows.
+
+Against the current development CLI source, the covered public commands are:
+`configure`, `me`, `logout`, `create-biomodel`, `update-biomodel`,
+`sync-biomodel`, `release-biomodel`, `get-biomodels`, `get-biomodel`,
+`get-datasets`, `get-dataset`, `get-projects`, `get-project-variables`,
+`set-project-variable`, `calculate`, `calculation-status`, and
+`stop-calculation`.
+
+This is Skill coverage, not a promise that an older installed executable exposes
+all 17 commands. The Skill always checks the installed `simpo --help` and asks
+for a SimpoCLI update when a required command is unavailable.
+
+This Skill operates SimpoCLI; it does not install SimpoCLI or include an API
+Token. It also does not replace the specialized BioModel Skill, which analyzes
+research papers and derives model tables.
+
+## Safety model
+
+- The installed `simpo --help` and `simpo COMMAND --help` are authoritative.
+- Tokens are configured through the hidden `simpo configure` prompt and must not
+  be pasted into the AI conversation.
+- Informational questions do not authorize state changes.
+- Public release, calculation start/stop, and other material writes require the
+  exact target and effects to be reviewed.
+- A timeout after a write is investigated before retrying, preventing duplicate
+  creation, release, or calculation operations.
+
+For Codex, see [installation](./simpo-cli-skill-codex-install) and
+[usage](./simpo-cli-skill-codex-usage). For Claude Code, see
+[installation](./simpo-cli-skill-claude-code-install) and
+[usage](./simpo-cli-skill-claude-code-usage).

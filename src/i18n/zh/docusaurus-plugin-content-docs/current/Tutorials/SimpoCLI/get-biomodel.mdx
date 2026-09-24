@@ -1,7 +1,7 @@
 ---
 id: get-biomodel
 title: 获取 BioModel
-sidebar_label: get-biomodel — 读取完整模型表格
+sidebar_label: get-biomodel
 ---
 
 # `get-biomodel`：读取一个 BioModel
@@ -9,10 +9,12 @@ sidebar_label: get-biomodel — 读取完整模型表格
 读取当前 API Token 用户拥有的一个 BioModel，包括解析后的 `Component`、
 `Parameter`、`Matrix`、`Composition` 以及其他已有表格。
 
-## 使用条件和命令格式
+## 使用条件
 
 - Token scope：`read`
 - `BIOMODEL_ID`：当前 Token 用户拥有的正整数 BioModel 数据库 ID
+
+## 命令格式
 
 ```text
 simpo get-biomodel BIOMODEL_ID [OPTIONS]
@@ -37,3 +39,35 @@ JSON 响应包含元数据、replacer 列表、各表数量以及 `detail` 中�
 | `--timeout SECONDS` | `10.0` | HTTP 请求的最长等待时间 |
 | `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
 | `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+
+## 返回结果
+
+成功返回示例（`detail` 对象包含完整模型表格）：
+
+```json
+{
+  "id": 1234,
+  "name": "ASM2d",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "versionCounter": 0,
+  "description": "",
+  "sourcepaperId": null,
+  "replacerParameter": [],
+  "replacerComponent": [],
+  "amountParameter": 18,
+  "amountComponent": 19,
+  "amountComponentSoluble": 15,
+  "amountRate": 21,
+  "amountComposition": 1,
+  "detail": {
+    "Component": [{"0": "Symbol", "1": "Unit"}],
+    "Parameter": [{"0": "Symbol", "1": "Unit", "2": "DefaultValue"}],
+    "Matrix": [{"0": "Name", "1": "Rate"}],
+    "Composition": []
+  },
+  "createdAt": "2026-09-20T10:00:00",
+  "updatedAt": "2026-09-20T10:00:00"
+}
+```

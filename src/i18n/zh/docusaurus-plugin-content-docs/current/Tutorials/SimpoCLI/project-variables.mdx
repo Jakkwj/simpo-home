@@ -1,7 +1,7 @@
 ---
 id: project-variables
 title: 获取 Project Variable
-sidebar_label: get-project-variables — 读取全部字段
+sidebar_label: get-project-variables
 ---
 
 # `get-project-variables`：读取 Variable 全部字段
@@ -40,7 +40,9 @@ simpo get-project-variables 706
 ## 返回结果
 
 JSON 包含 Project 信息、`columns` 数组和 `variables` 数组。每一项都是按返回
-字段名组织的完整数据行。标准字段包括：
+字段名组织的完整数据行。成功返回示例：
+
+标准字段包括：
 
 | 字段 | 含义 |
 | --- | --- |
@@ -69,3 +71,22 @@ printf '%s\n' "$variables"
 
 修改单个可写字段请使用
 [`set-project-variable`](./set-project-variable)。
+
+```json
+{
+  "projectId": 706,
+  "projectName": "Example",
+  "projectVersion": 0,
+  "columns": ["Variable", "Tank", "Value", "Evaluation", "LowerBound", "UpperBound"],
+  "variables": [
+    {
+      "Variable": "S_O2",
+      "Tank": "AnoxicTank",
+      "Value": 95.8,
+      "Evaluation": true,
+      "LowerBound": 0.0,
+      "UpperBound": 100.0
+    }
+  ]
+}
+```

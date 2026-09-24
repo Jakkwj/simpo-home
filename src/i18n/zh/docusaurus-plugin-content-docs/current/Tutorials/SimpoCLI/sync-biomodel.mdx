@@ -1,0 +1,79 @@
+---
+id: sync-biomodel
+title: 同步 BioModel
+sidebar_label: sync-biomodel
+---
+
+# `sync-biomodel`：将已发布版本同步到 Draft
+
+把当前用户拥有的某个已发布 BioModel 版本的模型内容，复制到同名的
+version `0` Draft。适用于需要让 Draft 恢复为某个已发布版本内容的情况。
+
+来源版本不会改变。目标 Draft 保留自己的 ID、名称、`state=Draft`、
+`privacy=Private` 和 `version=0`；模型表、序列化缓存、替换名称、统计数量和
+描述会被来源版本覆盖。
+
+## 使用条件
+
+- Token scope：`write`
+- `BIOMODEL_ID` 必须属于 Token 对应的用户。
+- 来源必须是 `version > 0` 的 `Release` 或 `Standard` BioModel。
+- 当前用户必须存在同名的 version `0` Draft。
+
+本命令遵循网页端已有的 `POST /biomodel/sync` 行为，只修改 BioModel 记录，
+不会自动重建使用该 Draft 的 Project。如果这些 Project 也需要采用新的 Draft
+内容，还需要执行 Project 同步或重新计算流程。
+
+## 命令格式
+
+```text
+simpo sync-biomodel BIOMODEL_ID [OPTIONS]
+```
+
+这里的 `BIOMODEL_ID` 是来源 Release/Standard 的 ID，不是目标 Draft 的 ID。
+
+示例：
+
+```text
+simpo sync-biomodel 124
+```
+
+## 参数
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| `BIOMODEL_ID` | 必填 | 自己拥有的已发布来源 BioModel ID |
+| `--timeout SECONDS` | `30.0` | 同步请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置的 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包内置环境地址 | 仅覆盖本次请求的后端地址 |
+
+命令不接受名称或版本参数。后端根据来源 BioModel ID，在当前用户记录中查找
+同名 Draft 并完成同步。
+
+## 返回结果
+
+```json
+{
+  "success": true,
+  "id": 123,
+  "sourceId": 124,
+  "name": "TestModel",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "sourceState": "Release",
+  "sourcePrivacy": "Private",
+  "sourceVersion": 1,
+  "description": "synced description",
+  "amountParameter": 4,
+  "amountComponent": 3,
+  "amountComponentSoluble": 1,
+  "amountRate": 2,
+  "amountComposition": 1,
+  "createdAt": "2026-09-23T00:00:00",
+  "updatedAt": "2026-09-23T00:00:00",
+  "message": "BioModel sync success."
+}
+```
+
+返回的 `sourceId` 是输入的已发布版本 ID，`id` 是实际被更新的 Draft ID。

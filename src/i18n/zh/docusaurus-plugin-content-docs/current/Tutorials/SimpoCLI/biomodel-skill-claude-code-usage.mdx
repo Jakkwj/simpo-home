@@ -1,0 +1,87 @@
+---
+id: biomodel-skill-claude-code-usage
+title: Claude Code 使用方法与示例
+sidebar_label: 使用方法与示例
+---
+
+# 在 Claude Code 中使用 BioModel Skill
+
+## 基本用法
+
+调用带命名空间的 `/simpo-biomodel:create-biomodel` 命令，并提供论文路径和模型名称：
+
+```text
+/simpo-biomodel:create-biomodel Analyze /path/to/paper.pdf and prepare a SIMPO BioModel named MyModel.
+```
+
+也可以使用中文提出请求：
+
+```text
+/simpo-biomodel:create-biomodel 请分析 /path/to/paper.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
+```
+
+Skill 会指导 Claude Code 提取模型、追溯证据、报告不确定项，并在用户审核确认后通过
+SimpoCLI 创建 Private、version 0、Draft BioModel。
+
+## 默认选项
+
+四个选项默认全部开启；通常无需额外配置：
+
+```text
+/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+```
+
+如需明确写出默认设置：
+
+```text
+/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+Options: matrix_fractions=on; composition_derive=on; ionization_derive=on; source_correction=on.
+```
+
+## 自定义选项
+
+例如，推导有依据的 Composition 单元格，但保留 Matrix 原始小数，且不推导缺失的
+Ionization 数据：
+
+```text
+/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Options: matrix_fractions=off; composition_derive=on; ionization_derive=off.
+```
+
+选项含义：
+
+- `matrix_fractions=on|off`：是否在有严格依据时把小数保存为精确分数。
+- `composition_derive=on|off`：开启时推导有依据的缺失 Composition 单元格；关闭时
+  不推导缺失单元格。两种情况下都保留论文明确报告的值。
+- `ionization_derive=on|off`：开启时推导有完整化学依据的缺失 Ionization 行；关闭时
+  不推导缺失行。两种情况下都保留论文明确报告的行。
+- `source_correction=on|off`：开启时只自动应用高置信度的论文转录勘误，并将每项勘误
+  以 Markdown 写入 `--description`；关闭时保留原文，只报告疑似错误，不进行修正。
+
+这些是自然语言指令，不是 SimpoCLI 参数。
+
+## 只分析，不创建
+
+```text
+/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and show the proposed tables.
+Do not call SimpoCLI to create the BioModel yet.
+```
+
+检查完成后再明确批准或拒绝创建。不要在对话中粘贴 API Token。
+
+## 成功结果
+
+```json
+{
+  "success": true,
+  "id": 1234,
+  "name": "MyModel",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "creationMode": "json"
+}
+```
+
+解析器接受只表示模型格式有效，不证明所有科学假设正确。非零 `Balance` 应作为诊断结果
+保留和说明，不能通过无依据补值来隐藏。

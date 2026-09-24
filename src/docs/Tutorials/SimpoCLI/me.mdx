@@ -1,13 +1,18 @@
 ---
 id: me
 title: Verify the current API Token
-sidebar_label: me — verify the Token
+sidebar_label: me
 ---
 
 # `me`: verify the current API Token
 
 Use `me` to confirm that SimpoCLI can authenticate and to inspect the
 user, Token ID, and scopes associated with the selected Token.
+
+## Requirements
+
+- A configured Token, or a complete Token supplied with `--api-token`.
+- The Token must have the `read` scope.
 
 ## Syntax
 
@@ -42,6 +47,10 @@ variable, then the saved JSON file.
 
 The result contains identity and permissions, not the Token secret:
 
+A `401` error means the selected Token is not accepted by the selected backend.
+A successful response does not guarantee every command is permitted; inspect
+`scopes` for `read`, `write`, or `calculate` as required.
+
 ```json
 {
   "userId": 123,
@@ -49,7 +58,3 @@ The result contains identity and permissions, not the Token secret:
   "scopes": ["read", "write", "calculate"]
 }
 ```
-
-A `401` error means the selected Token is not accepted by the selected backend.
-A successful response does not guarantee every command is permitted; inspect
-`scopes` for `read`, `write`, or `calculate` as required.

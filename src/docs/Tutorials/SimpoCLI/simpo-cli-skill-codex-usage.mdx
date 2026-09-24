@@ -1,0 +1,57 @@
+---
+id: simpo-cli-skill-codex-usage
+title: Use SimpoCLI Skill in Codex
+sidebar_label: Usage and examples
+---
+
+# Use SimpoCLI Skill in Codex
+
+Explicitly invoke `$simpo` when you want the full workflow applied. You
+may write the rest of the prompt in English or Chinese.
+
+## Read-only examples
+
+```text
+Use $simpo to list all my BioModels named ASM1 and inspect the complete tables of the newest one. Do not modify anything.
+```
+
+```text
+请使用 $simpo 查看 Project 706 的全部 Variable，并汇总 Evaluation=true 的参数，不要修改数据。
+```
+
+The Skill checks the installed help, verifies the Token scope, follows every
+result page when resolving names, and parses JSON output.
+
+## Write example
+
+```text
+Use $simpo to change Project 706, Variable S_O2 in tank AnoxicTank, field LowerBound to 0.1. Show me the current row and planned change before executing it.
+```
+
+An informational request such as “How does `set-project-variable` work?” only
+returns guidance; it does not authorize the update.
+
+## Calculation example
+
+```text
+Use $simpo to inspect Project 706, start a SIM calculation with the installed defaults, wait for a terminal status, and report the result.
+```
+
+The Skill distinguishes successful preparation/launch from calculation
+completion. It does not expose the short-lived launch protocol unless an
+explicit integration requires it.
+
+## BioModel release example
+
+```text
+Use $simpo to inspect BioModel 123. If it is my version 0 Draft, create a Private Release and verify the returned release ID and version.
+```
+
+For `Public` visibility, request it explicitly. The Skill defaults to Private
+and reviews the exact target before release.
+
+## Installed-version differences
+
+If the Skill knows about a command that is absent from the current `simpo
+--help`, it stops and recommends updating SimpoCLI. It does not bypass the CLI
+by constructing direct OpenAPI requests.

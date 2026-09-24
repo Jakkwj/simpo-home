@@ -1,0 +1,74 @@
+---
+id: simpo-cli-skill-codex-install
+title: Install SimpoCLI Skill for Codex
+sidebar_label: Installation
+---
+
+# Install SimpoCLI Skill for Codex
+
+## Prerequisites
+
+Verify Codex and the separately installed SimpoCLI:
+
+```text
+codex --help
+simpo --version
+simpo --help
+```
+
+Configure a Token interactively if needed:
+
+```text
+simpo configure
+simpo me
+```
+
+Never paste the Token into Codex.
+
+## Install from the SIMPO Marketplace
+
+Add or refresh the SIMPO Marketplace:
+
+```text
+codex plugin marketplace add Jakkwj/simpo-home --ref master
+```
+
+Install the plugin (use the exact syntax shown by your installed `codex plugin
+--help` if it differs):
+
+```text
+codex plugin add simpo-cli@simpo
+```
+
+Start a new Codex session so the Skill is discovered.
+
+## Verify
+
+Ask:
+
+```text
+What does $simpo do? Do not change anything.
+```
+
+Installation succeeded if Codex explains that it discovers the installed CLI
+interface and safely operates SIMPO resources. The Skill is invoked as `$simpo`.
+Continue with
+[Codex usage and examples](./simpo-cli-skill-codex-usage).
+
+## Update
+
+```text
+codex plugin marketplace upgrade simpo
+codex plugin add simpo-cli@simpo
+```
+
+Then start a new Codex session.
+
+:::note
+
+Codex plugin commands are evolving. If your installed `codex --help` does not
+contain the documented plugin commands, update Codex and use the current plugin
+manager UI. The repository layout and `simpo-cli@simpo` identity remain the
+same.
+
+:::

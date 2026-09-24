@@ -1,0 +1,87 @@
+---
+title: Create
+---
+
+import config from '@generated/docusaurus.config'
+
+# Create a DataSet
+
+DataSet stores measured data and process layout used by a SIMPO Project. The
+Flowchart is generated from the tanks and connections in the DataSet.
+
+## Create from Blank
+
+Create an empty DataSet, edit its detail, and save it with `Parse` before using
+it in a calculation.
+
+- Add the required targets and tanks.
+- Add measured data for tanks and inflows when available.
+- Add flows and connections for inflows, recirculation, pumps, outflows, or
+  wasted sludge.
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlDataSet_1} width="80%"/>
+</div>
+
+## Create Along with a New Project
+
+If no DataSet is selected while creating a Project, SIMPO creates an empty
+DataSet automatically.
+
+## Create from a Preset Layout
+
+Preset layouts create a starting process structure. When the template file is
+empty, a BioModel can also be selected so its Components become DataSet
+Targets.
+
+Available layouts:
+
+- `Batch`
+- `Chemostat`
+- `CAS`
+- `CAS-Pump`
+- `AO`
+- `AO-Pump`
+- `AAO`
+- `AAO-Pump`
+- `UCT (AAAO)`
+- `UCT (AAAO)-Pump`
+
+Layouts ending in `-Pump` include a pump for aeration calculations. Review the
+generated Targets, Tanks, and Connections before saving.
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlDataSet_2} width="80%"/>
+</div>
+
+## Import from an XLSX Template
+
+Download the <a href={config.customFields.urlDownloadUrlplateDataSet} target="_self" download>DataSet template XLSX file</a>, fill in its sheets, and upload it while creating the DataSet. An existing DataSet can also be exported, edited locally, and imported again.
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlDataSet_3} width="80%"/>
+</div>
+
+## Clone from the Public DataSet Repository
+
+Clone a public DataSet to Personal DataSets. The clone starts as an editable
+Draft.
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlDataSet_4} width="80%"/>
+</div>
+
+## Clone from the Public Project Repository
+
+Cloning a public Project also clones its corresponding BioModel and DataSet.
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlDataSet_5} width="80%"/>
+</div>
+
+## Create with AI
+
+In the New DataSet dialog, select the AI button next to the name field, choose
+an available model, and enter the design conditions in detail. Check the
+generated DataSet manually before using it. AI creation can take up to ten
+minutes.

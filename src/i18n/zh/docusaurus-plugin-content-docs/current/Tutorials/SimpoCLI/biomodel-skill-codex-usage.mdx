@@ -1,0 +1,106 @@
+---
+id: biomodel-skill-codex-usage
+title: Codex 使用方法与示例
+sidebar_label: 使用方法与示例
+---
+
+# 在 Codex 中使用 BioModel Skill
+
+## 基本用法
+
+在请求中显式写出 `$create-biomodel`，并提供可读取的论文路径和模型名称：
+
+```text
+Use $create-biomodel to analyze /path/to/paper.pdf and prepare a SIMPO BioModel named MyModel.
+```
+
+也可以直接使用中文。Skill 名称保持不变，其余请求按自然中文书写即可：
+
+```text
+请使用 $create-biomodel 分析 /path/to/paper.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
+```
+
+Codex 会核对论文信息，提取 Components、Parameters 和 Matrix，尝试推导 Composition 和 Ionization，并在提交前展示来源、假设、不确定项和拟创建内容。处理关键不确定项并获得确认后，它才会调用 `simpo create-biomodel`。
+
+## 使用默认选项
+
+四个选项默认全部开启，因此一般无需写出选项：
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+```
+
+等价于：
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+Options: matrix_fractions=on; composition_derive=on; ionization_derive=on; source_correction=on.
+```
+
+`matrix_fractions=on` 不会把任意小数近似成分数。只有论文方程、化学基准或独立推导
+能够严格确定分数时才会转换，并在审核摘要中同时列出原小数和保存的分数。
+
+## 单独关闭选项
+
+保留论文中的原始小数表示：
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Options: matrix_fractions=off.
+```
+
+不推导缺失的 Composition：
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Options: composition_derive=off.
+```
+
+不推导缺失的 Ionization：
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Options: ionization_derive=off.
+```
+
+当推导选项关闭时，论文明确给出的值或行仍然保留；只是不对缺失且没有明确依据
+的数据进行推导。`source_correction=on` 只会自动应用高置信度的 OCR、抄录、单位标签
+或公式/表格一致性勘误，并把每一项勘误以 Markdown 写入 `--description` 审计说明。
+四个选项相互独立，可以组合设置。
+
+如果需要严格保留论文原文，只报告疑似错误而不修正：
+
+```text
+请使用 $create-biomodel 分析 /data/papers/model.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
+Options: source_correction=off.
+```
+
+## 只分析，不创建
+
+如果只想先查看抽取结果，应明确要求不要调用 API：
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare the proposed tables for review.
+Do not create the BioModel yet.
+```
+
+之后检查引用、单位、公式、未知项和推导依据，再明确告诉 Codex 是否创建。
+
+## 成功结果
+
+创建成功后，结果应满足以下约束：
+
+```json
+{
+  "success": true,
+  "id": 1234,
+  "name": "MyModel",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "creationMode": "json"
+}
+```
+
+非零 `Balance` 必须作为诊断结果报告，不能通过猜测 Composition、删除已有依据的系数
+或修改 Matrix 来强行消除。

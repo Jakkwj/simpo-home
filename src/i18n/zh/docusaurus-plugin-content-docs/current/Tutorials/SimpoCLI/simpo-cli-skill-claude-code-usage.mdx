@@ -1,0 +1,46 @@
+---
+id: simpo-cli-skill-claude-code-usage
+title: 在 Claude Code 中使用 SimpoCLI Skill
+sidebar_label: 使用方法与示例
+---
+
+# 在 Claude Code 中使用 SimpoCLI Skill
+
+需要完整遵循 SimpoCLI 工作流时，调用带命名空间的 `/simpo-cli:simpo`。提示词可以使用
+中文或英文。
+
+## 只读示例
+
+```text
+/simpo-cli:simpo 列出所有名为 ASM1 的 BioModel，并读取最新版的完整模型表，不要修改任何内容。
+```
+
+```text
+/simpo-cli:simpo 请查看 Project 706 的全部 Variable，并汇总 Evaluation=true 的参数，不要修改数据。
+```
+
+Skill 会检查 `simpo --version`、相关 `--help`、Token scope、分页和 JSON 结果，并且只
+读取当前命令组所需的参考资料。
+
+## 写操作示例
+
+```text
+/simpo-cli:simpo 将 Project 706 中 AnoxicTank 的 S_O2 Variable 的 LowerBound 改为 0.1。执行前先展示当前行和计划修改。
+```
+
+询问 `set-project-variable` 的用法属于说明请求，不会授权更新。Public 发布及其他重要
+写操作必须先审查确切目标和影响。
+
+## 计算示例
+
+```text
+/simpo-cli:simpo 检查 Project 706，按当前安装版本的默认参数启动 SIM 计算，等待终止状态并报告结果。
+```
+
+Skill 会区分“启动成功”和“计算完成”。除非明确的集成任务需要，否则不会输出短期启动
+协议。
+
+## 安装版本差异
+
+当前安装的 `simpo --help` 是最终依据。如果文档中的命令在帮助中不存在，Skill 会停止
+并建议升级 SimpoCLI，不会绕过 CLI 直接构造 OpenAPI 请求。

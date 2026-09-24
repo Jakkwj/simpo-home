@@ -1,0 +1,77 @@
+---
+id: get-datasets
+title: 列出 DataSet
+sidebar_label: get-datasets
+---
+
+# `get-datasets`：列出自己的 DataSet
+
+分页列出当前 API Token 用户创建的 DataSet 元数据。返回结果包含单位、表格
+数量和版本信息，但不会下载完整的 DataSet `detail` 表格或内部 `pickle`。
+
+## 使用条件
+
+- Token scope：`read`
+- 只返回 `creator_id` 等于当前 Token 用户 ID 的 DataSet。
+- 不会把其他用户创建的 Public DataSet 混入这个个人列表。
+
+## 命令格式
+
+```text
+simpo get-datasets [OPTIONS]
+```
+
+返回的 `id` 可以继续用于 [`get-dataset`](./get-dataset) 读取一个完整
+DataSet。
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--page INTEGER` | `1` | 从 1 开始的页码 |
+| `--page-size INTEGER` | `50` | 每页数量，必须在 `1` 到 `100` 之间 |
+| `--timeout SECONDS` | `10.0` | HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+
+结果按创建时间从新到旧排序。每个 DataSet 项包含 ID、名称、state、privacy、
+version、description、来源论文 ID、单位、表格数量和时间戳。列表接口不会
+返回 `detail`、`pickle`、`share_url`、`shareable` 或 `cloneable`。
+
+## 返回结果
+
+响应包含当前页的 `datasets` 数组，以及 `page`、`pageSize`、`total` 和
+`hasNext` 分页字段。没有 DataSet 时返回空数组、`total: 0` 和
+`hasNext: false`。
+
+```json
+{
+  "datasets": [
+    {
+      "id": 456,
+      "name": "Default",
+      "state": "Draft",
+      "privacy": "Private",
+      "version": 0,
+      "versionCounter": 0,
+      "description": "",
+      "sourcepaperId": null,
+      "timeUnit": "day",
+      "volumeUnit": "m3",
+      "flowUnit": "m3/d",
+      "amountTarget": 1,
+      "amountReactionZone": 0,
+      "amountTank": 2,
+      "amountVolume": 2,
+      "amountInflow": 1,
+      "amountFlow": 1,
+      "createdAt": "2026-09-20T10:00:00",
+      "updatedAt": "2026-09-20T10:00:00"
+    }
+  ],
+  "page": 1,
+  "pageSize": 50,
+  "total": 1,
+  "hasNext": false
+}
+```

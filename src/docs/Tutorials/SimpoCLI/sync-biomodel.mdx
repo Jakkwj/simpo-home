@@ -1,0 +1,84 @@
+---
+id: sync-biomodel
+title: Sync a BioModel
+sidebar_label: sync-biomodel
+---
+
+# `sync-biomodel`: copy a published version to its Draft
+
+Copy the model content of an owned versioned BioModel to the same-name version
+`0` Draft. This is useful when the Draft was edited or reset and should match a
+previously published Release.
+
+The source version is not changed. The target Draft keeps its own ID, name,
+`state=Draft`, `privacy=Private`, and `version=0`; its model tables, serialized
+cache, replacement names, counts, and description are replaced by the source
+version.
+
+## Requirements
+
+- Token scope: `write`
+- `BIOMODEL_ID` must belong to the Token user.
+- The source must be a `Release` or `Standard` BioModel with `version > 0`.
+- A same-name version `0` Draft must exist for the Token user.
+
+This command follows the existing web `POST /biomodel/sync` behavior. It updates
+the BioModel records only; it does not automatically rebuild Projects that use
+the Draft. Use the Project synchronization or calculation workflow afterward
+when those Projects must adopt the changed Draft.
+
+## Syntax
+
+```text
+simpo sync-biomodel BIOMODEL_ID [OPTIONS]
+```
+
+`BIOMODEL_ID` is the source Release/Standard ID, not the target Draft ID.
+
+Example:
+
+```text
+simpo sync-biomodel 124
+```
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `BIOMODEL_ID` | required | Owned versioned source BioModel ID |
+| `--timeout SECONDS` | `30.0` | Maximum time for the sync request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+The command has no name or version option. The backend uses the source BioModel
+ID and finds its same-name Draft atomically within the authenticated user's
+records.
+
+## Result
+
+```json
+{
+  "success": true,
+  "id": 123,
+  "sourceId": 124,
+  "name": "TestModel",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "sourceState": "Release",
+  "sourcePrivacy": "Private",
+  "sourceVersion": 1,
+  "description": "synced description",
+  "amountParameter": 4,
+  "amountComponent": 3,
+  "amountComponentSoluble": 1,
+  "amountRate": 2,
+  "amountComposition": 1,
+  "createdAt": "2026-09-23T00:00:00",
+  "updatedAt": "2026-09-23T00:00:00",
+  "message": "BioModel sync success."
+}
+```
+
+The returned `sourceId` is the published input, while `id` is the Draft that was
+updated.

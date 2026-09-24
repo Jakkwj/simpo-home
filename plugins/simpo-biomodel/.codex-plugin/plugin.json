@@ -1,0 +1,25 @@
+{
+  "name": "simpo-biomodel",
+  "version": "0.1.0+codex.20260924094556",
+  "description": "Analyze wastewater-treatment papers and create reviewed SIMPO BioModel drafts with SimpoCLI.",
+  "author": {
+    "name": "SIMPO"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SIMPO BioModel",
+    "shortDescription": "Create BioModel drafts from research papers.",
+    "longDescription": "Extract and review SIMPO Components, Parameters, Matrix, Composition, and Ionization from wastewater-treatment research papers, then create a Private version 0 Draft through SimpoCLI.",
+    "developerName": "SIMPO",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Analyze this paper and prepare a reviewed SIMPO BioModel draft.",
+      "Derive Composition and Ionization for this SIMPO BioModel.",
+      "Validate this BioModel JSON before creating a Private Draft."
+    ]
+  }
+}

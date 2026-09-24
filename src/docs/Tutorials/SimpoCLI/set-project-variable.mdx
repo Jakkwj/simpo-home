@@ -1,7 +1,7 @@
 ---
 id: set-project-variable
 title: Update a Project variable field
-sidebar_label: set-project-variable — update a field
+sidebar_label: set-project-variable
 ---
 
 # `set-project-variable`: update a Variable field
@@ -65,13 +65,33 @@ The field name is case-insensitive; the response returns its canonical name.
 | `--api-token TOKEN` | configured Token | Complete Token override |
 | `--base-url URL` | packaged environment URL | Backend override for this request |
 
-## Success and errors
+## Result
 
 The successful JSON result has `success: true` and identifies the Project,
 Variable, field, old value, new value, and bounds. A non-zero exit code means no
 successful update was confirmed.
 
+### Errors
+
 Common failures include an unknown Variable, Tank, or field; an attempt to
 change read-only `Variable`/`Tank`; an invalid value type; a value outside the
 inclusive bounds; a Project version other than `0`; missing `write` scope; or
 Project ownership failure.
+
+Example successful response:
+
+```json
+{
+  "success": true,
+  "projectId": 706,
+  "projectName": "Example",
+  "projectVersion": 0,
+  "variable": "S_O2",
+  "tank": "AnoxicTank",
+  "field": "Value",
+  "previousValue": 90.0,
+  "value": 95.8,
+  "lowerBound": 0.0,
+  "upperBound": 100.0
+}
+```

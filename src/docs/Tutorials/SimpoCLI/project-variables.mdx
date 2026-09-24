@@ -1,7 +1,7 @@
 ---
 id: project-variables
 title: Get Project variables
-sidebar_label: get-project-variables — read all fields
+sidebar_label: get-project-variables
 ---
 
 # `get-project-variables`: read all Variable fields
@@ -43,6 +43,8 @@ The JSON response contains Project metadata, a `columns` array, and a
 `variables` array. Each item is a complete row keyed by the returned column
 names. A standard row can contain:
 
+Example successful response:
+
 | Field | Meaning |
 | --- | --- |
 | `Variable` | Variable name |
@@ -70,3 +72,22 @@ printf '%s\n' "$variables"
 
 To change one writable field, use
 [`set-project-variable`](./set-project-variable).
+
+```json
+{
+  "projectId": 706,
+  "projectName": "Example",
+  "projectVersion": 0,
+  "columns": ["Variable", "Tank", "Value", "Evaluation", "LowerBound", "UpperBound"],
+  "variables": [
+    {
+      "Variable": "S_O2",
+      "Tank": "AnoxicTank",
+      "Value": 95.8,
+      "Evaluation": true,
+      "LowerBound": 0.0,
+      "UpperBound": 100.0
+    }
+  ]
+}
+```

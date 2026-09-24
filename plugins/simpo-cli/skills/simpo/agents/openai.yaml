@@ -1,0 +1,4 @@
+interface:
+  display_name: "SimpoCLI"
+  short_description: "Operate SIMPO safely through its command-line client"
+  default_prompt: "Use $simpo to complete this task with the installed SimpoCLI."

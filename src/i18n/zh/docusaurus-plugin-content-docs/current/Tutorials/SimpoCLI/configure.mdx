@@ -1,7 +1,7 @@
 ---
 id: configure
 title: 配置 API Token
-sidebar_label: configure — 保存 Token
+sidebar_label: configure
 ---
 
 import config from "@generated/docusaurus.config";
@@ -12,13 +12,18 @@ import config from "@generated/docusaurus.config";
 命令会隐藏终端输入，通过 `/openapi/v1/me` 验证 Token，并且只在验证成功后
 保存。
 
-## 从 Dashboard 获取个人 Token
+## 使用条件
+
+- 拥有 SIMPO 账户，并能访问 Dashboard 的 API Tokens 页面。
+- 创建 Token 后必须立即复制完整 Token；它只显示一次。
+
+## 获取个人 Token
 
 1. 登录并打开 <a href={config.customFields.urlDashApiTokens} target="_blank" rel="noopener noreferrer"><strong>Account → API Tokens</strong></a>。
 2. 点击 **Create Token**，输入能够识别当前电脑或集成程序的名称。
 3. 根据用途选择最小权限：`read`、`write` 和/或 `calculate`。
 4. 设置 `1` 到 `365` 天的有效期，然后点击 **Create Token**。
-5. 在 **Token Created** 弹窗中立即复制完整 Token；它只会显示一次。
+5. 在 **Token Created** 弹窗中立即复制完整 Token。
 
 以后 API Tokens 页面只显示用于识别和撤销 Token 的 `tokenPrefix`。这个前缀
 不是密钥，不能配置到 SimpoCLI。如果创建时没有复制完整 Token，请撤销
@@ -57,7 +62,9 @@ Paste OpenAPI Token:
 JSON 字段名为 `SIMPO_API_TOKEN`。SimpoCLI 会在需要时创建文件；Linux
 下会把目录和文件权限限制为当前用户。不要提交或公开该文件。
 
-## 成功结果
+下一步运行 [`simpo me`](./me) 验证已保存的配置。
+
+## 返回结果
 
 返回 JSON 会确认文件路径、用户、Token ID 和 scope，但不会回显 Token：
 
@@ -70,5 +77,3 @@ JSON 字段名为 `SIMPO_API_TOKEN`。SimpoCLI 会在需要时创建文件；Lin
   "scopes": ["read", "write", "calculate"]
 }
 ```
-
-下一步运行 [`simpo me`](./me) 验证已保存的配置。

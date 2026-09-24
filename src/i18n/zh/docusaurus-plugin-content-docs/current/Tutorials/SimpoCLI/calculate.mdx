@@ -1,7 +1,7 @@
 ---
 id: calculate
 title: 启动计算
-sidebar_label: calculate — 启动计算
+sidebar_label: calculate
 ---
 
 # `calculate`：准备并启动计算
@@ -110,6 +110,8 @@ simpo calculate 706 --no-launch
 没有使用 `--wait` 时，成功只表示文件准备完成并启动了本地客户端，不表示
 计算已经完成：
 
+使用 `--wait` 时，`finalStatus` 包含后端最终状态。
+
 ```json
 {
   "success": true,
@@ -123,5 +125,3 @@ simpo calculate 706 --no-launch
   "finalStatus": null
 }
 ```
-
-使用 `--wait` 时，`finalStatus` 包含后端最终状态。

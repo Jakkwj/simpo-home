@@ -1,7 +1,7 @@
 ---
 id: set-project-variable
 title: 修改 Project Variable 字段
-sidebar_label: set-project-variable — 修改字段
+sidebar_label: set-project-variable
 ---
 
 # `set-project-variable`：修改 Variable 字段
@@ -64,11 +64,31 @@ Variable 和 Tank 名称用于定位已有数据行。建议先使用
 | `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
 | `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
 
-## 成功和错误
+## 返回结果
 
 成功 JSON 的 `success` 为 `true`，并包含 Project、Variable、字段、旧值、
 新值以及当前上下界。非零退出码表示后端没有确认修改成功。
 
+### 错误
+
 常见错误包括 Variable、Tank 或字段不存在、尝试修改只读的 `Variable`/`Tank`、
 值类型错误、数值超出闭区间、Project version 不是 `0`、缺少 `write` scope
 或 Project 不属于当前用户。
+
+成功返回示例：
+
+```json
+{
+  "success": true,
+  "projectId": 706,
+  "projectName": "Example",
+  "projectVersion": 0,
+  "variable": "S_O2",
+  "tank": "AnoxicTank",
+  "field": "Value",
+  "previousValue": 90.0,
+  "value": 95.8,
+  "lowerBound": 0.0,
+  "upperBound": 100.0
+}
+```

@@ -1,0 +1,65 @@
+---
+id: biomodel-skill-codex-install
+title: Codex 安装
+sidebar_label: 安装
+---
+
+# 在 Codex 中安装 BioModel Skill
+
+## 安装前准备
+
+先确认以下命令可以运行：
+
+```text
+codex --help
+simpo --help
+simpo me
+```
+
+`simpo me` 应返回当前用户和 Token scopes。创建 BioModel 需要 `write` scope；如果尚未
+配置 Token，请先运行 `simpo configure`。
+
+## 从 SIMPO Marketplace 安装
+
+添加 SIMPO Marketplace：
+
+```text
+codex plugin marketplace add Jakkwj/simpo-home --ref master
+```
+
+安装 BioModel Plugin：
+
+```text
+codex plugin add simpo-biomodel@simpo
+```
+
+安装完成后关闭当前 Codex 会话并开启新会话，使 Codex 发现新安装的 Skill。
+
+## 更新
+
+SIMPO 发布新版 Skill 后，刷新 Marketplace 并重新安装：
+
+```text
+codex plugin marketplace upgrade simpo
+codex plugin add simpo-biomodel@simpo
+```
+
+然后重新开启 Codex 会话。
+
+## 验证
+
+在新会话中询问 Codex：
+
+```text
+What does $create-biomodel do?
+```
+
+如果 Codex 能说明它会分析论文并通过 SimpoCLI 创建 Private Draft BioModel，则安装成功。
+下一步参阅 [Codex 使用方法与示例](./biomodel-skill-codex-usage)。
+
+## 常见问题
+
+- 找不到 Skill：确认已开启新会话，并重新执行 Marketplace 更新与 Plugin 安装命令。
+- `simpo me` 返回 `401`：本地 Token 无效或已过期，请使用 `simpo configure` 保存新 Token。
+- 找不到 `simpo`：先安装 SimpoCLI，并确认其命令目录已加入系统 `PATH`。
+

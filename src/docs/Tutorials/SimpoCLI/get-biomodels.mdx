@@ -1,27 +1,25 @@
 ---
 id: get-biomodels
 title: List BioModels
-sidebar_label: get-biomodels — list your BioModels
+sidebar_label: get-biomodels
 ---
 
 # `get-biomodels`: list your BioModels
 
-List metadata for every BioModel owned by the current API Token user. This
-command does not download the potentially large model tables or internal pickle.
+List one page of metadata for BioModels owned by the current API Token user.
+This command does not download the potentially large model tables or internal
+pickle. Results are ordered from newest to oldest and use one-based page numbers.
 
-## Requirements and syntax
+## Requirements
 
 - Token scope: `read`
 - Only BioModels owned by the Token user are returned.
 
+## Syntax
+
 ```text
 simpo get-biomodels [OPTIONS]
 ```
-
-The response contains a `biomodels` array ordered from newest to oldest. Each
-item includes its ID, name, state, privacy, version, description, source paper
-ID, table counts, and creation/update timestamps. An account with no BioModels
-returns `{"biomodels": []}`.
 
 Use the returned `id` with [`get-biomodel`](./get-biomodel) when complete model
 tables are required.
@@ -30,7 +28,46 @@ tables are required.
 
 | Option | Default | Meaning |
 | --- | --- | --- |
+| `--page INTEGER` | `1` | One-based page number |
+| `--page-size INTEGER` | `50` | Items per page; must be between `1` and `100` |
 | `--timeout SECONDS` | `10.0` | Maximum time for the HTTP request |
 | `--api-token TOKEN` | configured Token | Complete Token override |
 | `--base-url URL` | packaged environment URL | Backend override for this request |
 
+## Result
+
+The response contains a `biomodels` array for the requested page. It also
+contains `page`, `pageSize`, `total`, and `hasNext` pagination metadata. Each
+item includes its ID, name, state, privacy, version, description, source paper
+ID, table counts, and creation/update timestamps. An account with no BioModels
+returns an empty first page with `total: 0` and `hasNext: false`.
+
+Example successful response:
+
+```json
+{
+  "biomodels": [
+    {
+      "id": 1234,
+      "name": "ASM2d",
+      "state": "Draft",
+      "privacy": "Private",
+      "version": 0,
+      "description": "",
+      "sourcepaperId": null,
+      "versionCounter": 0,
+      "amountParameter": 18,
+      "amountComponent": 19,
+      "amountComponentSoluble": 15,
+      "amountRate": 21,
+      "amountComposition": 1,
+      "createdAt": "2026-09-20T10:00:00",
+      "updatedAt": "2026-09-20T10:00:00"
+    }
+  ],
+  "page": 1,
+  "pageSize": 50,
+  "total": 1,
+  "hasNext": false
+}
+```

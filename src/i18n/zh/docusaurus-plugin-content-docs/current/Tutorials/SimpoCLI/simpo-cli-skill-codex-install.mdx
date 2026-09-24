@@ -1,0 +1,71 @@
+---
+id: simpo-cli-skill-codex-install
+title: 在 Codex 中安装 SimpoCLI Skill
+sidebar_label: 安装
+---
+
+# 在 Codex 中安装 SimpoCLI Skill
+
+## 安装前准备
+
+确认 Codex 与单独安装的 SimpoCLI 可用：
+
+```text
+codex --help
+simpo --version
+simpo --help
+```
+
+如果还没有配置 Token，请在终端中交互执行：
+
+```text
+simpo configure
+simpo me
+```
+
+不要把 Token 粘贴到 Codex 中。
+
+## 从 SIMPO Marketplace 安装
+
+添加或刷新 SIMPO Marketplace：
+
+```text
+codex plugin marketplace add Jakkwj/simpo-home --ref master
+```
+
+安装插件（如果当前 `codex plugin --help` 显示的语法不同，请以当前版本为准）：
+
+```text
+codex plugin add simpo-cli@simpo
+```
+
+重新启动 Codex 会话，使 Skill 被发现。
+
+## 验证
+
+询问：
+
+```text
+请说明 $simpo 的作用，不要执行任何修改。
+```
+
+如果 Codex 能说明它会识别当前安装的 CLI 接口并安全操作 SIMPO 资源，则安装成功。
+Codex 中的调用名是 `$simpo`。
+下一步参阅 [Codex 使用方法与示例](./simpo-cli-skill-codex-usage)。
+
+## 更新
+
+```text
+codex plugin marketplace upgrade simpo
+codex plugin add simpo-cli@simpo
+```
+
+然后重新启动 Codex 会话。
+
+:::note
+
+Codex 插件命令仍在演进。如果当前 `codex --help` 没有这里记录的插件命令，请升级
+Codex，并使用当前版本的插件管理界面。仓库目录结构和 `simpo-cli@simpo` 标识保持
+不变。
+
+:::

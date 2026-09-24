@@ -1,0 +1,76 @@
+---
+id: get-projects
+title: 列出 Project
+sidebar_label: get-projects
+---
+
+# `get-projects`：列出自己的 Project
+
+分页列出当前 API Token 用户拥有的 Project 元数据。返回结果包含 Project
+当前引用的 BioModel 和 DataSet 信息，但不会下载 Project 的 `detail`、计算
+结果、报告或 pickle 数据。
+
+## 使用条件
+
+- Token scope：`read`
+- 只返回当前 Token 用户拥有的 Project。
+
+## 命令格式
+
+```text
+simpo get-projects [OPTIONS]
+```
+
+返回的 `id` 可以继续用于
+[`get-project-variables`](./project-variables)、[`calculate`](./calculate) 或
+[`calculation-status`](./calculation-status)。
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--page INTEGER` | `1` | 从 1 开始的页码 |
+| `--page-size INTEGER` | `50` | 每页数量，必须在 `1` 到 `100` 之间 |
+| `--timeout SECONDS` | `10.0` | HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+
+结果按创建时间从新到旧排序。每个 Project 项包含 ID、名称、state、privacy、
+version、description、时间戳，以及当前引用的 BioModel/DataSet ID、名称、
+state 和 version。如果历史数据中引用的模型已经不存在，对应模型字段为
+`null`，Project 本身仍会返回。
+
+## 返回结果
+
+响应包含当前页的 `projects` 数组，以及 `page`、`pageSize`、`total` 和
+`hasNext` 分页字段。没有 Project 时返回空数组、`total: 0` 和
+`hasNext: false`。
+
+```json
+{
+  "projects": [
+    {
+      "id": 706,
+      "name": "Example",
+      "state": "Draft",
+      "privacy": "Private",
+      "version": 0,
+      "description": "",
+      "biomodelId": 123,
+      "biomodelName": "ASM2d",
+      "biomodelState": "Draft",
+      "biomodelVersion": 0,
+      "datasetId": 456,
+      "datasetName": "Default",
+      "datasetState": "Draft",
+      "datasetVersion": 0,
+      "createdAt": "2026-09-20T10:00:00",
+      "updatedAt": "2026-09-20T10:00:00"
+    }
+  ],
+  "page": 1,
+  "pageSize": 50,
+  "total": 1,
+  "hasNext": false
+}
+```

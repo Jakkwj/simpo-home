@@ -1,26 +1,24 @@
 ---
 id: get-biomodels
 title: 列出 BioModel
-sidebar_label: get-biomodels — 列出自己的 BioModel
+sidebar_label: get-biomodels
 ---
 
 # `get-biomodels`：列出自己的 BioModel
 
-列出当前 API Token 用户拥有的全部 BioModel 元数据。该命令不会下载体积可能
-较大的模型表格，也不会返回内部 pickle。
+分页列出当前 API Token 用户拥有的 BioModel 元数据。该命令不会下载体积可能
+较大的模型表格，也不会返回内部 pickle。结果按创建时间从新到旧排列，页码从 1 开始。
 
-## 使用条件和命令格式
+## 使用条件
 
 - Token scope：`read`
 - 只返回当前 Token 用户拥有的 BioModel。
 
+## 命令格式
+
 ```text
 simpo get-biomodels [OPTIONS]
 ```
-
-响应包含按新到旧排列的 `biomodels` 数组。每项包括 ID、名称、状态、隐私、
-版本、描述、来源论文 ID、各表数量以及创建和更新时间。没有 BioModel 时返回
-`{"biomodels": []}`。
 
 需要完整模型表格时，把返回的 `id` 传给 [`get-biomodel`](./get-biomodel)。
 
@@ -28,7 +26,45 @@ simpo get-biomodels [OPTIONS]
 
 | 选项 | 默认值 | 作用 |
 | --- | --- | --- |
+| `--page INTEGER` | `1` | 从 1 开始的页码 |
+| `--page-size INTEGER` | `50` | 每页数量，必须在 `1` 到 `100` 之间 |
 | `--timeout SECONDS` | `10.0` | HTTP 请求的最长等待时间 |
 | `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
 | `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
 
+## 返回结果
+
+响应包含当前页的 `biomodels` 数组，以及 `page`、`pageSize`、`total` 和
+`hasNext` 分页信息。每项包括 ID、名称、状态、隐私、版本、描述、来源论文 ID、
+各表数量以及创建和更新时间。没有 BioModel 时，第一页返回 `total: 0`、
+`hasNext: false` 和空数组。
+
+成功返回示例：
+
+```json
+{
+  "biomodels": [
+    {
+      "id": 1234,
+      "name": "ASM2d",
+      "state": "Draft",
+      "privacy": "Private",
+      "version": 0,
+      "description": "",
+      "sourcepaperId": null,
+      "versionCounter": 0,
+      "amountParameter": 18,
+      "amountComponent": 19,
+      "amountComponentSoluble": 15,
+      "amountRate": 21,
+      "amountComposition": 1,
+      "createdAt": "2026-09-20T10:00:00",
+      "updatedAt": "2026-09-20T10:00:00"
+    }
+  ],
+  "page": 1,
+  "pageSize": 50,
+  "total": 1,
+  "hasNext": false
+}
+```

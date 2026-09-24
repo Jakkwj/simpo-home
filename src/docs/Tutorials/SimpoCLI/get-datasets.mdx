@@ -1,0 +1,79 @@
+---
+id: get-datasets
+title: List DataSets
+sidebar_label: get-datasets
+---
+
+# `get-datasets`: list your DataSets
+
+List one page of metadata for DataSets owned by the current API Token user.
+The response includes units, table counts, and version information, but does
+not download the complete DataSet `detail` tables or the internal `pickle`.
+
+## Requirements
+
+- Token scope: `read`
+- Only DataSets whose `creator_id` is the Token user's ID are returned.
+- Public DataSets created by other users are not mixed into this personal list.
+
+## Syntax
+
+```text
+simpo get-datasets [OPTIONS]
+```
+
+Use a returned `id` with [`get-dataset`](./get-dataset) to read one complete
+DataSet.
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--page INTEGER` | `1` | One-based page number |
+| `--page-size INTEGER` | `50` | Items per page; must be between `1` and `100` |
+| `--timeout SECONDS` | `10.0` | Maximum time for the HTTP request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+Results are ordered from newest to oldest. Each DataSet item contains its ID,
+name, state, privacy, version, description, source paper ID, units, table
+counts, and timestamps. The list endpoint does not expose `detail`, `pickle`,
+`share_url`, `shareable`, or `cloneable`.
+
+## Result
+
+The response contains the requested `datasets` page and the `page`, `pageSize`,
+`total`, and `hasNext` pagination fields. An account with no DataSets returns an
+empty first page with `total: 0` and `hasNext: false`.
+
+```json
+{
+  "datasets": [
+    {
+      "id": 456,
+      "name": "Default",
+      "state": "Draft",
+      "privacy": "Private",
+      "version": 0,
+      "versionCounter": 0,
+      "description": "",
+      "sourcepaperId": null,
+      "timeUnit": "day",
+      "volumeUnit": "m3",
+      "flowUnit": "m3/d",
+      "amountTarget": 1,
+      "amountReactionZone": 0,
+      "amountTank": 2,
+      "amountVolume": 2,
+      "amountInflow": 1,
+      "amountFlow": 1,
+      "createdAt": "2026-09-20T10:00:00",
+      "updatedAt": "2026-09-20T10:00:00"
+    }
+  ],
+  "page": 1,
+  "pageSize": 50,
+  "total": 1,
+  "hasNext": false
+}
+```

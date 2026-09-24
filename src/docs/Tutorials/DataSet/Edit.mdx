@@ -1,0 +1,116 @@
+---
+title: Edit
+---
+
+# Edit a DataSet
+
+The editable parts of a DataSet are Detail, Version, and Profile. Released
+versions and public/private read-only views cannot be edited; clone a DataSet
+to Personal DataSets when an editable Draft is needed.
+
+## Detail
+
+The Detail page contains Flowchart, Targets, Tanks, and Links. The following
+editing operations apply to a Draft.
+
+### Unit
+
+Open `Unit` from the Flowchart `List` menu:
+
+- `Time`: `day`, `hour`, `minute`, or `second`; this is the only editable unit.
+- `Flow`: fixed to `m3/d`.
+- `Volume`: fixed to `m3`.
+- `Area`: fixed to `m2`.
+- `Height`: fixed to `m`.
+
+Changing the Time unit updates time-index labels in tank measurements, inflows,
+and flows.
+
+### Targets
+
+Targets connect measured variables to BioModel Components. The table contains
+`Symbol`, `Unit`, `Name`, `Description`, and `Oxygen`.
+
+- `Symbol` and `Unit` are required.
+- A Symbol starts with a letter and uses only letters, numbers, and underscores;
+  consecutive underscores are not allowed.
+- Symbols must be unique and cannot conflict with reserved words or other
+  DataSet names.
+- Set `Oxygen` for the dissolved-oxygen target used by aeration calculations.
+
+### Tanks
+
+The tank list contains `Name`, `Type`, `BioCalculated`, `Volume`, and
+`Constant Volume`. Types are `CSTR` and `Point Settling`.
+
+- CSTR tanks can enable biochemical calculations and constant volume.
+- Point Settling tanks contain `Outlet` and `Blanket`; their Settling Factor is
+  between 0 and 1 and `BioCalculated` is disabled automatically.
+- Tank names follow Target naming rules and Volume cannot be negative.
+- Tank time-series data starts with `Time`, followed by one column per Target.
+- CSTR aeration fields are `Diffuser Number`, `Diffuser Depth (m)`, `Alpha
+  Factor`, and `Beta Factor`. Diffuser Number and Depth cannot be negative;
+  Alpha and Beta range from 0 to 1.
+
+### Pumps
+
+Pumps are used for aeration calculations. The pump list contains `Name`,
+`Type`, `SOTEa`, `SOTEb`, and `SOTEc`. `Fit SOTE Curve` uses:
+
+- `Qd (m3/h/Diffuser)`
+- `Diffuser Depth (m)`
+- `SOTE (%)`
+
+Curve data supports CSV import/export. After valid rows are entered, fit the
+curve to calculate its coefficients:
+
+```text
+SOTEa * (Qair / DiffuserNumber)^(-SOTEb) * DiffuserDepth^(SOTEc)
+```
+
+### Inflows and measured data
+
+An inflow time series starts with `Time`; subsequent columns contain target
+values. Time indices must be present, non-negative, and unique. Rows can be
+added, copied, deleted, reordered, step-added, imported, or exported as CSV.
+
+### Flows
+
+A flow time series contains `Time` and `Flow`, with `Flow` fixed to `m3/d`.
+Maintain it with Unit, Step Add, row editing, and CSV import/export controls.
+
+### Connections
+
+Connections contain `From`, `Flow`, and `Into`:
+
+- `From`: Tank, Point Settling `Outlet`/`Blanket`, Inflow, or Pump.
+- `Into`: Tank, `Outflow`, or `Wasted`.
+- A Pump can connect only to a CSTR Tank.
+
+Check the direction and endpoints in the Flowchart before saving.
+
+### Flowchart
+
+The `Add` menu creates Tanks, Pumps, Inflows, Outflows, Wasted objects, Flows,
+Connections, and Targets. The `List` menu opens each table and Unit. Tools
+include Fit, Grid, Layout, PNG Export, zoom/pan, and fullscreen editing.
+
+### Other actions
+
+- `Temp`: save incomplete detail without format checking; quoted Draft Projects
+  are saved as well.
+- `Parse`: validate and save detail; quoted Draft Projects are saved too.
+- `Edit`: rename, import an XLSX template, choose a paper, or edit description.
+- `Export`: download the DataSet as XLSX for local editing and re-import.
+- Clone and delete are available from the DataSet list.
+
+## Version
+
+In the Version tab, release the current Draft into ascending version numbers.
+Released versions can be Public or Private according to permissions. Use
+`Sync` on a released version to copy that version back to the Draft.
+
+## Profile
+
+Profile shows the description, related paper, and counts for Targets, Tanks,
+Inflows, and Flows. `Quoted By` lists Projects that use this DataSet.

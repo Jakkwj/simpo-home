@@ -1,0 +1,68 @@
+---
+id: biomodel-skill-codex-install
+title: Install for Codex
+sidebar_label: Installation
+---
+
+# Install BioModel Skill for Codex
+
+## Prerequisites
+
+Verify these commands first:
+
+```text
+codex --help
+simpo --help
+simpo me
+```
+
+`simpo me` must identify the current user and Token scopes. Creating a BioModel
+requires `write` scope. Run `simpo configure` first if no valid Token is saved.
+
+## Install from the SIMPO Marketplace
+
+Add the SIMPO Marketplace:
+
+```text
+codex plugin marketplace add Jakkwj/simpo-home --ref master
+```
+
+Install the BioModel Plugin:
+
+```text
+codex plugin add simpo-biomodel@simpo
+```
+
+Close the current Codex session and start a new session so Codex discovers the
+installed Skill.
+
+## Update
+
+When SIMPO publishes a new Skill version, refresh the Marketplace and reinstall:
+
+```text
+codex plugin marketplace upgrade simpo
+codex plugin add simpo-biomodel@simpo
+```
+
+Then start a new Codex session.
+
+## Verify
+
+Ask in the new session:
+
+```text
+What does $create-biomodel do?
+```
+
+Installation succeeded if Codex explains that it analyzes a paper and creates a
+Private Draft BioModel through SimpoCLI. Continue with
+[Codex usage and examples](./biomodel-skill-codex-usage).
+
+## Troubleshooting
+
+- Skill not found: start a new session, then repeat the Marketplace update and
+  Plugin installation commands.
+- `simpo me` returns `401`: save a new Token with `simpo configure`.
+- `simpo` not found: install SimpoCLI and add its command directory to `PATH`.
+

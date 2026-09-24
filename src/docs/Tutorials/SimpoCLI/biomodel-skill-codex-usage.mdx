@@ -1,0 +1,116 @@
+---
+id: biomodel-skill-codex-usage
+title: Codex Usage and Examples
+sidebar_label: Usage and examples
+---
+
+# Use BioModel Skill in Codex
+
+## Basic usage
+
+Explicitly name `$create-biomodel`, provide a readable paper path, and choose a
+model name:
+
+```text
+Use $create-biomodel to analyze /path/to/paper.pdf and prepare a SIMPO BioModel named MyModel.
+```
+
+Chinese prompts are supported. Keep the Skill name unchanged, but write the
+request naturally in Chinese:
+
+```text
+请使用 $create-biomodel 分析 /path/to/paper.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
+```
+
+Codex verifies the paper, extracts Components, Parameters, and Matrix, attempts
+supported Composition and Ionization derivations, and presents sources,
+assumptions, uncertainties, and proposed content before submission. It calls
+`simpo create-biomodel` only after material uncertainties are handled and the
+user approves creation.
+
+## Use the defaults
+
+All four options are enabled by default, so they normally need not be stated:
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+```
+
+This is equivalent to:
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+Options: matrix_fractions=on; composition_derive=on; ionization_derive=on; source_correction=on.
+```
+
+`matrix_fractions=on` does not approximate arbitrary decimals. Conversion occurs
+only when an equation, chemical basis, or independent derivation establishes the
+exact fraction. The review shows both the reported decimal and stored fraction.
+
+## Disable an option
+
+Preserve the paper's decimal representation:
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Options: matrix_fractions=off.
+```
+
+Do not derive missing Composition values:
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Options: composition_derive=off.
+```
+
+Do not derive missing Ionization values:
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Options: ionization_derive=off.
+```
+
+When either derivation option is off, values or rows explicitly reported by the
+paper are still retained; only unsupported missing data is left un-derived.
+`source_correction=on` automatically applies only high-confidence OCR,
+transcription, unit-label, or equation/table consistency corrections. Each
+applied correction is recorded in Markdown in the `--description` audit note.
+The four options are independent and may be combined.
+
+To preserve the source exactly and only report suspected errors:
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Options: source_correction=off.
+```
+
+## Analyze without creating
+
+To review extraction before any API write, say so explicitly:
+
+```text
+Use $create-biomodel to analyze /data/papers/model.pdf and prepare the proposed tables for review.
+Do not create the BioModel yet.
+```
+
+Review citations, units, formulas, unknowns, and derivation evidence before
+explicitly approving or rejecting creation.
+
+## Successful result
+
+Successful creation must satisfy these constraints:
+
+```json
+{
+  "success": true,
+  "id": 1234,
+  "name": "MyModel",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "creationMode": "json"
+}
+```
+
+A nonzero `Balance` must be reported as a diagnostic. Never suppress it by
+guessing Composition values, removing supported coefficients, or changing Matrix.

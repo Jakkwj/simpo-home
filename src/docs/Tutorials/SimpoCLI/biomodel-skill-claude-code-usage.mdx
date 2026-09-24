@@ -1,0 +1,96 @@
+---
+id: biomodel-skill-claude-code-usage
+title: Claude Code Usage and Examples
+sidebar_label: Usage and examples
+---
+
+# Use BioModel Skill in Claude Code
+
+## Basic usage
+
+Invoke the namespaced `/simpo-biomodel:create-biomodel` command, and provide a
+paper path and model name:
+
+```text
+/simpo-biomodel:create-biomodel Analyze /path/to/paper.pdf and prepare a SIMPO BioModel named MyModel.
+```
+
+You may write the request in Chinese as well:
+
+```text
+/simpo-biomodel:create-biomodel 请分析 /path/to/paper.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
+```
+
+The Skill guides Claude Code through model extraction, evidence tracing, and
+uncertainty reporting. After review and approval, it uses SimpoCLI to create a
+Private, version 0, Draft BioModel.
+
+## Default options
+
+All four options are enabled by default, so no extra configuration is normally
+needed:
+
+```text
+/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+```
+
+To state the defaults explicitly:
+
+```text
+/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+Options: matrix_fractions=on; composition_derive=on; ionization_derive=on; source_correction=on.
+```
+
+## Customize options
+
+For example, derive supported Composition cells while preserving Matrix decimals
+and leaving unsupported Ionization data un-derived:
+
+```text
+/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Options: matrix_fractions=off; composition_derive=on; ionization_derive=off.
+```
+
+Option meanings:
+
+- `matrix_fractions=on|off`: store exact fractions when rigorously supported.
+- `composition_derive=on|off`: derive supported missing Composition cells when
+  `on`; when `off`, do not derive missing cells. In both cases, retain values
+  explicitly reported by the paper.
+- `ionization_derive=on|off`: derive fully supported missing Ionization rows
+  when `on`; when `off`, do not derive missing rows. In both cases, retain rows
+  explicitly reported by the paper.
+- `source_correction=on|off`: when `on`, automatically apply only high-confidence
+  source transcription corrections and record every correction in the Markdown
+  `--description` audit note; when `off`, preserve source values and report
+  suspected errors without changing them.
+
+These are natural-language instructions, not SimpoCLI flags.
+
+## Analyze without creating
+
+```text
+/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and show the proposed tables.
+Do not call SimpoCLI to create the BioModel yet.
+```
+
+Explicitly approve or reject creation after review. Never paste an API Token into
+the conversation.
+
+## Successful result
+
+```json
+{
+  "success": true,
+  "id": 1234,
+  "name": "MyModel",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "creationMode": "json"
+}
+```
+
+Parser acceptance establishes representation validity only, not scientific
+correctness. Retain and explain a nonzero `Balance`; never hide it by inventing
+unsupported values.

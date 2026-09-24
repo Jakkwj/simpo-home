@@ -1,0 +1,106 @@
+---
+title: 编辑
+---
+
+# 编辑 DataSet
+
+DataSet 可编辑的部分包括 Detail、Version 和 Profile。已发布版本以及公开/私有
+只读页面不能编辑；需要 Draft 时，请先克隆到个人 DataSet 列表。
+
+## Detail
+
+Detail 页面包含 Flowchart、Targets、Tanks 和 Links，以下操作均适用于 Draft。
+
+### Unit
+
+在 Flowchart 的 `List` 菜单中打开 `Unit`：
+
+- `Time`：`day`、`hour`、`minute` 或 `second`，只有它可以修改。
+- `Flow`：固定为 `m3/d`。
+- `Volume`：固定为 `m3`。
+- `Area`：固定为 `m2`。
+- `Height`：固定为 `m`。
+
+修改 Time 后，Tank 测量数据、Inflows 和 Flows 的时间索引标签会同步更新。
+
+### Targets
+
+Targets 是测量变量，也是 DataSet 与 BioModel Components 的连接对象，包含
+`Symbol`、`Unit`、`Name`、`Description` 和 `Oxygen`。
+
+- `Symbol` 和 `Unit` 必填。
+- Symbol 以字母开头，只能使用字母、数字和下划线，不能连续使用下划线。
+- Symbol 必须唯一，不能与保留字或其他 DataSet 名称冲突。
+- 为曝气计算使用的溶解氧目标设置 `Oxygen`。
+
+### Tanks
+
+Tank 列表包含 `Name`、`Type`、`BioCalculated`、`Volume` 和 `Constant Volume`，
+类型为 `CSTR` 或 `Point Settling`。
+
+- CSTR 可以设置是否进行生化计算以及是否保持恒定体积。
+- Point Settling 包含 `Outlet` 和 `Blanket`，Settling Factor 为 0 到 1，
+  `BioCalculated` 会自动关闭。
+- Tank 名称遵循 Target 命名规则，Volume 不能为负数。
+- Tank 时间序列第一列为 `Time`，后续列对应各 Target。
+- CSTR 曝气字段包括 `Diffuser Number`、`Diffuser Depth (m)`、`Alpha Factor`
+  和 `Beta Factor`。前两者不能为负，后两者范围为 0 到 1。
+
+### Pumps
+
+Pump 用于曝气计算，列表包含 `Name`、`Type`、`SOTEa`、`SOTEb` 和 `SOTEc`。
+`Fit SOTE Curve` 使用以下数据：
+
+- `Qd (m3/h/Diffuser)`
+- `Diffuser Depth (m)`
+- `SOTE (%)`
+
+曲线数据支持 CSV 导入/导出。输入有效数据后，可以拟合得到系数：
+
+```text
+SOTEa * (Qair / DiffuserNumber)^(-SOTEb) * DiffuserDepth^(SOTEc)
+```
+
+### Inflows 和测量数据
+
+Inflow 时间序列第一列为 `Time`，后续列为 Target 数值。Time 不能为空、不能
+为负数或重复。支持添加、复制、删除、排序、Step Add，以及 CSV 导入/导出。
+
+### Flows
+
+Flow 时间序列包含 `Time` 和 `Flow`，Flow 单位固定为 `m3/d`。可以使用 Unit、
+Step Add、行编辑和 CSV 导入/导出功能维护。
+
+### Connections
+
+Connections 包含 `From`、`Flow` 和 `Into`：
+
+- `From`：Tank、Point Settling 的 `Outlet`/`Blanket`、Inflow 或 Pump。
+- `Into`：Tank、`Outflow` 或 `Wasted`。
+- Pump 只能连接到 CSTR Tank。
+
+保存前请在 Flowchart 中检查方向和连接端点。
+
+### Flowchart
+
+`Add` 菜单可以创建 Tanks、Pumps、Inflows、Outflows、Wasted、Flows、Connections
+和 Targets。`List` 菜单可以打开各表和 Unit。Tools 包含 Fit、Grid、Layout、PNG
+Export、缩放/平移和全屏编辑。
+
+### 其它操作
+
+- `Temp`：不检查格式，保存未完成的 Detail；引用的 Draft Project 也会保存。
+- `Parse`：校验并保存 Detail；引用的 Draft Project 也会保存。
+- `Edit`：修改名称、导入 XLSX、选择 Paper 或编辑描述。
+- `Export`：导出 XLSX，在本地编辑后重新导入。
+- 克隆和删除操作位于 DataSet 列表。
+
+## Version
+
+在 Version 标签页中将 Draft 发布为按数字递增的版本。根据权限，版本可以是
+Public 或 Private。对已发布版本使用 `Sync`，可将其内容同步回 Draft。
+
+## Profile
+
+Profile 显示描述、相关 Paper，以及 Targets、Tanks、Inflows 和 Flows 的数量。
+`Quoted By` 显示引用该 DataSet 的 Projects。

@@ -1,0 +1,51 @@
+---
+id: logout
+title: Remove the saved API Token
+sidebar_label: logout
+---
+
+# `logout`: remove the saved API Token
+
+Delete the local `SIMPO_API_TOKEN.json` file used by SimpoCLI. This command
+does not contact the backend and does not revoke the Token on the server.
+To revoke a Token completely, use the Dashboard's **API Tokens** page after
+removing the local copy.
+
+## Requirements
+
+- SimpoCLI must be installed.
+- No API Token or network connection is required.
+
+If the file does not exist, the command still succeeds and reports
+`"removed": true`, so it is safe to use during cleanup scripts.
+
+## Syntax
+
+```text
+simpo logout
+```
+
+The command has no options. It removes only the saved Token file for the
+current operating-system user:
+
+| Platform | File removed |
+| --- | --- |
+| Linux | `~/.SimpoCLI/SIMPO_API_TOKEN.json` |
+| Windows | `%APPDATA%\SimpoCLI\SIMPO_API_TOKEN.json` |
+
+The containing SimpoCLI directory is preserved. Run [`configure`](./configure)
+to save a new Token later. A Token supplied with `--api-token` or through the
+`SIMPO_API_TOKEN` environment variable is not changed by `logout`.
+
+## Result
+
+On success, stdout contains the removed file path. A non-zero exit code means
+the file could not be removed; the error is written to stderr.
+
+```json
+{
+  "success": true,
+  "tokenFile": "/home/user/.SimpoCLI/SIMPO_API_TOKEN.json",
+  "removed": true
+}
+```

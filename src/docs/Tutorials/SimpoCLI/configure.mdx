@@ -1,7 +1,7 @@
 ---
 id: configure
 title: Configure an API Token
-sidebar_label: configure — save a Token
+sidebar_label: configure
 ---
 
 import config from "@generated/docusaurus.config";
@@ -12,15 +12,19 @@ Use `configure` after copying a newly created OpenAPI Token from the Dashboard.
 The command hides terminal input, validates the Token through `/openapi/v1/me`,
 and saves it only when validation succeeds.
 
-## Obtain a personal Token from the Dashboard
+## Requirements
+
+- A SIMPO account with access to the Dashboard API Tokens page.
+- The complete Token must be copied immediately after creation; it is shown only once.
+
+## Token setup
 
 1. Sign in and open <a href={config.customFields.urlDashApiTokens} target="_blank" rel="noopener noreferrer"><strong>Account → API Tokens</strong></a>.
 2. Select **Create Token** and enter a name that identifies this computer or
    integration.
 3. Select the minimum required scopes: `read`, `write`, and/or `calculate`.
 4. Set an expiry from `1` to `365` days and select **Create Token**.
-5. Copy the complete Token immediately from the **Token Created** dialog. It is
-   shown only once.
+5. Copy the complete Token immediately from the **Token Created** dialog.
 
 The API Tokens page displays `tokenPrefix` later so that a Token can be
 identified and revoked. That prefix is not the secret and cannot be configured
@@ -61,7 +65,9 @@ The JSON key is `SIMPO_API_TOKEN`. SimpoCLI creates the file if needed;
 on Linux it restricts the directory and file permissions to the current user.
 Never commit or publish this file.
 
-## Successful result
+Next, run [`simpo me`](./me) to verify the saved configuration.
+
+## Result
 
 The JSON response confirms the file path, user, Token ID, and granted scopes,
 but never echoes the Token secret:
@@ -75,5 +81,3 @@ but never echoes the Token secret:
   "scopes": ["read", "write", "calculate"]
 }
 ```
-
-Next, run [`simpo me`](./me) to verify the saved configuration.

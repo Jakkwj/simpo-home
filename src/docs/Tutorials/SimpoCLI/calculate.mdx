@@ -1,7 +1,7 @@
 ---
 id: calculate
 title: Start a calculation
-sidebar_label: calculate — start a calculation
+sidebar_label: calculate
 ---
 
 # `calculate`: prepare and start a calculation
@@ -110,6 +110,8 @@ a short-lived credential and must not be published or written to public logs.
 
 Without `--wait`, success confirms preparation and local launch, not completion:
 
+With `--wait`, `finalStatus` contains the terminal backend status.
+
 ```json
 {
   "success": true,
@@ -123,5 +125,3 @@ Without `--wait`, success confirms preparation and local launch, not completion:
   "finalStatus": null
 }
 ```
-
-With `--wait`, `finalStatus` contains the terminal backend status.

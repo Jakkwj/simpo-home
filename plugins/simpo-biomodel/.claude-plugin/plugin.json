@@ -1,0 +1,16 @@
+{
+  "name": "simpo-biomodel",
+  "displayName": "SIMPO BioModel",
+  "version": "0.1.0",
+  "description": "Analyze wastewater-treatment papers and create reviewed SIMPO BioModel drafts with SimpoCLI.",
+  "author": {
+    "name": "SIMPO"
+  },
+  "skills": "./skills/",
+  "keywords": [
+    "simpo",
+    "biomodel",
+    "wastewater",
+    "simpocli"
+  ]
+}

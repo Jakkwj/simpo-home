@@ -1,7 +1,7 @@
 ---
 id: create-biomodel
 title: 新建 BioModel
-sidebar_label: create-biomodel — 新建 Draft BioModel（空白、Excel 或 JSON）
+sidebar_label: create-biomodel
 ---
 
 # `create-biomodel`：新建 Draft BioModel
@@ -46,31 +46,7 @@ simpo create-biomodel JsonModel --json ./BioModel.json
 | `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
 | `--base-url URL` | 安装包对应环境地址 | 仅覆盖本次请求的后端地址 |
 
-## 返回结果
-
-成功时，stdout 输出包含 `success: true`、新 BioModel 的 `id`、名称、Draft 元数据、
-描述和 `sourcepaperId` 的 JSON：
-
-```json
-{
-  "success": true,
-  "id": 1234,
-  "name": "MyModel",
-  "state": "Draft",
-  "privacy": "Private",
-  "version": 0,
-  "creationMode": "blank",
-  "description": "",
-  "sourcepaperId": null,
-  "amountParameter": 4,
-  "amountComponent": 3,
-  "amountRate": 2,
-  "amountComposition": 1
-}
-```
-
-`creationMode` 为 `blank`、`template` 或 `json`；四个 amount 字段用于确认解析后的
-模型规模。没有提供来源论文时，`sourcepaperId` 返回 `null`。
+## JSON 输入格式
 
 使用 `--json` 时，文件内容必须是下面结构中的模型对象：
 
@@ -106,3 +82,29 @@ simpo create-biomodel JsonModel --json ./BioModel.json
 Token 缺失、没有 `write` scope、名称重复（`HTTP 409`）、模板无效、解析超时
 （`HTTP 504`）或后端无法创建模型时，命令会以非零状态码退出，并将安全错误
 信息写入 stderr。
+
+## 返回结果
+
+成功时，stdout 输出包含 `success: true`、新 BioModel 的 `id`、名称、Draft 元数据、
+描述和 `sourcepaperId` 的 JSON：
+
+`creationMode` 为 `blank`、`template` 或 `json`；四个 amount 字段用于确认解析后的
+模型规模。没有提供来源论文时，`sourcepaperId` 返回 `null`。
+
+```json
+{
+  "success": true,
+  "id": 1234,
+  "name": "MyModel",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "creationMode": "blank",
+  "description": "",
+  "sourcepaperId": null,
+  "amountParameter": 4,
+  "amountComponent": 3,
+  "amountRate": 2,
+  "amountComposition": 1
+}
+```

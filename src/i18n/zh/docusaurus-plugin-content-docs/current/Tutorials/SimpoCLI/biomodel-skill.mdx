@@ -1,0 +1,58 @@
+---
+id: biomodel-skill
+title: SIMPO BioModel Skill
+sidebar_label: 总览
+---
+
+# SIMPO BioModel Skill
+
+SIMPO BioModel Skill 帮助 AI 编程助手从污水处理模型论文中提取模型、核对证据、
+推导有依据的 Composition 与 Ionization，并通过 SimpoCLI 创建 SIMPO BioModel。
+目前支持 Codex 和 Claude Code，请在左侧目录中选择对应的安装与使用页面。
+
+这是面向论文建模的专用工作流，并不是通用 SimpoCLI 说明书。如果只是列出资源、
+修改 Project Variable 或运行计算，请使用独立的 SimpoCLI Skill。
+
+Skill 使用当前 AI 助手会话所配置的 AI，不调用 SIMPO 后端的 AI 创建接口。
+它只包含分析指令与参考资料，不内置 SimpoCLI、API Token、Python 环境或 AI 模型。
+可以使用中文或英文调用。Codex 中的 Skill 名称保持为 `$create-biomodel`；
+Claude Code 插件命令为 `/simpo-biomodel:create-biomodel`。
+
+## 使用条件
+
+- 已安装 SimpoCLI，并可通过 `simpo` 命令运行。
+- 已配置包含 `write` scope 的 SIMPO API Token，可通过 `simpo me` 验证。
+- AI 助手能够读取论文及所需补充材料。推荐使用 PDF，但不是硬性要求；完整 HTML
+  页面，或带有原始表格的 OCR 文本也可以使用。
+
+不要把 API Token 写入提示词、模型 JSON 或共享文件；请使用 `simpo configure` 配置。
+
+## 默认分析规则
+
+Composition 按单元格处理：论文或可追溯推导支持的系数都应填写，即使计算结果不平衡。
+缺少依据的值保留为未知，不能为了让残差归零而猜测或修改模型。当前 SIMPO 在计算
+`Balance` 时会把空的 Composition 单元格按 `0` 处理，因此非零残差可能表示信息缺失、
+基准不一致或模型未闭合，并不自动代表已有系数错误。
+
+四个运行选项默认都开启：
+
+| 选项 | 可选值 | 默认行为 |
+|---|---|---|
+| `matrix_fractions` | `on` / `off` | `on`：有独立数学或化学依据时，把论文中的近似小数保存为精确分数 |
+| `composition_derive` | `on` / `off` | `on`：推导有依据的缺失单元格；`off`：不推导缺失值。两种情况下都保留论文明确报告的数据 |
+| `ionization_derive` | `on` / `off` | `on`：推导有依据的缺失数据；`off`：不推导缺失值。两种情况下都保留论文明确报告的行 |
+| `source_correction` | `on` / `off` | `on`：只自动修正高置信度的 OCR、抄录、单位或格式错误，并将记录写入 Markdown `--description`；`off`：保留原文，只报告疑似错误，不进行修正 |
+
+这些是 Skill 的自然语言选项，不是 `simpo` 命令行参数。三项可以独立关闭。
+
+## 安全边界
+
+- 提交前必须展示来源、推导、假设、未解决的不确定项及拟创建内容，供用户审核。
+  高置信度勘误会自动应用并写入 `--description`，不需要再单独人工确认一次。
+- 只有获得用户确认后，才调用 `simpo create-biomodel`。
+- 创建结果必须是 `Private`、`Draft`、`version: 0`。
+- 不得提交只读的 `Balance`。
+- 不得自动 Release、公开、分享或删除 BioModel。
+
+解析器接受 JSON 只代表数据结构可被 SIMPO 读取，不代表科学假设已经正确。将模型用于
+Project 前，仍应审核所有推导值和审计说明。

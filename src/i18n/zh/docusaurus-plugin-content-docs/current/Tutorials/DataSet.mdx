@@ -4,8 +4,8 @@ import config from '@generated/docusaurus.config'
 # DataSet
 
 
-DataSet 用于存放 SIMPO Project 使用的测量数据和工艺布局，包含 Targets、Tanks、时间序列测量数据、Flows、Pumps 以及各对象之间的 Connections。
-
+DataSet 用于存放测量数据和流程图。
+{/* ，包含 Targets、Tanks、时间序列测量数据、Flows、Pumps 以及各对象之间的 Connections */}
 
 :::tip 流程图
 
@@ -14,12 +14,14 @@ DataSet 用于存放 SIMPO Project 使用的测量数据和工艺布局，包含
 :::
 
 
-## <a id="Create"></a>新建
+创建 DataSet 有以下几种方法：
 
-创建 DataSet 有以下几种方式，请根据已有数据选择合适的方法。
+{/* ## <a id="Create"></a>新建 */}
+
+{/* 创建 DataSet 有以下几种方式，请根据已有数据选择合适的方法。 */}
 
 
-### <a id="way_1"></a>1. 空白新建
+## <a id="way_1"></a>1. 空白新建
 
 创建一个空的 DataSet，编辑详细内容后使用 Parse 保存，才能用于计算。
 
@@ -33,12 +35,12 @@ DataSet 用于存放 SIMPO Project 使用的测量数据和工艺布局，包含
   </div>
 
 
-### <a id="way_2"></a>2. 随新建 Project 一起新建
+## <a id="way_2"></a>2. 随新建 Project 一起新建
 
 如果创建 Project 时没有指定 DataSet，系统会自动创建一个空的 DataSet。
 
 
-### <a id="way_3"></a>3. 从预设布局新建
+## <a id="way_3"></a>3. 从预设布局新建
 
 预设布局会创建一个初始工艺结构。当模板文件为空时，还可以选择一个 BioModel，并将其 Components 用作 DataSet 的 Targets。
 
@@ -62,7 +64,7 @@ DataSet 用于存放 SIMPO Project 使用的测量数据和工艺布局，包含
   </div>
 
 
-### <a id="way_4"></a>4. 从 XLSX 模板导入
+## <a id="way_4"></a>4. 从 XLSX 模板导入
 
 下载 <a href={config.customFields.urlDownloadUrlplateDataSet} target="_self" download>DataSet XLSX 模板文件</a>，填写各个工作表后，在新建 DataSet 时上传。已有 DataSet 也可以先导出该模板，在本地修改后再次导入。
 
@@ -71,7 +73,7 @@ DataSet 用于存放 SIMPO Project 使用的测量数据和工艺布局，包含
   </div>
 
 
-### <a id="way_5"></a>5. 从公开 DataSet 库克隆
+## <a id="way_5"></a>5. 从公开 DataSet 库克隆
 
 将公开 DataSet 克隆到个人 DataSet 列表。克隆结果以 Draft 状态开始，可以继续编辑。
 
@@ -80,7 +82,7 @@ DataSet 用于存放 SIMPO Project 使用的测量数据和工艺布局，包含
   </div>
 
 
-### <a id="way_6"></a>6. 从公开 Project 库克隆
+## <a id="way_6"></a>6. 从公开 Project 库克隆
 
 克隆公开 Project 时，也会同时克隆其对应的 BioModel 和 DataSet。
 
@@ -88,10 +90,10 @@ DataSet 用于存放 SIMPO Project 使用的测量数据和工艺布局，包含
     <img src={config.customFields.imgUrlDataSet_5} width="80%"/>
   </div>
 
-
+{/*
 ### <a id="way_7"></a>7. 使用 AI 新建
 
-在新建 DataSet 对话框中，点击名称输入框旁的 AI 按钮，选择可用的 Claude 模型，并详细填写 Design Conditions。AI 生成后请人工检查，再将 DataSet 用于计算。AI 创建最长可能需要 10 分钟。
+在新建 DataSet 对话框中，点击名称输入框旁的 AI 按钮，选择可用的 Claude 模型，并详细填写 Design Conditions。AI 生成后请人工检查，再将 DataSet 用于计算。AI 创建最长可能需要 10 分钟。 */}
 
 
 

@@ -1,0 +1,72 @@
+---
+id: update-biomodel
+title: 修改 BioModel
+sidebar_label: update-biomodel
+---
+
+# `update-biomodel`：修改 Draft BioModel
+
+使用 JSON 模型表替换一个属于当前用户的 `version=0` Draft BioModel。后端会
+重新解析提交的表格，并重新计算 `Balance`、替换名称、序列化缓存和表格数量
+等派生字段。
+
+这个命令不会删除 BioModel，也不会修改名称。Release 和 Standard 版本是不可变
+版本，不能通过此命令修改。
+
+## 使用条件
+
+- Token scope：`write`
+- BioModel 必须属于当前 Token 用户。
+- BioModel 必须是 `state=Draft` 且 `version=0`。
+- JSON 必须包含 `Component`、`Parameter` 和 `Matrix` 数组。
+- `Composition` 和 `Ionization` 可选。
+- `Balance` 是只读派生表，禁止提交。
+
+## 命令格式
+
+```text
+simpo update-biomodel BIOMODEL_ID --json MODEL.json [OPTIONS]
+```
+
+JSON 格式与 [`create-biomodel`](./create-biomodel) 相同。可以先使用
+`get-biomodel` 获取 JSON，修改后删除只读的 `Balance` 表，再提交更新。
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `BIOMODEL_ID` | 必填 | 当前用户拥有的 `version=0` Draft BioModel ID |
+| `--json FILE` | 必填 | UTF-8 JSON 模型表文件，最大 20 MiB |
+| `--description TEXT` | 保留原值 | 替换 Markdown 描述 |
+| `--sourcepaper-id INTEGER` | 保留原值 | 替换来源论文 ID |
+| `--timeout SECONDS` | `3700.0` | 解析和 HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+
+此命令不提供名称参数。因为名称参与 Draft/Release 版本身份和 Project 引用，
+重命名应设计为单独的安全操作。
+
+如果有 Project 使用这个 Draft，后端会立即重新生成每个关联 Project 的
+`detail` 和计算缓存。仍然兼容的用户输入（`Variable`、`Conversion`、
+`Activator`、`Target` 和 `Weight`）会被保留；新增或不兼容的字段会按照新的
+BioModel 结构生成。返回字段 `affectedProjectCount` 表示实际同步的 Project 数量。
+
+## 返回结果
+
+```json
+{
+  "success": true,
+  "id": 123,
+  "name": "TestModel",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "updated",
+  "sourcepaperId": null,
+  "amountParameter": 4,
+  "amountComponent": 3,
+  "amountRate": 2,
+  "amountComposition": 1,
+  "affectedProjectCount": 2
+}
+```

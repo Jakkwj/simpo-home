@@ -63,8 +63,8 @@ Parameters are used in the model, including stoichiometric and kinetic parameter
     - Cannot be empty. When creating a new Project, the Value of Solution.Variable will use this value.
     - **Note: During calculation, the value in `Project.Solution` takes precedence.**
   - LowerBound:
-  - If non-empty: When creating a new Project, the `LowerBound` of `Solution.Variable` will use this value.
-  - If empty: When creating a new Project, the `LowerBound` of `Solution.Variable` will default to `Value * 0.1`.
+    - If non-empty: When creating a new Project, the `LowerBound` of `Solution.Variable` will use this value.
+    - If empty: When creating a new Project, the `LowerBound` of `Solution.Variable` will default to `Value * 0.1`.
     - **Note: During calculation, the value in `Project.Solution` takes precedence.**
   - UpperBound:
     - If non-empty: When creating a new Project, the `UpperBound` of `Solution.Variable` will use this value.
@@ -75,15 +75,156 @@ Parameters are used in the model, including stoichiometric and kinetic parameter
 
 ### <a id="Compositions"></a>3. Compositions
 
-Compositions are used to check the model's material balances. Six balances are available: ThOD, N, P, S, Charge, and TSS.
+Compositions are used to check material balances for ThOD, N, P, S, Charge, and TSS. They are not kinetic processes; they are a composition matrix that assigns the amount of each balance substance per unit of each Component.
 
-- The Compositions dialog supports viewing and editing.
-- You can select any one or more of the six balances above, or leave them all empty (a balance is not checked if it is not selected).
-- If any material-balance result in Compositions is nonzero, the Balances component displays the Processes with nonzero results, and a warning dialog appears each time you enter the BioModel page.
-- If all material-balance checks in Compositions pass, meaning that all balance results are zero, the Balances component is not displayed.
-- Because balance checks use zero as the reference, when a material balance is nonzero, first try converting the coefficients in the Processes matrix and Compositions to fractions to determine whether rounding errors are causing the imbalance.
-- If an imbalance does exist, adjust the coefficients in the Processes matrix and Compositions until the material balance is zero.
-- An imbalance may sometimes result from omitting a process description from the model. If you are sure that your model is balanced, you can ignore the warning.
+#### <a id="CompositionCalculation"></a>3.1 Calculation method
+
+Let `ν(i,p)` be the stoichiometric coefficient of Component `i` in Process `p`, and let `c(b,i)` be the composition coefficient of Component `i` in balance `b`. SIMPO calculates the balance for each Process as:
+
+$$
+\operatorname{Balance}_{b,p}=\sum_i c_{b,i}\,\nu_{i,p}
+$$
+
+The coefficients for all Components in that Process are multiplied by their composition coefficients and summed; the `Rate` column is not included. A result of zero means that the Process is conserved for that balance. A nonzero result indicates an imbalance. Empty cells in Compositions are treated as `0`. A coefficient may be a constant, an exact fraction, or a formula that references a Parameter such as `i_N_X_B`; formulas are evaluated with the current BioModel/Project parameter values.
+
+For example, ASM2 aerobic nitrification can be written as follows (`4.57` should be written as `64/14` when an exactly zero Balance is required):
+
+$$
+\begin{aligned}
+\nu_{S\_O2}  &= -\frac{64/14-Y_{ANO}}{Y_{ANO}}\\
+\nu_{S\_NHx} &= -\frac{1}{Y_{ANO}}\\
+\nu_{S\_NOx} &=  \frac{1}{Y_{ANO}}\\
+\nu_{X\_ANO} &=  1
+\end{aligned}
+$$
+
+With `S_O2 = -1`, `S_NOx = -64/14`, and `X_ANO = 1` in the ThOD row, the weighted sum is zero; retaining the rounded `4.57` in the Process matrix can leave a small residual. This dot product between a composition row and a Process stoichiometric column is the value displayed by the Balances check.
+
+#### <a id="CompositionRules"></a>3.2 ASM2 composition rules
+
+The table summarizes common coefficients in the ASM2/ASM2d templates. Leave a cell empty when the model does not contain that Component. Keep the sign convention consistent across the row; do not change only one side of a reaction.
+
+| Balance | Common Components | Typical coefficient | Meaning |
+|---|---|---:|---|
+| ThOD (gCOD) | `S_O2` | `-1` | Dissolved oxygen is the negative oxygen-demand term |
+| ThOD (gCOD) | `S_F`, `S_VFA`, `S_U`, `X_U_E`, `X_B`, `X_OHO`, `X_PAO`, `X_PAO_PHA`, `X_ANO` | `1` | Organic Components expressed on a gCOD basis |
+| N (gN) | `S_NHx`, `S_NOx`, `S_N2` | `1` | Inorganic nitrogen Components expressed as gN |
+| N (gN) | `S_F`, `S_U`, `X_U_E`, `X_B` | `i_N_S_F`, `i_N_S_U`, `i_N_X_U_E`, `i_N_X_B` | Nitrogen content (gN/gCOD) |
+| N (gN) | `X_OHO`, `X_PAO`, `X_ANO` | `i_N_OHO` | Nitrogen content of biomass (gN/gCOD) |
+| P (gP) | `S_PO4`, `X_PAO_PP` | `1` | Components expressed as gP |
+| P (gP) | Organic Components | `i_P_*` | Phosphorus content (gP/gCOD) |
+| Charge (mol+) | `S_NHx`, `S_NOx`, `S_PO4`, `S_Alk` | `1/14`, `-1/14`, `-1.5/31`, `-1` | Charge converted using molar mass and charge |
+| TSS (gTSS) | `X_U_E`, `X_B`, `X_OHO`, `X_PAO`, `X_ANO` | `i_TSS_*` | Conversion from particulate Components to TSS |
+| TSS (gTSS) | `X_PAO_PP`, `X_PAO_PHA`, `X_TSS` | `3.23`, `0.6`, `-1` | Typical poly-phosphate, PHA, and total-solids coefficients |
+
+#### <a id="SulfurBalance"></a>3.3 Deriving the S (sulfur) balance
+
+The S balance tracks the amount of sulfur, not its oxidation state. If Component `i` contains `m_S(i)` g of sulfur per `m_i` g of the Component's mass basis, its S composition coefficient is:
+
+$$
+c_{S,i}=\frac{m_S(i)}{m_i}
+$$
+
+The S balance for Process `p` is the same dot product:
+
+$$
+\operatorname{Balance}_{S,p}=\sum_i c_{S,i}\,\nu_{i,p}
+$$
+
+Derive each coefficient as follows:
+
+1. Count the sulfur atoms in the Component formula.
+2. Multiply by sulfur's relative atomic mass `M_S=32`.
+3. Convert to the Component's concentration basis. A Component already expressed as `gS/m³` has coefficient `1`.
+4. Multiply by the Process stoichiometric coefficient and sum over all Components.
+
+For the cited denitrifying-sulfur-removal model, if `S_S2`, `S_S0`, and `S_SO4` are all expressed as `gS/m³` (or `mgS/L`), then:
+
+$$
+c_{S,S\_S2}=c_{S,S\_S0}=c_{S,S\_SO4}=1
+$$
+
+Sulfide-to-sulfur, sulfur-to-sulfate, and direct sulfide-to-sulfate oxidation therefore use `(-1,+1)`, `(-1,+1)`, and `(-1,+1)` in the S row, respectively, and each gives zero S imbalance. The oxidation-state change belongs in the ThOD or Charge row; do not multiply the S row by `2`, `6`, or `8`.
+
+| Component concentration unit | Example formula | S composition coefficient | Meaning |
+|---|---|---:|---|
+| `gS/m³` or `mgS/L` | $S^{2-}$, $S^0$, $SO_4^{2-}$ (as S) | `1` | The usual elemental-sulfur basis |
+| `gH_2S/m³` | $H_2S$ | `32/34=16/17` | Convert total H₂S mass to gS |
+| `gSO_4/m³` | $SO_4^{2-}$ | `32/96=1/3` | Convert sulfate mass to gS |
+| `gSO_3/m³` | $SO_3^{2-}$ | `32/80=2/5` | Convert sulfite mass to gS |
+| `gS_2O_3/m³` | $S_2O_3^{2-}$ | `64/112=4/7` | Total mass fraction of two sulfur atoms |
+| `gCOD/m³` | Sulfur-containing organic Component | `i_S_*` | Use the model's gS/gCOD Parameter |
+
+Important: the `S_S0=-1/2`, `S_SO4=-2`, and `S_CH4=1` values in the cited-paper notes are ThOD coefficients, not elemental S-balance coefficients. If these Components use a `gS/m³` basis, their S-balance coefficient remains `1`; do not copy ThOD coefficients into the S row.
+
+For inorganic sulfur species on a `gS` basis, the ThOD coefficient can also be derived from the sulfur oxidation state `z_S`. Taking sulfide `S(-2)` as the zero-oxygen-demand reference, each increase of one oxidation state adds one electron equivalent, and one electron equivalent corresponds to `8/32=1/4 gO2/gS`:
+
+$$
+c_{\mathrm{ThOD},S}=-\left(z_S+2\right)\frac{8}{32}=-\frac{z_S+2}{4}
+$$
+
+| Sulfur form | `z_S` | ThOD coefficient (gCOD/gS) | Meaning |
+|---|---:|---:|---|
+| `S_S2` / `H_2S` (sulfide) | `-2` | `0` | Reference state |
+| `S_S0` (elemental sulfur) | `0` | `-2/4=-1/2` | Same as the cited `-0.5` |
+| `S_SO3` (sulfite) | `+4` | `-6/4=-3/2` | On an elemental-sulfur mass basis |
+| `S_SO4` (sulfate) | `+6` | `-8/4=-2` | Same as the cited `-2.0` |
+
+This oxidation-state conversion belongs in the ThOD row only; elemental sulfur conservation still uses the preceding `c_{S,i}`. `S_CH4=1` is the organic electron-donor coefficient for methane on a gCOD basis, not a sulfur coefficient.
+
+#### <a id="ThODNitrogenCoefficients"></a>3.4 Classical ThOD coefficients for nitrogen forms
+
+ASM2 uses `NH4-N` (nitrogen oxidation state `-3`) as the ThOD reference. Each increase of one oxidation state corresponds to one electron equivalent; on a gN basis, one electron equivalent corresponds to `8/14 gO2/gN`. For a Component containing one mol of N, the ThOD composition coefficient relative to `NH4-N` can therefore be written as:
+
+$$
+c_{\mathrm{ThOD}}=-\left(\mathrm{oxidation\ state}+3\right)\frac{8}{14}
+$$
+
+Under the ASM2 sign convention, more oxidized nitrogen forms have negative coefficients. This does not mean that the Component literally consumes negative oxygen; it means that it already carries oxygen-equivalent oxidation relative to `NH4-N`.
+
+| Nitrogen form (example Component) | N oxidation state | Electron equivalents relative to NH4-N | ThOD coefficient (gCOD/gN) | Decimal approximation |
+|---|---:|---:|---:|---:|
+| `S_NH4` / `S_NHx` (ammonium nitrogen) | `-3` | `0` | `0` | `0` |
+| `S_NH2OH` (hydroxylamine nitrogen) | `-1` | `2` | `-16/14` | `-1.14` |
+| `S_N2` (dissolved nitrogen gas) | `0` | `3` | `-24/14` | `-1.71` |
+| `S_N2O` (nitrous oxide) | `+1` | `4` | `-32/14` | `-2.29` |
+| `S_NO` (nitric oxide) | `+2` | `5` | `-40/14` | `-2.86` |
+| `S_NO2` (nitrite nitrogen) | `+3` | `6` | `-48/14` | `-3.43` |
+| `S_NO3` (nitrate nitrogen) | `+5` | `8` | `-64/14` | `-4.57` |
+
+When nitrate and nitrite are lumped as `S_NOx`, the ASM2 template normally uses the nitrate-equivalent value `-64/14`. If `S_NO2` is modeled separately, use `-48/14`. Organic electron donors such as `S_F` and `S_VFA` normally use `+1`, while `S_O2` uses `-1`.
+
+#### <a id="ClassicFractions"></a>3.5 Store classical coefficients as fractions
+
+“Store as fractions” is a representation recommendation, not a blanket decimal
+conversion. Replace a reported decimal only when the paper's equations, a
+chemical/elemental mass basis, or an explicit derivation independently establishes
+the exact value. Keep fitted parameters, empirical coefficients, and decimals
+without independent support unchanged. Before changing a value, record the
+reported decimal, stored fraction, and derivation basis in the audit note.
+
+When a coefficient comes from an oxidation-reduction or elemental-mass conversion, retain the exact fraction in Processes and Compositions to avoid a nonzero Balance caused by rounding. Common decimal values and their exact forms are:
+
+| Common decimal notation | Recommended exact fraction | Typical use |
+|---:|---:|---|
+| `0.57` | `8/14` | One electron equivalent in an N redox conversion |
+| `1.14` | `16/14` | Two electron equivalents |
+| `1.72` (sometimes written `1.71`) | `24/14` | Three electron equivalents, such as `N2` |
+| `2.29` | `32/14` | Four electron equivalents, such as `N2O` |
+| `2.86` | `40/14` | Five electron equivalents, such as `NO` |
+| `3.43` | `48/14` | Six electron equivalents, such as `NO2-N` |
+| `4.57` | `64/14` | Eight electron equivalents, such as `NO3-N` |
+| `6.85` (exact value is about `6.86`) | `96/14` | Twelve electron equivalents; use only when required by the model stoichiometry |
+
+These fractions are conversion rules, not blanket replacements for every coefficient with the same decimal value. Confirm the Component formula, oxidation state, and unit before applying them. For rounded values such as `0.57` and `1.14`, prefer expressions such as `8/14` and `16/14`.
+
+#### <a id="CompositionChecks"></a>3.6 Checking balances in the interface
+
+- The Compositions dialog allows you to view and edit all six balances. Leave a balance unselected, or leave its row empty, to skip that check.
+- If any `Balance(b,p)` is nonzero, the `Balances` component lists the affected Process and a warning dialog appears when you enter the BioModel page.
+- If every enabled balance is zero, the `Balances` component is not displayed.
+- When a result is nonzero, first replace rounded decimals in Processes and Compositions with exact fractions, then check units, signs, omitted Components, and omitted processes.
+- If a process is intentionally omitted, or a balance is not applicable to the model, leave that balance disabled. Do not alter stoichiometric coefficients merely to silence a warning.
 
 
 
@@ -99,9 +240,11 @@ Compositions are used to check the model's material balances. Six balances are a
   - Symbol: the Symbol of a Component, selected from the drop-down list.
   - Compound: determines whether the Component is a Weak/Strong Acid/Base.
   - Step: determines the number of ionization steps (1, 2, or 3; Mono/Di/Tri).
+  - Ionization: determines the ionization mode; weak acids/bases use One Step or Stepwise, while strong acids/bases use Complete.
   - Factor: conversion factor, in mol/mg.
   - pK1/pK2/pK3: the ionization constant for each step.
   - pKw: the ionization constant of water, usually 14. This value can be edited only in the first row.
+  - Enter the values in the table below in Ionization and SIMPO will calculate pH automatically. You must also convert the Components and Target on the Project Conversion page for pH to appear explicitly in the calculation results.
 
 
 | Symbol | Compound | Step | Ionization | Factor (mol/mg) | pK1 | pK2 | pK3 |
@@ -128,8 +271,8 @@ Compositions are used to check the model's material balances. Six balances are a
 | Nitrate | Strong Acid  | Mono  | Complete | 1/(14*1000) | | |
 | Chloride | Strong Acid  | Mono  | Complete  | 1/(35.5*1000) | | |
 | Sulfate | Strong Acid  | Di  | Complete  | 1/(32*1000) | | |
-| Magnesium | Weak Base  | Di  | Complete  | 1/(24*1000) | | |
-| Calcium | Weak Base  | Di  | Complete  | 1/(40*1000) | | |
+| Magnesium | Strong Base  | Di  | Complete  | 1/(24*1000) | | |
+| Calcium | Strong Base  | Di  | Complete  | 1/(40*1000) | | |
 
 
 
@@ -140,12 +283,12 @@ Compositions are used to check the model's material balances. Six balances are a
 
 #### <a id="5.1"></a>5.1 Formulas
 - The formulas currently available in the Rate column include:
-  - Max: Excel-style `Max(value1, value2, ...)`, returning the maximum value.
-  - Min: Excel-style `Min(value1, value2, ...)`, returning the minimum value.
-  - Ln: Excel-style `Ln(value)`, the natural logarithm.
-  - Exp: Excel-style `Exp(value)`, the exponential function with base *e*.
-  - Log: Excel-style `Log(value)`, the base-10 logarithm.
-  - If: Excel-style `If(condition, value_if_true, value_if_false)`, returning different values based on a condition.
+  - `Max`: Excel-style `Max(value1, value2, ...)`, returning the maximum value.
+  - `Min`: Excel-style `Min(value1, value2, ...)`, returning the minimum value.
+  - `Ln`: Excel-style `Ln(value)`, the natural logarithm.
+  - `Exp`: Excel-style `Exp(value)`, the exponential function with base *e*.
+  - `Log`: Excel-style `Log(value)`, the base-10 logarithm.
+  - `If`: Excel-style `If(condition, value_if_true, value_if_false)`, returning different values based on a condition.
 - Exponentiation is represented by `**`; for example, `x**2` is the square of x and `x**0.5` is the square root of x.
 
 #### <a id="5.2"></a>5.2 pH
@@ -164,7 +307,7 @@ Compositions are used to check the model's material balances. Six balances are a
   - Upload and import an xlsx template file for overall content modification.
   - Select related papers.
   - Add relevant descriptions.
-- Export button: Export the file in xlsx format. After export, you can modify it in Excel and then import it back into the BioModel for overall content changes.
+- Export button: export the file in xlsx format. After export, you can modify it in Excel and then import it back into the BioModel for overall content changes.
 - Note: cloning and deleting must be performed from the BioModel list.
 
 
@@ -172,7 +315,7 @@ Compositions are used to check the model's material balances. Six balances are a
 ## <a id="Version"></a>Version
 
 - In the Version tab, you can publish the current Draft as different versions. Each version has a unique version number, assigned in ascending numerical order.
-- Only in Draft can the Detail be modified, once the version is released, it cannot be modified again.
+- The Detail can be modified only while the BioModel is a Draft; a released version cannot be modified again.
 - Published versions can be Public or Private:
   - Public versions can be cloned by other users.
   - Private versions can be used only by you.

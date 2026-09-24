@@ -1,0 +1,26 @@
+{
+  "name": "simpo-cli",
+  "version": "0.1.0",
+  "description": "Operate SIMPO BioModels, DataSets, Projects, and calculations safely through SimpoCLI.",
+  "author": {
+    "name": "SIMPO"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SimpoCLI",
+    "shortDescription": "Operate SIMPO safely from the command line.",
+    "longDescription": "Route SIMPO tasks to the installed SimpoCLI, verify current command help and Token scopes, and safely operate BioModels, DataSets, Projects, Variables, and calculations.",
+    "developerName": "SIMPO",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use $simpo to inspect my SIMPO resources.",
+      "Use $simpo to update this SIMPO resource safely.",
+      "Use $simpo to start and monitor this SIMPO calculation."
+    ]
+  }
+}

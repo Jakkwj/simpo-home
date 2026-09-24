@@ -1,0 +1,49 @@
+---
+id: logout
+title: 删除已保存的 API Token
+sidebar_label: logout
+---
+
+# `logout`：删除已保存的 API Token
+
+删除 SimpoCLI 使用的本地 `SIMPO_API_TOKEN.json` 文件。此命令不会访问后端，
+也不会撤销服务器上的 Token。如果需要彻底撤销 Token，应在删除本地文件后，
+前往 Dashboard 的 **API Tokens** 页面执行撤销。
+
+## 使用条件
+
+- 已安装 SimpoCLI。
+- 不需要 API Token，也不需要网络连接。
+
+如果文件本来不存在，命令仍会成功并返回 `"removed": true`，因此可以安全地
+用于清理脚本。
+
+## 命令格式
+
+```text
+simpo logout
+```
+
+该命令没有选项，只删除当前操作系统用户的已保存 Token 文件：
+
+| 平台 | 删除的文件 |
+| --- | --- |
+| Linux | `~/.SimpoCLI/SIMPO_API_TOKEN.json` |
+| Windows | `%APPDATA%\SimpoCLI\SIMPO_API_TOKEN.json` |
+
+SimpoCLI 文件夹本身会保留。之后可以运行 [`configure`](./configure) 保存新的
+Token。通过 `--api-token` 或 `SIMPO_API_TOKEN` 环境变量临时提供的 Token 不会
+受到 `logout` 影响。
+
+## 返回结果
+
+成功时，stdout 会输出被删除的文件路径。文件无法删除时返回非零退出码，错误
+信息写入 stderr。
+
+```json
+{
+  "success": true,
+  "tokenFile": "/home/user/.SimpoCLI/SIMPO_API_TOKEN.json",
+  "removed": true
+}
+```

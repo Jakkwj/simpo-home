@@ -1,0 +1,84 @@
+---
+id: get-dataset
+title: Read a DataSet
+sidebar_label: get-dataset
+---
+
+# `get-dataset`: read one DataSet
+
+Read the complete DataSet model tables and metadata for one DataSet owned by the
+current API Token user.
+
+## Requirements
+
+- Token scope: `read`
+- The DataSet must belong to the Token user.
+- A missing or unauthorized ID returns HTTP `404`.
+
+## Syntax
+
+```text
+simpo get-dataset DATASET_ID [OPTIONS]
+```
+
+The `DATASET_ID` is the database ID returned by [`get-datasets`](./get-datasets)
+or another trusted API response.
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `DATASET_ID` | required | DataSet database ID |
+| `--timeout SECONDS` | `10.0` | Maximum time for the HTTP request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+The response includes `detail`, which can contain the DataSet tables such as
+`Unit`, `Target`, `Tank`, `Pump`, `Measured`, `Inflow`, `Flow`, `Connection`,
+and `JointGraphJson` when present. It also includes the saved name lists,
+units, parsed-state flag, counts, and version metadata.
+
+The response deliberately excludes the internal `pickle`, `share_url`,
+`shareable`, and `cloneable` fields. These are implementation or sharing
+credentials, not part of the OpenAPI DataSet read contract.
+
+## Result
+
+```json
+{
+  "id": 456,
+  "name": "Default",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "versionCounter": 0,
+  "description": "",
+  "sourcepaperId": null,
+  "timeUnit": "day",
+  "volumeUnit": "m3",
+  "flowUnit": "m3/d",
+  "ifParseSave": true,
+  "tankNamelist": ["Tank1"],
+  "targetNamelist": ["Target1"],
+  "inflowNamelist": ["Inflow1"],
+  "flowNamelist": ["Flow1"],
+  "amountTarget": 1,
+  "amountReactionZone": 0,
+  "amountTank": 2,
+  "amountVolume": 2,
+  "amountInflow": 1,
+  "amountFlow": 1,
+  "detail": {
+    "Unit": [],
+    "Target": [],
+    "Tank": [],
+    "Pump": [],
+    "Measured": [],
+    "Inflow": [],
+    "Flow": [],
+    "Connection": []
+  },
+  "createdAt": "2026-09-20T10:00:00",
+  "updatedAt": "2026-09-20T10:00:00"
+}
+```

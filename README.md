@@ -12,6 +12,46 @@
 - Installation: `yarn`.
 - Local Development: `yarn start`.
 
+## SIMPO Skill development
+
+The public user documentation describes installation and usage only. The
+Marketplace manifests and Skill source are maintained in this repository:
+
+```text
+SimpoHome/
+├── .agents/plugins/marketplace.json
+├── .claude-plugin/marketplace.json
+├── plugins/simpo-biomodel/
+│   ├── .codex-plugin/plugin.json
+│   ├── .claude-plugin/plugin.json
+│   └── skills/create-biomodel/
+└── plugins/simpo-cli/
+    ├── .codex-plugin/plugin.json
+    ├── .claude-plugin/plugin.json
+    └── skills/simpo/
+        ├── SKILL.md
+        ├── agents/openai.yaml
+        └── references/
+```
+
+- `.agents/plugins/marketplace.json` publishes the personal Codex Marketplace.
+- `.codex-plugin/plugin.json` is required for Codex to recognize the Plugin.
+- `.claude-plugin/plugin.json` and the root `.claude-plugin/marketplace.json`
+  publish the BioModel and SimpoCLI Skills for Claude Code.
+- `skills/create-biomodel/` is the complete portable Skill source. Keep its
+  `references/` directory with `SKILL.md` when testing it in another assistant.
+- Leading-dot directories are hidden by many file browsers but must remain
+  tracked by Git.
+
+After changing the Plugin, validate its manifests, update the Marketplace
+version/cachebuster as required, reinstall the Plugin, and test it in a new
+Codex session. The Docusaurus user pages live under
+`src/docs/Tutorials/SimpoCLI/`; Chinese translations live under
+`src/i18n/zh/docusaurus-plugin-content-docs/current/Tutorials/SimpoCLI/`.
+The `simpo-cli` plugin provides the on-demand `$simpo` workflow in Codex and
+`/simpo-cli:simpo` in Claude Code; it keeps the CLI manual out of unrelated
+conversations and reads only the relevant command reference when invoked.
+
 ## Resource
 
 - Join us in building and enhancing [Paper Resource](https://www.simpowater.org/resource) with the help of powerful **AI tools** (such as: **Geimini**). Your contributions can significantly enhance and expand the collection, making it more valuable for the entire community.

@@ -1,7 +1,7 @@
 ---
 id: create-biomodel
 title: Create a BioModel
-sidebar_label: create-biomodel — create a Draft BioModel (blank, Excel, or JSON)
+sidebar_label: create-biomodel
 ---
 
 # `create-biomodel`: create a Draft BioModel
@@ -47,31 +47,7 @@ simpo create-biomodel JsonModel --json ./BioModel.json
 | `--api-token TOKEN` | configured Token | Complete Token override |
 | `--base-url URL` | packaged environment URL | Backend override for this request |
 
-## Result
-
-On success, stdout contains JSON with `success: true`, the new BioModel `id`,
-name, Draft metadata, description, and `sourcepaperId`:
-
-```json
-{
-  "success": true,
-  "id": 1234,
-  "name": "MyModel",
-  "state": "Draft",
-  "privacy": "Private",
-  "version": 0,
-  "creationMode": "blank",
-  "description": "",
-  "sourcepaperId": null,
-  "amountParameter": 4,
-  "amountComponent": 3,
-  "amountRate": 2,
-  "amountComposition": 1
-}
-```
-
-`creationMode` is `blank`, `template`, or `json`. The amount fields report the
-parsed model size, and `sourcepaperId` is `null` when no source paper was supplied.
+## JSON input format
 
 With `--json`, the file must contain a model object under the following shape:
 
@@ -110,3 +86,29 @@ limits its uncompressed size to 100 MiB before parsing. The
 command exits non-zero when the Token is missing or lacks `write`, the name
 already exists (`HTTP 409`), the template is invalid, parsing times out
 (`HTTP 504`), or the server cannot create the model.
+
+## Result
+
+On success, stdout contains JSON with `success: true`, the new BioModel `id`,
+name, Draft metadata, description, and `sourcepaperId`:
+
+`creationMode` is `blank`, `template`, or `json`. The amount fields report the
+parsed model size, and `sourcepaperId` is `null` when no source paper was supplied.
+
+```json
+{
+  "success": true,
+  "id": 1234,
+  "name": "MyModel",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "creationMode": "blank",
+  "description": "",
+  "sourcepaperId": null,
+  "amountParameter": 4,
+  "amountComponent": 3,
+  "amountRate": 2,
+  "amountComposition": 1
+}
+```

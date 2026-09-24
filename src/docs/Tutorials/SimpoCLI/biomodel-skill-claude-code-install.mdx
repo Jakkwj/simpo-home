@@ -1,0 +1,84 @@
+---
+id: biomodel-skill-claude-code-install
+title: Install for Claude Code
+sidebar_label: Installation
+---
+
+# Install BioModel Skill for Claude Code
+
+The Claude Code version is distributed as the `simpo-biomodel` plugin from the
+SIMPO Marketplace. The plugin contains the complete `create-biomodel` Skill and
+all three reference files used during paper analysis.
+
+## Prerequisites
+
+Verify Claude Code, Git, and SimpoCLI first:
+
+```text
+claude --help
+git --version
+simpo --help
+simpo me
+```
+
+Creating a BioModel requires `write` scope. Run `simpo configure` if `simpo me`
+does not succeed. Never put the Token in a Claude prompt.
+
+## Install from the SIMPO Marketplace
+
+Start Claude Code, then add the repository Marketplace:
+
+```text
+/plugin marketplace add Jakkwj/simpo-home@master
+```
+
+Install the plugin:
+
+```text
+/plugin install simpo-biomodel@simpo
+```
+
+If Claude Code reports that a reload is required, run:
+
+```text
+/reload-plugins
+```
+
+Plugin Skills are namespaced, so this Skill is invoked as
+`/simpo-biomodel:create-biomodel`.
+
+## Verify
+
+Run this in the new or reloaded session:
+
+```text
+/simpo-biomodel:create-biomodel What does this Skill do? Do not create anything.
+```
+
+Installation succeeded if Claude Code explains that it analyzes a paper and
+prepares a reviewed Private Draft BioModel through SimpoCLI. Continue with
+[Claude Code usage and examples](./biomodel-skill-claude-code-usage).
+
+## Update
+
+Refresh the Marketplace, update the plugin, and reload it when prompted:
+
+```text
+/plugin marketplace update simpo
+```
+
+Then open `/plugin`, select **Installed**, choose `simpo-biomodel@simpo`, and
+select **Update**. You may instead update it from a shell with:
+
+```text
+claude plugin update simpo-biomodel@simpo
+```
+
+## Manual fallback
+
+If the installed Claude Code version does not support plugins, update Claude
+Code. As a temporary local fallback, copy the complete repository directory
+`plugins/simpo-biomodel/skills/create-biomodel` to
+`~/.claude/skills/create-biomodel`; do not copy only `SKILL.md`, because the
+workflow needs its bundled `references/` files. The fallback command is
+`/create-biomodel`, without the plugin namespace.

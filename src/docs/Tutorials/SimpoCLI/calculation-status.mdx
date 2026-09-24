@@ -1,7 +1,7 @@
 ---
 id: calculation-status
 title: Check calculation status
-sidebar_label: calculation-status — check status
+sidebar_label: calculation-status
 ---
 
 # `calculation-status`: check calculation status
@@ -48,8 +48,27 @@ Typical values are:
 | `failed` | Preparation, compilation, or calculation failed |
 | `stopped` | The calculation was explicitly stopped |
 
+## Result
+
 The response may also include progress, elapsed calculation time, estimated
 remaining time, and a safe calculation error message. Treat fields other than
 `success`, `projectId`, and `status` as state-dependent.
 
 To stop active work, use [`stop-calculation`](./stop-calculation).
+
+Example successful response while a calculation is running:
+
+```json
+{
+  "success": true,
+  "projectId": 706,
+  "projectName": "Example",
+  "projectVersion": 0,
+  "status": "running",
+  "ifCalculating": true,
+  "progress": 0.125,
+  "timeElapsed": "12.3",
+  "estimatedRemainingTime": "87.7",
+  "calculationError": null
+}
+```

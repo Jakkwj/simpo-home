@@ -1,13 +1,18 @@
 ---
 id: me
 title: 验证当前 API Token
-sidebar_label: me — 验证 Token
+sidebar_label: me
 ---
 
 # `me`：验证当前 API Token
 
 使用 `me` 确认 SimpoCLI 可以正常认证，并查看当前 Token 对应的用户、
 Token ID 和 scopes。
+
+## 使用条件
+
+- 已配置 Token，或通过 `--api-token` 提供完整 Token。
+- Token 必须具有 `read` scope。
 
 ## 命令格式
 
@@ -42,6 +47,9 @@ Token 查找顺序为 `--api-token`、`SIMPO_API_TOKEN` 环境变量、本地 JS
 
 结果只包含身份和权限，不包含 Token 原文：
 
+如果返回 `401`，说明当前 Token 不被所选后端接受。认证成功也不代表所有命令
+都有权限，应根据后续操作检查是否具有 `read`、`write` 或 `calculate` scope。
+
 ```json
 {
   "userId": 123,
@@ -49,6 +57,3 @@ Token 查找顺序为 `--api-token`、`SIMPO_API_TOKEN` 环境变量、本地 JS
   "scopes": ["read", "write", "calculate"]
 }
 ```
-
-`401` 表示当前 Token 不被所选后端接受。认证成功也不代表所有命令都有权限，
-应根据后续操作检查是否具有 `read`、`write` 或 `calculate` scope。

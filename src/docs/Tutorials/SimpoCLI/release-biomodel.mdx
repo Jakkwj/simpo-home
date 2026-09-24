@@ -1,0 +1,82 @@
+---
+id: release-biomodel
+title: Release a BioModel
+sidebar_label: release-biomodel
+---
+
+# `release-biomodel`: release a Draft BioModel
+
+Create a new immutable Release snapshot from one owned version `0` Draft
+BioModel. The Draft remains available for editing, while the backend assigns
+the Release's next version number automatically.
+
+## Requirements
+
+- Token scope: `write`
+- The BioModel must belong to the Token user.
+- The BioModel must have `state=Draft` and `version=0`.
+- The Draft's model content must differ from every previously published
+  version of the same BioModel.
+
+Release and Standard versions cannot be used as the input ID. A successful
+Release is immutable; continue editing the original Draft and release it again
+to create the next version.
+
+## Syntax
+
+```text
+simpo release-biomodel BIOMODEL_ID [OPTIONS]
+```
+
+Examples:
+
+```text
+simpo release-biomodel 123
+simpo release-biomodel 123 --privacy Public --description "Calibrated model"
+```
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `BIOMODEL_ID` | required | Owned version `0` Draft BioModel ID |
+| `--privacy Private\|Public` | `Private` | Visibility of the new Release; case-insensitive |
+| `--description TEXT` | copy the Draft description | Description for the Release; pass an empty value to clear it |
+| `--timeout SECONDS` | `30.0` | Maximum time for the release request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+The command intentionally has no `--state`, `--version`, or `--name` option.
+The backend reads the name from the Draft, fixes the state to `Release`, and
+sets the version to `Draft.versionCounter + 1`. A version number is never
+reused, even if an older Release was removed.
+
+If the same model content has already been released, the backend rejects the
+request with HTTP `226`. Change the Draft through
+[`update-biomodel`](./update-biomodel) before publishing another version.
+
+## Result
+
+```json
+{
+  "success": true,
+  "id": 124,
+  "name": "TestModel",
+  "state": "Release",
+  "privacy": "Private",
+  "version": 1,
+  "description": "Calibrated model",
+  "sourcepaperId": null,
+  "amountParameter": 4,
+  "amountComponent": 3,
+  "amountComponentSoluble": 1,
+  "amountRate": 2,
+  "amountComposition": 1,
+  "createdAt": "2026-09-23T10:00:00",
+  "updatedAt": "2026-09-23T10:00:00",
+  "message": "BioModel release success."
+}
+```
+
+The returned `id` is the new Release ID, not the Draft ID. Use that ID when a
+later operation specifically requires the immutable released version.

@@ -1,0 +1,76 @@
+---
+id: get-projects
+title: List Projects
+sidebar_label: get-projects
+---
+
+# `get-projects`: list your Projects
+
+List one page of metadata for Projects owned by the current API Token user.
+The response includes the Project's current BioModel and DataSet references, but
+does not download Project `detail`, calculation results, reports, or pickle data.
+
+## Requirements
+
+- Token scope: `read`
+- Only Projects owned by the Token user are returned.
+
+## Syntax
+
+```text
+simpo get-projects [OPTIONS]
+```
+
+Use the returned `id` with [`get-project-variables`](./project-variables),
+[`calculate`](./calculate), or [`calculation-status`](./calculation-status).
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--page INTEGER` | `1` | One-based page number |
+| `--page-size INTEGER` | `50` | Items per page; must be between `1` and `100` |
+| `--timeout SECONDS` | `10.0` | Maximum time for the HTTP request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+Results are ordered from newest to oldest. Each Project item contains its ID,
+name, state, privacy, version, description, timestamps, and the current
+BioModel/DataSet IDs, names, states, and versions. If a referenced model is
+missing from historical data, its metadata fields are `null` while the Project
+itself remains in the list.
+
+## Result
+
+The response contains the requested `projects` page and the `page`, `pageSize`,
+`total`, and `hasNext` pagination fields. An account with no Projects returns an
+empty first page with `total: 0` and `hasNext: false`.
+
+```json
+{
+  "projects": [
+    {
+      "id": 706,
+      "name": "Example",
+      "state": "Draft",
+      "privacy": "Private",
+      "version": 0,
+      "description": "",
+      "biomodelId": 123,
+      "biomodelName": "ASM2d",
+      "biomodelState": "Draft",
+      "biomodelVersion": 0,
+      "datasetId": 456,
+      "datasetName": "Default",
+      "datasetState": "Draft",
+      "datasetVersion": 0,
+      "createdAt": "2026-09-20T10:00:00",
+      "updatedAt": "2026-09-20T10:00:00"
+    }
+  ],
+  "page": 1,
+  "pageSize": 50,
+  "total": 1,
+  "hasNext": false
+}
+```

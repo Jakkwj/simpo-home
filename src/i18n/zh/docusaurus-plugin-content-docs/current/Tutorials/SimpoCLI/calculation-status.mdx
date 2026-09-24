@@ -1,7 +1,7 @@
 ---
 id: calculation-status
 title: 查询计算状态
-sidebar_label: calculation-status — 查询状态
+sidebar_label: calculation-status
 ---
 
 # `calculation-status`：查询计算状态
@@ -47,7 +47,26 @@ simpo calculation-status 706
 | `failed` | 准备、编译或计算失败 |
 | `stopped` | 计算已被明确停止 |
 
+## 返回结果
+
 响应还可能包含进度、已用计算时间、预计剩余时间和安全的计算错误消息。
 除 `success`、`projectId` 和 `status` 外，其它字段应视当前状态决定是否存在。
 
 停止活动任务请使用 [`stop-calculation`](./stop-calculation)。
+
+计算进行中的成功返回示例：
+
+```json
+{
+  "success": true,
+  "projectId": 706,
+  "projectName": "Example",
+  "projectVersion": 0,
+  "status": "running",
+  "ifCalculating": true,
+  "progress": 0.125,
+  "timeElapsed": "12.3",
+  "estimatedRemainingTime": "87.7",
+  "calculationError": null
+}
+```

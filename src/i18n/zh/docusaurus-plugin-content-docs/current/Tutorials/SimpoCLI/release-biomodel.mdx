@@ -1,0 +1,78 @@
+---
+id: release-biomodel
+title: 发布 BioModel
+sidebar_label: release-biomodel
+---
+
+# `release-biomodel`：发布 Draft BioModel
+
+以自己拥有的 version `0` Draft BioModel 为来源，创建一条不可修改的
+Release 快照。原 Draft 会继续保留并可修改，Release 的下一个版本号由后端
+自动分配。
+
+## 使用条件
+
+- Token scope：`write`
+- BioModel 必须属于 Token 对应的用户。
+- BioModel 必须是 `state=Draft`、`version=0`。
+- Draft 的模型内容不能与同名 BioModel 已发布的任一版本完全相同。
+
+不能使用 Release 或 Standard 的 ID 作为来源。成功发布的 Release 不可修改；
+需要发布新版本时，应继续修改原 Draft，再次执行本命令。
+
+## 命令格式
+
+```text
+simpo release-biomodel BIOMODEL_ID [OPTIONS]
+```
+
+示例：
+
+```text
+simpo release-biomodel 123
+simpo release-biomodel 123 --privacy Public --description "校准后的模型"
+```
+
+## 参数
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| `BIOMODEL_ID` | 必填 | 自己拥有的 version `0` Draft BioModel ID |
+| `--privacy Private\|Public` | `Private` | 新 Release 的可见性，不区分大小写 |
+| `--description TEXT` | 复制 Draft 描述 | Release 描述；显式传入空值可清空 Release 描述 |
+| `--timeout SECONDS` | `30.0` | 发布请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置的 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包内置环境地址 | 仅覆盖本次请求的后端地址 |
+
+命令不会提供 `--state`、`--version` 或 `--name`：后端从 Draft 读取名称，
+将状态固定为 `Release`，并使用 `Draft.versionCounter + 1` 作为版本号。即使
+旧 Release 被删除，已经使用过的版本号也不会复用。
+
+如果相同模型内容已经发布，后端会以 HTTP `226` 拒绝请求。请先通过
+[`update-biomodel`](./update-biomodel) 修改 Draft，再发布下一版本。
+
+## 返回结果
+
+```json
+{
+  "success": true,
+  "id": 124,
+  "name": "TestModel",
+  "state": "Release",
+  "privacy": "Private",
+  "version": 1,
+  "description": "校准后的模型",
+  "sourcepaperId": null,
+  "amountParameter": 4,
+  "amountComponent": 3,
+  "amountComponentSoluble": 1,
+  "amountRate": 2,
+  "amountComposition": 1,
+  "createdAt": "2026-09-23T10:00:00",
+  "updatedAt": "2026-09-23T10:00:00",
+  "message": "BioModel release success."
+}
+```
+
+返回的 `id` 是新 Release 的 ID，不是 Draft ID。后续操作如果明确要求不可
+修改的发布版本，应使用这个新 ID。

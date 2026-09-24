@@ -1,0 +1,81 @@
+---
+id: get-dataset
+title: 获取一个 DataSet
+sidebar_label: get-dataset
+---
+
+# `get-dataset`：获取一个 DataSet
+
+读取当前 API Token 用户拥有的一个 DataSet 的完整模型表和元数据。
+
+## 使用条件
+
+- Token scope：`read`
+- DataSet 必须属于当前 Token 用户。
+- ID 不存在或不属于当前用户时返回 HTTP `404`。
+
+## 命令格式
+
+```text
+simpo get-dataset DATASET_ID [OPTIONS]
+```
+
+`DATASET_ID` 是 [`get-datasets`](./get-datasets) 或其他可信 API 响应返回的
+数据库 ID。
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `DATASET_ID` | 必填 | DataSet 数据库 ID |
+| `--timeout SECONDS` | `10.0` | HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+
+响应中的 `detail` 可以包含 `Unit`、`Target`、`Tank`、`Pump`、`Measured`、
+`Inflow`、`Flow`、`Connection` 以及可选的 `JointGraphJson` 等 DataSet 表格。
+同时返回已保存的名称列表、单位、解析状态、数量和版本元数据。
+
+响应明确排除内部 `pickle`、`share_url`、`shareable` 和 `cloneable` 字段。这些
+字段属于实现细节或分享凭据，不属于 OpenAPI DataSet 读取契约。
+
+## 返回结果
+
+```json
+{
+  "id": 456,
+  "name": "Default",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "versionCounter": 0,
+  "description": "",
+  "sourcepaperId": null,
+  "timeUnit": "day",
+  "volumeUnit": "m3",
+  "flowUnit": "m3/d",
+  "ifParseSave": true,
+  "tankNamelist": ["Tank1"],
+  "targetNamelist": ["Target1"],
+  "inflowNamelist": ["Inflow1"],
+  "flowNamelist": ["Flow1"],
+  "amountTarget": 1,
+  "amountReactionZone": 0,
+  "amountTank": 2,
+  "amountVolume": 2,
+  "amountInflow": 1,
+  "amountFlow": 1,
+  "detail": {
+    "Unit": [],
+    "Target": [],
+    "Tank": [],
+    "Pump": [],
+    "Measured": [],
+    "Inflow": [],
+    "Flow": [],
+    "Connection": []
+  },
+  "createdAt": "2026-09-20T10:00:00",
+  "updatedAt": "2026-09-20T10:00:00"
+}
+```

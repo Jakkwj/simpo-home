@@ -1,7 +1,7 @@
 ---
 id: stop-calculation
 title: Stop a calculation
-sidebar_label: stop-calculation — stop work
+sidebar_label: stop-calculation
 ---
 
 # `stop-calculation`: stop a calculation
@@ -55,3 +55,16 @@ or externally hosted process could be terminated locally.
 
 Confirm the resulting state with
 [`calculation-status`](./calculation-status).
+
+Example successful response:
+
+```json
+{
+  "success": true,
+  "projectId": 706,
+  "projectName": "Example",
+  "projectVersion": 0,
+  "status": "stopped",
+  "localProcessesStopped": 2
+}
+```

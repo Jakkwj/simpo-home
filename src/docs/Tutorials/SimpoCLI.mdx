@@ -11,7 +11,7 @@ import TabItem from "@theme/TabItem";
 # SimpoCLI command-line guide
 
 `SimpoCLI` is the command-line interface for the SIMPO OpenAPI. It creates
-BioModels, reads and updates Project data, prepares calculations, starts the locally installed
+BioModels, lists and reads DataSets, reads and updates Project data, prepares calculations, starts the locally installed
 `SimpoClient`, monitors calculation status, and stops calculations.
 Its terminal command is the short, lowercase `simpo`.
 
@@ -24,8 +24,8 @@ the installed version before invoking it.
 - A SIMPO account and an OpenAPI Token created on the Dashboard's **API Tokens**
   page.
 - The minimum Token scope required by the command:
-  - `read`: read all Project Variable fields;
-  - `write`: create a Draft BioModel or update a Variable field in a version `0` Draft Project;
+  - `read`: list owned BioModels, DataSets, and Projects, read complete BioModels/DataSets (`get-biomodel`, `get-dataset`), and read Project Variable fields;
+  - `write`: create, update, or release a Draft BioModel, or update a Variable field in a version `0` Draft Project;
   - `calculate`: prepare, inspect, or stop a calculation.
 - The [`calculate`](./SimpoCLI/calculate) command additionally requires
   the matching platform version of `SimpoClient` on the same computer.
@@ -128,8 +128,8 @@ uninstalling.
 3. Select **Create Token**.
 4. Enter a recognizable name, choose an expiry from `1` to `365` days, and
    grant only the scopes you need:
-   - `read` for `get-biomodels`, `get-biomodel`, and `get-project-variables`;
-   - `write` for `create-biomodel` (blank, Excel, or JSON) and `set-project-variable`;
+   - `read` for `get-biomodels`, `get-biomodel`, `get-datasets`, `get-dataset`, and `get-project-variables`;
+  - `write` for `create-biomodel`, `update-biomodel`, `sync-biomodel`, `release-biomodel`, and `set-project-variable`;
    - `calculate` for calculation preparation, status, and stop commands.
 5. Select **Create Token**, then immediately copy the complete Token from the
    **Token Created** dialog.
@@ -172,15 +172,44 @@ For the complete configuration procedure, see [`configure`](./SimpoCLI/configure
 
 ## Command reference
 
+### Token
+
 | Command | Purpose | Required scope |
 | --- | --- | --- |
 | [`configure`](./SimpoCLI/configure) | Validate and save an OpenAPI Token | none for the local action; Token validation must succeed |
 | [`me`](./SimpoCLI/me) | Verify the Token and show its identity and scopes | authenticated Token |
+| [`logout`](./SimpoCLI/logout) | Remove the locally saved Token file without revoking the server Token | none |
+
+### BioModel
+
+| Command | Purpose | Required scope |
+| --- | --- | --- |
 | [`create-biomodel`](./SimpoCLI/create-biomodel) | Create a blank, Excel-based, or JSON-based Draft BioModel | `write` |
 | [`get-biomodels`](./SimpoCLI/get-biomodels) | List metadata for your BioModels | `read` |
 | [`get-biomodel`](./SimpoCLI/get-biomodel) | Read one BioModel and its complete model tables | `read` |
+| [`update-biomodel`](./SimpoCLI/update-biomodel) | Replace the tables of a version `0` Draft BioModel | `write` |
+| [`sync-biomodel`](./SimpoCLI/sync-biomodel) | Copy an owned Release/Standard version to its same-name Draft | `write` |
+| [`release-biomodel`](./SimpoCLI/release-biomodel) | Create the next immutable Release from a version `0` Draft | `write` |
+
+### DataSet
+
+| Command | Purpose | Required scope |
+| --- | --- | --- |
+| [`get-datasets`](./SimpoCLI/get-datasets) | List metadata for your DataSets | `read` |
+| [`get-dataset`](./SimpoCLI/get-dataset) | Read one DataSet and its complete model tables | `read` |
+
+### Project
+
+| Command | Purpose | Required scope |
+| --- | --- | --- |
+| [`get-projects`](./SimpoCLI/get-projects) | List owned Project metadata with BioModel/DataSet references | `read` |
 | [`get-project-variables`](./SimpoCLI/project-variables) | Read every field in the Solution Variable table | `read` |
 | [`set-project-variable`](./SimpoCLI/set-project-variable) | Update one Variable field in a Draft Project | `write` |
+
+### Calculation
+
+| Command | Purpose | Required scope |
+| --- | --- | --- |
 | [`calculate`](./SimpoCLI/calculate) | Prepare a calculation and start SimpoClient | `calculate` |
 | [`calculation-status`](./SimpoCLI/calculation-status) | Read current calculation status | `calculate` |
 | [`stop-calculation`](./SimpoCLI/stop-calculation) | Stop a calculation and matching local processes | `calculate` |

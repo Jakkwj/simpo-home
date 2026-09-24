@@ -1,0 +1,72 @@
+---
+id: biomodel-skill
+title: SIMPO BioModel Skill
+sidebar_label: Overview
+---
+
+# SIMPO BioModel Skill
+
+SIMPO BioModel Skill helps an AI coding assistant extract a wastewater-treatment
+model from a paper, audit its evidence, derive supported Composition and
+Ionization data, and create a SIMPO BioModel through SimpoCLI. It currently
+supports Codex and Claude Code. Choose the corresponding installation and usage
+page in the sidebar.
+
+This is a specialized workflow rather than the general SimpoCLI manual. Use it
+when the task starts from a paper and needs a scientifically reviewed BioModel.
+For ordinary CLI operations such as listing resources, changing a Project
+Variable, or running a calculation, use the separate SimpoCLI Skill.
+
+The Skill uses the AI configured for the current assistant session and does not
+call SIMPO's backend AI creation endpoint. It contains instructions and reference
+material only; it does not bundle SimpoCLI, an API Token, Python, or an AI model.
+You can invoke it in English or Chinese. In Codex the Skill name remains
+`$create-biomodel`; the Claude Code plugin command is
+`/simpo-biomodel:create-biomodel`.
+
+## Requirements
+
+- SimpoCLI is installed and available as `simpo`.
+- A SIMPO API Token with `write` scope is configured and passes `simpo me`.
+- The AI assistant can read the paper and any required supplementary material.
+  PDF is recommended but not required; full-text HTML or OCR text with the
+  original tables can also be used.
+
+Never put an API Token in a prompt, model JSON, or shared file. Configure it with
+`simpo configure`.
+
+## Default analysis rules
+
+Composition is handled cell by cell. Every coefficient supported by the paper or
+a traceable derivation is retained even when the resulting balance is nonzero.
+Unsupported values remain unknown; the Skill must not guess values or alter the
+model merely to force a zero residual. SIMPO currently treats empty Composition
+cells as `0` when calculating `Balance`, so a residual may expose missing
+information, a basis mismatch, or an unclosed model.
+
+All four per-run options are enabled by default:
+
+| Option | Values | Default behavior |
+|---|---|---|
+| `matrix_fractions` | `on` / `off` | `on`: store an approximate reported decimal as an exact fraction only when independent mathematical or chemical evidence establishes it |
+| `composition_derive` | `on` / `off` | `on`: derive supported missing cells; `off`: do not derive missing values. In either case, retain values reported by the paper |
+| `ionization_derive` | `on` / `off` | `on`: derive supported missing data; `off`: do not derive missing values. In either case, retain rows reported by the paper |
+| `source_correction` | `on` / `off` | `on`: automatically apply only high-confidence OCR/transcription/unit corrections and record them in the Markdown `--description`; `off`: preserve source values and report suspected errors without correcting them |
+
+These are natural-language Skill options, not `simpo` command-line flags. Each
+option can be disabled independently.
+
+## Safety boundaries
+
+- Before submission, show the sources, derivations, assumptions, unresolved
+  uncertainties, and proposed model for review. High-confidence source
+  corrections are applied automatically and recorded in the description; they
+  do not require a second manual confirmation.
+- Call `simpo create-biomodel` only after the user approves creation.
+- Require a `Private`, `Draft`, `version: 0` result.
+- Never submit the read-only `Balance` table.
+- Never automatically release, publish, share, or delete a BioModel.
+
+Parser acceptance confirms only that SIMPO can read the representation. It does
+not prove the scientific assumptions are correct. Review all derived values and
+audit notes before using the model in a Project.

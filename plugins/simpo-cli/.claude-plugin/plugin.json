@@ -1,0 +1,16 @@
+{
+  "name": "simpo-cli",
+  "displayName": "SimpoCLI",
+  "version": "0.1.0",
+  "description": "Operate SIMPO BioModels, DataSets, Projects, and calculations safely through SimpoCLI.",
+  "author": {
+    "name": "SIMPO"
+  },
+  "skills": "./skills/",
+  "keywords": [
+    "simpo",
+    "cli",
+    "biomodel",
+    "calculation"
+  ]
+}

@@ -1,0 +1,75 @@
+---
+id: update-biomodel
+title: Update a BioModel
+sidebar_label: update-biomodel
+---
+
+# `update-biomodel`: update a Draft BioModel
+
+Replace the model tables of one owned version `0` Draft BioModel with a JSON
+model. The backend parses the submitted tables again and recalculates derived
+fields such as `Balance`, replacement names, serialized cache, and table counts.
+
+This command does not delete a BioModel and does not rename it. Release and
+Standard versions are immutable and cannot be updated.
+
+## Requirements
+
+- Token scope: `write`
+- The BioModel must belong to the Token user.
+- The BioModel must have `state=Draft` and `version=0`.
+- The JSON must contain `Component`, `Parameter`, and `Matrix` arrays.
+- `Composition` and `Ionization` are optional.
+- `Balance` is read-only and must not be submitted.
+
+## Syntax
+
+```text
+simpo update-biomodel BIOMODEL_ID --json MODEL.json [OPTIONS]
+```
+
+The JSON format is the same as [`create-biomodel`](./create-biomodel). A model
+returned by `get-biomodel` can be edited and submitted after removing its
+read-only `Balance` sheet.
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `BIOMODEL_ID` | required | Owned version `0` Draft BioModel ID |
+| `--json FILE` | required | UTF-8 JSON model table file; maximum 20 MiB |
+| `--description TEXT` | keep current | Replace the Markdown description |
+| `--sourcepaper-id INTEGER` | keep current | Replace the source paper ID |
+| `--timeout SECONDS` | `3700.0` | Maximum parsing and HTTP time |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+The BioModel name is intentionally not an option. Rename is a separate
+operation because the name participates in Draft/Release version identity and
+Project references.
+
+If Projects use this Draft, the backend immediately rebuilds each dependent
+Project's `detail` and calculation cache. Compatible user-entered values
+(`Variable`, `Conversion`, `Activator`, `Target`, and `Weight`) are preserved;
+new or incompatible fields follow the new BioModel structure. The response
+field `affectedProjectCount` is the number of Projects synchronized.
+
+## Result
+
+```json
+{
+  "success": true,
+  "id": 123,
+  "name": "TestModel",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "updated",
+  "sourcepaperId": null,
+  "amountParameter": 4,
+  "amountComponent": 3,
+  "amountRate": 2,
+  "amountComposition": 1,
+  "affectedProjectCount": 2
+}
+```

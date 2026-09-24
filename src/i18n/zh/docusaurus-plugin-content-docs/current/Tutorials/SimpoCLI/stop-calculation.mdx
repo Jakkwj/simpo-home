@@ -1,7 +1,7 @@
 ---
 id: stop-calculation
 title: 停止计算
-sidebar_label: stop-calculation — 停止计算
+sidebar_label: stop-calculation
 ---
 
 # `stop-calculation`：停止计算
@@ -50,3 +50,16 @@ simpo stop-calculation 706
 不保证 CLI 能终止无权访问或运行在其它电脑上的进程。
 
 使用 [`calculation-status`](./calculation-status) 确认最终状态。
+
+成功返回示例：
+
+```json
+{
+  "success": true,
+  "projectId": 706,
+  "projectName": "Example",
+  "projectVersion": 0,
+  "status": "stopped",
+  "localProcessesStopped": 2
+}
+```
