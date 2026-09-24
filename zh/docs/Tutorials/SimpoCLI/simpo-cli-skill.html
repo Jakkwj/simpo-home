@@ -10,7 +10,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="SIMPO" href="/zh/opensearch.xml"><link rel="stylesheet" href="/zh/assets/css/styles.beffceef.css">
-<script src="/zh/assets/js/runtime~main.ffe4609f.js" defer="defer"></script>
+<script src="/zh/assets/js/runtime~main.d925e38d.js" defer="defer"></script>
 <script src="/zh/assets/js/main.ed7a8a79.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -31,9 +31,10 @@
 而且它会主动检查 <code>simpo COMMAND --help</code>，因为实际安装版本才是最终依据。它减少的
 是重复且与当前任务无关的输入，并不是完全不消耗 token。</p>
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="覆盖范围">覆盖范围<a href="#覆盖范围" class="hash-link" aria-label="覆盖范围的直接链接" title="覆盖范围的直接链接" translate="no">​</a></h2>
-<p>当前 Skill 源码同时供 Codex 和 Claude Code 使用，包含：</p>
+<p>当前 Skill 源码同时供 Codex 和 Claude Code 使用。Codex 调用名为 <code>$simpo</code>，
+Claude Code 插件调用名为 <code>/simpo:simpo</code>。它包含：</p>
 <ul>
-<li class="">Token 配置、身份、scope、退出登录和 JSON 自动化；</li>
+<li class="">Token 配置、身份、scope、退出登录和 JSON  自动化；</li>
 <li class="">BioModel 新建、列表、读取、更新、同步和发布；</li>
 <li class="">DataSet 列表和读取；</li>
 <li class="">Project 列表及 Project Variable 读取和更新；</li>

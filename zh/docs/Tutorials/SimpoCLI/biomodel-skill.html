@@ -10,7 +10,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="SIMPO" href="/zh/opensearch.xml"><link rel="stylesheet" href="/zh/assets/css/styles.beffceef.css">
-<script src="/zh/assets/js/runtime~main.ffe4609f.js" defer="defer"></script>
+<script src="/zh/assets/js/runtime~main.d925e38d.js" defer="defer"></script>
 <script src="/zh/assets/js/main.ed7a8a79.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -25,8 +25,8 @@
 修改 Project Variable 或运行计算，请使用独立的 SimpoCLI Skill。</p>
 <p>Skill 使用当前 AI 助手会话所配置的 AI，不调用 SIMPO 后端的 AI 创建接口。
 它只包含分析指令与参考资料，不内置 SimpoCLI、API Token、Python 环境或 AI 模型。
-可以使用中文或英文调用。Codex 中的 Skill 名称保持为 <code>$create-biomodel</code>；
-Claude Code 插件命令为 <code>/simpo-biomodel:create-biomodel</code>。</p>
+可以使用中文或英文调用。Codex 中的 Skill 名称保持为 <code>$simpo-create-biomodel</code>；
+Claude Code 插件命令为 <code>/simpo:simpo-create-biomodel</code>。</p>
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="使用条件">使用条件<a href="#使用条件" class="hash-link" aria-label="使用条件的直接链接" title="使用条件的直接链接" translate="no">​</a></h2>
 <ul>
 <li class="">已安装 SimpoCLI，并可通过 <code>simpo</code> 命令运行。</li>
@@ -42,7 +42,7 @@ Claude Code 插件命令为 <code>/simpo-biomodel:create-biomodel</code>。</p>
 基准不一致或模型未闭合，并不自动代表已有系数错误。</p>
 <p>四个运行选项默认都开启：</p>
 <table><thead><tr><th>选项</th><th>可选值</th><th>默认行为</th></tr></thead><tbody><tr><td><code>matrix_fractions</code></td><td><code>on</code> / <code>off</code></td><td><code>on</code>：有独立数学或化学依据时，把论文中的近似小数保存为精确分数</td></tr><tr><td><code>composition_derive</code></td><td><code>on</code> / <code>off</code></td><td><code>on</code>：推导有依据的缺失单元格；<code>off</code>：不推导缺失值。两种情况下都保留论文明确报告的数据</td></tr><tr><td><code>ionization_derive</code></td><td><code>on</code> / <code>off</code></td><td><code>on</code>：推导有依据的缺失数据；<code>off</code>：不推导缺失值。两种情况下都保留论文明确报告的行</td></tr><tr><td><code>source_correction</code></td><td><code>on</code> / <code>off</code></td><td><code>on</code>：只自动修正高置信度的 OCR、抄录、单位或格式错误，并将记录写入 Markdown <code>--description</code>；<code>off</code>：保留原文，只报告疑似错误，不进行修正</td></tr></tbody></table>
-<p>这些是 Skill 的自然语言选项，不是 <code>simpo</code> 命令行参数。三项可以独立关闭。</p>
+<p>这些是 Skill 的自然语言选项，不是 <code>simpo</code> 命令行参数。四项可以独立关闭。</p>
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="安全边界">安全边界<a href="#安全边界" class="hash-link" aria-label="安全边界的直接链接" title="安全边界的直接链接" translate="no">​</a></h2>
 <ul>
 <li class="">提交前必须展示来源、推导、假设、未解决的不确定项及拟创建内容，供用户审核。
