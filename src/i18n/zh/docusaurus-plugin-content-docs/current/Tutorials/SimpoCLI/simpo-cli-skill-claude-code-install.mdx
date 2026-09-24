@@ -6,7 +6,7 @@ sidebar_label: 安装
 
 # 在 Claude Code 中安装 SimpoCLI Skill
 
-Claude Code 的 `simpo-cli` 插件与 Codex 插件共用同一个 `simpo` Skill 和参考资料。
+Claude Code 的 `simpo` 插件与 Codex 直接安装版本共用同一个 `simpo` Skill 和参考资料。
 它通过当前安装的 SimpoCLI 操作 SIMPO，不包含 API Token。
 
 ## 安装前准备
@@ -30,16 +30,17 @@ simpo me
 
 ## 从 SIMPO Marketplace 安装
 
-启动 Claude Code，添加仓库 Marketplace：
+Claude Code 官方支持仓库 Marketplace。请在 Claude Code 交互会话中运行以下斜杠命令，
+并按官方记录的 `owner/repo` 格式添加 GitHub 仓库：
 
 ```text
-/plugin marketplace add Jakkwj/simpo-home@master
+/plugin marketplace add Jakkwj/simpo-home
 ```
 
 安装插件：
 
 ```text
-/plugin install simpo-cli@simpo
+/plugin install simpo@simpo
 ```
 
 如果提示需要重新加载插件，请运行：
@@ -48,14 +49,14 @@ simpo me
 /reload-plugins
 ```
 
-带命名空间的 Skill 调用名为 `/simpo-cli:simpo`。
+带命名空间的 Skill 调用名为 `/simpo:simpo`。
 
 ## 验证
 
 在新会话或重新加载后的会话中运行：
 
 ```text
-/simpo-cli:simpo 请说明这个 Skill 的作用，不要执行任何修改。
+/simpo:simpo 请说明这个 Skill 的作用，不要执行任何修改。
 ```
 
 响应应说明它会检查当前版本的帮助、Token scope、SIMPO 资源操作和 JSON 结果验证。
@@ -69,12 +70,12 @@ simpo me
 /plugin marketplace update simpo
 ```
 
-然后打开 `/plugin`，进入 **Installed**，选择 `simpo-cli@simpo` 并点击 **Update**；
+然后打开 `/plugin`，进入 **Installed**，选择 `simpo@simpo` 并点击 **Update**；
 如有提示则重新加载插件。
 
 ## 手工安装备用方案
 
 如果当前 Claude Code 不支持插件，请先升级。临时本地安装时，将完整的
-`plugins/simpo-cli/skills/simpo` 目录复制到 `~/.claude/skills/simpo`；不能只复制
+`plugins/simpo/skills/simpo` 目录复制到 `~/.claude/skills/simpo`；不能只复制
 `SKILL.md`，因为工作流需要 `references/` 文件。此时调用命令为不带插件命名空间的
 `/simpo`。

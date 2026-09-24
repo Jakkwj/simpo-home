@@ -6,6 +6,8 @@ sidebar_label: Installation
 
 # Install SimpoCLI Skill for Codex
 
+Install the Skill directly into Codex's Skill directory.
+
 ## Prerequisites
 
 Verify Codex and the separately installed SimpoCLI:
@@ -25,22 +27,26 @@ simpo me
 
 Never paste the Token into Codex.
 
-## Install from the SIMPO Marketplace
+## Install from this repository
 
-Add or refresh the SIMPO Marketplace:
-
-```text
-codex plugin marketplace add Jakkwj/simpo-home --ref master
-```
-
-Install the plugin (use the exact syntax shown by your installed `codex plugin
---help` if it differs):
+The recommended route is to ask Codex's built-in Skill Installer to install the
+Skill from GitHub:
 
 ```text
-codex plugin add simpo-cli@simpo
+Use $skill-installer to install this Skill from:
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo
 ```
 
-Start a new Codex session so the Skill is discovered.
+If the built-in installer is unavailable, copy the complete Skill directory to
+Codex's local Skill directory. Keep `references/` with `SKILL.md`:
+
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+cp -R plugins/simpo/skills/simpo \
+  "${CODEX_HOME:-$HOME/.codex}/skills/simpo"
+```
+
+Start a new Codex session after installation.
 
 ## Verify
 
@@ -51,24 +57,10 @@ What does $simpo do? Do not change anything.
 ```
 
 Installation succeeded if Codex explains that it discovers the installed CLI
-interface and safely operates SIMPO resources. The Skill is invoked as `$simpo`.
-Continue with
-[Codex usage and examples](./simpo-cli-skill-codex-usage).
+interface and safely operates SIMPO resources.
 
 ## Update
 
-```text
-codex plugin marketplace upgrade simpo
-codex plugin add simpo-cli@simpo
-```
-
-Then start a new Codex session.
-
-:::note
-
-Codex plugin commands are evolving. If your installed `codex --help` does not
-contain the documented plugin commands, update Codex and use the current plugin
-manager UI. The repository layout and `simpo-cli@simpo` identity remain the
-same.
-
-:::
+The Skill Installer does not overwrite an existing Skill. Back up or remove the
+installed `$CODEX_HOME/skills/simpo` directory, install the latest GitHub copy,
+and start a new Codex session.

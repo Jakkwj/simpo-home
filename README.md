@@ -19,37 +19,35 @@ Marketplace manifests and Skill source are maintained in this repository:
 
 ```text
 SimpoHome/
-├── .agents/plugins/marketplace.json
 ├── .claude-plugin/marketplace.json
-├── plugins/simpo-biomodel/
-│   ├── .codex-plugin/plugin.json
-│   ├── .claude-plugin/plugin.json
-│   └── skills/create-biomodel/
-└── plugins/simpo-cli/
-    ├── .codex-plugin/plugin.json
+└── plugins/simpo/
     ├── .claude-plugin/plugin.json
-    └── skills/simpo/
-        ├── SKILL.md
-        ├── agents/openai.yaml
-        └── references/
+    └── skills/
+        ├── simpo/
+        │   ├── SKILL.md
+        │   ├── agents/openai.yaml
+        │   └── references/
+        └── simpo-create-biomodel/
+            ├── SKILL.md
+            ├── agents/openai.yaml
+            └── references/
 ```
 
-- `.agents/plugins/marketplace.json` publishes the personal Codex Marketplace.
-- `.codex-plugin/plugin.json` is required for Codex to recognize the Plugin.
 - `.claude-plugin/plugin.json` and the root `.claude-plugin/marketplace.json`
-  publish the BioModel and SimpoCLI Skills for Claude Code.
-- `skills/create-biomodel/` is the complete portable Skill source. Keep its
-  `references/` directory with `SKILL.md` when testing it in another assistant.
+  publish both Skills as the `simpo` plugin for Claude Code.
+- Codex installs each Skill directory directly under `$CODEX_HOME/skills`.
+- Each directory under `plugins/simpo/skills/` is a complete portable Skill;
+  keep its `references/` directory with `SKILL.md` when installing it.
 - Leading-dot directories are hidden by many file browsers but must remain
   tracked by Git.
 
-After changing the Plugin, validate its manifests, update the Marketplace
-version/cachebuster as required, reinstall the Plugin, and test it in a new
-Codex session. The Docusaurus user pages live under
+After changing the Claude Code Plugin, validate its manifest and Marketplace,
+then reinstall or update the Plugin. After changing a Codex Skill, reinstall the
+Skill and test it in a new Codex session. The Docusaurus user pages live under
 `src/docs/Tutorials/SimpoCLI/`; Chinese translations live under
 `src/i18n/zh/docusaurus-plugin-content-docs/current/Tutorials/SimpoCLI/`.
-The `simpo-cli` plugin provides the on-demand `$simpo` workflow in Codex and
-`/simpo-cli:simpo` in Claude Code; it keeps the CLI manual out of unrelated
+The SimpoCLI Skill provides the on-demand `$simpo` workflow in Codex and
+`/simpo:simpo` in Claude Code; it keeps the CLI manual out of unrelated
 conversations and reads only the relevant command reference when invoked.
 
 ## Resource

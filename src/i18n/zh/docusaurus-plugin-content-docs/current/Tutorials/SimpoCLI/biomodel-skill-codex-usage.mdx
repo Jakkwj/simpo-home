@@ -8,16 +8,16 @@ sidebar_label: 使用方法与示例
 
 ## 基本用法
 
-在请求中显式写出 `$create-biomodel`，并提供可读取的论文路径和模型名称：
+在请求中显式写出 `$simpo-create-biomodel`，并提供可读取的论文路径和模型名称：
 
 ```text
-Use $create-biomodel to analyze /path/to/paper.pdf and prepare a SIMPO BioModel named MyModel.
+Use $simpo-create-biomodel to analyze /path/to/paper.pdf and prepare a SIMPO BioModel named MyModel.
 ```
 
 也可以直接使用中文。Skill 名称保持不变，其余请求按自然中文书写即可：
 
 ```text
-请使用 $create-biomodel 分析 /path/to/paper.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
+请使用 $simpo-create-biomodel 分析 /path/to/paper.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
 ```
 
 Codex 会核对论文信息，提取 Components、Parameters 和 Matrix，尝试推导 Composition 和 Ionization，并在提交前展示来源、假设、不确定项和拟创建内容。处理关键不确定项并获得确认后，它才会调用 `simpo create-biomodel`。
@@ -27,13 +27,13 @@ Codex 会核对论文信息，提取 Components、Parameters 和 Matrix，尝试
 四个选项默认全部开启，因此一般无需写出选项：
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
 ```
 
 等价于：
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
 Options: matrix_fractions=on; composition_derive=on; ionization_derive=on; source_correction=on.
 ```
 
@@ -45,21 +45,21 @@ Options: matrix_fractions=on; composition_derive=on; ionization_derive=on; sourc
 保留论文中的原始小数表示：
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
 Options: matrix_fractions=off.
 ```
 
 不推导缺失的 Composition：
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
 Options: composition_derive=off.
 ```
 
 不推导缺失的 Ionization：
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
 Options: ionization_derive=off.
 ```
 
@@ -71,7 +71,7 @@ Options: ionization_derive=off.
 如果需要严格保留论文原文，只报告疑似错误而不修正：
 
 ```text
-请使用 $create-biomodel 分析 /data/papers/model.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
+请使用 $simpo-create-biomodel 分析 /data/papers/model.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
 Options: source_correction=off.
 ```
 
@@ -80,7 +80,7 @@ Options: source_correction=off.
 如果只想先查看抽取结果，应明确要求不要调用 API：
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare the proposed tables for review.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare the proposed tables for review.
 Do not create the BioModel yet.
 ```
 

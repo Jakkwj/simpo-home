@@ -6,9 +6,9 @@ sidebar_label: Installation
 
 # Install SimpoCLI Skill for Claude Code
 
-The `simpo-cli` Claude Code plugin packages the same `simpo` Skill and
-references used by the Codex plugin. It routes SIMPO work through the installed
-SimpoCLI and does not contain an API Token.
+The `simpo` Claude Code plugin packages the same `simpo` Skill and references
+used by the direct Codex Skill installation. It routes SIMPO work through the
+installed SimpoCLI and does not contain an API Token.
 
 ## Prerequisites
 
@@ -31,16 +31,18 @@ Never paste the Token into a Claude prompt.
 
 ## Install from the SIMPO Marketplace
 
-Start Claude Code and add the repository Marketplace:
+Claude Code officially supports repository Marketplaces. Run these slash
+commands inside an interactive Claude Code session. Add the GitHub repository
+using the documented `owner/repo` form:
 
 ```text
-/plugin marketplace add Jakkwj/simpo-home@master
+/plugin marketplace add Jakkwj/simpo-home
 ```
 
 Install the plugin:
 
 ```text
-/plugin install simpo-cli@simpo
+/plugin install simpo@simpo
 ```
 
 Reload plugins if Claude Code requests it:
@@ -49,14 +51,14 @@ Reload plugins if Claude Code requests it:
 /reload-plugins
 ```
 
-The namespaced Skill command is `/simpo-cli:simpo`.
+The namespaced Skill command is `/simpo:simpo`.
 
 ## Verify
 
 Run this in a new or reloaded session:
 
 ```text
-/simpo-cli:simpo What does this Skill do? Do not change anything.
+/simpo:simpo What does this Skill do? Do not change anything.
 ```
 
 The response should explain current-version help discovery, Token-scope checks,
@@ -71,14 +73,14 @@ Refresh the Marketplace and update the plugin:
 /plugin marketplace update simpo
 ```
 
-Then open `/plugin`, select **Installed**, choose `simpo-cli@simpo`, and select
+Then open `/plugin`, select **Installed**, choose `simpo@simpo`, and select
 **Update**. Reload plugins if prompted.
 
 ## Manual fallback
 
 If the installed Claude Code does not support plugins, update it first. As a
 temporary local fallback, copy the complete
-`plugins/simpo-cli/skills/simpo` directory to
+`plugins/simpo/skills/simpo` directory to
 `~/.claude/skills/simpo`; do not copy only `SKILL.md`, because the workflow
 needs its `references/` files. The fallback command is `/simpo` without the
 plugin namespace.

@@ -15,8 +15,8 @@ SIMPO BioModel Skill 帮助 AI 编程助手从污水处理模型论文中提取�
 
 Skill 使用当前 AI 助手会话所配置的 AI，不调用 SIMPO 后端的 AI 创建接口。
 它只包含分析指令与参考资料，不内置 SimpoCLI、API Token、Python 环境或 AI 模型。
-可以使用中文或英文调用。Codex 中的 Skill 名称保持为 `$create-biomodel`；
-Claude Code 插件命令为 `/simpo-biomodel:create-biomodel`。
+可以使用中文或英文调用。Codex 中的 Skill 名称保持为 `$simpo-create-biomodel`；
+Claude Code 插件命令为 `/simpo:simpo-create-biomodel`。
 
 ## 使用条件
 
@@ -43,7 +43,7 @@ Composition 按单元格处理：论文或可追溯推导支持的系数都应�
 | `ionization_derive` | `on` / `off` | `on`：推导有依据的缺失数据；`off`：不推导缺失值。两种情况下都保留论文明确报告的行 |
 | `source_correction` | `on` / `off` | `on`：只自动修正高置信度的 OCR、抄录、单位或格式错误，并将记录写入 Markdown `--description`；`off`：保留原文，只报告疑似错误，不进行修正 |
 
-这些是 Skill 的自然语言选项，不是 `simpo` 命令行参数。三项可以独立关闭。
+这些是 Skill 的自然语言选项，不是 `simpo` 命令行参数。四项可以独立关闭。
 
 ## 安全边界
 

@@ -2,7 +2,7 @@
 
 Use this reference when turning a wastewater-treatment model paper into SIMPO
 tables. It preserves the domain requirements used by the backend AI prompt,
-adapted for a local Codex analysis followed by the SimpoCLI JSON interface.
+adapted for an assistant analysis followed by the SimpoCLI JSON interface.
 
 ## Paper eligibility
 
@@ -26,7 +26,7 @@ adapted for a local Codex analysis followed by the SimpoCLI JSON interface.
   items. Use English for an English paper and Chinese for a Chinese paper.
 - This workflow avoids the SIMPO backend AI endpoint, but it does not imply that
   paper contents stay on-device. Follow the data-handling policy of the model
-  configured for the user's Codex session.
+  configured for the user's assistant session.
 - Keep the paper title and DOI/citation in this note. A paper DOI is not a
   SIMPO `sourcepaperId`; only pass `--sourcepaper-id` when the user knows the
   database ID.

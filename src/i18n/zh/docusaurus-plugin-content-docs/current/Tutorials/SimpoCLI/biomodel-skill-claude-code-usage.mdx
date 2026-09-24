@@ -8,16 +8,16 @@ sidebar_label: 使用方法与示例
 
 ## 基本用法
 
-调用带命名空间的 `/simpo-biomodel:create-biomodel` 命令，并提供论文路径和模型名称：
+调用带命名空间的 `/simpo:simpo-create-biomodel` 命令，并提供论文路径和模型名称：
 
 ```text
-/simpo-biomodel:create-biomodel Analyze /path/to/paper.pdf and prepare a SIMPO BioModel named MyModel.
+/simpo:simpo-create-biomodel Analyze /path/to/paper.pdf and prepare a SIMPO BioModel named MyModel.
 ```
 
 也可以使用中文提出请求：
 
 ```text
-/simpo-biomodel:create-biomodel 请分析 /path/to/paper.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
+/simpo:simpo-create-biomodel 请分析 /path/to/paper.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
 ```
 
 Skill 会指导 Claude Code 提取模型、追溯证据、报告不确定项，并在用户审核确认后通过
@@ -28,13 +28,13 @@ SimpoCLI 创建 Private、version 0、Draft BioModel。
 四个选项默认全部开启；通常无需额外配置：
 
 ```text
-/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+/simpo:simpo-create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
 ```
 
 如需明确写出默认设置：
 
 ```text
-/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+/simpo:simpo-create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
 Options: matrix_fractions=on; composition_derive=on; ionization_derive=on; source_correction=on.
 ```
 
@@ -44,7 +44,7 @@ Options: matrix_fractions=on; composition_derive=on; ionization_derive=on; sourc
 Ionization 数据：
 
 ```text
-/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+/simpo:simpo-create-biomodel Analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
 Options: matrix_fractions=off; composition_derive=on; ionization_derive=off.
 ```
 
@@ -63,7 +63,7 @@ Options: matrix_fractions=off; composition_derive=on; ionization_derive=off.
 ## 只分析，不创建
 
 ```text
-/simpo-biomodel:create-biomodel Analyze /data/papers/model.pdf and show the proposed tables.
+/simpo:simpo-create-biomodel Analyze /data/papers/model.pdf and show the proposed tables.
 Do not call SimpoCLI to create the BioModel yet.
 ```
 

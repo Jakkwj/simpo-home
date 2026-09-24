@@ -3,23 +3,13 @@
   "owner": {
     "name": "SIMPO"
   },
-  "description": "Official SIMPO skills for Claude Code.",
+  "description": "Official SIMPO skills for SimpoCLI operations and reviewed BioModel creation.",
   "plugins": [
     {
-      "name": "simpo-biomodel",
-      "source": "./plugins/simpo-biomodel",
-      "description": "Analyze wastewater-treatment papers and create reviewed SIMPO BioModel drafts with SimpoCLI.",
-      "version": "0.1.0",
-      "author": {
-        "name": "SIMPO"
-      },
-      "category": "development"
-    },
-    {
-      "name": "simpo-cli",
-      "source": "./plugins/simpo-cli",
-      "description": "Operate SIMPO BioModels, DataSets, Projects, and calculations safely through SimpoCLI.",
-      "version": "0.1.0",
+      "name": "simpo",
+      "source": "./plugins/simpo",
+      "description": "Operate SIMPO through SimpoCLI and create reviewed BioModel drafts from research papers.",
+      "version": "0.2.0",
       "author": {
         "name": "SIMPO"
       },

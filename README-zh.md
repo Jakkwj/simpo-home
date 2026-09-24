@@ -18,35 +18,33 @@
 
 ```text
 SimpoHome/
-├── .agents/plugins/marketplace.json
 ├── .claude-plugin/marketplace.json
-├── plugins/simpo-biomodel/
-│   ├── .codex-plugin/plugin.json
-│   ├── .claude-plugin/plugin.json
-│   └── skills/create-biomodel/
-└── plugins/simpo-cli/
-    ├── .codex-plugin/plugin.json
+└── plugins/simpo/
     ├── .claude-plugin/plugin.json
-    └── skills/simpo/
-        ├── SKILL.md
-        ├── agents/openai.yaml
-        └── references/
+    └── skills/
+        ├── simpo/
+        │   ├── SKILL.md
+        │   ├── agents/openai.yaml
+        │   └── references/
+        └── simpo-create-biomodel/
+            ├── SKILL.md
+            ├── agents/openai.yaml
+            └── references/
 ```
 
-- `.agents/plugins/marketplace.json` 用于发布个人 Codex Marketplace。
-- `.codex-plugin/plugin.json` 是 Codex 识别 Plugin 所需的清单。
 - `.claude-plugin/plugin.json` 和根目录的 `.claude-plugin/marketplace.json` 用于向
-  Claude Code 发布 BioModel 和 SimpoCLI Skill。
-- `skills/create-biomodel/` 是完整、可移植的 Skill 源码；在其他 AI 助手中测试时，
-  必须让 `references/` 与 `SKILL.md` 保持在同一个 Skill 目录中。
+  Claude Code 以 `simpo` 插件发布两项 Skill。
+- Codex 将每个 Skill 目录直接安装到 `$CODEX_HOME/skills`。
+- `plugins/simpo/skills/` 下的每个目录都是完整、可移植的 Skill；安装时必须让
+  `references/` 与 `SKILL.md` 保持在同一个 Skill 目录中。
 - 以点号开头的目录在很多文件管理器中默认隐藏，但必须由 Git 跟踪。
 
-修改 Plugin 后，应校验清单，按需更新 Marketplace 版本或 cachebuster，重新安装
-Plugin，并在新的 Codex 会话中测试。Docusaurus 英文用户文档位于
+修改 Claude Code Plugin 后，应校验插件清单和 Marketplace，再重新安装或更新插件；
+修改 Codex Skill 后，应重新安装 Skill，并在新的 Codex 会话中测试。Docusaurus 英文用户文档位于
 `src/docs/Tutorials/SimpoCLI/`，中文翻译位于
 `src/i18n/zh/docusaurus-plugin-content-docs/current/Tutorials/SimpoCLI/`。
-`plugins/simpo-cli/` 中的插件提供按需加载的 `$simpo`（Codex）和
-`/simpo-cli:simpo`（Claude Code）工作流；调用时只读取相关命令参考，不会把完整
+SimpoCLI Skill 提供按需加载的 `$simpo`（Codex）和
+`/simpo:simpo`（Claude Code）工作流；调用时只读取相关命令参考，不会把完整
 CLI 说明书带入无关对话。
 
 ## Resource

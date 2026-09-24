@@ -1,19 +1,19 @@
 ---
-name: create-biomodel
+name: simpo-create-biomodel
 description: Analyze a wastewater-treatment model paper and create a SIMPO BioModel Draft using SimpoCLI. Use when asked to turn a paper, PDF, equations, or supplementary material into a BioModel, extract Components, Parameters, Matrix, Composition, or Ionization, derive composition balances or acid-base ionization data, or submit a reviewed model JSON to SIMPO.
 ---
 
 # Create a SIMPO BioModel
 
 Use the current AI session to analyze the user's paper and prepare a SIMPO
-BioModel JSON file. The prompt may be written in English or Chinese; keep the
-Skill name `$create-biomodel` unchanged. Submit it through the installed
-`simpo create-biomodel` command only after the model name, evidence, unresolved
-assumptions, and output have been reviewed with the user. This workflow does not call the backend's AI
-creation service. Paper content is still processed by the model/service
-configured for the user's Codex session; do not promise on-device processing or
-confidentiality beyond that provider's policy. Create a Private version 0 Draft
-only; do not release or publish it.
+BioModel JSON file. The prompt may be written in English or Chinese. Submit it
+through the installed `simpo create-biomodel` command only after the model name,
+evidence, unresolved assumptions, and output have been reviewed with the user.
+This workflow does not call the backend's AI creation service. Paper content is
+still processed by the model/service configured for the user's assistant
+session; do not promise on-device processing or confidentiality beyond that
+provider's policy. Create a Private version 0 Draft only; do not release or
+publish it.
 
 Read [the BioModel analysis rules](references/biomodel-analysis-rules.md)
 before extracting or writing model data. When the paper does not provide

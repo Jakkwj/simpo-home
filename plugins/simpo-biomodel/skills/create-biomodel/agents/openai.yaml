@@ -1,4 +1,0 @@
-interface:
-  display_name: "Create SIMPO BioModel"
-  short_description: "Analyze papers and create BioModels with SimpoCLI"
-  default_prompt: "Use $create-biomodel to analyze this paper, apply high-confidence source corrections, and prepare a SIMPO BioModel draft."

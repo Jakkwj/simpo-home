@@ -6,9 +6,9 @@ sidebar_label: Installation
 
 # Install BioModel Skill for Claude Code
 
-The Claude Code version is distributed as the `simpo-biomodel` plugin from the
-SIMPO Marketplace. The plugin contains the complete `create-biomodel` Skill and
-all three reference files used during paper analysis.
+The Claude Code version is distributed as the `simpo` plugin from the SIMPO
+Marketplace. The plugin contains both SIMPO Skills, including the complete
+`simpo-create-biomodel` workflow and its three paper-analysis references.
 
 ## Prerequisites
 
@@ -26,16 +26,18 @@ does not succeed. Never put the Token in a Claude prompt.
 
 ## Install from the SIMPO Marketplace
 
-Start Claude Code, then add the repository Marketplace:
+Claude Code officially supports repository Marketplaces. Run these slash
+commands inside an interactive Claude Code session. Add the GitHub repository
+using the documented `owner/repo` form:
 
 ```text
-/plugin marketplace add Jakkwj/simpo-home@master
+/plugin marketplace add Jakkwj/simpo-home
 ```
 
 Install the plugin:
 
 ```text
-/plugin install simpo-biomodel@simpo
+/plugin install simpo@simpo
 ```
 
 If Claude Code reports that a reload is required, run:
@@ -45,14 +47,14 @@ If Claude Code reports that a reload is required, run:
 ```
 
 Plugin Skills are namespaced, so this Skill is invoked as
-`/simpo-biomodel:create-biomodel`.
+`/simpo:simpo-create-biomodel`.
 
 ## Verify
 
 Run this in the new or reloaded session:
 
 ```text
-/simpo-biomodel:create-biomodel What does this Skill do? Do not create anything.
+/simpo:simpo-create-biomodel What does this Skill do? Do not create anything.
 ```
 
 Installation succeeded if Claude Code explains that it analyzes a paper and
@@ -67,18 +69,18 @@ Refresh the Marketplace, update the plugin, and reload it when prompted:
 /plugin marketplace update simpo
 ```
 
-Then open `/plugin`, select **Installed**, choose `simpo-biomodel@simpo`, and
+Then open `/plugin`, select **Installed**, choose `simpo@simpo`, and
 select **Update**. You may instead update it from a shell with:
 
 ```text
-claude plugin update simpo-biomodel@simpo
+claude plugin update simpo@simpo
 ```
 
 ## Manual fallback
 
 If the installed Claude Code version does not support plugins, update Claude
 Code. As a temporary local fallback, copy the complete repository directory
-`plugins/simpo-biomodel/skills/create-biomodel` to
-`~/.claude/skills/create-biomodel`; do not copy only `SKILL.md`, because the
+`plugins/simpo/skills/simpo-create-biomodel` to
+`~/.claude/skills/simpo-create-biomodel`; do not copy only `SKILL.md`, because the
 workflow needs its bundled `references/` files. The fallback command is
-`/create-biomodel`, without the plugin namespace.
+`/simpo-create-biomodel`, without the plugin namespace.

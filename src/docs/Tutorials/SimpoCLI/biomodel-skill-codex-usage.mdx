@@ -8,18 +8,18 @@ sidebar_label: Usage and examples
 
 ## Basic usage
 
-Explicitly name `$create-biomodel`, provide a readable paper path, and choose a
+Explicitly name `$simpo-create-biomodel`, provide a readable paper path, and choose a
 model name:
 
 ```text
-Use $create-biomodel to analyze /path/to/paper.pdf and prepare a SIMPO BioModel named MyModel.
+Use $simpo-create-biomodel to analyze /path/to/paper.pdf and prepare a SIMPO BioModel named MyModel.
 ```
 
 Chinese prompts are supported. Keep the Skill name unchanged, but write the
 request naturally in Chinese:
 
 ```text
-请使用 $create-biomodel 分析 /path/to/paper.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
+请使用 $simpo-create-biomodel 分析 /path/to/paper.pdf，并准备一个名为 MyModel 的 SIMPO BioModel。
 ```
 
 Codex verifies the paper, extracts Components, Parameters, and Matrix, attempts
@@ -33,13 +33,13 @@ user approves creation.
 All four options are enabled by default, so they normally need not be stated:
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
 ```
 
 This is equivalent to:
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named SulfurModel.
 Options: matrix_fractions=on; composition_derive=on; ionization_derive=on; source_correction=on.
 ```
 
@@ -52,21 +52,21 @@ exact fraction. The review shows both the reported decimal and stored fraction.
 Preserve the paper's decimal representation:
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
 Options: matrix_fractions=off.
 ```
 
 Do not derive missing Composition values:
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
 Options: composition_derive=off.
 ```
 
 Do not derive missing Ionization values:
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
 Options: ionization_derive=off.
 ```
 
@@ -80,7 +80,7 @@ The four options are independent and may be combined.
 To preserve the source exactly and only report suspected errors:
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare a SIMPO BioModel named MyModel.
 Options: source_correction=off.
 ```
 
@@ -89,7 +89,7 @@ Options: source_correction=off.
 To review extraction before any API write, say so explicitly:
 
 ```text
-Use $create-biomodel to analyze /data/papers/model.pdf and prepare the proposed tables for review.
+Use $simpo-create-biomodel to analyze /data/papers/model.pdf and prepare the proposed tables for review.
 Do not create the BioModel yet.
 ```
 

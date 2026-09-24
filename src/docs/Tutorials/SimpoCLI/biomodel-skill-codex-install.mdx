@@ -6,6 +6,8 @@ sidebar_label: Installation
 
 # Install BioModel Skill for Codex
 
+Install this Skill directly from the repository into Codex's Skill directory.
+
 ## Prerequisites
 
 Verify these commands first:
@@ -16,53 +18,43 @@ simpo --help
 simpo me
 ```
 
-`simpo me` must identify the current user and Token scopes. Creating a BioModel
-requires `write` scope. Run `simpo configure` first if no valid Token is saved.
+Creating a BioModel requires `write` scope. Run `simpo configure` first if no
+valid Token is saved.
 
-## Install from the SIMPO Marketplace
+## Install from this repository
 
-Add the SIMPO Marketplace:
-
-```text
-codex plugin marketplace add Jakkwj/simpo-home --ref master
-```
-
-Install the BioModel Plugin:
+Recommended:
 
 ```text
-codex plugin add simpo-biomodel@simpo
+Use $skill-installer to install this Skill from:
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo-create-biomodel
 ```
 
-Close the current Codex session and start a new session so Codex discovers the
-installed Skill.
+Manual fallback:
 
-## Update
-
-When SIMPO publishes a new Skill version, refresh the Marketplace and reinstall:
-
-```text
-codex plugin marketplace upgrade simpo
-codex plugin add simpo-biomodel@simpo
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+cp -R plugins/simpo/skills/simpo-create-biomodel \
+  "${CODEX_HOME:-$HOME/.codex}/skills/simpo-create-biomodel"
 ```
 
-Then start a new Codex session.
+Keep the `references/` directory with `SKILL.md`, then start a new Codex
+session.
 
 ## Verify
 
 Ask in the new session:
 
 ```text
-What does $create-biomodel do?
+What does $simpo-create-biomodel do?
 ```
 
 Installation succeeded if Codex explains that it analyzes a paper and creates a
 Private Draft BioModel through SimpoCLI. Continue with
 [Codex usage and examples](./biomodel-skill-codex-usage).
 
-## Troubleshooting
+## Update
 
-- Skill not found: start a new session, then repeat the Marketplace update and
-  Plugin installation commands.
-- `simpo me` returns `401`: save a new Token with `simpo configure`.
-- `simpo` not found: install SimpoCLI and add its command directory to `PATH`.
-
+The Skill Installer does not overwrite an existing Skill. Back up or remove the
+installed `$CODEX_HOME/skills/simpo-create-biomodel` directory, install the
+latest GitHub copy, and start a new Codex session.

@@ -6,17 +6,17 @@ sidebar_label: Usage and examples
 
 # Use SimpoCLI Skill in Claude Code
 
-Invoke the namespaced `/simpo-cli:simpo` command when the request should follow
+Invoke the namespaced `/simpo:simpo` command when the request should follow
 the complete SimpoCLI workflow. Prompts may be in English or Chinese.
 
 ## Read-only examples
 
 ```text
-/simpo-cli:simpo List all my BioModels named ASM1 and inspect the complete tables of the newest one. Do not modify anything.
+/simpo:simpo List all my BioModels named ASM1 and inspect the complete tables of the newest one. Do not modify anything.
 ```
 
 ```text
-/simpo-cli:simpo 请查看 Project 706 的全部 Variable，并汇总 Evaluation=true 的参数，不要修改数据。
+/simpo:simpo 请查看 Project 706 的全部 Variable，并汇总 Evaluation=true 的参数，不要修改数据。
 ```
 
 The Skill checks `simpo --version`, the relevant `--help` output, Token scopes,
@@ -26,7 +26,7 @@ command group.
 ## Write example
 
 ```text
-/simpo-cli:simpo Change Project 706, Variable S_O2 in tank AnoxicTank, field LowerBound to 0.1. Show the current row and planned change before executing it.
+/simpo:simpo Change Project 706, Variable S_O2 in tank AnoxicTank, field LowerBound to 0.1. Show the current row and planned change before executing it.
 ```
 
 Asking how `set-project-variable` works is informational and does not authorize
@@ -36,7 +36,7 @@ and effect to be reviewed first.
 ## Calculation example
 
 ```text
-/simpo-cli:simpo Inspect Project 706, start a SIM calculation with the installed defaults, wait for a terminal status, and report the result.
+/simpo:simpo Inspect Project 706, start a SIM calculation with the installed defaults, wait for a terminal status, and report the result.
 ```
 
 The Skill distinguishes launch success from calculation completion. It does not
