@@ -1,0 +1,58 @@
+---
+id: dataset-skill-codex-install
+title: Install for Codex
+sidebar_label: Installation
+---
+
+# Install DataSet Skill for Codex
+
+Install the complete Skill directory from the repository. See the
+[Skills overview](./simpo-skills) for the full directory and function table.
+
+## Prerequisites
+
+Codex and SimpoCLI are required. Authentication and the `write` scope are
+checked by SimpoCLI and the backend only when creation is requested.
+
+The default installation directory is
+`~/.codex/skills/simpo-create-dataset`. If `CODEX_HOME` is set, use
+`$CODEX_HOME/skills/simpo-create-dataset`.
+
+## Install from this repository
+
+Recommended:
+
+```text
+Use $skill-installer to install this Skill from:
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo-create-dataset
+```
+
+Manual fallback:
+
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+cp -R plugins/simpo/skills/simpo-create-dataset \
+  "${CODEX_HOME:-$HOME/.codex}/skills/simpo-create-dataset"
+```
+
+Keep `SKILL.md`, `references/`, `scripts/`, and `agents/` together, then start a
+new Codex session.
+
+## Verify
+
+Ask in the new session:
+
+```text
+What does $simpo-create-dataset do? Do not create anything.
+```
+
+Installation succeeded if Codex explains that it designs or extracts and
+validates a wastewater-treatment DataSet and creates a Private Draft only after
+review.
+Continue with [Codex usage and examples](./dataset-skill-codex-usage).
+
+## Update
+
+The Skill Installer does not overwrite an existing Skill. Back up or remove the
+installed directory, install the latest repository copy, and start a new Codex
+session.

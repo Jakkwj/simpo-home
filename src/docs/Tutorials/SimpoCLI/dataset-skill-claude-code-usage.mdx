@@ -1,0 +1,76 @@
+---
+id: dataset-skill-claude-code-usage
+title: Claude Code Usage and Examples
+sidebar_label: Usage and examples
+---
+
+# Use DataSet Skill in Claude Code
+
+## Basic usage
+
+Invoke `/simpo:simpo-create-dataset`, provide a DataSet name, and state the
+design conditions and limits:
+
+```text
+/simpo:simpo-create-dataset Design a SIMPO DataSet named MunicipalAAO for an
+average flow of 10,000 m3/d. Influent COD/BOD5/TSS/TN/NH4-N/TP are
+240/100/200/35/28/5 mg/L. Effluent TN must be at most 10 mg/L and NH4-N at
+most 1.5 mg/L. Review the design with me before creation.
+```
+
+Chinese prompts are also supported:
+
+```text
+/simpo:simpo-create-dataset 请根据平均流量和进出水指标设计名为 MunicipalAAO 的
+SIMPO DataSet，先展示工艺、计算、假设、流量守恒和 JSON，再询问是否创建。
+```
+
+Claude Code prepares the process design, target fractionation, all eight
+DataSet tables, a local validation report, and a review summary. It calls
+SimpoCLI only after approval.
+
+## Extract from a paper
+
+```text
+/simpo:simpo-create-dataset Extract a SIMPO DataSet named PilotMBR from
+/data/papers/pilot-mbr.pdf and its supplementary spreadsheet. Trace process
+units, streams, conditions, measurements, and time series to their source
+locations. Keep unsupported values unresolved, do not add design assumptions,
+and show the evidence map and JSON before creation.
+```
+
+If the source does not contain enough information for a complete runnable
+DataSet, Claude Code reports the gaps. Engineering completion is performed only
+when explicitly requested, with assumptions kept separate from reported data.
+
+## Convert an existing process
+
+```text
+/simpo:simpo-create-dataset Convert /data/design/existing-process.md into a
+SIMPO DataSet named ExistingPlant. Preserve supplied volumes and flows, expose
+any inconsistency, and do not create it yet.
+```
+
+## Analyze without creating
+
+```text
+/simpo:simpo-create-dataset Prepare and validate the proposed DataSet JSON only.
+Do not run a SimpoCLI write.
+```
+
+## Successful result
+
+After explicit approval, successful creation must return a positive ID and:
+
+```json
+{
+  "success": true,
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0
+}
+```
+
+Parser success confirms the representation, not treatment performance. Create a
+Project with a compatible BioModel and complete simulation, calibration, and
+engineering review before relying on the design.

@@ -1,0 +1,57 @@
+---
+id: sync-project
+title: 同步 Project
+sidebar_label: sync-project
+---
+
+# `sync-project`：将 Release 同步到 Draft
+
+把一个属于当前用户的 Project Release 复制到同名 version `0` Draft。源 Release
+不会被修改。
+
+## 使用条件
+
+- Token scope：`write`
+- `RELEASE_ID` 必须是当前用户拥有、`version > 0` 的 Project。
+- 必须存在同名 version `0` Draft。
+
+## 命令格式
+
+```text
+simpo sync-project RELEASE_ID [OPTIONS]
+```
+
+示例：
+
+```text
+simpo sync-project 790
+```
+
+Draft 会获得 Release 的 Solution detail、已保存计算结果、报告、描述、计算结果
+文件及 figure 文件。成功响应中的 `sourceId` 是 Release，`id` 是被更新的 Draft。
+
+可用选项包括 `--timeout SECONDS`（默认 `30.0`）、`--api-token TOKEN` 和
+`--base-url URL`。
+
+## 返回结果
+
+```json
+{
+  "success": true,
+  "id": 789,
+  "sourceId": 790,
+  "name": "MyProject",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "released project",
+  "biomodelId": 123,
+  "datasetId": 456,
+  "detail": {},
+  "createdAt": "2026-09-25T12:00:00",
+  "updatedAt": "2026-09-25T13:00:00",
+  "message": "Project operation success."
+}
+```
+
+示例中的 `{}` 是同步后完整 Solution `detail` 的缩写。

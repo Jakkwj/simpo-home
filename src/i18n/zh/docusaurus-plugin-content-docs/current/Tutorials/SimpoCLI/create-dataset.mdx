@@ -1,0 +1,72 @@
+---
+id: create-dataset
+title: 新建 DataSet
+sidebar_label: create-dataset
+---
+
+# `create-dataset`：新建 Draft DataSet
+
+新建属于当前用户的 Private、version `0` Draft DataSet。不传 `--json` 时，后端
+创建并解析标准空白 DataSet；传入 `--json` 时，在同一次创建操作中解析完整 detail。
+
+## 使用条件
+
+- Token scope：`write`
+- 名称为 1 至 230 个字符，且不能与当前账户的 Draft DataSet 重名。
+- JSON 必须包含 `Unit`、`Target`、`Tank`、`Pump`、`Measured`、`Inflow`、
+  `Flow` 和 `Connection` 数组。
+- `Unit`、`Target`、`Tank`、`Connection` 必须包含表头；其余四张表可以是空数组。
+
+## 命令格式
+
+```text
+simpo create-dataset NAME [--json DETAIL.json] [OPTIONS]
+```
+
+示例：
+
+```text
+simpo create-dataset InfluentData
+simpo create-dataset InfluentData --json ./DataSet.json
+```
+
+常用选项包括 `--description`、`--sourcepaper-id` 和 `--timeout`；通用请求选项包括
+`--api-token TOKEN` 和 `--base-url URL`。
+
+## 返回结果
+
+响应包含新 Draft 的元数据和完整解析后的 `detail`。以下表格内容是精简的空白
+DataSet 示例；使用 JSON 新建时，会返回提交并规范化后的实际表格行。
+
+```json
+{
+  "success": true,
+  "id": 456,
+  "sourceId": null,
+  "name": "InfluentData",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "",
+  "sourcepaperId": null,
+  "timeUnit": "day",
+  "volumeUnit": "m3",
+  "flowUnit": "m3/d",
+  "detail": {
+    "Unit": [
+      {"0": "Time", "1": "Volume", "2": "Flow", "3": "Area", "4": "Height"},
+      {"0": "day", "1": "m3", "2": "m3/d", "3": "m2", "4": "m"}
+    ],
+    "Target": [{"0": "Symbol", "1": "Unit", "2": "Name", "3": "Description", "4": "Oxygen", "5": "TSS"}],
+    "Tank": [{"0": "Name", "1": "Type", "2": "BioCalculated", "3": "Volume", "4": "ConstantVolume", "5": "SettlingFactor", "6": "DiffuserNumber", "7": "DiffuserDepth", "8": "AlphaFactor", "9": "BetaFactor"}],
+    "Pump": [],
+    "Measured": [],
+    "Inflow": [],
+    "Flow": [],
+    "Connection": [{"0": "From", "1": "Flow", "2": "Into"}]
+  },
+  "createdAt": "2026-09-25T10:00:00",
+  "updatedAt": "2026-09-25T10:00:00",
+  "message": "DataSet operation success."
+}
+```

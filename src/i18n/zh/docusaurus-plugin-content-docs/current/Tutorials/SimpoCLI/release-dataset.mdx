@@ -1,0 +1,60 @@
+---
+id: release-dataset
+title: 发布 DataSet
+sidebar_label: release-dataset
+---
+
+# `release-dataset`：发布 Draft DataSet
+
+根据一个属于当前用户的 version `0` Draft DataSet 创建新的不可变 Release。原 Draft
+仍保留并可继续编辑。
+
+## 使用条件
+
+- Token scope：`write`
+- `DRAFT_ID` 必须是当前用户拥有的 version `0` Draft。
+- `--privacy` 只能是 `Private` 或 `Public`。
+
+## 命令格式
+
+```text
+simpo release-dataset DRAFT_ID [OPTIONS]
+```
+
+示例：
+
+```text
+simpo release-dataset 456
+simpo release-dataset 456 --privacy Public --description "已发布输入数据"
+```
+
+默认创建 Private Release。成功响应中的 `sourceId` 是 Draft 输入，`id` 是新建的
+Release ID，且 `version >= 1`。
+
+可用选项包括 `--privacy Private|Public`（默认 `Private`）、`--description TEXT`、
+`--timeout SECONDS`（默认 `30.0`）、`--api-token TOKEN` 和 `--base-url URL`。
+
+## 返回结果
+
+```json
+{
+  "success": true,
+  "id": 457,
+  "sourceId": 456,
+  "name": "InfluentData",
+  "state": "Release",
+  "privacy": "Private",
+  "version": 1,
+  "description": "Published inputs",
+  "sourcepaperId": null,
+  "timeUnit": "day",
+  "volumeUnit": "m3",
+  "flowUnit": "m3/d",
+  "detail": {},
+  "createdAt": "2026-09-25T11:30:00",
+  "updatedAt": "2026-09-25T11:30:00",
+  "message": "DataSet operation success."
+}
+```
+
+示例中的 `{}` 是完整 Release `detail` 的缩写。

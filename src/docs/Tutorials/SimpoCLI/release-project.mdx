@@ -1,0 +1,64 @@
+---
+id: release-project
+title: Release a Project
+sidebar_label: release-project
+---
+
+# `release-project`: release a Draft Project
+
+Create a new immutable Project Release from one owned version `0` Draft. The
+formal release workflow also publishes or reuses matching BioModel and DataSet
+versions and copies Project result files.
+
+## Requirements
+
+- Token scope: `write`
+- `DRAFT_ID` must identify an owned version `0` Draft Project.
+- The Project calculation state and referenced Draft resources must satisfy the
+  backend's release checks.
+- `--privacy` must be `Private` or `Public`.
+
+## Syntax
+
+```text
+simpo release-project DRAFT_ID [OPTIONS]
+```
+
+Examples:
+
+```text
+simpo release-project 789
+simpo release-project 789 --privacy Public --description "Calibrated project"
+```
+
+The backend assigns the next Project version. On success, `sourceId` is the
+Draft input and `id` is a newly created Project Release with `version >= 1`.
+
+Options include `--privacy Private|Public` (default `Private`),
+`--description TEXT`, `--timeout SECONDS` (default `30.0`),
+`--api-token TOKEN`, and `--base-url URL`.
+
+## Result
+
+```json
+{
+  "success": true,
+  "id": 790,
+  "sourceId": 789,
+  "name": "MyProject",
+  "state": "Release",
+  "privacy": "Private",
+  "version": 1,
+  "description": "Calibrated project",
+  "biomodelId": 124,
+  "datasetId": 457,
+  "detail": {},
+  "createdAt": "2026-09-25T13:30:00",
+  "updatedAt": "2026-09-25T13:30:00",
+  "message": "Project operation success."
+}
+```
+
+The released Solution `detail` is abbreviated as `{}`. The BioModel and
+DataSet IDs may point to released versions created or reused by the release
+workflow.

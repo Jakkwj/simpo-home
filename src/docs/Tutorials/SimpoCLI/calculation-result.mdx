@@ -1,0 +1,88 @@
+---
+id: calculation-result
+title: Get calculation results
+sidebar_label: calculation result
+---
+
+# `get-calculation-result`
+
+Read a completed Project calculation result through a bounded JSON response:
+
+```text
+simpo get-calculation-result PROJECT_ID [OPTIONS]
+```
+
+Useful options are `--engine ENGINE`, `--section PATH`, `--offset N`, `--limit N`,
+`--output FILE`, `--timeout SECONDS` (default `30.0`), `--api-token TOKEN`, and
+`--base-url URL`.
+
+Read a large result progressively:
+
+```text
+# 1. List available engines; result values are not returned yet.
+simpo get-calculation-result PROJECT_ID
+
+# 2. List the selected engine's top-level sections.
+simpo get-calculation-result PROJECT_ID --engine Simulation
+
+# 3. Read a leaf selected by a dotted path.
+simpo get-calculation-result PROJECT_ID \
+  --engine Simulation \
+  --section Tank1.Predicted.S_NH \
+  --offset 0 --limit 1000 \
+  --output result-page.json
+```
+
+Engine aliases such as `SIM`, `OAT_AR`, `LHS`, or `GA` are also accepted when
+they correspond to a stored result family. The response includes `kind`, `mode`,
+`total`, `offset`, `limit`, `hasNext`, and the current page in `data`. Continue
+with a larger offset while `hasNext` is true. If a page is still too large,
+reduce `--limit` or select a deeper `--section` path. Use `--output` so a terminal
+or chat does not need to hold the result page.
+
+The command reads stored result JSON only; it does not expose the internal
+Project pickle. The backend still checks ownership and the Token's read scope.
+
+## Result
+
+First list the stored result engines without downloading their values:
+
+```json
+{
+  "success": true,
+  "projectId": 789,
+  "projectName": "MyProject",
+  "projectVersion": 0,
+  "engine": null,
+  "section": null,
+  "kind": "object",
+  "mode": "engines",
+  "offset": 0,
+  "limit": 1000,
+  "total": 1,
+  "hasNext": false,
+  "data": [
+    {"name": "Simulation", "kind": "object"}
+  ]
+}
+```
+
+A selected leaf returns only the requested page:
+
+```json
+{
+  "success": true,
+  "projectId": 789,
+  "projectName": "MyProject",
+  "projectVersion": 0,
+  "engine": "Simulation",
+  "section": "Tank1.Predicted.S_NH",
+  "kind": "array",
+  "mode": "values",
+  "offset": 0,
+  "limit": 3,
+  "total": 1200,
+  "hasNext": true,
+  "data": [1.2, 1.1, 1.0]
+}
+```

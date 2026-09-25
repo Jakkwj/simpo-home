@@ -1,0 +1,81 @@
+---
+id: create-project
+title: Create a Project
+sidebar_label: create-project
+---
+
+# `create-project`: create a Draft Project
+
+Create an owned, Private, version `0` Draft Project from a BioModel and DataSet.
+An optional Solution JSON can supply the editable Project tables during the
+same create operation.
+
+## Requirements
+
+- Token scope: `write`
+- The Project name must be 1 to 230 characters and unique in the account.
+- The BioModel and DataSet IDs must belong to the Token user, and their
+  same-name version `0` Drafts must exist.
+- With `--json`, `Variable`, `Target`, `Conversion`, and `Weight` arrays are
+  required. `Activator` may be omitted or empty and is generated when needed.
+
+## Syntax
+
+```text
+simpo create-project NAME --biomodel-id ID --dataset-id ID [--json DETAIL.json] [OPTIONS]
+```
+
+Examples:
+
+```text
+simpo create-project MyProject --biomodel-id 123 --dataset-id 456
+simpo create-project MyProject --biomodel-id 123 --dataset-id 456 --json ./Solution.json
+```
+
+Without `--json`, the backend generates the default Solution tables from the
+selected BioModel and DataSet. With `--json`, it parses those tables and builds
+the Project in the same operation; it does not create an empty Project and
+update it afterward.
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--biomodel-id ID` | required | Owned BioModel ID |
+| `--dataset-id ID` | required | Owned DataSet ID |
+| `--json FILE` | generated default Solution | Optional UTF-8 complete Solution detail |
+| `--description TEXT` | empty | Optional Markdown description |
+| `--timeout SECONDS` | `3700.0` | Maximum parsing and HTTP time |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+## Result
+
+The response contains the new Project ID, Draft metadata, associated
+BioModel/DataSet IDs, and the parsed `detail`. The example abbreviates the
+complete Solution tables.
+
+```json
+{
+  "success": true,
+  "id": 789,
+  "sourceId": null,
+  "name": "MyProject",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "",
+  "biomodelId": 123,
+  "datasetId": 456,
+  "detail": {
+    "Variable": [],
+    "Target": [],
+    "Conversion": [],
+    "Weight": [],
+    "Activator": []
+  },
+  "createdAt": "2026-09-25T12:00:00",
+  "updatedAt": "2026-09-25T12:00:00",
+  "message": "Project operation success."
+}
+```

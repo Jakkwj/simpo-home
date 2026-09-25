@@ -1,0 +1,86 @@
+---
+id: update-dataset
+title: Update a DataSet
+sidebar_label: update-dataset
+---
+
+# `update-dataset`: update a Draft DataSet
+
+Replace the complete detail of one owned version `0` Draft DataSet. The backend
+parses the submitted tables before saving and rebuilds Projects that reference
+this Draft.
+
+## Requirements
+
+- Token scope: `write`
+- `DATASET_ID` must identify an owned version `0` Draft.
+- `--json` uses the same complete detail format as
+  [`create-dataset`](./create-dataset).
+
+## Syntax
+
+```text
+simpo update-dataset DATASET_ID --json DETAIL.json [OPTIONS]
+```
+
+Example:
+
+```text
+simpo update-dataset 456 --json ./DataSet.json
+```
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--json FILE` | required | UTF-8 complete DataSet detail |
+| `--description TEXT` | keep current | Replace the description when supplied |
+| `--sourcepaper-id ID` | keep current | Replace the source paper ID when supplied |
+| `--timeout SECONDS` | `3700.0` | Maximum parsing and HTTP time |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+The successful response keeps the same DataSet `id` and includes
+`affectedProjectCount`, the number of dependent Projects rebuilt by the update.
+Stored Simulation, Sensitivity, Uncertainty, and Estimation results in those
+Projects are marked as requiring recalculation.
+
+## Identifier renames
+
+No extra mapping file is needed. The update endpoint compares the current Draft
+with the submitted JSON and automatically builds the same `changeValueDataSet`
+dictionary used by the web editor. This preserves compatible Project values when
+Target, Tank, Inflow, or Flow identifiers change.
+
+## Result
+
+The response returns the saved DataSet and the number of dependent Projects
+rebuilt. The `detail` object below is shortened to one table for readability;
+the actual response contains all DataSet tables.
+
+```json
+{
+  "success": true,
+  "id": 456,
+  "sourceId": null,
+  "name": "InfluentData",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "updated inputs",
+  "sourcepaperId": null,
+  "timeUnit": "day",
+  "volumeUnit": "m3",
+  "flowUnit": "m3/d",
+  "detail": {
+    "Flow": [
+      {"0": "Flow", "1": "Qin"},
+      {"0": 0, "1": 10000}
+    ]
+  },
+  "createdAt": "2026-09-25T10:00:00",
+  "updatedAt": "2026-09-25T10:30:00",
+  "message": "DataSet operation success.",
+  "affectedProjectCount": 2
+}
+```

@@ -92,15 +92,17 @@ The generic `OAT` code is not a public CLI choice.
 | --- | --- | --- |
 | `--no-launch` | disabled | Prepare files but do not start local SimpoClient |
 | `--print-protocol` | disabled | Include the secret, short-lived launch protocol in JSON |
-| `--client-main PATH` | installed SimpoClient | Development override for the executable or source `main.py` |
+| `--client-main PATH` | installed SimpoClient | Optional override for a custom SimpoClient executable or `main.py` |
 | `--wait / --no-wait` | disabled | Poll until `completed`, `failed`, `stopped`, or `idle` |
 | `--poll-interval SECONDS` | `2.0` | Delay between status requests while waiting |
 | `--wait-timeout SECONDS` | `86400` | Maximum time this CLI polls; does not stop the calculation |
 | `--timeout SECONDS` | `3700` | Timeout for the single backend preparation/compilation request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
 
 `--no-launch` cannot be combined with `--wait`. If `--wait-timeout` expires,
 only the waiting CLI exits; SimpoClient and the calculation continue. Check them
-later with [`calculation-status`](./calculation-status), or explicitly use
+later with [`get-calculation-status`](./get-calculation-status), or explicitly use
 [`stop-calculation`](./stop-calculation).
 
 `--print-protocol` is intended for explicit integrations. The protocol contains

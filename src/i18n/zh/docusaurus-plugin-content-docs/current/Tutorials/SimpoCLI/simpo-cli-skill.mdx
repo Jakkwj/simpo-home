@@ -24,23 +24,25 @@ SimpoCLI Skill 是供 AI 编码助手按需读取的操作指南。它让助手�
 
 ## 覆盖范围
 
-当前 Skill 源码同时供 Codex 和 Claude Code 使用。Codex 调用名为 `$simpo`，
+Codex 和 Claude Code 提供相同的使用流程。Codex 调用名为 `$simpo`，
 Claude Code 插件调用名为 `/simpo:simpo`。它包含：
 
 - Token 配置、身份、scope、退出登录和 JSON 自动化；
 - BioModel 新建、列表、读取、更新、同步和发布；
-- DataSet 列表和读取；
-- Project 列表及 Project Variable 读取和更新；
-- 计算准备、引擎选择、状态查询和停止。
+- DataSet 新建、列表、读取、更新、同步和发布；
+- Project 新建、列表、读取、更新、同步、发布，以及 Project Variable 读取和更新；
+- 计算准备、引擎选择、状态查询、停止和分页结果读取。
 
-按当前开发版 CLI 源码核对，Skill 已覆盖全部 17 个公开顶层命令：
+文档覆盖的公开顶层命令包括：
 `configure`、`me`、`logout`、`create-biomodel`、`update-biomodel`、
 `sync-biomodel`、`release-biomodel`、`get-biomodels`、`get-biomodel`、
-`get-datasets`、`get-dataset`、`get-projects`、`get-project-variables`、
-`set-project-variable`、`calculate`、`calculation-status` 和
-`stop-calculation`。
+`create-dataset`、`get-datasets`、`get-dataset`、`update-dataset`、
+`sync-dataset`、`release-dataset`、`create-project`、`get-projects`、
+`get-project`、`update-project`、`sync-project`、`release-project`、`get-project-variables`、
+`set-project-variable`、`calculate`、`get-calculation-status`、
+`get-calculation-result` 和 `stop-calculation`。
 
-这里指的是 Skill 的覆盖范围，不代表旧版已安装程序一定提供全部 17 个命令。实际执行的
+这里指的是 Skill 的覆盖范围，不代表旧版已安装程序一定提供全部文档命令。实际执行的
 命令及后端响应才是最终依据；如果命令不存在，会报告错误并可能需要升级 SimpoCLI。
 
 此 Skill 负责操作 SimpoCLI，不包含 SimpoCLI 安装包或 API Token。它也不替代专用的

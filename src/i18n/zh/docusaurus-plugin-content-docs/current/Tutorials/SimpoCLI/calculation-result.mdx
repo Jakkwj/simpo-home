@@ -1,0 +1,87 @@
+---
+id: calculation-result
+title: 获取计算结果
+sidebar_label: calculation-result
+---
+
+# `get-calculation-result`
+
+通过受限大小的 JSON 响应读取已完成的 Project 计算结果：
+
+```text
+simpo get-calculation-result PROJECT_ID [OPTIONS]
+```
+
+常用选项包括 `--engine ENGINE`、`--section PATH`、`--offset N`、`--limit N`
+和 `--output FILE`；通用请求选项包括 `--timeout SECONDS`（默认 `30.0`）、
+`--api-token TOKEN` 和 `--base-url URL`。
+
+大结果按以下顺序逐层读取：
+
+```text
+# 1. 列出可用引擎，此时不返回实际结果值
+simpo get-calculation-result PROJECT_ID
+
+# 2. 列出所选引擎的顶层结果项
+simpo get-calculation-result PROJECT_ID --engine Simulation
+
+# 3. 使用点号路径选择叶子结果并分页读取
+simpo get-calculation-result PROJECT_ID \
+  --engine Simulation \
+  --section Tank1.Predicted.S_NH \
+  --offset 0 --limit 1000 \
+  --output result-page.json
+```
+
+如果 `SIM`、`OAT_AR`、`LHS`、`GA` 等引擎别名能对应已保存的结果类型，也可以直接
+使用。响应包含 `kind`、`mode`、`total`、`offset`、`limit`、`hasNext`，以及
+当前页的 `data`。当 `hasNext` 为 true 时，继续增大 `offset`。如果单页仍然过大，
+减小 `--limit`，或选择更深的 `--section` 路径。使用 `--output` 可避免终端或对话
+承载整页结果。
+
+命令只读取已保存的结果 JSON，不会暴露 Project 内部 pickle。后端仍会校验资源
+归属和 Token 的 read scope。
+
+## 返回结果
+
+第一步只列出已保存的结果引擎，不下载实际结果值：
+
+```json
+{
+  "success": true,
+  "projectId": 789,
+  "projectName": "MyProject",
+  "projectVersion": 0,
+  "engine": null,
+  "section": null,
+  "kind": "object",
+  "mode": "engines",
+  "offset": 0,
+  "limit": 1000,
+  "total": 1,
+  "hasNext": false,
+  "data": [
+    {"name": "Simulation", "kind": "object"}
+  ]
+}
+```
+
+选择叶子结果后，只返回当前页：
+
+```json
+{
+  "success": true,
+  "projectId": 789,
+  "projectName": "MyProject",
+  "projectVersion": 0,
+  "engine": "Simulation",
+  "section": "Tank1.Predicted.S_NH",
+  "kind": "array",
+  "mode": "values",
+  "offset": 0,
+  "limit": 3,
+  "total": 1200,
+  "hasNext": true,
+  "data": [1.2, 1.1, 1.0]
+}
+```

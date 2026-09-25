@@ -7,11 +7,12 @@ sidebar_label: update-biomodel
 # `update-biomodel`：修改 Draft BioModel
 
 使用 JSON 模型表替换一个属于当前用户的 `version=0` Draft BioModel。后端会
-重新解析提交的表格，并重新计算 `Balance`、替换名称、序列化缓存和表格数量
+重新解析提交的表格，并重新计算 `Balance`、替换名称和表格数量
 等派生字段。
 
-这个命令不会删除 BioModel，也不会修改名称。Release 和 Standard 版本是不可变
-版本，不能通过此命令修改。
+这个命令不会删除 BioModel，也不会修改 BioModel 记录本身的名称。标识发生变化时，
+后端会比较保存前的 Draft 和提交的 JSON，自动生成网页端使用的
+`changeValueBioModel` 字典。Release 和 Standard 版本是不可变版本，不能通过此命令修改。
 
 ## 使用条件
 
@@ -46,10 +47,18 @@ JSON 格式与 [`create-biomodel`](./create-biomodel) 相同。可以先使用
 此命令不提供名称参数。因为名称参与 Draft/Release 版本身份和 Project 引用，
 重命名应设计为单独的安全操作。
 
-如果有 Project 使用这个 Draft，后端会立即重新生成每个关联 Project 的
-`detail` 和计算缓存。仍然兼容的用户输入（`Variable`、`Conversion`、
+## 标识改名
+
+不需要额外提供映射文件。更新接口会比较当前 Draft 与提交的 JSON，自动生成网页端
+使用的 `changeValueBioModel`（`最终名称 -> 原始名称`）字典，保留兼容的 Project 值；
+Component 改名还会同步匹配的 `Ionization.Symbol` 单元格。
+
+如果有 Project 使用这个 Draft，后端会立即重新生成每个关联 Project。仍然兼容的
+用户输入（`Variable`、`Conversion`、
 `Activator`、`Target` 和 `Weight`）会被保留；新增或不兼容的字段会按照新的
 BioModel 结构生成。返回字段 `affectedProjectCount` 表示实际同步的 Project 数量。
+受影响 Project 中已有的 Simulation、Sensitivity、Uncertainty 和 Estimation 结果
+会被标记为需要重新计算。
 
 ## 返回结果
 

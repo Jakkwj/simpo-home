@@ -10,12 +10,14 @@ import TabItem from "@theme/TabItem";
 
 # SimpoCLI 命令行使用指南
 
-`SimpoCLI` 是 SIMPO OpenAPI 的命令行客户端，可以新建 BioModel、列出和读取
-DataSet、读取和修改 Project 数据、准备计算、启动本机安装的 `SimpoClient`、
-查询计算状态以及停止计算。
+`SimpoCLI` 是 SIMPO OpenAPI 的命令行客户端，完整支持 BioModel、DataSet 和
+Project 的 Draft 新建、更新、同步与发布流程，也可以读取和修改 Project
+Variable、准备计算、启动本机安装的 `SimpoClient`、查询或停止计算，并分块读取
+可能很大的已保存计算结果。
 安装后的终端命令统一为简短的小写 `simpo`。
 
-每个命令都拆分为独立页面，位于左侧可折叠的 **SimpoCLI** 目录中。
+本页是 SimpoCLI 的完整命令总目录。每个命令也都拆分为独立页面，位于左侧
+可折叠的 **SimpoCLI** 目录中。
 所有命令也都支持 `--help`，用户或自动化 AI 可以先读取当前安装版本的帮助，
 再准确调用命令。
 
@@ -27,9 +29,10 @@ DataSet、读取和修改 Project 数据、准备计算、启动本机安装的 
 - 拥有 SIMPO 账户，并在 Dashboard 的 **API Tokens** 页面创建 OpenAPI
   Token。
 - Token 拥有命令要求的最小 scope：
-  - `read`：列出自己的 BioModel、DataSet 和 Project，读取完整 BioModel/DataSet
-    （`get-biomodel`、`get-dataset`），并读取 Project Variable 的全部字段；
-  - `write`：新建、修改或发布 Draft BioModel，或修改 version 为 `0` 的 Draft Project Variable 字段；
+  - `read`：列出和读取自己的 BioModel、DataSet 与 Project，读取 Project
+    Variable 的全部字段，以及获取已保存的计算结果；
+  - `write`：新建、更新、同步或发布 BioModel、DataSet 与 Project，以及修改
+    version 为 `0` 的 Draft Project Variable 字段；
   - `calculate`：准备、查询或停止计算。
 - [`calculate`](./SimpoCLI/calculate) 命令还要求同一台电脑上安装对应
   平台版本的 `SimpoClient`。
@@ -128,9 +131,9 @@ sudo apt remove simpo-cli
 3. 点击 **Create Token**。
 4. 输入便于识别的名称，设置 `1` 到 `365` 天的有效期，并且只选择需要的
    scope：
-   - `read`：用于 `get-biomodels`、`get-biomodel`、`get-datasets`、`get-dataset`
-     和 `get-project-variables`；
-   - `write`：用于 `create-biomodel`、`update-biomodel`、`sync-biomodel`、`release-biomodel` 和 `set-project-variable`；
+   - `read`：用于全部 `get-*` 命令，包括分块读取计算结果；
+   - `write`：用于 BioModel、DataSet、Project 的新建、更新、同步、发布命令，
+     以及 `set-project-variable`；
    - `calculate`：用于准备计算、查询状态和停止计算。
 5. 点击 **Create Token**，然后在 **Token Created** 弹窗中立即复制完整
    Token。
@@ -172,6 +175,10 @@ Linux 保存路径为 `~/.SimpoCLI/SIMPO_API_TOKEN.json`，Windows 保存路径
 
 ## 命令索引
 
+所有资源遵循同一基本规则：编辑 version `0` Draft，将已发布的 Release
+作为不可修改快照，并使用 `sync-*` 将 Release 复制回 Draft。关联 Project
+重建和计算结果失效规则已写在对应的更新命令页面中。下面的表格是完整命令目录。
+
 ### Token
 
 | 命令 | 功能 | 所需 scope |
@@ -195,14 +202,23 @@ Linux 保存路径为 `~/.SimpoCLI/SIMPO_API_TOKEN.json`，Windows 保存路径
 
 | 命令 | 功能 | 所需 scope |
 | --- | --- | --- |
+| [`create-dataset`](./SimpoCLI/create-dataset) | 新建空白或 JSON Draft DataSet | `write` |
 | [`get-datasets`](./SimpoCLI/get-datasets) | 列出自己的 DataSet 元数据 | `read` |
 | [`get-dataset`](./SimpoCLI/get-dataset) | 读取一个 DataSet 及其完整模型表格 | `read` |
+| [`update-dataset`](./SimpoCLI/update-dataset) | 替换 Draft DataSet，并重建关联 Project | `write` |
+| [`sync-dataset`](./SimpoCLI/sync-dataset) | 将自己的 Release 复制到同名 Draft | `write` |
+| [`release-dataset`](./SimpoCLI/release-dataset) | 从 Draft 创建不可修改的 Release | `write` |
 
 ### Project
 
 | 命令 | 功能 | 所需 scope |
 | --- | --- | --- |
+| [`create-project`](./SimpoCLI/create-project) | 使用 BioModel 和 DataSet 新建 Draft，可同时提供 Solution JSON | `write` |
 | [`get-projects`](./SimpoCLI/get-projects) | 列出自己的 Project 元数据及 BioModel/DataSet 引用 | `read` |
+| [`get-project`](./SimpoCLI/get-project) | 读取一个 Project 及其完整 Solution detail | `read` |
+| [`update-project`](./SimpoCLI/update-project) | 替换 Draft Project 的 Solution detail | `write` |
+| [`sync-project`](./SimpoCLI/sync-project) | 将自己的 Release 复制到对应 Draft | `write` |
+| [`release-project`](./SimpoCLI/release-project) | 创建不可修改的 Project Release | `write` |
 | [`get-project-variables`](./SimpoCLI/project-variables) | 读取 Solution Variable 表的全部字段 | `read` |
 | [`set-project-variable`](./SimpoCLI/set-project-variable) | 修改 Draft Project 中一个 Variable 字段 | `write` |
 
@@ -211,7 +227,8 @@ Linux 保存路径为 `~/.SimpoCLI/SIMPO_API_TOKEN.json`，Windows 保存路径
 | 命令 | 功能 | 所需 scope |
 | --- | --- | --- |
 | [`calculate`](./SimpoCLI/calculate) | 准备计算并启动 SimpoClient | `calculate` |
-| [`calculation-status`](./SimpoCLI/calculation-status) | 查询当前计算状态 | `calculate` |
+| [`get-calculation-status`](./SimpoCLI/get-calculation-status) | 查询当前计算状态 | `calculate` |
+| [`get-calculation-result`](./SimpoCLI/calculation-result) | 导航并分块读取已保存的计算结果，避免无限制响应 | `read` |
 | [`stop-calculation`](./SimpoCLI/stop-calculation) | 停止计算和匹配的本地进程 | `calculate` |
 
 ## 输出约定

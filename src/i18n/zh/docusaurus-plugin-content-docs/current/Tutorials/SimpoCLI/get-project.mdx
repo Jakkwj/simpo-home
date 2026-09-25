@@ -1,0 +1,61 @@
+---
+id: get-project
+title: 读取 Project
+sidebar_label: get-project
+---
+
+# `get-project`：读取 Project 详情
+
+读取当前用户拥有的一个 Draft 或 Release Project。Token scope：`read`。
+
+```text
+simpo get-project PROJECT_ID
+```
+
+响应包含当前用户拥有的 Project 元数据、Solution `detail`、引用的 BioModel 和
+DataSet ID，以及结果元数据。较大的计算数据请使用
+[`get-calculation-result`](./calculation-result) 单独读取。
+
+`PROJECT_ID` 可以是 version `0` Draft，也可以是 version `> 0` Release。
+
+Project 不存在或不属于当前 Token 用户时，后端会返回错误。
+
+可用选项包括 `--timeout SECONDS`（默认 `10.0`）、`--api-token TOKEN` 和
+`--base-url URL`。
+
+## 返回结果
+
+完整响应包含全部 Solution 行。下面只保留一个 Variable 数据行，并缩写其它表格。
+
+```json
+{
+  "success": true,
+  "id": 789,
+  "sourceId": null,
+  "name": "MyProject",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "",
+  "biomodelId": 123,
+  "datasetId": 456,
+  "detail": {
+    "Variable": [
+      {"0": "Variable", "1": "Tank", "2": "Value", "3": "Evaluation"},
+      {"0": "Y", "1": null, "2": 0.67, "3": true}
+    ],
+    "Target": [],
+    "Conversion": [],
+    "Weight": [],
+    "Activator": []
+  },
+  "createdAt": "2026-09-25T12:00:00",
+  "updatedAt": "2026-09-25T12:00:00",
+  "message": "Project operation success.",
+  "biomodelIdDraft": 123,
+  "datasetIdDraft": 456,
+  "projectIdDraft": 789,
+  "resultEngines": ["Simulation"],
+  "hasReport": true
+}
+```

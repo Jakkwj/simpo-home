@@ -22,9 +22,9 @@ so existing commands that set a numeric value remain valid.
   positional name and `--tank` selector, but cannot be passed to `--field`.
   Change them through the source BioModel/DataSet structure instead.
 - The standard writable fields are `Value`, `Evaluation`, `InitialValue`,
-  `DecimalPoint`, `LowerBound`, and `UpperBound`. The backend also accepts
-  future JSON scalar columns without requiring a CLI update, except for the
-  two read-only identifiers above.
+  `DecimalPoint`, `LowerBound`, and `UpperBound`. Other scalar fields present
+  in the current Variable table may also be writable, except for the two
+  read-only identifiers above.
 - Updating `Value`, `InitialValue`, or either bound validates the complete row
   and keeps `LowerBound <= Value/InitialValue <= UpperBound`.
 - Use `--tank` to identify a tank-specific row; omit it for a global Variable.

@@ -1,0 +1,63 @@
+---
+id: get-project
+title: Read a Project
+sidebar_label: get-project
+---
+
+# `get-project`: read Project detail
+
+Read one owned Draft or Release Project. Token scope: `read`.
+
+```text
+simpo get-project PROJECT_ID
+```
+
+The response contains the owned Project metadata, Solution `detail`, referenced
+BioModel and DataSet IDs, and result metadata. Large calculation data is read
+separately with [`get-calculation-result`](./calculation-result).
+
+`PROJECT_ID` may identify either a version `0` Draft or a version `> 0` Release.
+
+The backend returns an error when the Project does not exist or is not owned by
+the current Token user.
+
+Options include `--timeout SECONDS` (default `10.0`), `--api-token TOKEN`, and
+`--base-url URL`.
+
+## Result
+
+The complete response contains all Solution rows. This compact example keeps
+one Variable row and abbreviates the other tables.
+
+```json
+{
+  "success": true,
+  "id": 789,
+  "sourceId": null,
+  "name": "MyProject",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "",
+  "biomodelId": 123,
+  "datasetId": 456,
+  "detail": {
+    "Variable": [
+      {"0": "Variable", "1": "Tank", "2": "Value", "3": "Evaluation"},
+      {"0": "Y", "1": null, "2": 0.67, "3": true}
+    ],
+    "Target": [],
+    "Conversion": [],
+    "Weight": [],
+    "Activator": []
+  },
+  "createdAt": "2026-09-25T12:00:00",
+  "updatedAt": "2026-09-25T12:00:00",
+  "message": "Project operation success.",
+  "biomodelIdDraft": 123,
+  "datasetIdDraft": 456,
+  "projectIdDraft": 789,
+  "resultEngines": ["Simulation"],
+  "hasReport": true
+}
+```

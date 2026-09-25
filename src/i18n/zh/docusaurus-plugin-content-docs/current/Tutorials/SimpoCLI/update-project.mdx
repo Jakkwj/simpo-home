@@ -1,0 +1,71 @@
+---
+id: update-project
+title: 更新 Project
+sidebar_label: update-project
+---
+
+# `update-project`：更新 Draft Project
+
+使用完整 Solution detail 替换一个属于当前用户的 version `0` Draft Project。后端
+解析 JSON、重建 Project Solution，并删除与新输入不再匹配的计算结果。
+
+## 使用条件
+
+- Token scope：`write`
+- `PROJECT_ID` 必须是当前用户拥有的 version `0` Draft。
+- `Variable`、`Target`、`Conversion`、`Weight` 必须提供。
+- `Activator` 可以省略或为空，必要时由解析器生成。
+
+## 命令格式
+
+```text
+simpo update-project PROJECT_ID --json DETAIL.json [OPTIONS]
+```
+
+示例：
+
+```text
+simpo update-project 789 --json ./Solution.json
+```
+
+提供 `--description` 时会替换原描述。成功后 Project ID 保持不变，响应包含重新解析的
+`detail`。
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--json FILE` | 必填 | UTF-8 完整 Solution detail |
+| `--description TEXT` | 保留原值 | 提供时替换描述 |
+| `--timeout SECONDS` | `3700.0` | 解析和 HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+
+## 返回结果
+
+```json
+{
+  "success": true,
+  "id": 789,
+  "sourceId": null,
+  "name": "MyProject",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "updated solution",
+  "biomodelId": 123,
+  "datasetId": 456,
+  "detail": {
+    "Variable": [],
+    "Target": [],
+    "Conversion": [],
+    "Weight": [],
+    "Activator": []
+  },
+  "createdAt": "2026-09-25T12:00:00",
+  "updatedAt": "2026-09-25T12:30:00",
+  "message": "Project operation success."
+}
+```
+
+示例中缩写了重新解析后的 Solution 行。

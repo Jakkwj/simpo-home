@@ -1,0 +1,75 @@
+---
+id: update-dataset
+title: 更新 DataSet
+sidebar_label: update-dataset
+---
+
+# `update-dataset`：更新 Draft DataSet
+
+使用完整 JSON detail 替换一个属于当前用户的 version `0` Draft DataSet。后端会
+先解析再保存，并重建引用该 Draft 的 Project。
+
+## 使用条件
+
+- Token scope：`write`
+- `DATASET_ID` 必须是当前用户拥有的 version `0` Draft。
+- JSON 格式与 [`create-dataset`](./create-dataset) 相同。
+
+## 命令格式
+
+```text
+simpo update-dataset DATASET_ID --json DETAIL.json [OPTIONS]
+```
+
+示例：
+
+```text
+simpo update-dataset 456 --json ./DataSet.json
+```
+
+`--description` 和 `--sourcepaper-id` 只在提供时替换原值。更新接口会比较当前 Draft
+与提交的 JSON，自动生成网页端使用的 `changeValueDataSet` 字典，因此 Target、Tank、
+Inflow 或 Flow 改名时会保留关联 Project 中的原有值。成功后
+DataSet ID 保持不变；返回的 `affectedProjectCount` 是本次重建的关联 Project
+数量。关联 Project 中已有的 Simulation、Sensitivity、Uncertainty 和 Estimation
+结果会被标记为需要重新计算。
+
+其它选项包括 `--timeout SECONDS`（默认 `3700.0`）、`--api-token TOKEN` 和
+`--base-url URL`。
+
+## 标识改名
+
+不需要额外提供映射文件。后端会自动生成 `changeValueDataSet`（`最终名称 -> 原始名称`），
+并按网页端相同的规则保留兼容的 Project 值。
+
+## 返回结果
+
+响应返回保存后的 DataSet 和本次重建的关联 Project 数量。为方便阅读，下面的
+`detail` 只展示一张表；实际响应包含全部 DataSet 表格。
+
+```json
+{
+  "success": true,
+  "id": 456,
+  "sourceId": null,
+  "name": "InfluentData",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "updated inputs",
+  "sourcepaperId": null,
+  "timeUnit": "day",
+  "volumeUnit": "m3",
+  "flowUnit": "m3/d",
+  "detail": {
+    "Flow": [
+      {"0": "Flow", "1": "Qin"},
+      {"0": 0, "1": 10000}
+    ]
+  },
+  "createdAt": "2026-09-25T10:00:00",
+  "updatedAt": "2026-09-25T10:30:00",
+  "message": "DataSet operation success.",
+  "affectedProjectCount": 2
+}
+```

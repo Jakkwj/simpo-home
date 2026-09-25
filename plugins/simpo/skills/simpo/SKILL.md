@@ -1,6 +1,6 @@
 ---
 name: simpo
-description: Operate SIMPO through the installed SimpoCLI safely and efficiently. Use when asked to install or configure SimpoCLI, inspect the current SIMPO identity or scopes, create/read/update/sync/release BioModels, list/read DataSets, list Projects, read or change Project Variables, start/monitor/stop calculations, troubleshoot a simpo command, or generate a script that consumes SimpoCLI JSON output.
+description: Operate SIMPO through the installed SimpoCLI safely and efficiently. Use when asked to install or configure SimpoCLI, inspect the current SIMPO identity or scopes, create/read/update/sync/release BioModels, DataSets, or Projects, read or change Project Variables, start/monitor/stop calculations, retrieve paginated calculation results, troubleshoot a simpo command, or generate a script that consumes SimpoCLI JSON output.
 ---
 
 # SimpoCLI
@@ -28,9 +28,10 @@ safety guidance, then read only the reference for the requested command group.
   authentication problems, read [Token and CLI basics](references/token-and-cli.md).
 - For any BioModel create/get/update/sync/release task, read
   [BioModel commands](references/biomodel.md).
-- For DataSet reads or Project/Variable operations, read
+- For DataSet or Project lifecycle and Variable operations, read
   [DataSet and Project commands](references/dataset-and-project.md).
-- For calculation preparation, engine selection, status polling, or stopping,
+- For calculation preparation, engine selection, status polling, bounded result
+  retrieval, or stopping,
   read [Calculation commands](references/calculation.md).
 
 Read only the relevant references. Do not load the complete command manual for a

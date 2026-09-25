@@ -8,10 +8,12 @@ sidebar_label: update-biomodel
 
 Replace the model tables of one owned version `0` Draft BioModel with a JSON
 model. The backend parses the submitted tables again and recalculates derived
-fields such as `Balance`, replacement names, serialized cache, and table counts.
+fields such as `Balance`, replacement names, and table counts.
 
-This command does not delete a BioModel and does not rename it. Release and
-Standard versions are immutable and cannot be updated.
+This command does not delete a BioModel or change the BioModel record's name.
+When an identifier changes, the backend derives the same `changeValueBioModel`
+mapping used by the web editor from the stored Draft and submitted JSON.
+Release and Standard versions are immutable and cannot be updated.
 
 ## Requirements
 
@@ -48,11 +50,20 @@ The BioModel name is intentionally not an option. Rename is a separate
 operation because the name participates in Draft/Release version identity and
 Project references.
 
+## Identifier renames
+
+No extra mapping file is needed. The update endpoint compares the current Draft
+with the submitted JSON and automatically builds the `newName -> originalName`
+`changeValueBioModel` dictionary. This preserves compatible Project values and
+also updates matching `Ionization.Symbol` cells for Component renames.
+
 If Projects use this Draft, the backend immediately rebuilds each dependent
-Project's `detail` and calculation cache. Compatible user-entered values
+Project. Compatible user-entered values
 (`Variable`, `Conversion`, `Activator`, `Target`, and `Weight`) are preserved;
 new or incompatible fields follow the new BioModel structure. The response
 field `affectedProjectCount` is the number of Projects synchronized.
+Stored Simulation, Sensitivity, Uncertainty, and Estimation results in affected
+Projects are marked as requiring recalculation.
 
 ## Result
 

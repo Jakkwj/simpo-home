@@ -6,12 +6,13 @@ sidebar_label: get-dataset
 
 # `get-dataset`：获取一个 DataSet
 
-读取当前 API Token 用户拥有的一个 DataSet 的完整模型表和元数据。
+读取当前 API Token 用户拥有的一个 Draft 或 Release DataSet 的完整模型表和元数据。
 
 ## 使用条件
 
 - Token scope：`read`
 - DataSet 必须属于当前 Token 用户。
+- `DATASET_ID` 可以是 version `0` Draft，也可以是 version `> 0` Release。
 - ID 不存在或不属于当前用户时返回 HTTP `404`。
 
 ## 命令格式

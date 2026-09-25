@@ -1,0 +1,60 @@
+---
+id: release-project
+title: 发布 Project
+sidebar_label: release-project
+---
+
+# `release-project`：发布 Draft Project
+
+根据一个属于当前用户的 version `0` Draft Project 创建新的不可变 Release。正式发布
+流程还会发布或复用匹配的 BioModel、DataSet 版本，并复制 Project 结果文件。
+
+## 使用条件
+
+- Token scope：`write`
+- `DRAFT_ID` 必须是当前用户拥有的 version `0` Draft Project。
+- Project 的计算状态和引用的 Draft 资源必须通过后端发布检查。
+- `--privacy` 只能是 `Private` 或 `Public`。
+
+## 命令格式
+
+```text
+simpo release-project DRAFT_ID [OPTIONS]
+```
+
+示例：
+
+```text
+simpo release-project 789
+simpo release-project 789 --privacy Public --description "已校准 Project"
+```
+
+后端自动分配下一个 Project version。成功响应中的 `sourceId` 是 Draft 输入，`id` 是
+新建的 Project Release ID，且 `version >= 1`。
+
+可用选项包括 `--privacy Private|Public`（默认 `Private`）、`--description TEXT`、
+`--timeout SECONDS`（默认 `30.0`）、`--api-token TOKEN` 和 `--base-url URL`。
+
+## 返回结果
+
+```json
+{
+  "success": true,
+  "id": 790,
+  "sourceId": 789,
+  "name": "MyProject",
+  "state": "Release",
+  "privacy": "Private",
+  "version": 1,
+  "description": "Calibrated project",
+  "biomodelId": 124,
+  "datasetId": 457,
+  "detail": {},
+  "createdAt": "2026-09-25T13:30:00",
+  "updatedAt": "2026-09-25T13:30:00",
+  "message": "Project operation success."
+}
+```
+
+示例中的 `{}` 是 Release 完整 Solution `detail` 的缩写。BioModel 和 DataSet ID
+可能指向发布流程中新建或复用的 Release 版本。

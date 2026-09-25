@@ -166,8 +166,12 @@ const sidebars = {
           collapsible: true,
           collapsed: true,
           items: [
+            'Tutorials/SimpoCLI/create-dataset',
             'Tutorials/SimpoCLI/get-datasets',
             'Tutorials/SimpoCLI/get-dataset',
+            'Tutorials/SimpoCLI/update-dataset',
+            'Tutorials/SimpoCLI/sync-dataset',
+            'Tutorials/SimpoCLI/release-dataset',
           ],
         },
         {
@@ -177,7 +181,12 @@ const sidebars = {
           collapsible: true,
           collapsed: true,
           items: [
+            'Tutorials/SimpoCLI/create-project',
             'Tutorials/SimpoCLI/get-projects',
+            'Tutorials/SimpoCLI/get-project',
+            'Tutorials/SimpoCLI/update-project',
+            'Tutorials/SimpoCLI/sync-project',
+            'Tutorials/SimpoCLI/release-project',
             'Tutorials/SimpoCLI/project-variables',
             'Tutorials/SimpoCLI/set-project-variable',
           ],
@@ -190,8 +199,9 @@ const sidebars = {
           collapsed: true,
           items: [
             'Tutorials/SimpoCLI/calculate',
-            'Tutorials/SimpoCLI/calculation-status',
+            'Tutorials/SimpoCLI/get-calculation-status',
             'Tutorials/SimpoCLI/stop-calculation',
+            'Tutorials/SimpoCLI/calculation-result',
           ],
         },
         // Skill 独立放在命令文档之后。按具体 Skill 功能分组，方便后续继续扩展。
@@ -263,6 +273,38 @@ const sidebars = {
                   items: [
                     'Tutorials/SimpoCLI/biomodel-skill-claude-code-install',
                     'Tutorials/SimpoCLI/biomodel-skill-claude-code-usage',
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Create DataSet',
+              key: 'SimpoCLI/Skill/CreateDataSet',
+              collapsible: true,
+              collapsed: true,
+              items: [
+                'Tutorials/SimpoCLI/dataset-skill',
+                {
+                  type: 'category',
+                  label: 'Codex',
+                  key: 'SimpoCLI/Skill/CreateDataSet/Codex',
+                  collapsible: true,
+                  collapsed: true,
+                  items: [
+                    'Tutorials/SimpoCLI/dataset-skill-codex-install',
+                    'Tutorials/SimpoCLI/dataset-skill-codex-usage',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'Claude Code',
+                  key: 'SimpoCLI/Skill/CreateDataSet/ClaudeCode',
+                  collapsible: true,
+                  collapsed: true,
+                  items: [
+                    'Tutorials/SimpoCLI/dataset-skill-claude-code-install',
+                    'Tutorials/SimpoCLI/dataset-skill-claude-code-usage',
                   ],
                 },
               ],

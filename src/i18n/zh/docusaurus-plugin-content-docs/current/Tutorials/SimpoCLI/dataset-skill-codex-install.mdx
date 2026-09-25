@@ -1,0 +1,51 @@
+---
+id: dataset-skill-codex-install
+title: Codex 安装
+sidebar_label: 安装
+---
+
+# 在 Codex 中安装 DataSet Skill
+
+从仓库安装完整 Skill 目录。完整目录和功能对照请参阅
+[Skill 总览](./simpo-skills)。
+
+## 安装前准备
+
+需要 Codex 和 SimpoCLI。只有请求创建时，SimpoCLI 和后端才检查认证及 `write` scope。
+
+默认安装目录为 `~/.codex/skills/simpo-create-dataset`；设置 `CODEX_HOME` 时使用
+`$CODEX_HOME/skills/simpo-create-dataset`。
+
+## 从本仓库安装
+
+推荐：
+
+```text
+Use $skill-installer to install this Skill from:
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo-create-dataset
+```
+
+手工备用方式：
+
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+cp -R plugins/simpo/skills/simpo-create-dataset \
+  "${CODEX_HOME:-$HOME/.codex}/skills/simpo-create-dataset"
+```
+
+请完整保留 `SKILL.md`、`references/`、`scripts/` 和 `agents/`，然后开启新的 Codex
+会话。
+
+## 验证
+
+```text
+请说明 $simpo-create-dataset 的作用，不要创建任何内容。
+```
+
+如果 Codex 能说明它会设计或从资料中提取并校验污水处理 DataSet，并只在审核后创建
+Private Draft，则安装成功。下一步参阅 [Codex 使用方法与示例](./dataset-skill-codex-usage)。
+
+## 更新
+
+Skill Installer 不会覆盖已有 Skill。请先备份或删除已安装目录，再安装最新仓库副本并
+开启新的 Codex 会话。

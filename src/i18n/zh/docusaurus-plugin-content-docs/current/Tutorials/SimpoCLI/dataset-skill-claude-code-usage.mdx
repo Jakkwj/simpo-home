@@ -1,0 +1,62 @@
+---
+id: dataset-skill-claude-code-usage
+title: Claude Code 使用方法与示例
+sidebar_label: 使用方法与示例
+---
+
+# 在 Claude Code 中使用 DataSet Skill
+
+## 基本用法
+
+调用 `/simpo:simpo-create-dataset`，提供 DataSet 名称、设计条件和出水目标：
+
+```text
+/simpo:simpo-create-dataset 请根据平均流量 10000 m3/d，进水
+COD/BOD5/TSS/TN/NH4-N/TP 为 240/100/200/35/28/5 mg/L，出水 TN 不高于
+10 mg/L、NH4-N 不高于 1.5 mg/L，设计名为 MunicipalAAO 的 SIMPO DataSet。
+先展示工艺、计算、假设、流量守恒和 JSON，再询问是否创建。
+```
+
+Claude Code 会准备工艺设计、Target 拆分、八张 DataSet 表、本地校验报告和审核摘要；
+获得确认后才调用 SimpoCLI。
+
+## 从论文提取
+
+```text
+/simpo:simpo-create-dataset 请从 /data/papers/pilot-mbr.pdf 及其补充表格中提取名为
+PilotMBR 的 SIMPO DataSet。把处理单元、流股、运行条件、监测数据和时间序列追溯到
+原文位置；没有依据的值保留为未解决项，不要加入设计假设，创建前先展示证据映射和 JSON。
+```
+
+如果资料不足以建立完整可运行的 DataSet，Claude Code 会列出缺口。只有用户明确要求时
+才进行工程补全，并把工程假设与原文数据分开标注。
+
+## 转换已有工艺
+
+```text
+/simpo:simpo-create-dataset 请把 /data/design/existing-process.md 转换为名为
+ExistingPlant 的 SIMPO DataSet。保留已有池容和流量，暴露所有矛盾，暂不创建。
+```
+
+## 只分析，不创建
+
+```text
+/simpo:simpo-create-dataset 只准备并校验拟创建的 DataSet JSON，
+不要执行 SimpoCLI 写操作。
+```
+
+## 成功结果
+
+明确同意创建后，成功响应必须有正整数 ID，并满足：
+
+```json
+{
+  "success": true,
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0
+}
+```
+
+解析成功只证明结构有效，不证明处理效果。仍需使用兼容 BioModel 创建 Project，并完成
+模拟、校准和工程审核。

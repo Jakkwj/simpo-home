@@ -1,0 +1,73 @@
+---
+id: update-project
+title: Update a Project
+sidebar_label: update-project
+---
+
+# `update-project`: update a Draft Project
+
+Replace the complete Solution detail of one owned version `0` Draft Project.
+The backend parses the JSON, rebuilds the Project Solution, and removes
+calculation results that no longer match the updated input.
+
+## Requirements
+
+- Token scope: `write`
+- `PROJECT_ID` must identify an owned version `0` Draft.
+- `Variable`, `Target`, `Conversion`, and `Weight` arrays are required.
+- `Activator` may be omitted or empty and is generated when needed.
+
+## Syntax
+
+```text
+simpo update-project PROJECT_ID --json DETAIL.json [OPTIONS]
+```
+
+Example:
+
+```text
+simpo update-project 789 --json ./Solution.json
+```
+
+`--description` replaces the description when supplied. The default timeout is
+`3700.0` seconds so the backend can complete Solution parsing. On success, the
+Project keeps the same ID and the response contains the newly parsed `detail`.
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--json FILE` | required | UTF-8 complete Solution detail |
+| `--description TEXT` | keep current | Replace the description when supplied |
+| `--timeout SECONDS` | `3700.0` | Maximum parsing and HTTP time |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+## Result
+
+```json
+{
+  "success": true,
+  "id": 789,
+  "sourceId": null,
+  "name": "MyProject",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "updated solution",
+  "biomodelId": 123,
+  "datasetId": 456,
+  "detail": {
+    "Variable": [],
+    "Target": [],
+    "Conversion": [],
+    "Weight": [],
+    "Activator": []
+  },
+  "createdAt": "2026-09-25T12:00:00",
+  "updatedAt": "2026-09-25T12:30:00",
+  "message": "Project operation success."
+}
+```
+
+The example abbreviates the newly parsed Solution rows.

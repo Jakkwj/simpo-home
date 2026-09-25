@@ -1,0 +1,58 @@
+---
+id: sync-project
+title: Sync a Project
+sidebar_label: sync-project
+---
+
+# `sync-project`: copy a Release to its Draft
+
+Copy an owned Project Release to its same-name version `0` Draft. The source
+Release remains unchanged.
+
+## Requirements
+
+- Token scope: `write`
+- `RELEASE_ID` must identify an owned Project with `version > 0`.
+- A same-name version `0` Draft must exist.
+
+## Syntax
+
+```text
+simpo sync-project RELEASE_ID [OPTIONS]
+```
+
+Example:
+
+```text
+simpo sync-project 790
+```
+
+The Draft receives the Release's Solution detail, stored calculation results,
+report, description, calculation/result files, and figure files. On
+success, `sourceId` is the input Release ID and `id` is the updated Draft ID.
+
+Options include `--timeout SECONDS` (default `30.0`), `--api-token TOKEN`, and
+`--base-url URL`.
+
+## Result
+
+```json
+{
+  "success": true,
+  "id": 789,
+  "sourceId": 790,
+  "name": "MyProject",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "released project",
+  "biomodelId": 123,
+  "datasetId": 456,
+  "detail": {},
+  "createdAt": "2026-09-25T12:00:00",
+  "updatedAt": "2026-09-25T13:00:00",
+  "message": "Project operation success."
+}
+```
+
+The synchronized Solution `detail` is abbreviated as `{}` in this example.

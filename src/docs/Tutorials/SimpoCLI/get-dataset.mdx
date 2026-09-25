@@ -6,13 +6,14 @@ sidebar_label: get-dataset
 
 # `get-dataset`: read one DataSet
 
-Read the complete DataSet model tables and metadata for one DataSet owned by the
-current API Token user.
+Read the complete DataSet model tables and metadata for one Draft or Release
+owned by the current API Token user.
 
 ## Requirements
 
 - Token scope: `read`
 - The DataSet must belong to the Token user.
+- `DATASET_ID` may identify either a version `0` Draft or a version `> 0` Release.
 - A missing or unauthorized ID returns HTTP `404`.
 
 ## Syntax

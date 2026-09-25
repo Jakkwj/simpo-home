@@ -1,0 +1,90 @@
+---
+id: dataset-skill
+title: SIMPO DataSet Skill
+sidebar_label: Overview
+---
+
+# SIMPO DataSet Skill
+
+Use the [Skills overview](./simpo-skills) to compare all SIMPO Skills and find
+their Codex and Claude Code installation directories.
+
+SIMPO DataSet Skill designs a wastewater-treatment DataSet from engineering
+conditions or extracts one from papers, reports, and existing process material.
+It can trace reported process units, flows, operating conditions, measurements,
+and time series; select an ASM2D- or ASM3-compatible target set; build the SIMPO
+JSON tables; audit hydraulic balance; and create a Private Draft through
+SimpoCLI. In design mode it can also calculate preliminary tank volumes and
+operating flows.
+
+This Skill is intended for requests such as:
+
+- design an AO, AAO, UCT, step-feed, or other treatment configuration from
+  flow, influent quality, and effluent limits;
+- extract a documented treatment process, operating conditions, influent data,
+  measurements, and time series from a paper, PDF, report, or supplementary
+  material while retaining source locations and unresolved gaps;
+- convert an existing process description or design calculation into SIMPO
+  `Unit`, `Target`, `Tank`, `Pump`, `Measured`, `Inflow`, `Flow`, and
+  `Connection` tables;
+- review flow conservation and cross-table names before creating a DataSet.
+
+For ordinary DataSet create/read/update/sync/release operations on already
+prepared JSON, use the general [SimpoCLI Skill](./simpo-cli-skill). The DataSet
+Skill is the AI-assisted design and source-extraction workflow. These two input
+modes are combined in one Skill because both produce and validate the same
+DataSet tables; separate Skill names would duplicate the schema, validator, and
+creation workflow.
+
+The Skill uses the AI configured for the current assistant session and does not
+call SIMPO's backend AI creation endpoint. Codex invokes it as
+`$simpo-create-dataset`; the Claude Code plugin command is
+`/simpo:simpo-create-dataset`.
+
+## Requirements
+
+- SimpoCLI is installed and available as `simpo`.
+- A SIMPO API Token with `write` scope is configured when creation is requested.
+- The user provides a DataSet name plus either enough design conditions to
+  identify the treatment objective or readable source material containing the
+  process and data to extract. Supplementary material should be included when
+  it contains required tables or time series.
+
+Never place an API Token in a prompt or JSON file. Configure it interactively
+with `simpo configure` when required.
+
+## Workflow and checks
+
+The Skill first chooses the design path, source-extraction path, or a combination.
+It separates reported or user-supplied values, calculations, engineering
+assumptions, and unresolved information. Before creation it presents:
+
+- the selected or extracted process and compatible BioModel family
+  recommendation;
+- source citation and evidence locations for paper/report extraction;
+- reported measurements and time series without silently interpolating gaps;
+- tank sizing, recycle, wasting, aeration, and settling calculations when design
+  completion is requested;
+- influent component fractionation and reconstruction residuals;
+- a hydraulic balance for every constant-volume tank;
+- the proposed JSON path and material uncertainties.
+
+The bundled local validator checks table headers, naturally ordered numeric
+keys, cross-table names, target and monitoring references, flow-expression
+syntax, initial flow values, and symbolic hydraulic balance. The SIMPO parser
+performs the authoritative validation during `simpo create-dataset --json`.
+
+## Safety boundaries
+
+- The user reviews and approves the design before the Skill creates anything.
+- Creation must return a Private, version `0`, Draft DataSet.
+- The Skill does not automatically create a Project, run a calculation, release
+  or publish the DataSet, or claim that parser acceptance proves effluent
+  compliance.
+- Missing source values, discharge limits, incompatible measurements, and
+  underdetermined influent fractionation remain visible instead of being
+  silently guessed. Paper extraction does not automatically authorize filling
+  gaps with design assumptions.
+
+Detailed simulation, calibration, equipment selection, and code compliance
+remain separate engineering tasks.

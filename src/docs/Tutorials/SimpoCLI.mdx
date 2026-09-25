@@ -10,12 +10,15 @@ import TabItem from "@theme/TabItem";
 
 # SimpoCLI command-line guide
 
-`SimpoCLI` is the command-line interface for the SIMPO OpenAPI. It creates
-BioModels, lists and reads DataSets, reads and updates Project data, prepares calculations, starts the locally installed
-`SimpoClient`, monitors calculation status, and stops calculations.
+`SimpoCLI` is the command-line interface for the SIMPO OpenAPI. It manages the
+complete Draft, synchronization, and Release lifecycle for BioModels, DataSets,
+and Projects; reads and updates Project Variables; prepares calculations; starts
+the locally installed `SimpoClient`; monitors or stops calculations; and reads
+large stored results in bounded pages.
 Its terminal command is the short, lowercase `simpo`.
 
-Each command has its own page in the collapsible **SimpoCLI** section.
+This page is the complete SimpoCLI command index. Each command also has its own
+page in the collapsible **SimpoCLI** section.
 Every command also supports `--help`, so a user or automation agent can inspect
 the installed version before invoking it.
 
@@ -28,8 +31,10 @@ paths, and detailed guides.
 - A SIMPO account and an OpenAPI Token created on the Dashboard's **API Tokens**
   page.
 - The minimum Token scope required by the command:
-  - `read`: list owned BioModels, DataSets, and Projects, read complete BioModels/DataSets (`get-biomodel`, `get-dataset`), and read Project Variable fields;
-  - `write`: create, update, or release a Draft BioModel, or update a Variable field in a version `0` Draft Project;
+  - `read`: list and read owned BioModels, DataSets, and Projects, read Project
+    Variable fields, and retrieve stored calculation results;
+  - `write`: create, update, synchronize, or release BioModels, DataSets, and
+    Projects, and update a Variable field in a version `0` Draft Project;
   - `calculate`: prepare, inspect, or stop a calculation.
 - The [`calculate`](./SimpoCLI/calculate) command additionally requires
   the matching platform version of `SimpoClient` on the same computer.
@@ -132,8 +137,8 @@ uninstalling.
 3. Select **Create Token**.
 4. Enter a recognizable name, choose an expiry from `1` to `365` days, and
    grant only the scopes you need:
-   - `read` for `get-biomodels`, `get-biomodel`, `get-datasets`, `get-dataset`, and `get-project-variables`;
-  - `write` for `create-biomodel`, `update-biomodel`, `sync-biomodel`, `release-biomodel`, and `set-project-variable`;
+   - `read` for all `get-*` commands, including paginated calculation-result retrieval;
+   - `write` for BioModel, DataSet, and Project create/update/sync/release commands, and `set-project-variable`;
    - `calculate` for calculation preparation, status, and stop commands.
 5. Select **Create Token**, then immediately copy the complete Token from the
    **Token Created** dialog.
@@ -176,6 +181,12 @@ For the complete configuration procedure, see [`configure`](./SimpoCLI/configure
 
 ## Command reference
 
+Each resource follows the same basic rule: edit a version `0` Draft, use a
+published Release as an immutable snapshot, and use `sync-*` to copy a Release
+back to its Draft. The update pages describe dependent Project rebuilding and
+stale calculation results where those rules apply. Use the tables below as the
+complete command directory.
+
 ### Token
 
 | Command | Purpose | Required scope |
@@ -199,14 +210,23 @@ For the complete configuration procedure, see [`configure`](./SimpoCLI/configure
 
 | Command | Purpose | Required scope |
 | --- | --- | --- |
+| [`create-dataset`](./SimpoCLI/create-dataset) | Create an empty or JSON-based Draft DataSet | `write` |
 | [`get-datasets`](./SimpoCLI/get-datasets) | List metadata for your DataSets | `read` |
 | [`get-dataset`](./SimpoCLI/get-dataset) | Read one DataSet and its complete model tables | `read` |
+| [`update-dataset`](./SimpoCLI/update-dataset) | Replace a Draft DataSet and rebuild dependent Projects | `write` |
+| [`sync-dataset`](./SimpoCLI/sync-dataset) | Copy an owned Release to its same-name Draft | `write` |
+| [`release-dataset`](./SimpoCLI/release-dataset) | Create an immutable Release from a Draft | `write` |
 
 ### Project
 
 | Command | Purpose | Required scope |
 | --- | --- | --- |
+| [`create-project`](./SimpoCLI/create-project) | Create a Draft from a BioModel and DataSet, with optional Solution JSON | `write` |
 | [`get-projects`](./SimpoCLI/get-projects) | List owned Project metadata with BioModel/DataSet references | `read` |
+| [`get-project`](./SimpoCLI/get-project) | Read one Project and its complete Solution detail | `read` |
+| [`update-project`](./SimpoCLI/update-project) | Replace a Draft Project's Solution detail | `write` |
+| [`sync-project`](./SimpoCLI/sync-project) | Copy an owned Release to its corresponding Draft | `write` |
+| [`release-project`](./SimpoCLI/release-project) | Create an immutable Project Release | `write` |
 | [`get-project-variables`](./SimpoCLI/project-variables) | Read every field in the Solution Variable table | `read` |
 | [`set-project-variable`](./SimpoCLI/set-project-variable) | Update one Variable field in a Draft Project | `write` |
 
@@ -215,7 +235,8 @@ For the complete configuration procedure, see [`configure`](./SimpoCLI/configure
 | Command | Purpose | Required scope |
 | --- | --- | --- |
 | [`calculate`](./SimpoCLI/calculate) | Prepare a calculation and start SimpoClient | `calculate` |
-| [`calculation-status`](./SimpoCLI/calculation-status) | Read current calculation status | `calculate` |
+| [`get-calculation-status`](./SimpoCLI/get-calculation-status) | Read current calculation status | `calculate` |
+| [`get-calculation-result`](./SimpoCLI/calculation-result) | Navigate and page stored calculation results without an unbounded response | `read` |
 | [`stop-calculation`](./SimpoCLI/stop-calculation) | Stop a calculation and matching local processes | `calculate` |
 
 ## Output contract

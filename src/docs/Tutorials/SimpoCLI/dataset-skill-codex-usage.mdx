@@ -1,0 +1,95 @@
+---
+id: dataset-skill-codex-usage
+title: Codex Usage and Examples
+sidebar_label: Usage and examples
+---
+
+# Use DataSet Skill in Codex
+
+## Design from conditions
+
+Explicitly invoke `$simpo-create-dataset`, provide a DataSet name, and describe
+the design basis:
+
+```text
+Use $simpo-create-dataset to design a SIMPO DataSet named MunicipalAAO.
+Average flow is 10,000 m3/d. Influent COD/BOD5/TSS/TN/NH4-N/TP are
+240/100/200/35/28/5 mg/L. Effluent TN must be at most 10 mg/L and NH4-N at
+most 1.5 mg/L. Show the proposed process and JSON before creating anything.
+```
+
+Chinese prompts are supported while the Skill name remains unchanged:
+
+```text
+请使用 $simpo-create-dataset 根据以下设计条件设计名为 MunicipalAAO 的 SIMPO DataSet。
+平均流量 10000 m3/d，进水 COD/BOD5/TSS/TN/NH4-N/TP 为
+240/100/200/35/28/5 mg/L，出水 TN 不高于 10 mg/L、NH4-N 不高于 1.5 mg/L。
+先展示工艺、计算和 JSON，不要立即创建。
+```
+
+Codex identifies missing material conditions, explains the selected treatment
+train, calculates preliminary values, writes and validates the JSON, and asks
+for approval before calling `simpo create-dataset --json`.
+
+## Extract from a paper
+
+Provide the paper and any supplementary files that contain process or time-series
+data. State whether the task is faithful extraction only or may include reviewed
+engineering assumptions:
+
+```text
+Use $simpo-create-dataset to extract a SIMPO DataSet named PilotMBR from
+/data/papers/pilot-mbr.pdf and /data/papers/pilot-mbr-supplement.xlsx.
+Trace every tank, stream, operating condition, influent value, measurement, and
+time series to its page, table, figure, or supplementary sheet. Preserve missing
+values as unresolved and do not fill gaps with engineering assumptions. Show the
+evidence map and JSON before creating anything.
+```
+
+The Skill preserves the documented plant rather than redesigning it. If the
+source cannot support a complete runnable DataSet, Codex reports the gaps. You
+can then explicitly request a separate, clearly labeled preliminary design
+completion.
+
+## Convert an existing design
+
+Provide an existing calculation, process diagram description, spreadsheet, or
+design note and tell Codex what must be preserved:
+
+```text
+Use $simpo-create-dataset to convert /data/design/plant-design.md into a SIMPO
+DataSet named ExistingPlant. Preserve the documented tank volumes and recycle
+flows. Report any hydraulic inconsistency and do not create the DataSet yet.
+```
+
+The Skill must not silently change supplied engineering values merely to close
+the balance. It reports conflicts for review.
+
+## Analyze without creating
+
+```text
+Use $simpo-create-dataset to prepare and locally validate the DataSet JSON from
+these conditions. Stop before any SimpoCLI write.
+```
+
+This produces the design review and JSON without creating a server resource.
+
+## Approval and successful result
+
+After reviewing the process, assumptions, residuals, hydraulic balances, and
+JSON path, explicitly approve creation. A successful response must include:
+
+```json
+{
+  "success": true,
+  "id": 456,
+  "name": "MunicipalAAO",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0
+}
+```
+
+The result confirms that SIMPO parsed and stored the DataSet. It does not prove
+that the preliminary design meets its effluent targets; use a compatible
+BioModel, Project, simulation, calibration, and engineering review for that.

@@ -1,8 +1,8 @@
 {
   "name": "simpo",
   "displayName": "SIMPO",
-  "version": "0.2.0",
-  "description": "Official SIMPO skills for SimpoCLI operations and reviewed BioModel creation.",
+  "version": "0.3.0",
+  "description": "Official SIMPO skills for SimpoCLI operations and reviewed BioModel or DataSet creation.",
   "author": {
     "name": "SIMPO"
   },
@@ -10,6 +10,7 @@
   "keywords": [
     "simpo",
     "biomodel",
+    "dataset",
     "calculation",
     "wastewater",
     "simpocli"

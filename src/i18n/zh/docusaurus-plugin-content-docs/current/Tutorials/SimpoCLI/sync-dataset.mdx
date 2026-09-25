@@ -1,0 +1,60 @@
+---
+id: sync-dataset
+title: 同步 DataSet
+sidebar_label: sync-dataset
+---
+
+# `sync-dataset`：将 Release 同步到 Draft
+
+把一个属于当前用户的已发布 DataSet 版本复制到同名 version `0` Draft。源 Release
+不会被修改。
+
+## 使用条件
+
+- Token scope：`write`
+- `RELEASE_ID` 必须是当前用户拥有、`version > 0` 的 DataSet。
+- 必须存在同名 version `0` Draft。
+
+## 命令格式
+
+```text
+simpo sync-dataset RELEASE_ID [OPTIONS]
+```
+
+示例：
+
+```text
+simpo sync-dataset 457
+```
+
+参数是源 Release ID，不是 Draft ID。成功响应中的 `sourceId` 是输入的 Release，
+`id` 是被更新的 Draft；二者是不同数据库记录。
+
+可用选项包括 `--timeout SECONDS`（默认 `30.0`）、`--api-token TOKEN` 和
+`--base-url URL`。
+
+## 返回结果
+
+```json
+{
+  "success": true,
+  "id": 456,
+  "sourceId": 457,
+  "name": "InfluentData",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "released inputs",
+  "sourcepaperId": null,
+  "timeUnit": "day",
+  "volumeUnit": "m3",
+  "flowUnit": "m3/d",
+  "detail": {},
+  "createdAt": "2026-09-25T10:00:00",
+  "updatedAt": "2026-09-25T11:00:00",
+  "message": "DataSet operation success."
+}
+```
+
+为缩短示例，这里用空对象表示 `detail`；实际响应会包含同步后的完整 DataSet
+detail。

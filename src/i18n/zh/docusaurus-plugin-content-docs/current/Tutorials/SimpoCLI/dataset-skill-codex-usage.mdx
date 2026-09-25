@@ -1,0 +1,73 @@
+---
+id: dataset-skill-codex-usage
+title: Codex 使用方法与示例
+sidebar_label: 使用方法与示例
+---
+
+# 在 Codex 中使用 DataSet Skill
+
+## 根据设计条件新建
+
+显式调用 `$simpo-create-dataset`，提供 DataSet 名称和设计依据：
+
+```text
+请使用 $simpo-create-dataset 设计名为 MunicipalAAO 的 SIMPO DataSet。
+平均流量 10000 m3/d，进水 COD/BOD5/TSS/TN/NH4-N/TP 为
+240/100/200/35/28/5 mg/L，出水 TN 不高于 10 mg/L、NH4-N 不高于 1.5 mg/L。
+先展示工艺、计算和 JSON，不要立即创建。
+```
+
+Codex 会识别缺失的重要条件，解释工艺选择，完成初步计算，写入并校验 JSON，然后在
+调用 `simpo create-dataset --json` 前请求确认。
+
+## 从论文提取
+
+提供论文以及包含工艺或时间序列数据的补充文件，并说明是只忠实提取，还是允许在审核后
+使用工程假设补齐：
+
+```text
+请使用 $simpo-create-dataset 从 /data/papers/pilot-mbr.pdf 和
+/data/papers/pilot-mbr-supplement.xlsx 中提取名为 PilotMBR 的 SIMPO DataSet。
+每个池体、流股、运行条件、进水值、监测数据和时间序列都要追溯到页码、表格、图或
+补充材料工作表。缺失值保留为未解决项，不要使用工程假设补齐。创建前先展示证据映射和
+JSON。
+```
+
+Skill 会忠实表示原文中的处理系统，而不是重新设计。如果资料不足以支持完整可运行的
+DataSet，Codex 会列出缺口；之后可以再明确要求用单独标注的初步工程假设补齐。
+
+## 转换已有设计
+
+可以提供已有计算、流程图说明、表格或设计文件，并说明哪些值必须保留：
+
+```text
+请使用 $simpo-create-dataset 把 /data/design/plant-design.md 转换为名为
+ExistingPlant 的 SIMPO DataSet。保留文档中的池容和回流量，报告所有水力矛盾，暂不创建。
+```
+
+Skill 不会为了闭合平衡而静默修改用户提供的工程值，而是报告冲突供审核。
+
+## 只分析，不创建
+
+```text
+请使用 $simpo-create-dataset 根据以下条件准备并在本地校验 DataSet JSON，
+不要执行任何 SimpoCLI 写操作。
+```
+
+## 确认与成功结果
+
+审核工艺、假设、残差、水力平衡和 JSON 路径后，再明确同意创建。成功响应应包含：
+
+```json
+{
+  "success": true,
+  "id": 456,
+  "name": "MunicipalAAO",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0
+}
+```
+
+该结果只确认 SIMPO 能解析并保存 DataSet，并不证明初步设计达到出水指标。仍需使用兼容
+BioModel 建立 Project，并完成模拟、校准和工程审核。

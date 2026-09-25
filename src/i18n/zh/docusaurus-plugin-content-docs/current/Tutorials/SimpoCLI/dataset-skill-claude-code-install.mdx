@@ -1,0 +1,59 @@
+---
+id: dataset-skill-claude-code-install
+title: Claude Code 安装
+sidebar_label: 安装
+---
+
+# 在 Claude Code 中安装 DataSet Skill
+
+Claude Code 版本包含在 SIMPO Marketplace 的 `simpo` 插件中。该插件同时提供通用
+SimpoCLI、BioModel 创建和 DataSet 创建 Skill。
+
+## 安装前准备
+
+需要 Claude Code、Git 和 SimpoCLI。Marketplace 安装由 Claude Code 管理；手工备用
+目录为 `~/.claude/skills/simpo-create-dataset`。
+
+## 从 SIMPO Marketplace 安装
+
+在 Claude Code 交互会话中运行：
+
+```text
+/plugin marketplace add Jakkwj/simpo-home
+/plugin install simpo@simpo
+```
+
+如果提示重新加载：
+
+```text
+/reload-plugins
+```
+
+带命名空间的调用命令为 `/simpo:simpo-create-dataset`。
+
+## 验证
+
+```text
+/simpo:simpo-create-dataset 请说明这个 Skill 的作用，不要创建任何内容。
+```
+
+如果 Claude Code 能说明它会设计或从资料中提取并校验 Private Draft DataSet，则安装
+成功。下一步参阅 [Claude Code 使用方法与示例](./dataset-skill-claude-code-usage)。
+
+## 更新
+
+```text
+/plugin marketplace update simpo
+```
+
+然后在 Claude Code 的已安装插件页面更新 `simpo@simpo`，或在终端运行：
+
+```text
+claude plugin update simpo@simpo
+```
+
+## 手工安装备用方案
+
+如果无法使用插件，将仓库中的 `plugins/simpo/skills/simpo-create-dataset` 完整复制到
+`~/.claude/skills/simpo-create-dataset`。备用调用命令为 `/simpo-create-dataset`，
+不带插件命名空间。

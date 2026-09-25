@@ -1,0 +1,76 @@
+---
+id: create-project
+title: 新建 Project
+sidebar_label: create-project
+---
+
+# `create-project`：新建 Draft Project
+
+根据 BioModel 和 DataSet 新建属于当前用户的 Private、version `0` Draft Project。
+可以在同一次创建操作中通过可选 JSON 提供 Solution 表。
+
+## 使用条件
+
+- Token scope：`write`
+- Project 名称为 1 至 230 个字符，且在当前账户中唯一。
+- BioModel 和 DataSet ID 必须属于当前用户，并且存在各自的同名 version `0` Draft。
+- 传入 `--json` 时必须包含 `Variable`、`Target`、`Conversion`、`Weight` 数组；
+  `Activator` 可以省略或为空，必要时由解析器生成。
+
+## 命令格式
+
+```text
+simpo create-project NAME --biomodel-id ID --dataset-id ID [--json DETAIL.json] [OPTIONS]
+```
+
+示例：
+
+```text
+simpo create-project MyProject --biomodel-id 123 --dataset-id 456
+simpo create-project MyProject --biomodel-id 123 --dataset-id 456 --json ./Solution.json
+```
+
+不传 JSON 时，根据所选 BioModel 和 DataSet 生成默认 Solution；传入 JSON 时会在
+同一次操作中解析并生成 Project，不会先创建空白 Project 再执行更新。
+
+## 选项
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--biomodel-id ID` | 必填 | 当前用户拥有的 BioModel ID |
+| `--dataset-id ID` | 必填 | 当前用户拥有的 DataSet ID |
+| `--json FILE` | 生成默认 Solution | 可选的 UTF-8 完整 Solution detail |
+| `--description TEXT` | 空 | 可选 Markdown 描述 |
+| `--timeout SECONDS` | `3700.0` | 解析和 HTTP 请求的最长等待时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
+
+## 返回结果
+
+响应包含新 Project ID、Draft 元数据、关联的 BioModel/DataSet ID 和解析后的
+`detail`。示例中缩写了完整 Solution 表格。
+
+```json
+{
+  "success": true,
+  "id": 789,
+  "sourceId": null,
+  "name": "MyProject",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "",
+  "biomodelId": 123,
+  "datasetId": 456,
+  "detail": {
+    "Variable": [],
+    "Target": [],
+    "Conversion": [],
+    "Weight": [],
+    "Activator": []
+  },
+  "createdAt": "2026-09-25T12:00:00",
+  "updatedAt": "2026-09-25T12:00:00",
+  "message": "Project operation success."
+}
+```

@@ -30,24 +30,27 @@ benefit is less repeated and irrelevant context, not zero token usage.
 
 ## Scope
 
-The current Skill source is shared by Codex and Claude Code. Invoke it as
+The same workflow is available in Codex and Claude Code. Invoke it as
 `$simpo` in Codex or `/simpo:simpo` from the Claude Code plugin. It covers:
 
 - Token configuration, identity, scopes, logout, and JSON automation;
 - BioModel create, list, read, update, sync, and release workflows;
-- DataSet list/read workflows;
-- Project listing and Project Variable read/update workflows;
-- calculation preparation, engine selection, status, and stop workflows.
+- DataSet create/list/read/update/sync/release workflows;
+- Project create/list/read/update/sync/release and Project Variable read/update workflows;
+- calculation preparation, engine selection, status, stop, and paginated result
+  retrieval workflows.
 
-Against the current development CLI source, the covered public commands are:
+The documented public commands are:
 `configure`, `me`, `logout`, `create-biomodel`, `update-biomodel`,
 `sync-biomodel`, `release-biomodel`, `get-biomodels`, `get-biomodel`,
-`get-datasets`, `get-dataset`, `get-projects`, `get-project-variables`,
-`set-project-variable`, `calculate`, `calculation-status`, and
-`stop-calculation`.
+`create-dataset`, `get-datasets`, `get-dataset`, `update-dataset`,
+`sync-dataset`, `release-dataset`, `create-project`, `get-projects`,
+`get-project`, `update-project`, `sync-project`, `release-project`, `get-project-variables`,
+`set-project-variable`, `calculate`, `get-calculation-status`,
+`get-calculation-result`, and `stop-calculation`.
 
 This is Skill coverage, not a promise that an older installed executable exposes
-all 17 commands. The requested command and backend response are authoritative;
+every documented command. The requested command and backend response are authoritative;
 an unavailable command is reported and may require a SimpoCLI update.
 
 This Skill operates SimpoCLI; it does not install SimpoCLI or include an API

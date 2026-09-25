@@ -91,15 +91,17 @@ simpo calculate 706 --no-launch
 | --- | --- | --- |
 | `--no-launch` | 关闭 | 只准备文件，不启动本机 SimpoClient |
 | `--print-protocol` | 关闭 | 在 JSON 中包含带短期凭证的启动协议 |
-| `--client-main PATH` | 已安装 SimpoClient | 开发环境覆盖可执行文件或源码 `main.py` |
+| `--client-main PATH` | 已安装 SimpoClient | 可选的自定义 SimpoClient 可执行文件或 `main.py` |
 | `--wait / --no-wait` | 不等待 | 轮询直到 `completed`、`failed`、`stopped` 或 `idle` |
 | `--poll-interval SECONDS` | `2.0` | 等待时两次状态请求的间隔 |
 | `--wait-timeout SECONDS` | `86400` | CLI 最长轮询时间；不会停止实际计算 |
 | `--timeout SECONDS` | `3700` | 单次后端准备和编译请求的超时时间 |
+| `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
+| `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
 
 `--no-launch` 不能与 `--wait` 同时使用。达到 `--wait-timeout` 时，只是当前
 等待中的 CLI 退出，SimpoClient 和计算仍会继续。之后可使用
-[`calculation-status`](./calculation-status) 查询，或使用
+[`get-calculation-status`](./get-calculation-status) 查询，或使用
 [`stop-calculation`](./stop-calculation) 明确停止。
 
 `--print-protocol` 仅供明确的集成场景使用。启动协议包含短期凭证，不要公开

@@ -22,8 +22,8 @@ sidebar_label: set-project-variable
   `--tank` 用来定位数据行，但不能作为 `--field` 修改。应通过来源 BioModel
   或 DataSet 的结构修改流程改变它们。
 - 标准可写字段包括 `Value`、`Evaluation`、`InitialValue`、`DecimalPoint`、
-  `LowerBound` 和 `UpperBound`。后端也支持将来新增的 JSON 标量列，无需同步
-  修改 CLI，但 `Variable` 和 `Tank` 始终例外。
+  `LowerBound` 和 `UpperBound`。当前 Variable 表中存在的其他标量字段也可能
+  可写，但 `Variable` 和 `Tank` 始终例外。
 - 修改 `Value`、`InitialValue` 或任一边界时，后端会重新校验整行，并保持
   `LowerBound <= Value/InitialValue <= UpperBound`。
 - Tank 专属 Variable 使用 `--tank` 定位；全局 Variable 不要传该选项。

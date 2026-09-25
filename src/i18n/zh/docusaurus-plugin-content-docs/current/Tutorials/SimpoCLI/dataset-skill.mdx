@@ -1,0 +1,69 @@
+---
+id: dataset-skill
+title: SIMPO DataSet Skill
+sidebar_label: 总览
+---
+
+# SIMPO DataSet Skill
+
+所有 SIMPO Skill、Codex/Claude Code 调用名称和安装目录请参阅
+[Skill 总览](./simpo-skills)。
+
+SIMPO DataSet Skill 既可以根据工程条件设计污水处理 DataSet，也可以从论文、报告和
+已有工艺资料中提取 DataSet。它能够追溯来源中的处理单元、流量、运行条件、监测数据和
+时间序列，选择兼容 ASM2D 或 ASM3 的 Target，生成 SIMPO JSON 表格，核对水力平衡，
+并通过 SimpoCLI 创建 Private Draft；在设计模式下，还可以初步计算池体容积和运行流量。
+
+适合以下任务：
+
+- 根据流量、进水水质和出水限值设计 AO、AAO、UCT、分段进水或其他工艺；
+- 从论文、PDF、报告或补充材料中提取已有处理流程、运行条件、进水数据、监测值和
+  时间序列，同时保留证据位置和未解决缺口；
+- 把已有工艺说明或设计计算转换为 SIMPO 的 `Unit`、`Target`、`Tank`、`Pump`、
+  `Measured`、`Inflow`、`Flow` 和 `Connection` 表；
+- 创建 DataSet 前，检查流量守恒和跨表名称引用。
+
+对于已经准备好 JSON 的普通 DataSet create/read/update/sync/release 操作，请使用通用
+[SimpoCLI Skill](./simpo-cli-skill)。DataSet Skill 是 AI 辅助的设计与资料提取工作流。
+两种入口整合在同一个 Skill 中，因为它们最终生成并校验的是相同 DataSet 表格；拆分为
+两个名称会重复 JSON 结构、本地校验器和创建流程。
+
+Skill 使用当前 AI 助手会话所配置的 AI，不调用 SIMPO 后端 AI 创建接口。Codex 调用名为
+`$simpo-create-dataset`，Claude Code 插件命令为 `/simpo:simpo-create-dataset`。
+
+## 使用条件
+
+- 已安装 SimpoCLI，并可运行 `simpo`。
+- 请求创建时，已配置带 `write` scope 的 SIMPO API Token。
+- 用户提供 DataSet 名称，并提供足以确定处理目标的设计条件，或者提供包含待提取工艺和
+  数据的可读取资料。如果所需表格或时间序列位于补充材料中，也应一并提供。
+
+不要把 API Token 放入提示词或 JSON；需要时使用 `simpo configure` 交互配置。
+
+## 工作流与检查
+
+Skill 会先判断采用设计路径、资料提取路径，还是两者结合；并区分原文/用户提供值、计算
+结果、工程假设和未解决信息。创建前会展示：
+
+- 所选或提取的工艺，以及建议兼容的 BioModel 类型；
+- 论文/报告提取时的引用信息和证据位置；
+- 原文监测数据和时间序列，不会静默插补缺失值；
+- 需要补充设计时的池体、回流、排泥、曝气和沉淀计算；
+- 进水组分拆分和总量重构残差；
+- 每个恒容池的水力平衡；
+- 拟创建 JSON 路径和重要不确定项。
+
+随 Skill 提供的本地校验器会检查表头、自然顺序数字键、跨表名称、Target 和监测点引用、
+流量表达式、初始流量以及符号水力平衡。执行 `simpo create-dataset --json` 时，最终由
+SIMPO 解析器做权威校验。
+
+## 安全边界
+
+- 用户审核并确认设计后才创建资源。
+- 创建结果必须是 Private、version `0`、Draft DataSet。
+- 不自动创建 Project、运行计算、Release 或公开 DataSet，也不会把解析成功表述为已经
+  达到出水指标。
+- 缺失的原文数据、排放限值、矛盾的测量值和欠定的进水拆分必须保留并说明，不能静默
+  猜测。从论文提取并不自动授权使用工程假设补齐空缺。
+
+详细模拟、校准、设备选型和规范符合性仍属于后续独立工程工作。

@@ -1,0 +1,60 @@
+---
+id: sync-dataset
+title: Sync a DataSet
+sidebar_label: sync-dataset
+---
+
+# `sync-dataset`: copy a Release to its Draft
+
+Copy an owned published DataSet version to its same-name version `0` Draft. The
+source Release remains unchanged.
+
+## Requirements
+
+- Token scope: `write`
+- `RELEASE_ID` must identify an owned DataSet with `version > 0`.
+- A same-name version `0` Draft must exist.
+
+## Syntax
+
+```text
+simpo sync-dataset RELEASE_ID [OPTIONS]
+```
+
+Example:
+
+```text
+simpo sync-dataset 457
+```
+
+`RELEASE_ID` is the source ID, not the Draft ID. Options include
+`--timeout SECONDS`, `--api-token TOKEN`, and `--base-url URL`.
+
+On success, `sourceId` is the input Release ID and `id` is the Draft that was
+updated. These are different database records.
+
+## Result
+
+```json
+{
+  "success": true,
+  "id": 456,
+  "sourceId": 457,
+  "name": "InfluentData",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "released inputs",
+  "sourcepaperId": null,
+  "timeUnit": "day",
+  "volumeUnit": "m3",
+  "flowUnit": "m3/d",
+  "detail": {},
+  "createdAt": "2026-09-25T10:00:00",
+  "updatedAt": "2026-09-25T11:00:00",
+  "message": "DataSet operation success."
+}
+```
+
+`detail` is shown as an empty object only to keep the example compact; the
+actual response contains the complete synchronized DataSet detail.

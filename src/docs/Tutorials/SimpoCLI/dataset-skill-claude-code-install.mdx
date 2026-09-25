@@ -1,0 +1,63 @@
+---
+id: dataset-skill-claude-code-install
+title: Install for Claude Code
+sidebar_label: Installation
+---
+
+# Install DataSet Skill for Claude Code
+
+The Claude Code version is included in the `simpo` plugin from the SIMPO
+Marketplace. The same plugin contains the general SimpoCLI, BioModel creation,
+and DataSet creation Skills.
+
+## Prerequisites
+
+Claude Code, Git, and SimpoCLI are required. Marketplace installation is
+managed by Claude Code. The manual fallback directory is
+`~/.claude/skills/simpo-create-dataset`.
+
+## Install from the SIMPO Marketplace
+
+Run these slash commands inside an interactive Claude Code session:
+
+```text
+/plugin marketplace add Jakkwj/simpo-home
+/plugin install simpo@simpo
+```
+
+If prompted, reload plugins:
+
+```text
+/reload-plugins
+```
+
+Invoke the namespaced Skill as `/simpo:simpo-create-dataset`.
+
+## Verify
+
+```text
+/simpo:simpo-create-dataset Explain what this Skill does. Do not create anything.
+```
+
+Installation succeeded if Claude Code explains that it designs or extracts and
+validates a reviewed Private Draft DataSet. Continue with
+[Claude Code usage and examples](./dataset-skill-claude-code-usage).
+
+## Update
+
+```text
+/plugin marketplace update simpo
+```
+
+Then update `simpo@simpo` from Claude Code's Installed plugin view, or run:
+
+```text
+claude plugin update simpo@simpo
+```
+
+## Manual fallback
+
+If plugin support is unavailable, copy the complete repository directory
+`plugins/simpo/skills/simpo-create-dataset` to
+`~/.claude/skills/simpo-create-dataset`. The fallback invocation is
+`/simpo-create-dataset`, without the plugin namespace.

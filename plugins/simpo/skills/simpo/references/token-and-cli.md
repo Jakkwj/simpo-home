@@ -9,8 +9,8 @@
 | Show current identity and scopes | `simpo me` | authenticated Token |
 | Remove the saved local Token | `simpo logout` | none |
 
-Run the requested command directly. A published or development build may expose
-different commands than an older local installation; let the CLI report an
+Run the requested command directly. Different installed versions may expose
+different commands; let the CLI report an
 unsupported command or option instead of performing routine discovery first.
 
 ## Configure without leaking a Token
@@ -22,15 +22,15 @@ scripts.
 
 For normal use, rely on the saved Token. `--api-token` and the
 `SIMPO_API_TOKEN` environment variable are temporary override mechanisms and
-must not be printed or persisted. `--base-url` is a development override; omit
+must not be printed or persisted. `--base-url` is an explicit backend override; omit
 it unless the user explicitly targets another backend.
 
 Use `simpo me` when the user explicitly asks for identity/scopes or when
 diagnosing an authentication problem. Normal operations should be attempted
 directly; the CLI and backend enforce the required scopes:
 
-- `read`: list/read BioModels, DataSets, Projects, and Project Variables;
-- `write`: create/update/sync/release BioModels and update Project Variables;
+- `read`: list/read BioModels, DataSets, Projects, Project Variables, and calculation results;
+- `write`: create/update/sync/release BioModels, DataSets, and Projects, and update Project Variables;
 - `calculate`: prepare, inspect, and stop calculations.
 
 ## Output and automation

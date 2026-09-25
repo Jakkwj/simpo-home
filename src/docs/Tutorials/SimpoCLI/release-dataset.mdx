@@ -1,0 +1,67 @@
+---
+id: release-dataset
+title: Release a DataSet
+sidebar_label: release-dataset
+---
+
+# `release-dataset`: release a Draft DataSet
+
+Create a new immutable Release from one owned version `0` Draft DataSet. The
+Draft remains available for later editing.
+
+## Requirements
+
+- Token scope: `write`
+- `DRAFT_ID` must identify an owned version `0` Draft.
+- `--privacy` must be `Private` or `Public`.
+
+## Syntax
+
+```text
+simpo release-dataset DRAFT_ID [OPTIONS]
+```
+
+Examples:
+
+```text
+simpo release-dataset 456
+simpo release-dataset 456 --privacy Public --description "Published inputs"
+```
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--privacy Private\|Public` | `Private` | Visibility of the new Release |
+| `--description TEXT` | copy the Draft | Description of the Release |
+| `--timeout SECONDS` | `30.0` | Maximum time for the release request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+On success, `sourceId` is the Draft input and `id` is a newly created Release
+with `version >= 1`.
+
+## Result
+
+```json
+{
+  "success": true,
+  "id": 457,
+  "sourceId": 456,
+  "name": "InfluentData",
+  "state": "Release",
+  "privacy": "Private",
+  "version": 1,
+  "description": "Published inputs",
+  "sourcepaperId": null,
+  "timeUnit": "day",
+  "volumeUnit": "m3",
+  "flowUnit": "m3/d",
+  "detail": {},
+  "createdAt": "2026-09-25T11:30:00",
+  "updatedAt": "2026-09-25T11:30:00",
+  "message": "DataSet operation success."
+}
+```
+
+The example abbreviates the complete released `detail` as `{}`.

@@ -45,8 +45,19 @@ positive `id`, the requested name, `state: "Draft"`, `privacy: "Private"`,
 
 `update-biomodel ID --json FILE` replaces model tables rather than patching one
 cell. Inspect the JSON and target first. The input object must omit `Balance`
-and be at most 20 MiB. Updating can synchronize dependent Projects; report
+and be at most 20 MiB. Updating synchronizes dependent Projects; report
 `affectedProjectCount` and do not run it for an informational request.
+
+When Component, Parameter, or ProcessName identifiers change, the backend
+compares the stored Draft with the submitted JSON and automatically creates the
+same `changeValueBioModel` dictionary used by the web editor. It uses that
+dictionary to migrate Project Variable, Conversion, Activator, and formula
+references and to synchronize Component names in Ionization. No mapping file is
+required.
+
+Updating a Draft rebuilds dependent Project detail and serialized caches, sets
+`biomodel_draft_changed`, and marks any existing calculation engine result as
+requiring recalculation.
 
 ## Sync
 

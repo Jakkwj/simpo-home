@@ -1,0 +1,61 @@
+{
+  "Unit": [
+    {"0":"Time","1":"Volume","2":"Flow","3":"Area","4":"Height"},
+    {"0":"day","1":"m3","2":"m3/d","3":"m2","4":"m"}
+  ],
+  "Target": [
+    {"0":"Symbol","1":"Unit","2":"Name","3":"Description","4":"Oxygen","5":"TSS"},
+    {"0":"S_O2","1":"gO2/m3","2":"Dissolved oxygen","3":"ASM2D dissolved oxygen.","4":true,"5":false},
+    {"0":"S_F","1":"gCOD/m3","2":"Fermentable substrate","3":"Readily biodegradable fermentable COD.","4":false,"5":false},
+    {"0":"S_VFA","1":"gCOD/m3","2":"Volatile fatty acids","3":"Readily biodegradable VFA COD.","4":false,"5":false},
+    {"0":"S_U","1":"gCOD/m3","2":"Soluble inert organics","3":"Soluble unbiodegradable COD.","4":false,"5":false},
+    {"0":"S_NHx","1":"gN/m3","2":"Ammonium nitrogen","3":"Ammonium plus ammonia nitrogen.","4":false,"5":false},
+    {"0":"S_NOx","1":"gN/m3","2":"Nitrate and nitrite nitrogen","3":"Combined oxidized nitrogen.","4":false,"5":false},
+    {"0":"S_N2","1":"gN/m3","2":"Dissolved nitrogen gas","3":"Dissolved nitrogen gas.","4":false,"5":false},
+    {"0":"S_PO4","1":"gP/m3","2":"Orthophosphate","3":"Soluble inorganic phosphorus.","4":false,"5":false},
+    {"0":"S_Alk","1":"molHCO3-/m3","2":"Alkalinity","3":"Influent alkalinity on bicarbonate-equivalent basis.","4":false,"5":false},
+    {"0":"X_U_E","1":"gCOD/m3","2":"Particulate inert organics","3":"Particulate unbiodegradable COD.","4":false,"5":false},
+    {"0":"X_B","1":"gCOD/m3","2":"Slowly biodegradable substrate","3":"Slowly biodegradable particulate COD.","4":false,"5":false},
+    {"0":"X_OHO","1":"gCOD/m3","2":"Ordinary heterotrophic organisms","3":"Influent heterotrophic biomass used for the preliminary solids closure.","4":false,"5":false},
+    {"0":"X_PAO","1":"gCOD/m3","2":"Phosphate accumulating organisms","3":"PAO biomass.","4":false,"5":false},
+    {"0":"X_PAO_PP","1":"gP/m3","2":"PAO polyphosphate","3":"Stored PAO polyphosphate.","4":false,"5":false},
+    {"0":"X_PAO_PHA","1":"gCOD/m3","2":"PAO storage product","3":"Stored PAO PHA.","4":false,"5":false},
+    {"0":"X_ANO","1":"gCOD/m3","2":"Autotrophic nitrifying organisms","3":"Nitrifying biomass.","4":false,"5":false},
+    {"0":"X_MeOH","1":"gMeOH/m3","2":"Metal hydroxide","3":"Metal hydroxide precipitate.","4":false,"5":false},
+    {"0":"X_MeP","1":"gMeP/m3","2":"Metal phosphate","3":"Metal phosphate precipitate.","4":false,"5":false},
+    {"0":"X_TSS","1":"gTSS/m3","2":"Total suspended solids","3":"Measured total suspended solids marker.","4":false,"5":true}
+  ],
+  "Tank": [
+    {"0":"Name","1":"Type","2":"BioCalculated","3":"Volume","4":"ConstantVolume","5":"SettlingFactor","6":"DiffuserNumber","7":"DiffuserDepth","8":"AlphaFactor","9":"BetaFactor"},
+    {"0":"Anaerobic","1":"CSTR","2":true,"3":625,"4":true,"5":null,"6":0,"7":0,"8":0,"9":0},
+    {"0":"Anoxic","1":"CSTR","2":true,"3":1041.6666667,"4":true,"5":null,"6":0,"7":0,"8":0,"9":0},
+    {"0":"Aerobic","1":"CSTR","2":true,"3":2500,"4":true,"5":null,"6":500,"7":5,"8":0.6,"9":0.95},
+    {"0":"SecondarySettler","1":"Point Settling","2":false,"3":[500,500],"4":true,"5":0.98,"6":null,"7":null,"8":null,"9":null}
+  ],
+  "Pump": [
+    {"0":"Name","1":"Type","2":"SOTEa","3":"SOTEb","4":"SOTEc"},
+    {"0":"AirBlower","1":"Air","2":0.3,"3":0,"4":0}
+  ],
+  "Measured": [],
+  "Inflow": [
+    {"0":"Inflow","1":"Influent","2":"Influent","3":"Influent","4":"Influent","5":"Influent","6":"Influent","7":"Influent","8":"Influent","9":"Influent","10":"Influent","11":"Influent","12":"Influent","13":"Influent","14":"Influent","15":"Influent","16":"Influent","17":"Influent","18":"Influent","19":"Influent"},
+    {"0":"Target","1":"S_O2","2":"S_F","3":"S_VFA","4":"S_U","5":"S_NHx","6":"S_NOx","7":"S_N2","8":"S_PO4","9":"S_Alk","10":"X_U_E","11":"X_B","12":"X_OHO","13":"X_PAO","14":"X_PAO_PP","15":"X_PAO_PHA","16":"X_ANO","17":"X_MeOH","18":"X_MeP","19":"X_TSS"},
+    {"0":0,"1":0,"2":70,"3":67.5,"4":40,"5":35,"6":0,"7":0,"8":3.075,"9":5,"10":70,"11":152.5,"12":92.3611111,"13":0,"14":0,"15":0,"16":0,"17":0,"18":0,"19":250}
+  ],
+  "Flow": [
+    {"0":"Flow","1":"Qin","2":"Flow","3":"Qras","4":"Flow","5":"Qir","6":"Flow","7":"Qw","8":"Flow","9":"Qair"},
+    {"0":0,"1":10000,"2":0,"3":5000,"4":0,"5":20000,"6":0,"7":100,"8":0,"9":60000}
+  ],
+  "Connection": [
+    {"0":"From","1":"Flow","2":"Into"},
+    {"0":"Influent","1":"Qin","2":"Anaerobic"},
+    {"0":"SecondarySettler_Blanket","1":"Qras","2":"Anaerobic"},
+    {"0":"Anaerobic","1":"Qin+Qras","2":"Anoxic"},
+    {"0":"Aerobic","1":"Qir","2":"Anoxic"},
+    {"0":"Anoxic","1":"Qin+Qras+Qir","2":"Aerobic"},
+    {"0":"Aerobic","1":"Qin+Qras","2":"SecondarySettler"},
+    {"0":"SecondarySettler_Outlet","1":"Qin-Qw","2":"Outflow"},
+    {"0":"SecondarySettler_Blanket","1":"Qw","2":"Wasted"},
+    {"0":"AirBlower","1":"Qair","2":"Aerobic"}
+  ]
+}

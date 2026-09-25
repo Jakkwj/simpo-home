@@ -1,0 +1,83 @@
+---
+id: create-dataset
+title: Create a DataSet
+sidebar_label: create-dataset
+---
+
+# `create-dataset`: create a Draft DataSet
+
+Create an owned, Private, version `0` Draft DataSet. Without `--json`, the
+backend creates and parses the standard blank DataSet. With `--json`, it parses
+the supplied complete DataSet detail during the same create operation.
+
+## Requirements
+
+- Token scope: `write`
+- The name must be 1 to 230 characters and unique among the account's Draft DataSets.
+- JSON must contain `Unit`, `Target`, `Tank`, `Pump`, `Measured`, `Inflow`,
+  `Flow`, and `Connection` arrays.
+- `Unit`, `Target`, `Tank`, and `Connection` must contain their header rows.
+  The other four tables may be empty arrays.
+
+## Syntax
+
+```text
+simpo create-dataset NAME [--json DETAIL.json] [OPTIONS]
+```
+
+Examples:
+
+```text
+simpo create-dataset InfluentData
+simpo create-dataset InfluentData --json ./DataSet.json
+```
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--json FILE` | standard blank DataSet | UTF-8 complete DataSet `detail` object |
+| `--description TEXT` | empty | Optional description |
+| `--sourcepaper-id ID` | no source paper | Optional source paper database ID |
+| `--timeout SECONDS` | `3700.0` | Maximum parsing and HTTP time |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+## Result
+
+The response contains the new Draft metadata and the complete parsed `detail`.
+The table rows below are a compact blank-DataSet example; JSON-based creation
+returns the submitted and normalized rows instead.
+
+```json
+{
+  "success": true,
+  "id": 456,
+  "sourceId": null,
+  "name": "InfluentData",
+  "state": "Draft",
+  "privacy": "Private",
+  "version": 0,
+  "description": "",
+  "sourcepaperId": null,
+  "timeUnit": "day",
+  "volumeUnit": "m3",
+  "flowUnit": "m3/d",
+  "detail": {
+    "Unit": [
+      {"0": "Time", "1": "Volume", "2": "Flow", "3": "Area", "4": "Height"},
+      {"0": "day", "1": "m3", "2": "m3/d", "3": "m2", "4": "m"}
+    ],
+    "Target": [{"0": "Symbol", "1": "Unit", "2": "Name", "3": "Description", "4": "Oxygen", "5": "TSS"}],
+    "Tank": [{"0": "Name", "1": "Type", "2": "BioCalculated", "3": "Volume", "4": "ConstantVolume", "5": "SettlingFactor", "6": "DiffuserNumber", "7": "DiffuserDepth", "8": "AlphaFactor", "9": "BetaFactor"}],
+    "Pump": [],
+    "Measured": [],
+    "Inflow": [],
+    "Flow": [],
+    "Connection": [{"0": "From", "1": "Flow", "2": "Into"}]
+  },
+  "createdAt": "2026-09-25T10:00:00",
+  "updatedAt": "2026-09-25T10:00:00",
+  "message": "DataSet operation success."
+}
+```
