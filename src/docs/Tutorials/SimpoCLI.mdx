@@ -137,7 +137,8 @@ uninstalling.
 3. Select **Create Token**.
 4. Enter a recognizable name, choose an expiry from `1` to `365` days, and
    grant only the scopes you need:
-   - `read` for all `get-*` commands, including paginated calculation-result retrieval;
+   - `read` for all `get-*` commands, including paginated
+     `get-calculation-result` retrieval;
    - `write` for BioModel, DataSet, and Project create/update/sync/release commands, and `set-project-variable`;
    - `calculate` for calculation preparation, status, and stop commands.
 5. Select **Create Token**, then immediately copy the complete Token from the
@@ -236,7 +237,7 @@ complete command directory.
 | --- | --- | --- |
 | [`calculate`](./SimpoCLI/calculate) | Prepare a calculation and start SimpoClient | `calculate` |
 | [`get-calculation-status`](./SimpoCLI/get-calculation-status) | Read current calculation status | `calculate` |
-| [`get-calculation-result`](./SimpoCLI/calculation-result) | Navigate and page stored calculation results without an unbounded response | `read` |
+| [`get-calculation-result`](./SimpoCLI/get-calculation-result) | Select and page stored calculation result series without an unbounded response | `read` |
 | [`stop-calculation`](./SimpoCLI/stop-calculation) | Stop a calculation and matching local processes | `calculate` |
 
 ## Output contract

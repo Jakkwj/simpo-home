@@ -1,7 +1,7 @@
 ---
-id: calculation-result
+id: get-calculation-result
 title: 获取计算结果
-sidebar_label: calculation-result
+sidebar_label: get-calculation-result
 ---
 
 # `get-calculation-result`
@@ -25,13 +25,17 @@ simpo get-calculation-result PROJECT_ID
 # 2. 列出所选引擎的顶层结果项
 simpo get-calculation-result PROJECT_ID --engine Simulation
 
-# 3. 使用点号路径选择叶子结果并分页读取
+# 3. 使用点号路径选择一条具体结果序列，并分页读取
 simpo get-calculation-result PROJECT_ID \
   --engine Simulation \
   --section Tank1.Predicted.S_NH \
   --offset 0 --limit 1000 \
   --output result-page.json
 ```
+
+`--section` 使用点号逐层定位结果。例如 `Tank1.Predicted.S_NH` 表示依次进入
+`Tank1`、`Predicted`，然后读取 `S_NH` 这一条具体结果序列。返回的 `data`
+是该序列的当前分页数据，用户不需要了解计算结果的内部树形结构。
 
 如果 `SIM`、`OAT_AR`、`LHS`、`GA` 等引擎别名能对应已保存的结果类型，也可以直接
 使用。响应包含 `kind`、`mode`、`total`、`offset`、`limit`、`hasNext`，以及
@@ -66,7 +70,7 @@ simpo get-calculation-result PROJECT_ID \
 }
 ```
 
-选择叶子结果后，只返回当前页：
+选择具体结果序列后，只返回当前页：
 
 ```json
 {

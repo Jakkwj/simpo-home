@@ -200,8 +200,8 @@ const sidebars = {
           items: [
             'Tutorials/SimpoCLI/calculate',
             'Tutorials/SimpoCLI/get-calculation-status',
+            'Tutorials/SimpoCLI/get-calculation-result',
             'Tutorials/SimpoCLI/stop-calculation',
-            'Tutorials/SimpoCLI/calculation-result',
           ],
         },
         // Skill 独立放在命令文档之后。按具体 Skill 功能分组，方便后续继续扩展。

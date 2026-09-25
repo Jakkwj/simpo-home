@@ -75,7 +75,9 @@ Navigate before retrieving values:
 2. Add `--engine` to list that engine's top-level sections without returning
    their complete values.
 3. Add a dotted `--section` path, such as
-   `Tank1.Predicted.S_NH`, to retrieve the selected leaf.
+   `Tank1.Predicted.S_NH`, to select one specific result series. Each path part
+   identifies the next nested result level: `Tank1`, then `Predicted`, then the
+   `S_NH` series.
 4. Walk `offset` while `hasNext` is true. Reduce `--limit` or select a deeper
    section if the server reports that a page exceeds its response-size limit.
 
