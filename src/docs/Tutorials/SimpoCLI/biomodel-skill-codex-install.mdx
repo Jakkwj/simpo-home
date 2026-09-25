@@ -8,18 +8,22 @@ sidebar_label: Installation
 
 Install this Skill directly from the repository into Codex's Skill directory.
 
+See the [Skills overview](./simpo-skills) for the complete Skill directory and
+function table.
+
 ## Prerequisites
 
-Verify these commands first:
+Codex and SimpoCLI are required. The CLI/backend will check authentication and
+the `write` scope when the creation command is run:
 
 ```text
 codex --help
 simpo --help
-simpo me
 ```
 
-Creating a BioModel requires `write` scope. Run `simpo configure` first if no
-valid Token is saved.
+If no valid Token is saved, run `simpo configure` interactively when needed.
+The default Skill directory is `~/.codex/skills/simpo-create-biomodel`; with
+`CODEX_HOME` set, use `$CODEX_HOME/skills/simpo-create-biomodel`.
 
 ## Install from this repository
 

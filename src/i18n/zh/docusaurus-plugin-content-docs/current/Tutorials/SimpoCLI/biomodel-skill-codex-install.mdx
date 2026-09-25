@@ -8,17 +8,20 @@ sidebar_label: 安装
 
 直接从仓库将 Skill 安装到 Codex 的 Skill 目录。
 
+完整的 Skill 安装目录和功能对照请参阅 [Skill 总览](./simpo-skills)。
+
 ## 安装前准备
 
-先确认以下命令可以运行：
+需要安装 Codex 和 SimpoCLI。创建命令执行时，CLI/后端会检查认证和 `write` scope：
 
 ```text
 codex --help
 simpo --help
-simpo me
 ```
 
-创建 BioModel 需要 `write` scope；如果尚未配置 Token，请先运行 `simpo configure`。
+如果尚未保存有效 Token，需要执行创建命令时再交互运行 `simpo configure`。默认 Skill
+目录为 `~/.codex/skills/simpo-create-biomodel`；如果设置了 `CODEX_HOME`，则使用
+`$CODEX_HOME/skills/simpo-create-biomodel`。
 
 ## 从本仓库安装
 

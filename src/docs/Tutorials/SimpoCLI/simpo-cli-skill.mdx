@@ -6,10 +6,14 @@ sidebar_label: Overview
 
 # SimpoCLI Skill
 
+Use the [Skills overview](./simpo-skills) to compare all SIMPO Skills, their
+Codex and Claude Code invocation names, and installation directories.
+
 The SimpoCLI Skill is an on-demand operating guide for an AI coding assistant.
-It teaches the assistant how to discover the installed `simpo` interface,
-select the right command, protect API Tokens, obtain required scopes, review
-state-changing operations, parse JSON results, and handle ambiguous failures.
+It teaches the assistant how to select the right installed `simpo` command,
+protect API Tokens, let the CLI and backend enforce authentication and scopes,
+review state-changing operations, parse JSON results, and handle ambiguous
+failures.
 
 Yes, it can reduce repeated prompt input. A Skill uses progressive disclosure:
 
@@ -19,10 +23,10 @@ Yes, it can reduce repeated prompt input. A Skill uses progressive disclosure:
    BioModel or calculation guidance.
 
 You therefore no longer need to paste the complete CLI manual into every
-conversation. Invoking the Skill still consumes some context, and `simpo
-COMMAND --help` is deliberately checked because the installed CLI version is
-the source of truth. The benefit is less repeated and irrelevant context, not
-zero token usage.
+conversation. Invoking the Skill still consumes some context. The requested
+command is run directly; `--help` and `simpo me` are used only when syntax is
+unclear, the command reports an error, or the user asks for identity/scopes. The
+benefit is less repeated and irrelevant context, not zero token usage.
 
 ## Scope
 
@@ -43,8 +47,8 @@ Against the current development CLI source, the covered public commands are:
 `stop-calculation`.
 
 This is Skill coverage, not a promise that an older installed executable exposes
-all 17 commands. The Skill always checks the installed `simpo --help` and asks
-for a SimpoCLI update when a required command is unavailable.
+all 17 commands. The requested command and backend response are authoritative;
+an unavailable command is reported and may require a SimpoCLI update.
 
 This Skill operates SimpoCLI; it does not install SimpoCLI or include an API
 Token. It also does not replace the specialized BioModel Skill, which analyzes
@@ -52,7 +56,8 @@ research papers and derives model tables.
 
 ## Safety model
 
-- The installed `simpo --help` and `simpo COMMAND --help` are authoritative.
+- The installed SimpoCLI and backend responses are authoritative for command
+  availability, authentication, ownership, validation, and scopes.
 - Tokens are configured through the hidden `simpo configure` prompt and must not
   be pasted into the AI conversation.
 - Informational questions do not authorize state changes.

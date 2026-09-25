@@ -8,18 +8,19 @@ description: Operate SIMPO through the installed SimpoCLI safely and efficiently
 Treat the installed CLI as the source of truth. Use this Skill as task routing and
 safety guidance, then read only the reference for the requested command group.
 
-## Establish the installed interface
+## Run SimpoCLI directly
 
-1. Run `simpo --version` and `simpo --help` before planning commands.
-2. Run `simpo COMMAND --help` before invoking each command. Options and commands
-   can differ between installed releases.
-3. If a command described by a reference is absent from `simpo --help`, do not
-   attempt it or emulate it with direct HTTP requests; explain that the
-   installed SimpoCLI must be updated.
-4. Use `simpo me` to verify the selected Token and its scopes before an API
-   operation. Never ask the user to paste a Token into chat or place one in a
-   command, script, generated file, or log. Direct the user to `simpo configure`
-   for interactive hidden input when configuration is needed.
+1. Run the requested `simpo` command directly. Do not run `simpo --version`,
+   `simpo --help`, command-specific `--help`, or `simpo me` as routine
+   preflight checks.
+2. Treat the CLI and backend response as authoritative for command availability,
+   authentication, ownership, validation, and scopes. If a command returns a
+   usage or unsupported-command error, then consult the relevant `--help` and
+   explain whether SimpoCLI must be updated. Use `simpo me` when the user asks
+   for identity/scopes or when diagnosing an authentication problem.
+3. Never ask the user to paste a Token into chat or place one in a command,
+   script, generated file, or log. Direct the user to `simpo configure` for
+   interactive hidden input when configuration is needed.
 
 ## Route the task
 
@@ -43,6 +44,8 @@ single operation.
    material effects before running a command, especially Project synchronization
    during BioModel updates, releases, public visibility, calculation starts, and
    calculation stops.
+   Do not run a read-only command solely to preflight Token scopes; let the
+   requested command and backend perform that check.
 3. Do not perform a write merely because the user asked how a command works.
    Execute it only when the user requested the state change. Require explicit
    direction before creating a Public Release.

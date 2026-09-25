@@ -10,9 +10,12 @@ The `simpo` Claude Code plugin packages the same `simpo` Skill and references
 used by the direct Codex Skill installation. It routes SIMPO work through the
 installed SimpoCLI and does not contain an API Token.
 
+See the [Skills overview](./simpo-skills) for all Skills, invocation names, and
+installation directories.
+
 ## Prerequisites
 
-Verify Claude Code and SimpoCLI:
+Claude Code and SimpoCLI are required:
 
 ```text
 claude --help
@@ -20,14 +23,17 @@ simpo --version
 simpo --help
 ```
 
-Configure a Token interactively when needed:
+Configure a Token interactively when a command needs authentication:
 
 ```text
 simpo configure
-simpo me
 ```
 
 Never paste the Token into a Claude prompt.
+
+The Marketplace installation is managed by Claude Code and its plugin cache
+path is not a stable user directory. If plugins are unavailable, the manual
+fallback directory is `~/.claude/skills/simpo`.
 
 ## Install from the SIMPO Marketplace
 
@@ -61,8 +67,8 @@ Run this in a new or reloaded session:
 /simpo:simpo What does this Skill do? Do not change anything.
 ```
 
-The response should explain current-version help discovery, Token-scope checks,
-safe SIMPO resource operations, and JSON result verification. Continue with
+The response should explain direct SimpoCLI operation, safe SIMPO resource
+operations, and JSON result verification. Continue with
 [Claude Code usage and examples](./simpo-cli-skill-claude-code-usage).
 
 ## Update

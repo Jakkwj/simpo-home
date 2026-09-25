@@ -1,0 +1,76 @@
+---
+id: simpo-skills
+title: SIMPO Skills Overview
+sidebar_label: Skills overview
+---
+
+# SIMPO Skills Overview
+
+This page is the directory for the AI Skills maintained with SIMPO. It shows
+what each Skill does, how to invoke it in Codex or Claude Code, where a direct
+installation is placed, and where to find the detailed installation and usage
+guides.
+
+The Codex and Claude Code packages use the same Skill content; only the
+installation and invocation syntax differs.
+
+## Current Skills
+
+| Skill | Main function | Codex | Codex installation directory | Claude Code | Claude Code installation directory |
+| --- | --- | --- | --- | --- | --- |
+| [SimpoCLI](./simpo-cli-skill) | Operate the installed SimpoCLI: authentication, BioModels, DataSets, Projects, Variables, and calculations. | `$simpo` | `$CODEX_HOME/skills/simpo`<br />Default: `~/.codex/skills/simpo` | `/simpo:simpo` | Recommended: managed by the `simpo` plugin.<br />Fallback: `~/.claude/skills/simpo` |
+| [SIMPO BioModel](./biomodel-skill) | Analyze a wastewater-treatment paper, trace evidence, derive supported model data, and prepare a reviewed BioModel. | `$simpo-create-biomodel` | `$CODEX_HOME/skills/simpo-create-biomodel`<br />Default: `~/.codex/skills/simpo-create-biomodel` | `/simpo:simpo-create-biomodel` | Recommended: managed by the `simpo` plugin.<br />Fallback: `~/.claude/skills/simpo-create-biomodel` |
+
+Claude Code's recommended Marketplace installation is managed by Claude Code,
+so its plugin cache path is implementation-defined and should not be treated as
+a stable user installation directory. The fallback paths above are the direct
+personal Skill directories used when plugin support is unavailable.
+
+## Choose a Skill
+
+- Use **SimpoCLI** when the task operates on existing SIMPO resources or runs a
+  calculation. Examples include reading Project Variables, updating a Draft
+  BioModel, or checking calculation status.
+- Use **SIMPO BioModel** when the task starts with a research paper and needs a
+  scientifically reviewed BioModel. It asks for review before creating the
+  Private Draft through SimpoCLI.
+- Use both when a paper-derived BioModel must later be inspected or used in a
+  Project. The BioModel Skill handles scientific extraction; the SimpoCLI Skill
+  handles ordinary CLI operations.
+
+## Install the Skills
+
+### Codex
+
+Ask Codex's built-in Skill Installer to install the required repository path:
+
+```text
+Use $skill-installer to install this Skill from:
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo
+```
+
+For the BioModel Skill, replace the final path with
+`plugins/simpo/skills/simpo-create-biomodel`. Manual installation copies the
+complete directory, including `SKILL.md` and `references/`, to the matching
+`$CODEX_HOME/skills/<skill-name>` directory. Restart Codex after installation.
+
+### Claude Code
+
+The recommended installation installs the single `simpo` plugin, which contains
+both current Skills:
+
+```text
+/plugin marketplace add Jakkwj/simpo-home
+/plugin install simpo@simpo
+```
+
+After a reload, use the namespaced commands shown in the table. If the Claude
+Code version cannot install plugins, copy each complete Skill directory to its
+matching `~/.claude/skills/<skill-name>` fallback path.
+
+## Detailed Guides
+
+| Skill | Codex installation | Codex usage | Claude Code installation | Claude Code usage |
+| --- | --- | --- | --- | --- |
+| SimpoCLI | [Install](./simpo-cli-skill-codex-install) | [Use](./simpo-cli-skill-codex-usage) | [Install](./simpo-cli-skill-claude-code-install) | [Use](./simpo-cli-skill-claude-code-usage) |
+| SIMPO BioModel | [Install](./biomodel-skill-codex-install) | [Use](./biomodel-skill-codex-usage) | [Install](./biomodel-skill-claude-code-install) | [Use](./biomodel-skill-claude-code-usage) |

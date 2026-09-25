@@ -1,8 +1,8 @@
 # BioModel Commands
 
-Read `simpo COMMAND --help` for the installed release before using any syntax
-below. Every command in this reference requires the `write` or `read` scope
-shown by `simpo me`.
+Run the requested command directly using the syntax below. The CLI and backend
+enforce authentication, ownership, and the required `read` or `write` scope;
+do not run `--help` or `simpo me` as routine preflight checks.
 
 ## Choose an operation
 
@@ -15,9 +15,9 @@ shown by `simpo me`.
 | Copy Release/Standard to Draft | `sync-biomodel ID` | `write` | Source ID is published; result is a Draft |
 | Create immutable Release | `release-biomodel ID` | `write` | Source is owned version 0 Draft |
 
-If the installed top-level help omits an operation, stop and request a SimpoCLI
-update. For example, the currently installed 0.1.0 package may expose only
-calculation and Project Variable commands; it cannot perform BioModel writes.
+If a command returns an unknown-command or unsupported-operation error, consult
+that command's `--help` and request a SimpoCLI update when the operation is not
+available. Do not emulate it with direct HTTP requests.
 
 ## Resolve and inspect
 

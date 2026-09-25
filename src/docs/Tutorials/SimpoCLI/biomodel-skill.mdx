@@ -6,6 +6,9 @@ sidebar_label: Overview
 
 # SIMPO BioModel Skill
 
+Use the [Skills overview](./simpo-skills) to compare this Skill with the general
+SimpoCLI Skill and find both platform-specific installation directories.
+
 SIMPO BioModel Skill helps an AI coding assistant extract a wastewater-treatment
 model from a paper, audit its evidence, derive supported Composition and
 Ionization data, and create a SIMPO BioModel through SimpoCLI. It currently
@@ -27,7 +30,8 @@ You can invoke it in English or Chinese. In Codex the Skill name remains
 ## Requirements
 
 - SimpoCLI is installed and available as `simpo`.
-- A SIMPO API Token with `write` scope is configured and passes `simpo me`.
+- A SIMPO API Token with `write` scope is configured. SimpoCLI and the backend
+  enforce authentication and scope requirements when creation is requested.
 - The AI assistant can read the paper and any required supplementary material.
   PDF is recommended but not required; full-text HTML or OCR text with the
   original tables can also be used.

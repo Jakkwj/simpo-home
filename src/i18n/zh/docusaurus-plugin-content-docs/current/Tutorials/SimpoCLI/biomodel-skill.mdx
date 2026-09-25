@@ -6,6 +6,8 @@ sidebar_label: 总览
 
 # SIMPO BioModel Skill
 
+所有 SIMPO Skill、Codex/Claude Code 调用名称和安装目录请参阅 [Skill 总览](./simpo-skills)。
+
 SIMPO BioModel Skill 帮助 AI 编程助手从污水处理模型论文中提取模型、核对证据、
 推导有依据的 Composition 与 Ionization，并通过 SimpoCLI 创建 SIMPO BioModel。
 目前支持 Codex 和 Claude Code，请在左侧目录中选择对应的安装与使用页面。
@@ -21,7 +23,8 @@ Claude Code 插件命令为 `/simpo:simpo-create-biomodel`。
 ## 使用条件
 
 - 已安装 SimpoCLI，并可通过 `simpo` 命令运行。
-- 已配置包含 `write` scope 的 SIMPO API Token，可通过 `simpo me` 验证。
+- 已配置包含 `write` scope 的 SIMPO API Token。请求创建时由 SimpoCLI 和后端负责认证及
+  scope 校验。
 - AI 助手能够读取论文及所需补充材料。推荐使用 PDF，但不是硬性要求；完整 HTML
   页面，或带有原始表格的 OCR 文本也可以使用。
 

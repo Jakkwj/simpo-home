@@ -1,16 +1,19 @@
 # Calculation Commands
 
 Calculations require a Token with `calculate` scope. `calculate` also requires
-the matching platform's SimpoClient unless `--no-launch` is used. Read the
-installed `--help` because engine choices and ranges may change.
+the matching platform's SimpoClient unless `--no-launch` is used. Run the
+requested calculation directly; the CLI and backend enforce these requirements.
+Consult `--help` only when syntax or engine options are unclear, or when the
+command reports a usage error.
 
 ## Workflow
 
 1. Resolve and inspect the owned Project. Only its version 0 Draft is calculable.
 2. Read current Project Variables when the requested calculation depends on
    calibration bounds or evaluation flags.
-3. Run `simpo calculate PROJECT_ID --help`, select an engine and only its
-   relevant options, then show the material settings before starting work.
+3. Run `simpo calculate PROJECT_ID` directly with the requested engine and only
+   its relevant options, then show the material settings before starting work.
+   Do not invoke `--help` as a routine preflight check.
 4. Start the calculation. Do not use `--print-protocol` unless an explicit
    integration needs it; the protocol contains a short-lived credential and
    must not be logged or shared.

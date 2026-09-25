@@ -9,9 +9,11 @@ sidebar_label: 安装
 Claude Code 的 `simpo` 插件与 Codex 直接安装版本共用同一个 `simpo` Skill 和参考资料。
 它通过当前安装的 SimpoCLI 操作 SIMPO，不包含 API Token。
 
+所有 Skill、调用名称和安装目录的对照请参阅 [Skill 总览](./simpo-skills)。
+
 ## 安装前准备
 
-确认 Claude Code 和 SimpoCLI 可用：
+需要安装 Claude Code 和 SimpoCLI：
 
 ```text
 claude --help
@@ -19,14 +21,16 @@ simpo --version
 simpo --help
 ```
 
-需要时在终端中交互配置 Token：
+命令需要认证时，再在终端中交互配置 Token：
 
 ```text
 simpo configure
-simpo me
 ```
 
 不要把 Token 粘贴到 Claude 提示词中。
+
+Marketplace 安装由 Claude Code 管理，插件缓存目录不是稳定的用户目录。如果不支持
+插件，手工备用目录为 `~/.claude/skills/simpo`。
 
 ## 从 SIMPO Marketplace 安装
 
@@ -59,7 +63,7 @@ Claude Code 官方支持仓库 Marketplace。请在 Claude Code 交互会话中�
 /simpo:simpo 请说明这个 Skill 的作用，不要执行任何修改。
 ```
 
-响应应说明它会检查当前版本的帮助、Token scope、SIMPO 资源操作和 JSON 结果验证。
+响应应说明它会直接调用 SimpoCLI、安全操作 SIMPO 资源并验证 JSON 结果。
 下一步参阅 [Claude Code 使用方法与示例](./simpo-cli-skill-claude-code-usage)。
 
 ## 更新

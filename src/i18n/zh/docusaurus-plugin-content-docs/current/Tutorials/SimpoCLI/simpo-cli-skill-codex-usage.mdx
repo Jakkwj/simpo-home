@@ -19,8 +19,9 @@ sidebar_label: 使用方法与示例
 请使用 $simpo 查看 Project 706 的全部 Variable，并汇总 Evaluation=true 的参数，不要修改数据。
 ```
 
-Skill 会检查当前安装版本的帮助、验证 Token scope、在按名称查找时遍历全部分页，
-并解析 JSON 输出。
+Skill 会直接执行请求的命令；SimpoCLI 与后端负责认证、归属和 scope 校验。按名称查找
+时它会遍历全部分页，并解析 JSON 输出。只有命令报错、语法不清或用户询问身份/scope
+时，才读取 `--help` 或运行 `simpo me`。
 
 ## 写操作示例
 
@@ -49,5 +50,5 @@ Skill 会区分“准备并启动成功”和“计算完成”。除非明确�
 
 ## 安装版本差异
 
-如果 Skill 资料中的命令不在当前 `simpo --help` 中，Skill 会停止并建议升级
-SimpoCLI，而不会绕过 CLI 自行构造 OpenAPI 请求。
+如果请求的命令不可用或被拒绝，应报告 CLI/后端错误，并在适当时建议升级 SimpoCLI；
+不会绕过 CLI 自行构造 OpenAPI 请求。

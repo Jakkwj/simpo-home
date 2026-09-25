@@ -202,6 +202,7 @@ const sidebars = {
           collapsible: true,
           collapsed: true,
           items: [
+            'Tutorials/SimpoCLI/simpo-skills',
             {
               type: 'category',
               label: 'SimpoCLI',

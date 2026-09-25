@@ -1,11 +1,13 @@
 # DataSet and Project Commands
 
-Inspect `simpo --help` and the selected command's `--help` before use. These
-operations require a Token with the indicated scope.
+Run the requested command directly. The CLI and backend enforce authentication,
+ownership, and the indicated scope; do not perform routine help or permission
+checks before a read or write.
 
-If `get-datasets` or `get-projects` is absent from the installed help, do not
-fall back to direct API requests. Update SimpoCLI first; the references describe
-the newer command surface without pretending it exists in every package.
+If a requested command returns an unknown-command or unsupported-operation error,
+consult its `--help` and update SimpoCLI when needed. Never fall back to direct
+API requests; the references describe the newer command surface without
+pretending it exists in every package.
 
 ## DataSets
 

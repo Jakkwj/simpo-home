@@ -19,9 +19,11 @@ the complete SimpoCLI workflow. Prompts may be in English or Chinese.
 /simpo:simpo 请查看 Project 706 的全部 Variable，并汇总 Evaluation=true 的参数，不要修改数据。
 ```
 
-The Skill checks `simpo --version`, the relevant `--help` output, Token scopes,
-pagination, and JSON results. It reads only the reference for the requested
-command group.
+The Skill runs the requested command directly. SimpoCLI and the backend enforce
+authentication, ownership, and scopes; it reads only the reference for the
+requested command group, follows pagination, and parses JSON results. It uses
+`--help` or `simpo me` only when the command reports an error, syntax is unclear,
+or identity/scopes are requested.
 
 ## Write example
 
@@ -44,6 +46,6 @@ print a short-lived launch protocol unless an explicit integration requires it.
 
 ## Installed-version differences
 
-The current installed `simpo --help` is authoritative. If a documented command
-is absent, the Skill stops and recommends updating SimpoCLI. It does not bypass
-the CLI with direct OpenAPI requests.
+The installed SimpoCLI and backend response are authoritative. If a requested
+command is unavailable, report the error and recommend updating SimpoCLI when
+appropriate. Do not bypass the CLI with direct OpenAPI requests.

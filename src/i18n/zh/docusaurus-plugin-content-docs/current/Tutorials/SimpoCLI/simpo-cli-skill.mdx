@@ -6,8 +6,10 @@ sidebar_label: 总览
 
 # SimpoCLI Skill
 
-SimpoCLI Skill 是供 AI 编码助手按需读取的操作指南。它让助手先识别当前安装的
-`simpo` 接口，再选择正确命令、保护 API Token、检查所需 scope、审查会改变状态的
+所有 SIMPO Skill、Codex/Claude Code 调用名称和安装目录请参阅 [Skill 总览](./simpo-skills)。
+
+SimpoCLI Skill 是供 AI 编码助手按需读取的操作指南。它让助手选择正确的
+`simpo` 命令、保护 API Token，将认证和 scope 校验交给 CLI 与后端、审查会改变状态的
 操作、解析 JSON 结果，并处理结果不确定的失败。
 
 是的，它可以减少每次对话中重复输入的 token。Skill 采用渐进加载：
@@ -16,9 +18,9 @@ SimpoCLI Skill 是供 AI 编码助手按需读取的操作指南。它让助手�
 2. 触发后才加载核心 `SKILL.md`；
 3. 然后只读取当前任务所需的命令组资料，例如 BioModel 或 Calculation。
 
-因此不需要在每次对话中粘贴完整 CLI 说明书。调用 Skill 本身仍会占用一些上下文，
-而且它会主动检查 `simpo COMMAND --help`，因为实际安装版本才是最终依据。它减少的
-是重复且与当前任务无关的输入，并不是完全不消耗 token。
+因此不需要在每次对话中粘贴完整 CLI 说明书。调用 Skill 本身仍会占用一些上下文；
+只有语法不清、命令报错或用户询问身份/scope 时才读取 `--help` 或运行 `simpo me`。
+它减少的是重复且与当前任务无关的输入，并不是完全不消耗 token。
 
 ## 覆盖范围
 
@@ -38,15 +40,16 @@ Claude Code 插件调用名为 `/simpo:simpo`。它包含：
 `set-project-variable`、`calculate`、`calculation-status` 和
 `stop-calculation`。
 
-这里指的是 Skill 的覆盖范围，不代表旧版已安装程序一定提供全部 17 个命令。Skill 会
-始终检查当前 `simpo --help`；所需命令不存在时，会要求先升级 SimpoCLI。
+这里指的是 Skill 的覆盖范围，不代表旧版已安装程序一定提供全部 17 个命令。实际执行的
+命令及后端响应才是最终依据；如果命令不存在，会报告错误并可能需要升级 SimpoCLI。
 
 此 Skill 负责操作 SimpoCLI，不包含 SimpoCLI 安装包或 API Token。它也不替代专用的
 BioModel Skill；后者用于分析研究论文并推导模型表格。
 
 ## 安全边界
 
-- 以当前安装的 `simpo --help` 和 `simpo COMMAND --help` 为准。
+- 以当前安装的 SimpoCLI 及后端响应为准，由它们负责命令可用性、认证、归属、参数和
+  scope 校验。
 - Token 通过 `simpo configure` 的隐藏输入配置，不能粘贴到 AI 对话中。
 - 只询问说明不会授权执行写操作。
 - Public 发布、开始/停止计算以及其他重要写操作需要先确认目标和影响。

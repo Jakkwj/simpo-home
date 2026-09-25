@@ -9,19 +9,21 @@ sidebar_label: 安装
 Claude Code 版本通过 SIMPO Marketplace 中的 `simpo` 插件发布。该插件同时包含两项
 SIMPO Skill，其中 `simpo-create-biomodel` 工作流包含论文分析所需的三份参考资料。
 
+完整的 Skill 安装目录和功能对照请参阅 [Skill 总览](./simpo-skills)。
+
 ## 安装前准备
 
-先确认 Claude Code、Git 和 SimpoCLI 可用：
+需要安装 Claude Code、Git 和 SimpoCLI。请求创建时，CLI/后端会检查认证和 `write` scope：
 
 ```text
 claude --help
 git --version
 simpo --help
-simpo me
 ```
 
-创建 BioModel 需要 API Token 的 `write` scope。如果 `simpo me` 失败，请先运行
-`simpo configure`。不要在 Claude 提示词中放入 Token。
+如果尚未保存有效 Token，需要执行创建命令时再交互运行 `simpo configure`。Marketplace
+安装由 Claude Code 管理，插件缓存目录不是稳定的用户目录。手工备用目录为
+`~/.claude/skills/simpo-create-biomodel`。不要在 Claude 提示词中放入 Token。
 
 ## 从 SIMPO Marketplace 安装
 

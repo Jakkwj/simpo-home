@@ -10,19 +10,24 @@ The Claude Code version is distributed as the `simpo` plugin from the SIMPO
 Marketplace. The plugin contains both SIMPO Skills, including the complete
 `simpo-create-biomodel` workflow and its three paper-analysis references.
 
+See the [Skills overview](./simpo-skills) for the complete directory and
+function table.
+
 ## Prerequisites
 
-Verify Claude Code, Git, and SimpoCLI first:
+Claude Code, Git, and SimpoCLI are required. The CLI/backend will check
+authentication and the `write` scope when creation is requested:
 
 ```text
 claude --help
 git --version
 simpo --help
-simpo me
 ```
 
-Creating a BioModel requires `write` scope. Run `simpo configure` if `simpo me`
-does not succeed. Never put the Token in a Claude prompt.
+If no valid Token is saved, run `simpo configure` interactively when needed.
+Marketplace installation is managed by Claude Code and its plugin cache path is
+not a stable user directory. The manual fallback is
+`~/.claude/skills/simpo-create-biomodel`. Never put the Token in a Claude prompt.
 
 ## Install from the SIMPO Marketplace
 

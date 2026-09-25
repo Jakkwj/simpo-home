@@ -19,8 +19,10 @@ Use $simpo to list all my BioModels named ASM1 and inspect the complete tables o
 请使用 $simpo 查看 Project 706 的全部 Variable，并汇总 Evaluation=true 的参数，不要修改数据。
 ```
 
-The Skill checks the installed help, verifies the Token scope, follows every
-result page when resolving names, and parses JSON output.
+The Skill runs the requested command directly. SimpoCLI and the backend enforce
+authentication, ownership, and scopes; the Skill follows every result page when
+resolving names and parses JSON output. It uses `--help` or `simpo me` only when
+the command reports an error, syntax is unclear, or identity/scopes are requested.
 
 ## Write example
 
@@ -52,6 +54,6 @@ and reviews the exact target before release.
 
 ## Installed-version differences
 
-If the Skill knows about a command that is absent from the current `simpo
---help`, it stops and recommends updating SimpoCLI. It does not bypass the CLI
-by constructing direct OpenAPI requests.
+If the requested command is unavailable or rejected, report the CLI/backend
+error and recommend updating SimpoCLI when appropriate. Do not bypass the CLI by
+constructing direct OpenAPI requests.

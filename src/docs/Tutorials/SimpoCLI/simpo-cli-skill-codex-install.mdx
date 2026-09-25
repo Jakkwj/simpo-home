@@ -8,9 +8,12 @@ sidebar_label: Installation
 
 Install the Skill directly into Codex's Skill directory.
 
+See the [Skills overview](./simpo-skills) for the complete Codex/Claude Code
+directory and function table.
+
 ## Prerequisites
 
-Verify Codex and the separately installed SimpoCLI:
+Codex and the separately installed SimpoCLI are required:
 
 ```text
 codex --help
@@ -18,14 +21,17 @@ simpo --version
 simpo --help
 ```
 
-Configure a Token interactively if needed:
+If authentication is not configured, configure a Token interactively when you
+need to run a command:
 
 ```text
 simpo configure
-simpo me
 ```
 
 Never paste the Token into Codex.
+
+The default installation directory is `~/.codex/skills/simpo`. When
+`CODEX_HOME` is set, use `$CODEX_HOME/skills/simpo` instead.
 
 ## Install from this repository
 
@@ -56,8 +62,8 @@ Ask:
 What does $simpo do? Do not change anything.
 ```
 
-Installation succeeded if Codex explains that it discovers the installed CLI
-interface and safely operates SIMPO resources.
+Installation succeeded if Codex explains that it routes requests to the
+installed SimpoCLI and safely operates SIMPO resources.
 
 ## Update
 

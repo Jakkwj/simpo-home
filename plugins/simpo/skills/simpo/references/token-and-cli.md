@@ -9,8 +9,9 @@
 | Show current identity and scopes | `simpo me` | authenticated Token |
 | Remove the saved local Token | `simpo logout` | none |
 
-Always inspect the installed help. A published or development build may expose
-more commands than an older local installation.
+Run the requested command directly. A published or development build may expose
+different commands than an older local installation; let the CLI report an
+unsupported command or option instead of performing routine discovery first.
 
 ## Configure without leaking a Token
 
@@ -24,8 +25,9 @@ For normal use, rely on the saved Token. `--api-token` and the
 must not be printed or persisted. `--base-url` is a development override; omit
 it unless the user explicitly targets another backend.
 
-Run `simpo me` after configuration and check the returned `scopes` before the
-requested operation:
+Use `simpo me` when the user explicitly asks for identity/scopes or when
+diagnosing an authentication problem. Normal operations should be attempted
+directly; the CLI and backend enforce the required scopes:
 
 - `read`: list/read BioModels, DataSets, Projects, and Project Variables;
 - `write`: create/update/sync/release BioModels and update Project Variables;
@@ -38,8 +40,9 @@ script, capture them independently and parse stdout only after checking the exit
 status. Never log a result field documented as secret, including a calculation
 `launchProtocol` requested with `--print-protocol`.
 
-List endpoints are paginated. Read `--help` for `--page` and `--page-size`, and
-continue until the response indicates that every page has been visited.
+List endpoints are paginated. Use the pagination fields returned by the command
+and continue until every page has been visited. Consult `--help` only when the
+pagination syntax is unclear or the command reports a usage error.
 
 `simpo logout` removes only the local Token file. It does not revoke the Token on
 the SIMPO server; revoke it from the Dashboard when server-side invalidation is
@@ -48,7 +51,10 @@ required.
 ## Failure handling
 
 - `401`: reconfigure a valid, non-expired Token; never request it in chat.
-- `403`: inspect `simpo me` and obtain the missing scope through the Dashboard.
-- command missing from `simpo --help`: update SimpoCLI rather than calling the
-  OpenAPI directly.
+- `403`: relay the backend scope/permission error; use `simpo me` only when
+  diagnosing the authentication or scope problem, then obtain the missing
+  scope through the Dashboard.
+- unknown command or unsupported option: consult the relevant `--help` and
+  update SimpoCLI if the operation is not available; never call the OpenAPI
+  directly to bypass the CLI.
 - network or timeout after a write: inspect the affected resource before retrying.
