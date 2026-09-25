@@ -10,8 +10,8 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="SIMPO" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.52cd2a0c.css">
-<script src="/assets/js/runtime~main.a574ca6c.js" defer="defer"></script>
-<script src="/assets/js/main.bd1d95b1.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.432f5da5.js" defer="defer"></script>
+<script src="/assets/js/main.9fc6c620.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -75,7 +75,8 @@ uninstalling.</p></div></div></div>
 <li class="">Enter a recognizable name, choose an expiry from <code>1</code> to <code>365</code> days, and
 grant only the scopes you need:<!-- -->
 <ul>
-<li class=""><code>read</code> for all <code>get-*</code> commands, including paginated calculation-result retrieval;</li>
+<li class=""><code>read</code> for all <code>get-*</code> commands, including paginated
+<code>get-calculation-result</code> retrieval;</li>
 <li class=""><code>write</code> for BioModel, DataSet, and Project create/update/sync/release commands, and <code>set-project-variable</code>;</li>
 <li class=""><code>calculate</code> for calculation preparation, status, and stop commands.</li>
 </ul>
@@ -117,7 +118,7 @@ complete command directory.</p>
 <h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="project">Project<a href="#project" class="hash-link" aria-label="Direct link to Project" title="Direct link to Project" translate="no">​</a></h3>
 <table><thead><tr><th>Command</th><th>Purpose</th><th>Required scope</th></tr></thead><tbody><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/create-project"><code>create-project</code></a></td><td>Create a Draft from a BioModel and DataSet, with optional Solution JSON</td><td><code>write</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/get-projects"><code>get-projects</code></a></td><td>List owned Project metadata with BioModel/DataSet references</td><td><code>read</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/get-project"><code>get-project</code></a></td><td>Read one Project and its complete Solution detail</td><td><code>read</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/update-project"><code>update-project</code></a></td><td>Replace a Draft Project&#x27;s Solution detail</td><td><code>write</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/sync-project"><code>sync-project</code></a></td><td>Copy an owned Release to its corresponding Draft</td><td><code>write</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/release-project"><code>release-project</code></a></td><td>Create an immutable Project Release</td><td><code>write</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/project-variables"><code>get-project-variables</code></a></td><td>Read every field in the Solution Variable table</td><td><code>read</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/set-project-variable"><code>set-project-variable</code></a></td><td>Update one Variable field in a Draft Project</td><td><code>write</code></td></tr></tbody></table>
 <h3 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="calculation">Calculation<a href="#calculation" class="hash-link" aria-label="Direct link to Calculation" title="Direct link to Calculation" translate="no">​</a></h3>
-<table><thead><tr><th>Command</th><th>Purpose</th><th>Required scope</th></tr></thead><tbody><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/calculate"><code>calculate</code></a></td><td>Prepare a calculation and start SimpoClient</td><td><code>calculate</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/get-calculation-status"><code>get-calculation-status</code></a></td><td>Read current calculation status</td><td><code>calculate</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/calculation-result"><code>get-calculation-result</code></a></td><td>Navigate and page stored calculation results without an unbounded response</td><td><code>read</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/stop-calculation"><code>stop-calculation</code></a></td><td>Stop a calculation and matching local processes</td><td><code>calculate</code></td></tr></tbody></table>
+<table><thead><tr><th>Command</th><th>Purpose</th><th>Required scope</th></tr></thead><tbody><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/calculate"><code>calculate</code></a></td><td>Prepare a calculation and start SimpoClient</td><td><code>calculate</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/get-calculation-status"><code>get-calculation-status</code></a></td><td>Read current calculation status</td><td><code>calculate</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/get-calculation-result"><code>get-calculation-result</code></a></td><td>Select and page stored calculation result series without an unbounded response</td><td><code>read</code></td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/stop-calculation"><code>stop-calculation</code></a></td><td>Stop a calculation and matching local processes</td><td><code>calculate</code></td></tr></tbody></table>
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="output-contract">Output contract<a href="#output-contract" class="hash-link" aria-label="Direct link to Output contract" title="Direct link to Output contract" translate="no">​</a></h2>
 <ul>
 <li class="">Successful results are formatted JSON on <strong>stdout</strong>.</li>
