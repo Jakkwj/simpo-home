@@ -34,6 +34,14 @@ Variable、准备计算、启动本机安装的 `SimpoClient`、查询或停止�
 这些是 AI 助手的 Skill，不是额外的终端子命令。Codex 中使用
 `$simpo-create-project`，Claude Code 插件中使用 `/simpo:simpo-create-project`。
 
+### Skill 工具依赖
+
+普通 `simpo` 命令不要求用户另外安装 Python 或 Poppler。DataSet 和 Project 的论文图片
+流程只有在 PDF 页面仍需渲染时才使用辅助脚本：脚本需要 Python 3，PDF 渲染需要 Poppler
+的 `pdftoppm`；提供明确页码范围时不需要 `pdfinfo`。文字、表格、用户提供的图片和已经
+导出的数字化 CSV/JSON 不需要这些工具。渲染前会检查 `python3 --version` 和
+`pdftoppm -v`；缺少任一工具时暂停该步骤，并提示安装或使用等效渲染工具。
+
 ## 使用条件
 
 - 拥有 SIMPO 账户，并在 Dashboard 的 **API Tokens** 页面创建 OpenAPI

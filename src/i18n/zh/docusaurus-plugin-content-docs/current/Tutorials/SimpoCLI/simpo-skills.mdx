@@ -18,7 +18,7 @@ Codex 和 Claude Code 使用相同的 Skill 内容，区别主要在安装方式
 | [SimpoCLI](./simpo-cli-skill) | 操作已安装的 SimpoCLI：认证、BioModel、DataSet、Project、Variable、计算任务和分页结果。 | `$simpo` | `$CODEX_HOME/skills/simpo`<br />默认：`~/.codex/skills/simpo` | `/simpo:simpo` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo` |
 | [SIMPO BioModel](./biomodel-skill) | 从论文或用户明确给出的组分、反应和动力学建立 BioModel，记录有依据的推导并供审核。 | `$simpo-create-biomodel` | `$CODEX_HOME/skills/simpo-create-biomodel`<br />默认：`~/.codex/skills/simpo-create-biomodel` | `/simpo:simpo-create-biomodel` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo-create-biomodel` |
 | [SIMPO DataSet](./dataset-skill) | 根据工程条件设计，或从论文/报告中提取处理流程、运行数据和时间序列；校验 SIMPO 表格并准备经过审核的 DataSet。 | `$simpo-create-dataset` | `$CODEX_HOME/skills/simpo-create-dataset`<br />默认：`~/.codex/skills/simpo-create-dataset` | `/simpo:simpo-create-dataset` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo-create-dataset` |
-| [SIMPO Project（论文复现）](./paper-to-project-skill) | 阅读一篇 SCI 论文，带校准证据识别图片数据点，并准备关联的 BioModel、DataSet 和 Project Draft。 | `$simpo-create-project` | `$CODEX_HOME/skills/simpo-create-project`<br />默认：`~/.codex/skills/simpo-create-project` | `/simpo:simpo-create-project` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo-create-project` |
+| [SIMPO Project](./paper-to-project-skill) | 阅读一篇 SCI 论文，带校准证据识别图片数据点，并准备关联的 BioModel、DataSet 和 Project Draft。 | `$simpo-create-project` | `$CODEX_HOME/skills/simpo-create-project`<br />默认：`~/.codex/skills/simpo-create-project` | `/simpo:simpo-create-project` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo-create-project` |
 
 Claude Code 推荐使用 Marketplace 安装，插件由 Claude Code 管理。上表中的备用路径，是
 不支持插件时使用的个人 Skill 目录。
@@ -31,10 +31,33 @@ Claude Code 推荐使用 Marketplace 安装，插件由 Claude Code 管理。上
   通过 SimpoCLI 创建 Private Draft BioModel。
 - **SIMPO DataSet**：用于从污水处理设计条件、已有工艺或来源文献开始，建立完整、保留
   证据并经过水力检查的 DataSet 表格。
-- **SIMPO Project（论文复现）**：用于从一篇 SCI 论文同时准备关联的 BioModel、DataSet 和
+- **SIMPO Project**：用于从一篇 SCI 论文同时准备关联的 BioModel、DataSet 和
   Project；图表中的数据点会经过坐标校准并保留数字化证据。
 - 生成的 BioModel 或 DataSet 如需继续查询、更新、发布或用于 Project，可再使用
   **SimpoCLI** 执行日常操作。
+
+## Python 和 Poppler 依赖
+
+普通的 `simpo` CLI 命令**不要求**用户另外安装 Python 或 Poppler。只有在 DataSet
+或 Project 的论文流程需要渲染 PDF 页面或规范化数字化导出文件时，才适用下表：
+
+| 流程 | 本地工具要求 |
+| --- | --- |
+| 工程输入、文字/表格、用户提供的图片或数字化 CSV/JSON | 不需要这些辅助工具 |
+| 运行图片辅助脚本 | Python 3 |
+| 使用 `prepare_paper_figures.py` 渲染 PDF 页面 | Python 3 和 Poppler 的 `pdftoppm` |
+| 自动读取 PDF 页数 | 提供明确页码范围时不需要 `pdfinfo` |
+
+渲染前，Skill 会检查：
+
+```bash
+python3 --version
+pdftoppm -v
+```
+
+缺少必需工具时，依赖图片的步骤会暂停，并明确提示安装方式或等效渲染工具。不会把
+未完成的渲染或数字化报告为成功。SimpoCLI 的 `calculate` 命令另有单独要求：安装匹配
+版本的 SimpoClient。
 
 ## 安装 Skill
 
@@ -74,4 +97,4 @@ Skill，因为它复用 BioModel、DataSet 流程和 SimpoCLI 命令参考。
 | SimpoCLI | [安装](./simpo-cli-skill-codex-install) | [使用](./simpo-cli-skill-codex-usage) | [安装](./simpo-cli-skill-claude-code-install) | [使用](./simpo-cli-skill-claude-code-usage) |
 | SIMPO BioModel | [安装](./biomodel-skill-codex-install) | [使用](./biomodel-skill-codex-usage) | [安装](./biomodel-skill-claude-code-install) | [使用](./biomodel-skill-claude-code-usage) |
 | SIMPO DataSet | [安装](./dataset-skill-codex-install) | [使用](./dataset-skill-codex-usage) | [安装](./dataset-skill-claude-code-install) | [使用](./dataset-skill-claude-code-usage) |
-| SIMPO Project（论文复现） | [安装](./paper-to-project-skill-codex-install) | [使用](./paper-to-project-skill-codex-usage) | [安装](./paper-to-project-skill-claude-code-install) | [使用](./paper-to-project-skill-claude-code-usage) |
+| SIMPO Project | [安装](./paper-to-project-skill-codex-install) | [使用](./paper-to-project-skill-codex-usage) | [安装](./paper-to-project-skill-claude-code-install) | [使用](./paper-to-project-skill-claude-code-usage) |

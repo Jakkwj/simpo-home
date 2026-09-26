@@ -44,6 +44,31 @@ plugin support is unavailable.
 - Combine the specialized Skills with SimpoCLI when the resulting BioModel or
   DataSet must later be inspected, updated, released, or used in a Project.
 
+## Python and Poppler requirements
+
+The ordinary `simpo` CLI commands do **not** require a user-installed Python
+environment or Poppler. The requirements below apply only when the DataSet or
+Project paper workflow must render PDF pages or normalize a digitizer export:
+
+| Workflow | Required local tools |
+| --- | --- |
+| Design inputs, text/tables, supplied images, or supplied digitizer CSV/JSON | None for these helpers |
+| Bundled figure helpers | Python 3 |
+| Rendering PDF pages with `prepare_paper_figures.py` | Python 3 and Poppler `pdftoppm` |
+| Automatic PDF page-count lookup | `pdfinfo` is optional when a page range is supplied |
+
+Before rendering, the Skill checks:
+
+```bash
+python3 --version
+pdftoppm -v
+```
+
+If a required tool is missing, the figure-dependent step pauses and the Skill
+explains how to install it or use an equivalent renderer. It does not claim
+that rendering or digitization completed. SimpoCLI's `calculate` command has a
+separate requirement: the matching SimpoClient installation.
+
 ## Install the Skills
 
 ### Codex

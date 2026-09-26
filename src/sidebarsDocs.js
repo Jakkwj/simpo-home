@@ -311,7 +311,7 @@ const sidebars = {
             },
             {
               type: 'category',
-              label: 'Project',
+              label: 'Create Project',
               key: 'SimpoCLI/Skill/CreateProject',
               collapsible: true,
               collapsed: true,

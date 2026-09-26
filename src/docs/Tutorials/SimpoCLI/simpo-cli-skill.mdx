@@ -57,6 +57,14 @@ This Skill operates SimpoCLI; it does not install SimpoCLI or include an API
 Token. It also does not replace the specialized BioModel Skill, which analyzes
 research papers and derives model tables.
 
+## Python and Poppler
+
+The SimpoCLI Skill and ordinary `simpo` commands do not require Python or
+Poppler. If the DataSet or Project paper workflow needs to render PDF figures,
+the companion Skills check for Python 3 and Poppler's `pdftoppm`; `pdfinfo` is
+optional when a page range is supplied. Text, tables, supplied images, and
+digitizer exports do not require these tools.
+
 ## Safety model
 
 - The installed SimpoCLI and backend responses are authoritative for command

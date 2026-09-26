@@ -37,6 +37,17 @@ These are assistant Skills, not additional terminal subcommands. Use
 `$simpo-create-project` in Codex or `/simpo:simpo-create-project` in the
 Claude Code plugin.
 
+### Skill tool dependencies
+
+The regular `simpo` commands do not require user-installed Python or Poppler.
+The DataSet and Project paper-figure workflow uses the bundled helpers only
+when PDF pages still need rendering: Python 3 is required for the helpers and
+Poppler's `pdftoppm` is required for PDF rendering. `pdfinfo` is optional when
+the page range is supplied. Text, tables, supplied images, and supplied
+digitizer exports do not require these tools. The workflow checks
+`python3 --version` and `pdftoppm -v` before rendering and pauses with an
+installation or equivalent-renderer option when either is unavailable.
+
 ## Prerequisites
 
 - A SIMPO account and an OpenAPI Token created on the Dashboard's **API Tokens**

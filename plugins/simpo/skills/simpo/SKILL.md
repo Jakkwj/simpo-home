@@ -37,6 +37,16 @@ safety guidance, then read only the reference for the requested command group.
 Read only the relevant references. Do not load the complete command manual for a
 single operation.
 
+## Related paper Skills and local tools
+
+The ordinary SimpoCLI commands covered here do not require a user-installed
+Python environment or Poppler. When `simpo-create-dataset` or
+`simpo-create-project` must render PDF pages for figure digitization, those
+Skills check for Python 3 and Poppler's `pdftoppm` before running their bundled
+helpers. `pdfinfo` is optional when an explicit page range is supplied. Text,
+tables, supplied images, and supplied digitizer exports do not require these
+tools; missing tools pause only the affected figure step.
+
 ## Execute and verify
 
 1. Resolve names to IDs with list commands when necessary. Traverse pagination

@@ -76,6 +76,11 @@ required. For PDF figure extraction, Poppler is needed only when pages still
 need rendering. The bundled renderer uses Python 3 and `pdftoppm`, but supplied
 images or an equivalent renderer are also valid alternatives.
 
+Before the PDF-rendering step, check `python3 --version` and `pdftoppm -v`.
+Missing tools pause only the figure-rendering path; they do not block design
+inputs, text/tables, supplied images, or supplied digitizer exports. `pdfinfo`
+is optional when an explicit page range is supplied.
+
 ## Figure data and Description
 
 For paper figures, the Skill identifies the target figures and experiments,
