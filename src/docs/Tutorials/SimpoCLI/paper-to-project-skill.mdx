@@ -1,0 +1,92 @@
+---
+id: paper-to-project-skill
+title: SIMPO Project Skill
+sidebar_label: Overview
+---
+
+# SIMPO Project Skill
+
+Use this Skill when one wastewater-treatment SCI paper should produce a linked
+SIMPO BioModel, DataSet, and Project Draft, then test whether the published
+model can be reproduced. It coordinates the existing BioModel and DataSet
+extraction workflows, identifies calibration and validation figures, and adds a
+figure-data step for values that appear only in plots.
+
+The workflow is semi-automatic. Text and tables can be extracted in bulk, but
+plot data must be calibrated and reviewed. WebPlotDigitizer is supported as an
+optional tool; every imported series keeps its figure, axis calibration, units,
+series label, and uncertainty in the evidence record.
+
+The Skill creates only Private, version `0` Drafts after review. It does not
+release, publish, or share automatically. Creation and calculation are separate
+approval gates; after an approved reproduction plan it can run Simulation,
+Uncertainty, Estimation, and a final Simulation. Use [SimpoCLI](./simpo-cli-skill)
+for normal lifecycle operations.
+
+Missing initial biomass or component values do not automatically stop the
+workflow. When a defensible finite guess and bounds exist, they are marked
+`temporary_estimate`, tested by Simulation, explored with LHS, and fitted only
+when a small set of variables is justified with GA or RFGA. The final report
+distinguishes reproduced, partially reproduced, non-identifiable, insufficient
+equations/data, implementation discrepancy, contradictory, and numerical failure
+outcomes.
+
+## Use it when
+
+- the source is a research paper PDF with a wastewater-treatment model or
+  process description;
+- BioModel equations or stoichiometry must be extracted from the paper;
+- DataSet operating data or time series appear in tables or figures; and
+- the resulting BioModel and DataSet should be connected in one Project.
+
+For only a BioModel or only a DataSet, use the specialized [BioModel](./biomodel-skill)
+or [DataSet](./dataset-skill) Skill instead.
+
+## What happens
+
+1. The paper, supplements, tables, equations, process diagrams, and captions
+   are indexed with page and figure evidence.
+2. Figure pages are rendered at high resolution. Plot series are calibrated in
+   WebPlotDigitizer or another compatible tool and exported as CSV/JSON.
+3. A BioModel Draft and a DataSet Draft are proposed and reviewed separately.
+4. After both IDs are confirmed, a Project Draft is created from those IDs.
+5. The result includes all three IDs, source evidence, digitization details,
+   assumptions, unresolved values, and parser warnings.
+
+The Skill does not turn a visually plausible curve into exact data. If an axis,
+legend, panel, or series cannot be identified, it remains unresolved until a
+better source or an approved approximation is provided.
+
+## Shared workflows
+
+Install this Skill alongside `simpo`, `simpo-create-biomodel`, and
+`simpo-create-dataset`. Project reuses their paper-extraction rules;
+the PDF rendering and digitizer-import helpers belong to DataSet.
+Different experiments use separate DataSets; alternative equations use separate
+Projects or model variants. Each resource Description records its evidence,
+derivations, assumptions, and limitations. Reused files are checked against the
+paper's equations, units, and scenario-specific parameters; missing calibration
+records cannot be reported as verified digitization.
+
+## Local tool check
+
+At the beginning of the task, the Skill checks dependencies only for the steps
+that need them. Text, tables, and user-provided images do not require Python or
+Poppler. The bundled PDF-figure workflow checks:
+
+```text
+command -v python3 && python3 --version
+command -v pdftoppm && pdftoppm -v
+```
+
+Python 3 runs the bundled figure-preparation and CSV-normalization scripts, and
+they use only the standard library. Poppler's `pdftoppm` renders PDF pages;
+`pdfinfo` is optional when a page range is supplied. If a required command is
+missing, the Skill tells the user which step is blocked before extraction,
+pauses the figure-dependent path, and offers installation or an equivalent
+renderer/digitizer. It never claims that a missing script ran successfully.
+
+## Related pages
+
+- [Codex installation](./paper-to-project-skill-codex-install) and [Codex usage](./paper-to-project-skill-codex-usage)
+- [Claude Code installation](./paper-to-project-skill-claude-code-install) and [Claude Code usage](./paper-to-project-skill-claude-code-usage)

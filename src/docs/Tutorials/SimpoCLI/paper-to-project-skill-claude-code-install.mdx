@@ -1,0 +1,36 @@
+---
+id: paper-to-project-skill-claude-code-install
+title: Install SIMPO Project Skill in Claude Code
+sidebar_label: Install
+---
+
+# Install in Claude Code
+
+Install the SIMPO plugin, which contains the paper workflow and the other SIMPO
+Skills:
+
+```text
+/plugin marketplace add Jakkwj/simpo-home
+/plugin install simpo@simpo
+```
+
+After the plugin is loaded, the Skill is available as:
+
+```text
+/simpo:simpo-create-project
+```
+
+If plugin installation is unavailable in the installed Claude Code version,
+copy the complete directory
+`plugins/simpo/skills/simpo-create-project` to:
+
+```text
+~/.claude/skills/simpo-create-project
+```
+
+For this manual installation, also copy the complete sibling directories
+`simpo`, `simpo-create-biomodel`, and `simpo-create-dataset`
+to their matching folders under `~/.claude/skills/`. Keep the DataSet
+`scripts/` directory. The plugin installation already includes these dependencies.
+
+SimpoCLI is installed and configured separately.

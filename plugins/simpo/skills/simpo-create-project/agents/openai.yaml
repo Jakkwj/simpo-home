@@ -1,0 +1,4 @@
+interface:
+  display_name: "SIMPO Create Project"
+  short_description: "Orchestrate multi-DataSet paper reproduction"
+  default_prompt: "Use $simpo-create-project to orchestrate this paper's BioModel, multiple DataSets and Projects, digitize evidence, audit descriptions, and plan the reviewed calculation comparison."

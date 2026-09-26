@@ -21,10 +21,48 @@ not to redesign the study.
 5. Classify every material value as:
    - **reported**: stated directly by the source;
    - **calculated**: computed transparently from reported values;
+   - **digitized**: reconstructed from calibrated figure pixels and exported
+     data;
    - **assumed**: an engineering assumption approved for filling a gap;
    - **unresolved**: required or useful information that cannot be established.
 
 Never present a calculated or assumed value as a reported measurement.
+
+## Figure selection and digitization
+
+Before extracting points, make a figure inventory. For each candidate figure or
+panel record its role (`calibration`, `validation`, `prediction`, `diagnostic`,
+`operation`, or `conceptual`), experiment/data-set identity, measured symbols,
+units, and whether it belongs in this DataSet. Confirm the target figure with
+the user when the caption or legend does not establish it unambiguously.
+
+Use WebPlotDigitizer when available, or an equivalent tool with the same audit
+properties. Render the original PDF page at sufficient resolution, calibrate
+each independent axis with at least two readable points, and record linear/log
+axis type and pixel-to-data calibration. Extract experimental markers separately
+from model lines, legend samples, grid lines, and error bars. Export CSV or JSON
+and retain the original project/export alongside the source page. Inspect
+representative points against the rendered figure and record the reading
+uncertainty, point removals, sorting rule, and any approved conversion.
+
+PDF rendering is a tool choice, not a DataSet format dependency. If the user
+already provides page images or digitizer exports, no Poppler or Python is
+needed. If pages must be rendered locally, use any suitable renderer; the
+bundled paper workflow uses Python 3 with Poppler's `pdftoppm`.
+
+Every digitized series used in `Measured`, `Inflow`, or `Flow` must retain these
+audit fields: paper file, page, figure/panel, series label and legend evidence,
+x/y names and units, calibration points, tool/version, export filename, point
+count, uncertainty, classification `digitized`, and SIMPO symbol. Do not use a
+digitized published model curve as a measurement or estimation target. Do not
+interpolate, smooth, or convert censored values to zero unless separately
+approved and recorded.
+
+Different experiments, initial conditions, source studies, or calibration and
+validation roles normally become separate DataSets. Use multiple Tanks in one
+DataSet only for genuinely parallel or topologically linked reactors whose
+time bases and observations are compatible. Record the grouping decision in the
+DataSet Description.
 
 ## Extract the treatment system
 
@@ -85,7 +123,7 @@ separate BioModel Skill for that portion.
 - Record digitization, OCR, decimal-separator, and unit conversions. Check
   transcribed totals and a representative sample against the rendered source.
 - For values digitized from a figure, label them as digitized estimates and
-  retain the figure and series identity in the evidence map.
+  retain the complete figure audit and series identity in the evidence map.
 
 ## Gaps and optional design completion
 

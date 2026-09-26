@@ -1,0 +1,46 @@
+---
+id: paper-to-project-skill-codex-usage
+title: Use SIMPO Project Skill in Codex
+sidebar_label: Use
+---
+
+# Use in Codex
+
+Invoke `$simpo-create-project` with the paper path and the requested names:
+
+```text
+Use $simpo-create-project to analyze
+/data/papers/denitrification.pdf and prepare a BioModel named SulfurModel,
+a DataSet named SulfurPilot, and a Project named SulfurPilotProject.
+```
+
+For a paper with plotted time series, the Skill prepares high-resolution page
+images and asks for calibrated figure exports. WebPlotDigitizer can be used to
+identify axes and series; the exported CSV/JSON is then mapped to DataSet
+`Measured`, `Inflow`, or `Flow` values. Figure-derived values are reported as
+digitized estimates, not as table values.
+
+Before creation, review the citation, BioModel tables, DataSet tables, figure
+calibration records, hydraulic balance, assumptions, and unresolved items. A
+confirmed creation request creates the two Private Drafts first and then the
+linked Private Project Draft. It does not release resources. Calculations remain
+a separate approval gate. For reproduction requests, review target figures,
+temporary estimates, bounds, and evaluation variables before running Simulation,
+LHS uncertainty analysis, GA or RFGA estimation, and the final comparison.
+
+To request the full reproduction loop without publishing or sharing resources:
+
+```text
+Use $simpo-create-project to reproduce /data/papers/denitrification.pdf.
+Identify calibration and validation figures, mark missing initial values as
+temporary estimates, prepare the three reviewed Drafts, and show the calculation
+plan before running Simulation, LHS, estimation, and the final comparison.
+```
+
+To prepare and review without writing to SIMPO, say:
+
+```text
+Use $simpo-create-project to analyze /data/papers/denitrification.pdf.
+Prepare all three JSON objects and the figure evidence map, but do not create
+anything.
+```

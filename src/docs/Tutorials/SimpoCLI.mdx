@@ -19,12 +19,23 @@ Its terminal command is the short, lowercase `simpo`.
 
 This page is the complete SimpoCLI command index. Each command also has its own
 page in the collapsible **SimpoCLI** section.
-Every command also supports `--help`, so a user or automation agent can inspect
-the installed version before invoking it.
+Every command supports `--help` when syntax is unclear or a usage error occurs.
+Ordinary operations can run directly; the backend checks permissions.
 
 For AI assistant integrations, see the [SIMPO Skills overview](./SimpoCLI/simpo-skills)
 for the complete Codex and Claude Code directory, invocation names, installation
 paths, and detailed guides.
+
+| Skill | Purpose |
+| --- | --- |
+| [`simpo`](./SimpoCLI/simpo-cli-skill) | Operate the CLI and read its JSON results. |
+| [`simpo-create-biomodel`](./SimpoCLI/biomodel-skill) | Build a model from a paper or explicit user-defined equations. |
+| [`simpo-create-dataset`](./SimpoCLI/dataset-skill) | Build a DataSet from design inputs, source tables, or calibrated figure data. |
+| [`simpo-create-project`](./SimpoCLI/paper-to-project-skill) | Reuse both extraction workflows to create linked resources and test paper reproduction. |
+
+These are assistant Skills, not additional terminal subcommands. Use
+`$simpo-create-project` in Codex or `/simpo:simpo-create-project` in the
+Claude Code plugin.
 
 ## Prerequisites
 

@@ -23,6 +23,10 @@ lexicographic order such as `"0"`, `"1"`, `"10"`, `"2"`.
 ]
 ```
 
+The time value may be `day`, `hour`, `minute`, or `second`; preserve the
+source time basis instead of converting a batch experiment only to satisfy a
+template.
+
 ### Target
 
 Use the model-target reference and this header:
@@ -32,7 +36,10 @@ Use the model-target reference and this header:
 ```
 
 Symbols must be unique and must not use reserved node words. Marker cells are
-JSON booleans, not the strings `"true"` and `"false"`.
+JSON booleans, not the strings `"true"` and `"false"`. At most one target may
+be marked `Oxygen: true` and at most one may be marked `TSS: true`; leave all
+markers false when the model/DataSet has no dissolved-oxygen or total-solids
+target. The backend does not require either marker to be present.
 
 ### Tank
 
@@ -125,19 +132,18 @@ Each flow block is a time/value pair:
 ```
 
 Use the DataSet Flow unit. Every Connection expression identifier must be a
-defined Flow name.
+defined Flow name. The required `Connection` header may be the only row for a
+closed batch reactor with no external inflow, flow, or liquid connection.
 
 ## Validation and submission
 
-Run the bundled validator from the Skill directory:
-
-```text
-python3 scripts/validate_dataset.py DataSet.json
-```
-
-The validator checks headers, natural numeric keys, names, table references,
-initial flow values, allowed expression syntax, and constant-volume hydraulic
-balance. It does not prove biological performance or equipment adequacy.
+The SIMPO parser invoked by `simpo create-dataset --json` is the authoritative
+validator and follows the backend version currently in use. Before submission,
+review the JSON in the current session for headers, naturally ordered numeric
+keys, names, table references, initial flow values, expression syntax, and
+constant-volume hydraulic balance. Do not treat a copied local validator as a
+guarantee of compatibility with a newer backend format. Parser acceptance still
+does not prove biological performance or equipment adequacy.
 
 Submit the JSON object itself, not a wrapper containing `DataSet`, `Answer`,
 `Description`, metadata, or a BioModel recommendation. Put narrative material

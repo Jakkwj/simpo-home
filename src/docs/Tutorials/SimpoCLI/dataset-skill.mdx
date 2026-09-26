@@ -32,9 +32,8 @@ This Skill is intended for requests such as:
 For ordinary DataSet create/read/update/sync/release operations on already
 prepared JSON, use the general [SimpoCLI Skill](./simpo-cli-skill). The DataSet
 Skill is the AI-assisted design and source-extraction workflow. These two input
-modes are combined in one Skill because both produce and validate the same
-DataSet tables; separate Skill names would duplicate the schema, validator, and
-creation workflow.
+modes are combined in one Skill because both produce the same DataSet tables and
+creation workflow; separate Skill names would duplicate the schema and workflow.
 
 The Skill uses the AI configured for the current assistant session and does not
 call SIMPO's backend AI creation endpoint. Codex invokes it as
@@ -69,10 +68,30 @@ assumptions, and unresolved information. Before creation it presents:
 - a hydraulic balance for every constant-volume tank;
 - the proposed JSON path and material uncertainties.
 
-The bundled local validator checks table headers, naturally ordered numeric
-keys, cross-table names, target and monitoring references, flow-expression
-syntax, initial flow values, and symbolic hydraulic balance. The SIMPO parser
-performs the authoritative validation during `simpo create-dataset --json`.
+Before creation, the Skill performs a current-session review of the DataSet
+structure, names, units, cross-table references, evidence mapping, and hydraulic
+balance. The parser invoked by `simpo create-dataset --json` is the authoritative
+validator and is matched to the backend version; no Python validator package is
+required. For PDF figure extraction, Poppler is needed only when pages still
+need rendering. The bundled renderer uses Python 3 and `pdftoppm`, but supplied
+images or an equivalent renderer are also valid alternatives.
+
+## Figure data and Description
+
+For paper figures, the Skill identifies the target figures and experiments,
+then uses WebPlotDigitizer or an equivalent calibrated tool. Experimental
+markers become observations; published model curves remain comparison-only.
+Different experiments normally need separate DataSets, not extra reactors.
+
+This Skill includes two optional helpers in its own `scripts/` directory:
+`prepare_paper_figures.py` renders PDF pages;
+`import_digitized_series.py` normalizes reviewed digitizer exports.
+The Project Skill reuses these files. Neither script automatically extracts
+reliable observations from an arbitrary plot. Required tools are checked before
+the selected extraction step; missing tools prompt installation or an alternative.
+
+The DataSet Description records source locations, figure roles, axis calibration,
+unit conversions, derivations, assumptions, hydraulic checks, and unresolved gaps.
 
 ## Safety boundaries
 

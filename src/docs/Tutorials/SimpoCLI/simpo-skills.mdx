@@ -19,8 +19,9 @@ installation and invocation syntax differs.
 | Skill | Main function | Codex | Codex installation directory | Claude Code | Claude Code installation directory |
 | --- | --- | --- | --- | --- | --- |
 | [SimpoCLI](./simpo-cli-skill) | Operate the installed SimpoCLI: authentication, BioModels, DataSets, Projects, Variables, calculations, and paginated results. | `$simpo` | `$CODEX_HOME/skills/simpo`<br />Default: `~/.codex/skills/simpo` | `/simpo:simpo` | Recommended: managed by the `simpo` plugin.<br />Fallback: `~/.claude/skills/simpo` |
-| [SIMPO BioModel](./biomodel-skill) | Analyze a wastewater-treatment paper, trace evidence, derive supported model data, and prepare a reviewed BioModel. | `$simpo-create-biomodel` | `$CODEX_HOME/skills/simpo-create-biomodel`<br />Default: `~/.codex/skills/simpo-create-biomodel` | `/simpo:simpo-create-biomodel` | Recommended: managed by the `simpo` plugin.<br />Fallback: `~/.claude/skills/simpo-create-biomodel` |
+| [SIMPO BioModel](./biomodel-skill) | Build a reviewed BioModel from a paper or explicit user-defined components, reactions, and kinetics; record supported derivations. | `$simpo-create-biomodel` | `$CODEX_HOME/skills/simpo-create-biomodel`<br />Default: `~/.codex/skills/simpo-create-biomodel` | `/simpo:simpo-create-biomodel` | Recommended: managed by the `simpo` plugin.<br />Fallback: `~/.claude/skills/simpo-create-biomodel` |
 | [SIMPO DataSet](./dataset-skill) | Design from engineering conditions or extract a treatment process, operating data, and time series from papers/reports; validate the SIMPO tables and prepare a reviewed DataSet. | `$simpo-create-dataset` | `$CODEX_HOME/skills/simpo-create-dataset`<br />Default: `~/.codex/skills/simpo-create-dataset` | `/simpo:simpo-create-dataset` | Recommended: managed by the `simpo` plugin.<br />Fallback: `~/.claude/skills/simpo-create-dataset` |
+| [SIMPO Project](./paper-to-project-skill) | Read one SCI paper, digitize figure data with calibration evidence, and prepare linked BioModel, DataSet, and Project Drafts. | `$simpo-create-project` | `$CODEX_HOME/skills/simpo-create-project`<br />Default: `~/.codex/skills/simpo-create-project` | `/simpo:simpo-create-project` | Recommended: managed by the `simpo` plugin.<br />Fallback: `~/.claude/skills/simpo-create-project` |
 
 Claude Code's recommended Marketplace installation is managed by Claude Code.
 The fallback paths above are the direct personal Skill directories used when
@@ -31,12 +32,15 @@ plugin support is unavailable.
 - Use **SimpoCLI** when the task operates on existing SIMPO resources or runs a
   calculation. Examples include reading Project Variables, updating a Draft
   BioModel, or checking calculation status.
-- Use **SIMPO BioModel** when the task starts with a research paper and needs a
+- Use **SIMPO BioModel** when the task starts with a paper or explicit model specification and needs a
   scientifically reviewed BioModel. It asks for review before creating the
   Private Draft through SimpoCLI.
 - Use **SIMPO DataSet** when the task starts with wastewater-treatment design
   conditions, an existing process, or source literature and needs complete,
   evidence-aware, hydraulically checked DataSet tables.
+- Use **SIMPO Project** when one SCI paper should produce a linked BioModel,
+  DataSet, and Project. It coordinates the two extraction workflows and adds a
+  calibrated figure-data step for values that appear only in plots.
 - Combine the specialized Skills with SimpoCLI when the resulting BioModel or
   DataSet must later be inspected, updated, released, or used in a Project.
 
@@ -53,9 +57,12 @@ https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo
 
 For the BioModel Skill, replace the final path with
 `plugins/simpo/skills/simpo-create-biomodel`; for the DataSet Skill, use
-`plugins/simpo/skills/simpo-create-dataset`. Manual installation copies the
+`plugins/simpo/skills/simpo-create-dataset`; for the paper workflow, use
+`plugins/simpo/skills/simpo-create-project`. Manual installation copies the
 complete directory, including `SKILL.md` and `references/`, to the matching
-`$CODEX_HOME/skills/<skill-name>` directory. Restart Codex after installation.
+`$CODEX_HOME/skills/<skill-name>` directory. Include `scripts/` when present.
+For the Project workflow, install all four Skills: it reuses the BioModel and
+DataSet workflows and the SimpoCLI command reference. Restart Codex after installation.
 
 ### Claude Code
 
@@ -78,3 +85,4 @@ matching `~/.claude/skills/<skill-name>` fallback path.
 | SimpoCLI | [Install](./simpo-cli-skill-codex-install) | [Use](./simpo-cli-skill-codex-usage) | [Install](./simpo-cli-skill-claude-code-install) | [Use](./simpo-cli-skill-claude-code-usage) |
 | SIMPO BioModel | [Install](./biomodel-skill-codex-install) | [Use](./biomodel-skill-codex-usage) | [Install](./biomodel-skill-claude-code-install) | [Use](./biomodel-skill-claude-code-usage) |
 | SIMPO DataSet | [Install](./dataset-skill-codex-install) | [Use](./dataset-skill-codex-usage) | [Install](./dataset-skill-claude-code-install) | [Use](./dataset-skill-claude-code-usage) |
+| SIMPO Project | [Install](./paper-to-project-skill-codex-install) | [Use](./paper-to-project-skill-codex-usage) | [Install](./paper-to-project-skill-claude-code-install) | [Use](./paper-to-project-skill-claude-code-usage) |

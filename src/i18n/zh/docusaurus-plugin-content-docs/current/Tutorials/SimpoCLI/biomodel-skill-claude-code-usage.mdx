@@ -6,6 +6,21 @@ sidebar_label: 使用方法与示例
 
 # 在 Claude Code 中使用 BioModel Skill
 
+## 根据用户定义的方程建立模型
+
+提供明确的模型定义时不需要论文，例如：
+
+```text
+/simpo:simpo-create-biomodel prepare a BioModel named FirstOrderExample from this explicit model:
+S_A and S_B are dissolved species in mg/L; one reaction converts S_A to S_B
+with coefficients -1 and +1, rate k*S_A, and k=0.2/d.
+Leave unsupported Composition and Ionization values unresolved.
+Show the JSON and evidence/assumption audit for review before creating anything.
+```
+
+Description 会记录输入定义、推导、单位、假设和未解决项。
+只有水质条件时应使用 DataSet Skill，不能据此凭空生成动力学方程。
+
 ## 基本用法
 
 调用带命名空间的 `/simpo:simpo-create-biomodel` 命令，并提供论文路径和模型名称：

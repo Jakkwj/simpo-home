@@ -1,0 +1,41 @@
+---
+id: paper-to-project-skill-codex-usage
+title: 在 Codex 中使用 SIMPO Project Skill
+sidebar_label: 使用
+---
+
+# 在 Codex 中使用
+
+提供论文路径和三个资源名称，调用 `$simpo-create-project`：
+
+```text
+Use $simpo-create-project 分析
+/data/papers/denitrification.pdf，准备名为 SulfurModel 的 BioModel、
+名为 SulfurPilot 的 DataSet，以及名为 SulfurPilotProject 的 Project。
+```
+
+如果论文的时间序列只出现在曲线图中，Skill 会准备高分辨率页面并要求带坐标校准的
+图表导出文件。可以使用 WebPlotDigitizer 识别坐标轴和数据系列，然后把导出的 CSV/JSON
+映射到 DataSet 的 `Measured`、`Inflow` 或 `Flow`。图片数据会标记为数字化估计，不会
+冒充表格中的原始值。
+
+创建前请审核论文引用、BioModel 表格、DataSet 表格、图片校准记录、水力平衡、假设和
+未解决数据。确认后按顺序创建两个 Private Draft，再创建关联的 Private Project Draft；
+不会自动发布。计算是独立的审核门槛。对于复现请求，应先审核目标图、临时估计值、
+边界和参与估计的变量，再执行 Simulation、LHS 不确定性分析、GA 或 RFGA 参数估计，
+以及最终的 Simulation 对比。
+
+请求完整复现闭环，但不发布或共享资源：
+
+```text
+Use $simpo-create-project 复现 /data/papers/denitrification.pdf。
+识别校准图和验证图，将缺失初始值标记为临时估计，准备三个已审核 Draft，
+并在运行 Simulation、LHS、参数估计和最终对比前展示计算方案。
+```
+
+只准备和审核、不写入 SIMPO：
+
+```text
+Use $simpo-create-project 分析 /data/papers/denitrification.pdf。
+准备三个 JSON 和图片证据表，但不要创建任何内容。
+```

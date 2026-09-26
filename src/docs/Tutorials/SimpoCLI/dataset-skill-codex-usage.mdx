@@ -28,8 +28,9 @@ Chinese prompts are supported while the Skill name remains unchanged:
 ```
 
 Codex identifies missing material conditions, explains the selected treatment
-train, calculates preliminary values, writes and validates the JSON, and asks
-for approval before calling `simpo create-dataset --json`.
+train, calculates preliminary values, reviews the JSON, and asks for approval
+before calling `simpo create-dataset --json`. The backend parser is the
+authoritative validator.
 
 ## Extract from a paper
 
@@ -68,8 +69,8 @@ the balance. It reports conflicts for review.
 ## Analyze without creating
 
 ```text
-Use $simpo-create-dataset to prepare and locally validate the DataSet JSON from
-these conditions. Stop before any SimpoCLI write.
+Use $simpo-create-dataset to prepare and review the DataSet JSON from these
+conditions. Stop before any SimpoCLI write.
 ```
 
 This produces the design review and JSON without creating a server resource.

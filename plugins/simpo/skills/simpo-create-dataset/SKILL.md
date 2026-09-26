@@ -27,6 +27,19 @@ Then read the reference for the task's source mode:
   read both references and keep extracted facts separate from engineering
   assumptions.
 
+## Input modes
+
+Classify the request before building JSON:
+
+- **User-input/design mode**: use the user's flow, water quality, targets,
+  process constraints, and approved engineering assumptions.
+- **Paper/source-extraction mode**: represent the documented experiment or
+  process and its observations, including reviewed data digitized from figures.
+
+Keep these modes separate in the audit. A paper extraction is not a license to
+fill missing values with design assumptions, and a design brief is not evidence
+that a paper measured a value.
+
 ## Requirements
 
 - Require a DataSet name. For design mode, require enough information to identify
@@ -50,15 +63,75 @@ Then read the reference for the task's source mode:
   descriptions, scripts, or logs. Use `simpo configure` interactively when the
   CLI reports that configuration is required.
 
+## Runtime dependency preflight
+
+The SIMPO parser in `simpo create-dataset --json` is the authoritative and
+version-matched DataSet validator. Do not require a bundled copy of the parser
+or block creation because Python is unavailable. Before submission, perform a
+current-session structural review of the JSON, source mapping, names, units,
+references, and hydraulic balance, then let SimpoCLI and the backend report any
+format or semantic error.
+
+For paper/source-extraction work, check whether the requested observations are
+only available in PDF figures. Text, tables, user-provided images, CSV files,
+and direct user-input design do not require Poppler. If PDF pages still need to
+be rendered, check the selected rendering path before extraction. The bundled
+helpers in this Skill's `scripts/` directory are optional paper-extraction
+conveniences:
+
+- `scripts/prepare_paper_figures.py` renders PDF pages and writes a manifest;
+- `scripts/import_digitized_series.py` normalizes a reviewed digitizer CSV/JSON
+  into an auditable series file.
+
+They require Python 3, and the PDF renderer also requires Poppler's `pdftoppm`.
+An equivalent renderer, an already-rendered page image, or a user-provided
+digitizer export is acceptable. If the selected tool is missing, tell the user
+which figure step is blocked and offer installation or an alternative. Never
+claim a local renderer or validator ran when it did not. The
+`simpo-create-project` Skill reuses these helpers; it does not contain a
+second copy.
+
+## Figure-derived observations
+
+In Paper/source-extraction mode, confirm the target figures and their role
+before digitizing. Use WebPlotDigitizer when available, or an equivalent tool
+that supports axis calibration and export. Extract experimental markers as
+`Measured`; keep published model lines as comparison-only data and never treat
+them as observations. For every imported series retain the source PDF, page,
+figure/panel, legend label, axis units and type, calibration points, tool and
+version, export file, removed points, reading uncertainty, and the chosen SIMPO
+symbol. Do not interpolate or turn censored values into zero without an explicit
+reviewed rule. Read the paper-extraction reference for the complete audit fields.
+
+If several figures describe different experiments, initial conditions, sources,
+or validation roles, create separate DataSets. Use one DataSet with multiple
+Tanks only when the figures represent genuinely parallel reactors or one
+documented process scenario with compatible time bases and topology. A single
+DataSet may contain multiple measured series only when their mapping to the same
+scenario is explicit.
+
+## Description audit
+
+The API `--description` is part of the reviewed DataSet record. Write structured
+Markdown that a later user can audit, not raw internal chain-of-thought. Include
+the input mode; source citation or design brief; process and tank mapping;
+table/figure/page evidence; `reported`, `calculated`, `digitized`, `assumed`,
+and `unresolved` classifications; unit conversions; digital calibration and
+uncertainty; hydraulic-balance calculations; missing or provisional values; and
+the review decision or next step. Preserve the original source label whenever a
+SIMPO-safe name is introduced.
+
 ## Workflow
 
-1. Classify the task as design, source extraction, or a combination. Normalize
+1. Classify the task as User-input/design mode, Paper/source-extraction mode, or
+   an explicitly approved combination. Normalize
    the supplied flow basis, water quality, limits, temperature, process units,
    streams, operating conditions, measurements, time basis, and requested
    horizon. Keep average, maximum, peak, instantaneous, and time-series values
    distinct.
-2. In source-extraction mode, follow the paper-extraction reference and build an
-   evidence map before writing JSON. Preserve the documented process train,
+2. In Paper/source-extraction mode, follow the paper-extraction reference and
+   build an evidence map before writing JSON. Confirm the figure inventory and
+   select target figures before digitization. Preserve the documented process train,
    tanks, streams, operating conditions, measurements, and time series. Label
    each nontrivial value as reported, calculated, assumed, or unresolved. Do not
    convert a missing source value into an engineering estimate unless the user
@@ -75,29 +148,30 @@ Then read the reference for the task's source mode:
    when it is not, unless the user or source identifies a compatible BioModel.
    This is a compatibility recommendation in the audit note; the DataSet is not
    linked to a BioModel by `create-dataset`.
-5. Build the complete DataSet detail object. Use the fixed Unit table and the
-   current six-column Target table. Keep every name and target symbol consistent
-   across Tank, Pump, Measured, Inflow, Flow, and Connection. Use only `CSTR`
-   and `Point Settling` tank types in this workflow unless the user provides a
-   separately validated current SIMPO format for another type.
+5. Build the complete DataSet detail object. Preserve the source time unit when
+   it is one of the backend-supported values (`day`, `hour`, `minute`, or
+   `second`). Use the current Target schema when TSS is applicable; the backend
+   also accepts the historical four- and five-column forms. Mark Oxygen/TSS only
+   when those quantities exist (zero or one true marker for each), and never add
+   a fictional target just to satisfy a template. Keep every name and target
+   symbol consistent across Tank, Pump, Measured, Inflow, Flow, and Connection.
+   Use only `CSTR` and `Point Settling` tank types in this workflow unless the
+   user provides a separately validated current SIMPO format for another type.
 6. Check each constant-volume tank symbolically and numerically for hydraulic
    balance. Aeration connections from a Pump are not liquid-flow terms. Explain
    every split, recycle, return, wasting, and boundary outflow.
-7. Write the proposed JSON to a UTF-8 file and run:
-
-   ```text
-   python3 scripts/validate_dataset.py PATH_TO_DATASET.json
-   ```
-
-   Resolve every validation error before submission. Warnings require review but
-   do not automatically authorize changing a scientifically supported value.
-8. Show the user the proposed DataSet name, mode, source citation and evidence
-   summary when applicable, selected or extracted process, compatible model
+7. Write the proposed JSON to a UTF-8 file. Perform a current-session structural
+   review against the current DataSet reference and source evidence. Resolve
+   structural, naming, unit, reference, and hydraulic-balance issues before
+   submission. The backend parser remains the final validation authority.
+8. Show the user the proposed DataSet name, mode, source citation or design brief,
+   target-figure inventory when applicable, and evidence summary when applicable,
+   selected or extracted process, compatible model
    family, conditions, calculations, assumptions, mass/fractionation notes,
    hydraulic-balance table, unresolved uncertainties, and output path. Ask for
    explicit approval before the API write. If the user requested analysis only,
    stop without creating anything.
-9. Put a concise Markdown audit in `--description`. For design mode, include the
+9. Put the structured Markdown audit described above in `--description`. For design mode, include the
    design conditions, process selection, model-family recommendation,
    engineering assumptions, calculation basis, and limitations. For extraction
    mode, include the citation, source locations, extraction/derivation decisions,
@@ -119,13 +193,13 @@ Then read the reference for the task's source mode:
 ## Failure handling
 
 - If parsing fails, use the precise SIMPO error to repair only the affected
-  header, value, name, reference, time series, or connection. Re-run the local
-  validator and show material design changes before resubmitting.
+  header, value, name, reference, time series, or connection. Re-review the
+  affected structure and show material design changes before resubmitting.
 - If a timeout or connection loss occurs after submission, use
   `simpo get-datasets` and traverse pagination to check whether the uniquely named
   Draft exists before retrying. Never repeat a create request blindly.
 - If calculated flow balance cannot be closed from the stated process, stop and
   expose the conflicting equations. Do not add an undocumented bypass or change
-  a design flow merely to make the validator pass.
+  a design flow merely to make a local check pass.
 - Never automatically create a Project, start a calculation, release the
   DataSet, make it Public, share it, or delete another resource.

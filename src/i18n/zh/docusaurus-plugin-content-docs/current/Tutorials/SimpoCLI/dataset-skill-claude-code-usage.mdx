@@ -17,8 +17,8 @@ COD/BOD5/TSS/TN/NH4-N/TP 为 240/100/200/35/28/5 mg/L，出水 TN 不高于
 先展示工艺、计算、假设、流量守恒和 JSON，再询问是否创建。
 ```
 
-Claude Code 会准备工艺设计、Target 拆分、八张 DataSet 表、本地校验报告和审核摘要；
-获得确认后才调用 SimpoCLI。
+Claude Code 会准备工艺设计、Target 拆分、八张 DataSet 表、结构审阅和审核摘要；获得确认
+后才调用 SimpoCLI，由后端解析器执行最终校验。
 
 ## 从论文提取
 
@@ -41,7 +41,7 @@ ExistingPlant 的 SIMPO DataSet。保留已有池容和流量，暴露所有矛�
 ## 只分析，不创建
 
 ```text
-/simpo:simpo-create-dataset 只准备并校验拟创建的 DataSet JSON，
+/simpo:simpo-create-dataset 只准备并审阅拟创建的 DataSet JSON，
 不要执行 SimpoCLI 写操作。
 ```
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "SIMPO Create DataSet"
-  short_description: "Design or extract treatment DataSets"
-  default_prompt: "Use $simpo-create-dataset to design or extract a wastewater treatment DataSet from these conditions or source materials, then prepare a reviewed SIMPO Draft."
+  short_description: "Design or extract DataSets with audited figure data"
+  default_prompt: "Use $simpo-create-dataset to design or extract this wastewater DataSet, confirm target figures when needed, audit digitized series, and prepare a reviewed Draft."

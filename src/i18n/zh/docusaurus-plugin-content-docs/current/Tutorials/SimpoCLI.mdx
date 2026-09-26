@@ -18,11 +18,21 @@ Variable、准备计算、启动本机安装的 `SimpoClient`、查询或停止�
 
 本页是 SimpoCLI 的完整命令总目录。每个命令也都拆分为独立页面，位于左侧
 可折叠的 **SimpoCLI** 目录中。
-所有命令也都支持 `--help`，用户或自动化 AI 可以先读取当前安装版本的帮助，
-再准确调用命令。
+所有命令都支持 `--help`，语法不清楚或命令报错时可以查询。日常操作可以直接执行，
+由后端进行权限检查。
 
 如果使用 AI 编程助手，请先查看 [SIMPO Skill 总览](./SimpoCLI/simpo-skills)，其中汇总
 了 Codex 和 Claude Code 的 Skill、调用名称、安装目录以及详情页面。
+
+| Skill | 用途 |
+| --- | --- |
+| [`simpo`](./SimpoCLI/simpo-cli-skill) | 操作 CLI 并读取 JSON 结果。 |
+| [`simpo-create-biomodel`](./SimpoCLI/biomodel-skill) | 根据论文或用户明确给出的方程建立模型。 |
+| [`simpo-create-dataset`](./SimpoCLI/dataset-skill) | 根据设计条件、来源表格或经过校准的图片数据建立 DataSet。 |
+| [`simpo-create-project`](./SimpoCLI/paper-to-project-skill) | 复用两项提取流程，创建关联资源并检验论文复现结果。 |
+
+这些是 AI 助手的 Skill，不是额外的终端子命令。Codex 中使用
+`$simpo-create-project`，Claude Code 插件中使用 `/simpo:simpo-create-project`。
 
 ## 使用条件
 

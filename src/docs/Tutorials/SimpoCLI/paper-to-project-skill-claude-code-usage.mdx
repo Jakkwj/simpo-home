@@ -1,0 +1,40 @@
+---
+id: paper-to-project-skill-claude-code-usage
+title: Use SIMPO Project Skill in Claude Code
+sidebar_label: Use
+---
+
+# Use in Claude Code
+
+Invoke the namespaced Skill with the paper path and resource names:
+
+```text
+/simpo:simpo-create-project Analyze /data/papers/denitrification.pdf and
+prepare a BioModel named SulfurModel, a DataSet named SulfurPilot, and a
+Project named SulfurPilotProject.
+```
+
+When values appear only in a plot, the Skill uses a high-resolution page image
+and a calibrated WebPlotDigitizer export or equivalent CSV/JSON. It records the
+figure, panel, axes, units, series, calibration points, and uncertainty before
+mapping the data into the DataSet.
+
+Review all three proposed Drafts and the evidence package before confirming
+creation. The workflow creates Private version `0` Drafts only; publication,
+release, and calculation remain separate actions. For a reproduction request,
+review target figures, temporary estimates, bounds, and evaluation variables
+before Simulation, LHS, GA or RFGA, and the final Simulation comparison.
+
+```text
+/simpo:simpo-create-project Reproduce /data/papers/denitrification.pdf,
+classify its calibration and validation figures, audit temporary initial values,
+prepare the three Drafts, and show the calculation plan before running it.
+```
+
+For analysis without API writes:
+
+```text
+/simpo:simpo-create-project Analyze /data/papers/denitrification.pdf and
+prepare the BioModel, DataSet, Project JSON, and figure evidence map, but do
+not create anything.
+```

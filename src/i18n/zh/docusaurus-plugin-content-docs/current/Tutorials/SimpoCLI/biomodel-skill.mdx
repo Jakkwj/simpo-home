@@ -8,11 +8,11 @@ sidebar_label: 总览
 
 所有 SIMPO Skill、Codex/Claude Code 调用名称和安装目录请参阅 [Skill 总览](./simpo-skills)。
 
-SIMPO BioModel Skill 帮助 AI 编程助手从污水处理模型论文中提取模型、核对证据、
+SIMPO BioModel Skill 帮助 AI 编程助手从论文或用户明确的模型定义中建立模型、核对证据、
 推导有依据的 Composition 与 Ionization，并通过 SimpoCLI 创建 SIMPO BioModel。
 目前支持 Codex 和 Claude Code，请参阅对应平台的安装与使用详情。
 
-这是面向论文建模的专用工作流，并不是通用 SimpoCLI 说明书。如果只是列出资源、
+这是面向模型提取与推导的专用工作流，并不是通用 SimpoCLI 说明书。如果只是列出资源、
 修改 Project Variable 或运行计算，请使用独立的 SimpoCLI Skill。
 
 Skill 使用当前 AI 助手会话所配置的 AI，不调用 SIMPO 后端的 AI 创建接口。
@@ -26,9 +26,19 @@ Claude Code 插件命令为 `/simpo:simpo-create-biomodel`。
 - 已配置包含 `write` scope 的 SIMPO API Token。请求创建时由 SimpoCLI 和后端负责认证及
   scope 校验。
 - AI 助手能够读取论文及所需补充材料。推荐使用 PDF，但不是硬性要求；完整 HTML
-  页面，或带有原始表格的 OCR 文本也可以使用。
+  页面，或带有原始表格的 OCR 文本也可以使用。也可以直接提供模型类型、组分、
+  反应、速率方程、参数和单位。
 
 不要把 API Token 写入提示词、模型 JSON 或共享文件；请使用 `simpo configure` 配置。
+
+## 输入模式与 Description
+
+论文模式按页码、表格和方程提取原模型。用户输入模式根据明确的模型定义建立模型；
+仅有水质条件不足以唯一确定 BioModel。如果只有进水或设计条件，请使用
+[DataSet Skill](./dataset-skill)，或同时提供生物反应方程及模型模板。
+
+两种模式都会将来源、推导依据、单位、假设、未解决项以及 Composition/Ionization
+的处理决定写入 BioModel 的 Description。这是可审核的依据摘要，不是 AI 对话记录。
 
 ## 默认分析规则
 

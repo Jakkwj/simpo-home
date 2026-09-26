@@ -17,7 +17,7 @@ sidebar_label: 使用方法与示例
 先展示工艺、计算和 JSON，不要立即创建。
 ```
 
-Codex 会识别缺失的重要条件，解释工艺选择，完成初步计算，写入并校验 JSON，然后在
+Codex 会识别缺失的重要条件，解释工艺选择，完成初步计算，审阅 JSON，然后在
 调用 `simpo create-dataset --json` 前请求确认。
 
 ## 从论文提取
@@ -50,7 +50,7 @@ Skill 不会为了闭合平衡而静默修改用户提供的工程值，而是�
 ## 只分析，不创建
 
 ```text
-请使用 $simpo-create-dataset 根据以下条件准备并在本地校验 DataSet JSON，
+请使用 $simpo-create-dataset 根据以下条件准备并审阅 DataSet JSON，
 不要执行任何 SimpoCLI 写操作。
 ```
 

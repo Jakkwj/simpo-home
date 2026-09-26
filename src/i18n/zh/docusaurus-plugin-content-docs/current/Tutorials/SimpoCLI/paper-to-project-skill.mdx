@@ -1,0 +1,77 @@
+---
+id: paper-to-project-skill
+title: SIMPO Project Skill（论文复现）
+sidebar_label: 总览
+---
+
+# SIMPO Project Skill（论文复现）
+
+当一篇污水处理 SCI 论文需要同时生成关联的 SIMPO BioModel、DataSet 和 Project
+Draft，并检验论文模型能否复现时，使用这个 Skill。它会协调现有的 BioModel、DataSet
+提取流程，识别实际用于校准和验证的图，并增加论文图片数据点的数字化步骤。
+
+这个流程是半自动的。正文和表格通常可以批量提取，但曲线图数据必须经过坐标校准和
+复核。可以使用 WebPlotDigitizer；每条导入的序列都会保留图号、坐标校准、单位、系列
+名称和不确定性等证据。
+
+Skill 只会在审核后创建 Private、版本 `0` 的 Draft，不会自动发布或共享。创建资源与
+启动计算是两个独立审核门槛；用户批准复现方案后，才会执行 Simulation、Uncertainty、
+Estimation 和再次 Simulation。后续生命周期操作请使用 [SimpoCLI](./simpo-cli-skill)。
+
+缺失的初始生物量或组分值不会再直接终止流程。若能给出有依据的有限初值与边界，Skill
+会将其标记为 `temporary_estimate`，先运行 Simulation，再通过 LHS 分析不确定性，并用
+GA 或 RFGA 估计少量变量。最终报告会区分成功复现、部分复现、不可辨识、方程不足、
+数据不足、实现差异、结果矛盾和数值失败。
+
+## 适用场景
+
+- 来源是包含污水处理模型或工艺描述的论文 PDF；
+- 需要从论文提取 BioModel 方程或化学计量关系；
+- DataSet 的运行数据或时间序列位于表格或图片中；
+- 希望把生成的 BioModel 和 DataSet 连接到同一个 Project。
+
+只需要 BioModel 或 DataSet 时，请使用专用的 [BioModel](./biomodel-skill) 或
+[DataSet](./dataset-skill) Skill。
+
+## 工作内容
+
+1. 按页码和图表记录论文、补充材料、表格、方程、工艺图和图注证据。
+2. 以高分辨率渲染图片页面，在 WebPlotDigitizer 或兼容工具中校准坐标并导出
+   CSV/JSON。
+3. 分别准备并审核 BioModel Draft 和 DataSet Draft。
+4. 两个 ID 均确认成功后，使用它们创建关联的 Project Draft。
+5. 返回三个 ID、来源证据、数字化细节、假设、未解决数据和解析器警告。
+
+Skill 不会把看起来合理的曲线直接当成精确数据。如果坐标轴、图例、面板或数据系列
+无法确认，该数据会保持未解决状态，直到提供更好的来源或批准近似值。
+
+## 复用的工作流
+
+此 Skill 需要与 `simpo`、`simpo-create-biomodel`、
+`simpo-create-dataset` 一起安装。Project 直接复用它们的论文提取规则，
+PDF 渲染和数字化数据导入脚本由 DataSet Skill 提供。
+不同实验使用独立 DataSet；比较不同方程时使用独立 Project 或模型版本。
+每个资源的 Description 都会记录来源、推导或提取依据、
+假设和限制。复用旧文件时仍须核对原论文的方程、单位和对应参数，
+缺少校准记录的数据不能声称已完成可靠的图片数字化。
+
+
+## 本地工具检查
+
+任务开始时，Skill 只会针对确实需要的步骤检查依赖。文字、表格和用户已经提供的图片
+不需要 Python 或 Poppler。使用随 Skill 提供的 PDF 图片流程时，会检查：
+
+```text
+command -v python3 && python3 --version
+command -v pdftoppm && pdftoppm -v
+```
+
+Python 3 用于运行图片准备和 CSV 规范化脚本，这些脚本只使用标准库。Poppler 中的
+`pdftoppm` 用于渲染 PDF 页面；如果用户明确给出页码范围，`pdfinfo` 可以不安装。如果
+缺少必需命令，Skill 会在提取前说明具体受影响的步骤，暂停依赖图片的流程，并提供安装
+或使用等效渲染器/数字化工具的方案。Skill 不会把未成功执行的脚本报告为已完成。
+
+## 相关页面
+
+- [Codex 安装](./paper-to-project-skill-codex-install)和[Codex 使用](./paper-to-project-skill-codex-usage)
+- [Claude Code 安装](./paper-to-project-skill-claude-code-install)和[Claude Code 使用](./paper-to-project-skill-claude-code-usage)

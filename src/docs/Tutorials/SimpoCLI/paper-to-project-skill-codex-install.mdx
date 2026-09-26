@@ -1,0 +1,35 @@
+---
+id: paper-to-project-skill-codex-install
+title: Install SIMPO Project Skill in Codex
+sidebar_label: Install
+---
+
+# Install in Codex
+
+Ask Codex's built-in Skill Installer to install the Skill from the repository:
+
+```text
+Use $skill-installer to install these Skills from:
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo-create-biomodel
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo-create-dataset
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo-create-project
+```
+
+Install all four together: Project reuses the BioModel and DataSet workflows,
+including DataSet's figure helpers, and the SimpoCLI command reference.
+
+The Project Skill's default directory is:
+
+```text
+~/.codex/skills/simpo-create-project
+```
+
+When `CODEX_HOME` is set, the directory is:
+
+```text
+$CODEX_HOME/skills/simpo-create-project
+```
+
+Restart or start a new Codex turn after installation. SimpoCLI must be installed
+separately and configured when the workflow is ready to create Drafts.

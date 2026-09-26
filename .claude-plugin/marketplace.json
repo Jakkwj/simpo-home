@@ -3,13 +3,13 @@
   "owner": {
     "name": "SIMPO"
   },
-  "description": "Official SIMPO skills for SimpoCLI operations and reviewed BioModel or DataSet creation.",
+  "description": "Official SIMPO skills for SimpoCLI operations, reviewed resource creation, and paper-to-Project model reproduction workflows.",
   "plugins": [
     {
       "name": "simpo",
       "source": "./plugins/simpo",
-      "description": "Operate SIMPO through SimpoCLI and create reviewed BioModel or DataSet drafts.",
-      "version": "0.3.0",
+      "description": "Operate SIMPO through SimpoCLI and create or reproduce reviewed BioModel, DataSet, and paper-to-Project workflows.",
+      "version": "0.5.0",
       "author": {
         "name": "SIMPO"
       },

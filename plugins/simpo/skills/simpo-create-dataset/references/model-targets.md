@@ -31,9 +31,11 @@ Use the current header:
 {"0":"Symbol","1":"Unit","2":"Name","3":"Description","4":"Oxygen","5":"TSS"}
 ```
 
-Exactly one dissolved-oxygen target should have `Oxygen: true`, normally
-`S_O2`. Exactly one total-suspended-solids target should have `TSS: true`,
-normally `X_TSS`. All other marker values are `false`.
+Mark a dissolved-oxygen target (`Oxygen: true`, normally `S_O2`) or a
+total-suspended-solids target (`TSS: true`, normally `X_TSS`) only when that
+quantity exists in the DataSet/model. The backend permits zero or one true value
+for each marker and rejects more than one. Use `false` for every target when a
+marker does not apply; do not invent oxygen or TSS targets to satisfy a rule.
 
 ## 3. ASM2D target set
 

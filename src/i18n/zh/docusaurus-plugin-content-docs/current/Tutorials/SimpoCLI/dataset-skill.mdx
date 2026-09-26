@@ -25,8 +25,8 @@ SIMPO DataSet Skill 既可以根据工程条件设计污水处理 DataSet，也�
 
 对于已经准备好 JSON 的普通 DataSet create/read/update/sync/release 操作，请使用通用
 [SimpoCLI Skill](./simpo-cli-skill)。DataSet Skill 是 AI 辅助的设计与资料提取工作流。
-两种入口整合在同一个 Skill 中，因为它们最终生成并校验的是相同 DataSet 表格；拆分为
-两个名称会重复 JSON 结构、本地校验器和创建流程。
+两种入口整合在同一个 Skill 中，因为它们最终生成相同的 DataSet 表格并使用同一套创建
+流程；拆分为两个名称会重复 JSON 结构和创建流程。
 
 Skill 使用当前 AI 助手会话所配置的 AI，不调用 SIMPO 后端 AI 创建接口。Codex 调用名为
 `$simpo-create-dataset`，Claude Code 插件命令为 `/simpo:simpo-create-dataset`。
@@ -53,9 +53,28 @@ Skill 会先判断采用设计路径、资料提取路径，还是两者结合�
 - 每个恒容池的水力平衡；
 - 拟创建 JSON 路径和重要不确定项。
 
-随 Skill 提供的本地校验器会检查表头、自然顺序数字键、跨表名称、Target 和监测点引用、
-流量表达式、初始流量以及符号水力平衡。执行 `simpo create-dataset --json` 时，最终由
-SIMPO 解析器做权威校验。
+创建前，Skill 会在当前会话中检查 DataSet 的结构、名称、单位、跨表引用、证据映射和水力
+平衡。执行 `simpo create-dataset --json` 时，由与当前后端版本匹配的 SIMPO 解析器做最终
+校验；不需要额外安装 Python 校验器。只有 PDF 页面仍需要渲染时才需要 Poppler。随论文
+流程提供的渲染器需要 Python 3 和 `pdftoppm`，但用户也可以直接提供图片，或使用等效的
+渲染工具。
+
+## 图片数据与 Description
+
+处理论文图片时，Skill 会先确定目标图及其所属实验，再通过 WebPlotDigitizer
+或等效工具校准坐标。实验点可以作为观测数据，模型曲线仅用于结果对比。
+不同实验通常建立独立 DataSet，而不是为了容纳多张图而增加反应器。
+
+
+本 Skill 的 `scripts/` 中提供两个可选辅助脚本：
+`prepare_paper_figures.py` 渲染 PDF 页面；
+`import_digitized_series.py` 规范化已经审核的数字化导出数据。
+Project Skill 复用这两个文件。它们不会自动完成可靠的图片数据识别，
+也不是 DataSet 格式校验器。选定提取路径后，会先检查所需工具；缺少时会
+明确提示安装或提供替代方案。
+
+DataSet 的 Description 会记录来源位置、图的用途、坐标校准、单位转换、
+推导依据、假设、水力检查和未解决缺口。
 
 ## 安全边界
 

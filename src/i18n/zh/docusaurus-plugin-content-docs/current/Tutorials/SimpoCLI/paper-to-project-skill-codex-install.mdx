@@ -1,0 +1,34 @@
+---
+id: paper-to-project-skill-codex-install
+title: 在 Codex 中安装 SIMPO Project Skill
+sidebar_label: 安装
+---
+
+# 在 Codex 中安装
+
+让 Codex 内置的 Skill Installer 从仓库安装：
+
+```text
+Use $skill-installer to install these Skills from:
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo-create-biomodel
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo-create-dataset
+https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo-create-project
+```
+
+请一起安装这四项：Project 复用 BioModel、DataSet 工作流，
+包括 DataSet 的图片辅助脚本，并使用 SimpoCLI 命令参考。
+
+Project Skill 的默认安装目录：
+
+```text
+~/.codex/skills/simpo-create-project
+```
+
+设置 `CODEX_HOME` 后，目录为：
+
+```text
+$CODEX_HOME/skills/simpo-create-project
+```
+
+安装后重新开始 Codex 对话。准备创建 Draft 时，还需要单独安装并配置 SimpoCLI。

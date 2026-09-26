@@ -26,14 +26,19 @@ SimpoHome/
         │   ├── SKILL.md
         │   ├── agents/openai.yaml
         │   └── references/
-        └── simpo-create-biomodel/
+        ├── simpo-create-biomodel/
             ├── SKILL.md
             ├── agents/openai.yaml
             └── references/
+        └── simpo-create-project/
+            ├── SKILL.md
+            ├── agents/openai.yaml
+            ├── references/
+            └── scripts/
 ```
 
 - `.claude-plugin/plugin.json` 和根目录的 `.claude-plugin/marketplace.json` 用于向
-  Claude Code 以 `simpo` 插件发布两项 Skill。
+  Claude Code 以 `simpo` 插件发布全部 Skill。
 - Codex 将每个 Skill 目录直接安装到 `$CODEX_HOME/skills`。
 - `plugins/simpo/skills/` 下的每个目录都是完整、可移植的 Skill；安装时必须让
   `references/` 与 `SKILL.md` 保持在同一个 Skill 目录中。

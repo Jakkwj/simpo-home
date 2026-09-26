@@ -10,13 +10,13 @@ Use the [Skills overview](./simpo-skills) to compare this Skill with the general
 SimpoCLI Skill and find both platform-specific installation directories.
 
 SIMPO BioModel Skill helps an AI coding assistant extract a wastewater-treatment
-model from a paper, audit its evidence, derive supported Composition and
+model from a paper or an explicit user model specification, audit its evidence, derive supported Composition and
 Ionization data, and create a SIMPO BioModel through SimpoCLI. It currently
 supports Codex and Claude Code. See the corresponding installation and usage
 guide for the platform you use.
 
 This is a specialized workflow rather than the general SimpoCLI manual. Use it
-when the task starts from a paper and needs a scientifically reviewed BioModel.
+when the task starts from a paper or defined reactions and needs a scientifically reviewed BioModel.
 For ordinary CLI operations such as listing resources, changing a Project
 Variable, or running a calculation, use the separate SimpoCLI Skill.
 
@@ -34,10 +34,23 @@ You can invoke it in English or Chinese. In Codex the Skill name remains
   enforce authentication and scope requirements when creation is requested.
 - The AI assistant can read the paper and any required supplementary material.
   PDF is recommended but not required; full-text HTML or OCR text with the
-  original tables can also be used.
+  original tables can also be used. Alternatively, supply a model family,
+  components, reactions, rate equations, parameters, and units.
 
 Never put an API Token in a prompt, model JSON, or shared file. Configure it with
 `simpo configure`.
+
+## Input modes and Description
+
+Paper mode extracts the source model with page, table, and equation evidence.
+User-defined mode builds from your explicit model specification; water quality
+alone does not determine a unique BioModel. Use the [DataSet Skill](./dataset-skill)
+for influent/design conditions unless you also supply biological equations or a
+model template.
+
+Both modes record sources, supported derivations, units, assumptions, unresolved
+items, and Composition/Ionization decisions in the BioModel Description. This
+is an auditable summary, not a transcript of the AI conversation.
 
 ## Default analysis rules
 

@@ -6,6 +6,21 @@ sidebar_label: Usage and examples
 
 # Use BioModel Skill in Codex
 
+## Build from user-defined equations
+
+A paper is optional when you provide a complete model specification:
+
+```text
+Use $simpo-create-biomodel to prepare a BioModel named FirstOrderExample from this explicit model:
+S_A and S_B are dissolved species in mg/L; one reaction converts S_A to S_B
+with coefficients -1 and +1, rate k*S_A, and k=0.2/d.
+Leave unsupported Composition and Ionization values unresolved.
+Show the JSON and evidence/assumption audit for review before creating anything.
+```
+
+The Description records the specification, derivations, units, assumptions, and
+unresolved items. Water quality alone is a DataSet input, not evidence for inventing kinetics.
+
 ## Basic usage
 
 Explicitly name `$simpo-create-biomodel`, provide a readable paper path, and choose a

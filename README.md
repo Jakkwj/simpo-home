@@ -27,14 +27,19 @@ SimpoHome/
         │   ├── SKILL.md
         │   ├── agents/openai.yaml
         │   └── references/
-        └── simpo-create-biomodel/
+        ├── simpo-create-biomodel/
             ├── SKILL.md
             ├── agents/openai.yaml
             └── references/
+        └── simpo-create-project/
+            ├── SKILL.md
+            ├── agents/openai.yaml
+            ├── references/
+            └── scripts/
 ```
 
 - `.claude-plugin/plugin.json` and the root `.claude-plugin/marketplace.json`
-  publish both Skills as the `simpo` plugin for Claude Code.
+  publish all Skills as the `simpo` plugin for Claude Code.
 - Codex installs each Skill directory directly under `$CODEX_HOME/skills`.
 - Each directory under `plugins/simpo/skills/` is a complete portable Skill;
   keep its `references/` directory with `SKILL.md` when installing it.

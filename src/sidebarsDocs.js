@@ -309,6 +309,38 @@ const sidebars = {
                 },
               ],
             },
+            {
+              type: 'category',
+              label: 'Project',
+              key: 'SimpoCLI/Skill/CreateProject',
+              collapsible: true,
+              collapsed: true,
+              items: [
+                'Tutorials/SimpoCLI/paper-to-project-skill',
+                {
+                  type: 'category',
+                  label: 'Codex',
+                  key: 'SimpoCLI/Skill/CreateProject/Codex',
+                  collapsible: true,
+                  collapsed: true,
+                  items: [
+                    'Tutorials/SimpoCLI/paper-to-project-skill-codex-install',
+                    'Tutorials/SimpoCLI/paper-to-project-skill-codex-usage',
+                  ],
+                },
+                {
+                  type: 'category',
+                  label: 'Claude Code',
+                  key: 'SimpoCLI/Skill/CreateProject/ClaudeCode',
+                  collapsible: true,
+                  collapsed: true,
+                  items: [
+                    'Tutorials/SimpoCLI/paper-to-project-skill-claude-code-install',
+                    'Tutorials/SimpoCLI/paper-to-project-skill-claude-code-usage',
+                  ],
+                },
+              ],
+            },
           ],
         },
       ],

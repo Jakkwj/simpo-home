@@ -1,0 +1,35 @@
+---
+id: paper-to-project-skill-claude-code-usage
+title: 在 Claude Code 中使用 SIMPO Project Skill
+sidebar_label: 使用
+---
+
+# 在 Claude Code 中使用
+
+提供论文路径和资源名称，调用带命名空间的 Skill：
+
+```text
+/simpo:simpo-create-project 分析 /data/papers/denitrification.pdf，准备名为
+SulfurModel 的 BioModel、名为 SulfurPilot 的 DataSet，以及名为
+SulfurPilotProject 的 Project。
+```
+
+当数据只出现在图片中时，Skill 会使用高分辨率页面和带坐标校准的 WebPlotDigitizer
+导出文件或兼容的 CSV/JSON。在写入 DataSet 前，会记录图号、面板、坐标轴、单位、数据
+系列、校准点和不确定性。
+
+确认创建前请审核三个 Draft 和完整证据包。流程只创建 Private、版本 `0` 的 Draft；
+不会自动发布或共享，计算则有独立审核门槛。对于复现请求，应先审核目标图、临时估计、
+边界和参与估计的变量，再执行 Simulation、LHS、GA 或 RFGA，以及最终 Simulation 对比。
+
+```text
+/simpo:simpo-create-project 复现 /data/papers/denitrification.pdf，
+分类校准图和验证图，审计临时初始值，准备三个 Draft，并在运行前展示计算方案。
+```
+
+只分析、不调用 API 写入：
+
+```text
+/simpo:simpo-create-project 分析 /data/papers/denitrification.pdf，准备
+BioModel、DataSet、Project JSON 和图片证据表，但不要创建任何内容。
+```

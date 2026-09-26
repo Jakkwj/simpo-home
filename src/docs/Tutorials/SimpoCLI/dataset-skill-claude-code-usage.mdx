@@ -26,8 +26,8 @@ SIMPO DataSet，先展示工艺、计算、假设、流量守恒和 JSON，再�
 ```
 
 Claude Code prepares the process design, target fractionation, all eight
-DataSet tables, a local validation report, and a review summary. It calls
-SimpoCLI only after approval.
+DataSet tables, a structural review, and a review summary. It calls SimpoCLI
+only after approval; the backend parser performs the authoritative validation.
 
 ## Extract from a paper
 
@@ -54,7 +54,7 @@ any inconsistency, and do not create it yet.
 ## Analyze without creating
 
 ```text
-/simpo:simpo-create-dataset Prepare and validate the proposed DataSet JSON only.
+/simpo:simpo-create-dataset Prepare and review the proposed DataSet JSON only.
 Do not run a SimpoCLI write.
 ```
 

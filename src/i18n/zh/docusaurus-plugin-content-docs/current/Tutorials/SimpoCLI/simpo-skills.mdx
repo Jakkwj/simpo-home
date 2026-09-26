@@ -16,8 +16,9 @@ Codex 和 Claude Code 使用相同的 Skill 内容，区别主要在安装方式
 | Skill | 主要功能 | Codex 调用 | Codex 安装目录 | Claude Code 调用 | Claude Code 安装目录 |
 | --- | --- | --- | --- | --- | --- |
 | [SimpoCLI](./simpo-cli-skill) | 操作已安装的 SimpoCLI：认证、BioModel、DataSet、Project、Variable、计算任务和分页结果。 | `$simpo` | `$CODEX_HOME/skills/simpo`<br />默认：`~/.codex/skills/simpo` | `/simpo:simpo` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo` |
-| [SIMPO BioModel](./biomodel-skill) | 分析污水处理模型论文、追溯证据、推导有依据的模型数据，并准备经过审核的 BioModel。 | `$simpo-create-biomodel` | `$CODEX_HOME/skills/simpo-create-biomodel`<br />默认：`~/.codex/skills/simpo-create-biomodel` | `/simpo:simpo-create-biomodel` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo-create-biomodel` |
+| [SIMPO BioModel](./biomodel-skill) | 从论文或用户明确给出的组分、反应和动力学建立 BioModel，记录有依据的推导并供审核。 | `$simpo-create-biomodel` | `$CODEX_HOME/skills/simpo-create-biomodel`<br />默认：`~/.codex/skills/simpo-create-biomodel` | `/simpo:simpo-create-biomodel` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo-create-biomodel` |
 | [SIMPO DataSet](./dataset-skill) | 根据工程条件设计，或从论文/报告中提取处理流程、运行数据和时间序列；校验 SIMPO 表格并准备经过审核的 DataSet。 | `$simpo-create-dataset` | `$CODEX_HOME/skills/simpo-create-dataset`<br />默认：`~/.codex/skills/simpo-create-dataset` | `/simpo:simpo-create-dataset` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo-create-dataset` |
+| [SIMPO Project（论文复现）](./paper-to-project-skill) | 阅读一篇 SCI 论文，带校准证据识别图片数据点，并准备关联的 BioModel、DataSet 和 Project Draft。 | `$simpo-create-project` | `$CODEX_HOME/skills/simpo-create-project`<br />默认：`~/.codex/skills/simpo-create-project` | `/simpo:simpo-create-project` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo-create-project` |
 
 Claude Code 推荐使用 Marketplace 安装，插件由 Claude Code 管理。上表中的备用路径，是
 不支持插件时使用的个人 Skill 目录。
@@ -26,10 +27,12 @@ Claude Code 推荐使用 Marketplace 安装，插件由 Claude Code 管理。上
 
 - **SimpoCLI**：用于操作已有的 SIMPO 资源或运行计算，例如读取 Project Variable、
   更新 Draft BioModel、查询计算状态。
-- **SIMPO BioModel**：用于从论文开始建立模型。它负责科学信息提取和审核，并在确认后
+- **SIMPO BioModel**：用于从论文或明确的用户模型定义开始建立模型。它负责信息提取、推导和审核，并在确认后
   通过 SimpoCLI 创建 Private Draft BioModel。
 - **SIMPO DataSet**：用于从污水处理设计条件、已有工艺或来源文献开始，建立完整、保留
   证据并经过水力检查的 DataSet 表格。
+- **SIMPO Project（论文复现）**：用于从一篇 SCI 论文同时准备关联的 BioModel、DataSet 和
+  Project；图表中的数据点会经过坐标校准并保留数字化证据。
 - 生成的 BioModel 或 DataSet 如需继续查询、更新、发布或用于 Project，可再使用
   **SimpoCLI** 执行日常操作。
 
@@ -46,13 +49,15 @@ https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo
 
 安装 BioModel Skill 时，将最后的路径改为
 `plugins/simpo/skills/simpo-create-biomodel`；安装 DataSet Skill 时改为
-`plugins/simpo/skills/simpo-create-dataset`。手工安装时，必须把包含 `SKILL.md` 和
+`plugins/simpo/skills/simpo-create-dataset`；安装 SIMPO Project Skill 时改为
+`plugins/simpo/skills/simpo-create-project`。手工安装时，必须把包含 `SKILL.md` 和
 `references/` 的完整目录复制到对应的 `$CODEX_HOME/skills/<skill-name>`；完成后重启
-Codex 会话。
+Codex 会话。有 `scripts/` 的目录也须完整保留。Project 工作流需要安装全部四项
+Skill，因为它复用 BioModel、DataSet 流程和 SimpoCLI 命令参考。
 
 ### Claude Code
 
-推荐安装包含三项 Skill 的 `simpo` 插件：
+推荐安装包含全部四项 Skill 的 `simpo` 插件：
 
 ```text
 /plugin marketplace add Jakkwj/simpo-home
@@ -69,3 +74,4 @@ Codex 会话。
 | SimpoCLI | [安装](./simpo-cli-skill-codex-install) | [使用](./simpo-cli-skill-codex-usage) | [安装](./simpo-cli-skill-claude-code-install) | [使用](./simpo-cli-skill-claude-code-usage) |
 | SIMPO BioModel | [安装](./biomodel-skill-codex-install) | [使用](./biomodel-skill-codex-usage) | [安装](./biomodel-skill-claude-code-install) | [使用](./biomodel-skill-claude-code-usage) |
 | SIMPO DataSet | [安装](./dataset-skill-codex-install) | [使用](./dataset-skill-codex-usage) | [安装](./dataset-skill-claude-code-install) | [使用](./dataset-skill-claude-code-usage) |
+| SIMPO Project（论文复现） | [安装](./paper-to-project-skill-codex-install) | [使用](./paper-to-project-skill-codex-usage) | [安装](./paper-to-project-skill-claude-code-install) | [使用](./paper-to-project-skill-claude-code-usage) |
