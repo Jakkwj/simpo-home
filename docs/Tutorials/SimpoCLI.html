@@ -10,8 +10,8 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="SIMPO" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.52cd2a0c.css">
-<script src="/assets/js/runtime~main.432f5da5.js" defer="defer"></script>
-<script src="/assets/js/main.9fc6c620.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.c85fff70.js" defer="defer"></script>
+<script src="/assets/js/main.63c318c2.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -26,11 +26,15 @@ large stored results in bounded pages.
 Its terminal command is the short, lowercase <code>simpo</code>.</p>
 <p>This page is the complete SimpoCLI command index. Each command also has its own
 page in the collapsible <strong>SimpoCLI</strong> section.
-Every command also supports <code>--help</code>, so a user or automation agent can inspect
-the installed version before invoking it.</p>
+Every command supports <code>--help</code> when syntax is unclear or a usage error occurs.
+Ordinary operations can run directly; the backend checks permissions.</p>
 <p>For AI assistant integrations, see the <a class="" href="/docs/Tutorials/SimpoCLI/simpo-skills">SIMPO Skills overview</a>
 for the complete Codex and Claude Code directory, invocation names, installation
 paths, and detailed guides.</p>
+<table><thead><tr><th>Skill</th><th>Purpose</th></tr></thead><tbody><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/simpo-cli-skill"><code>simpo</code></a></td><td>Operate the CLI and read its JSON results.</td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/biomodel-skill"><code>simpo-create-biomodel</code></a></td><td>Build a model from a paper or explicit user-defined equations.</td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/dataset-skill"><code>simpo-create-dataset</code></a></td><td>Build a DataSet from design inputs, source tables, or calibrated figure data.</td></tr><tr><td><a class="" href="/docs/Tutorials/SimpoCLI/paper-to-project-skill"><code>simpo-create-project</code></a></td><td>Reuse both extraction workflows to create linked resources and test paper reproduction.</td></tr></tbody></table>
+<p>These are assistant Skills, not additional terminal subcommands. Use
+<code>$simpo-create-project</code> in Codex or <code>/simpo:simpo-create-project</code> in the
+Claude Code plugin.</p>
 <h2 class="anchor anchorTargetHideOnScrollNavbar_vjPI" id="prerequisites">Prerequisites<a href="#prerequisites" class="hash-link" aria-label="Direct link to Prerequisites" title="Direct link to Prerequisites" translate="no">​</a></h2>
 <ul>
 <li class="">A SIMPO account and an OpenAPI Token created on the Dashboard&#x27;s <strong>API Tokens</strong>
