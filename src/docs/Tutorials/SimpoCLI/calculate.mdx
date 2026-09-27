@@ -83,7 +83,7 @@ The generic `OAT` code is not a public CLI choice.
 | `--generation-ga INTEGER` | `200` | Maximum generations, at least `1` |
 | `--escaped-threshold-ga INTEGER` | `100` | Generations without improvement before early stop, at least `1` |
 | `--ga-initial-value / --no-ga-initial-value` | disabled | Use current Variable values as GA/RFGA initial values |
-| `--auto-plot-correlation / --no-auto-plot-correlation` | disabled | Automatic correlation plots |
+| `--auto-plot-correlation / --no-auto-plot-correlation` | disabled | Generate OAT Pearson correlation data and plots; also requires `--auto-plot` and at least two `Evaluation=true` parameters |
 | `--auto-plot-skeleton / --no-auto-plot-skeleton` | enabled | Automatic skeleton plots |
 
 ## Launch and wait options
@@ -107,6 +107,45 @@ later with [`get-calculation-status`](./get-calculation-status), or explicitly u
 
 `--print-protocol` is intended for explicit integrations. The protocol contains
 a short-lived credential and must not be published or written to public logs.
+
+OAT sensitivity ranking and weighted-integral results do not mean that parameter
+correlations were calculated. Correlation output is disabled by default. To
+request Pearson coefficients or the Dashboard Correlation panel, enable both
+switches:
+
+```text
+simpo calculate PROJECT_ID --engine OAT_AR \
+  --auto-plot --auto-plot-correlation --wait
+```
+
+Enabling `--auto-plot-correlation` alone may still return an empty
+`correlation` object because the client generates correlation data only when
+automatic plotting is also enabled. At least two parameters must have
+`Evaluation=true`; with fewer than two there is no pairwise coefficient, so an
+empty result is expected and must not be reported as zero correlation.
+
+## Initial DataSet values
+
+For a calculation, `Solution.Variable.Value` is the baseline for `Inflow` and
+`Flow`. The backend compares it with the DataSet value at `time=0`, adds the
+resulting offset to every row, and clips negative values. `Inflow` resolves its
+selected `Conversion` expression using the current BioModel/Project Parameter
+values first:
+
+```text
+Inflow offset = Variable.Value * Conversion coefficient - DataSet first value
+Flow offset   = Variable.Value - DataSet first value
+```
+
+For example, a one-to-one Inflow series beginning at `100` with a Solution value
+of `1000` is shifted by `900`, so `[100, 120, 90]` is calculated as
+`[1000, 1020, 990]`. Flow is converted from `m3/d` to `m3/s` after the shift.
+
+This rule does not apply to `Measured`: its values remain the original
+observations used for comparison with model output. When documenting a run,
+record the DataSet first value, Solution value, original Conversion expression,
+resolved coefficient, and effective offset instead of pre-shifting the stored
+DataSet.
 
 ## Result
 

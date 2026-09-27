@@ -33,6 +33,28 @@ simpo create-project MyProject --biomodel-id 123 --dataset-id 456 --json ./Solut
 不传 JSON 时，根据所选 BioModel 和 DataSet 生成默认 Solution；传入 JSON 时会在
 同一次操作中解析并生成 Project，不会先创建空白 Project 再执行更新。
 
+## Conversion 映射
+
+默认表只会在 DataSet Target 符号与 BioModel Component 同名且单位/计量基础兼容时
+生成单位映射。对于 `COD`、`TIN`、`TN`、`TP`、`TSS`、`TS`（总硫）等聚合 Target，应在
+`DETAIL.json` 中提供经过审核的 `Conversion` 行。系数必须来自论文或数据源定义、
+BioModel Composition，或明确的单位换算，不能只根据缩写猜测。例如列为
+`S_NHx`、`S_NOx`、`S_N2` 时：
+
+```text
+Target: [TIN, 1, 1, 0]
+```
+
+该示例要求两个氮组分都使用 `gN/m3`，且默认不把溶解态 `S_N2` 计入 TIN。COD、TP、
+TSS 和 TS（总硫）必须根据各自定义选择组分和系数，不能直接套用示例。总固体必须
+由数据源单独命名和定义。聚合行无法确定或全部为零时，必须先审核再创建。
+
+Conversion 单元格也可以直接填写 BioModel Parameter 或包含 Parameter 的表达式。
+例如，BioModel 已定义 `i_N_S_U` 作为 `S_U` 的含氮比例时，`TN` 行应保留
+`i_N_S_U`，不要强行替换成当前数值。计算时会根据当前 Project Variable Value
+解析表达式。提交前确认每个 Parameter 都存在、当前值有限且与 Target 单位兼容，
+并在 Project Description 中记录这个符号公式。
+
 ## 选项
 
 | 选项 | 默认值 | 作用 |

@@ -132,9 +132,57 @@ the missing evidence.
    simpo create-project "PROJECT_NAME" --biomodel-id BIOMODEL_ID --dataset-id DATASET_ID
    ```
 
-   Use `--json` only when the user has reviewed a complete Solution detail. The
-   default backend-generated Solution is preferred when no paper-specific
-   Variable, Target, Conversion, or Weight edits are needed.
+   Before choosing the default Solution, close the Conversion row for every
+   DataSet Target against the selected BioModel Component list. Classify each
+   Target as direct, explicitly derived, or unresolved:
+
+   - A direct Target/Component match may use the identity coefficient (`1`)
+     only when the units and reporting basis are compatible.
+   - An aggregate or derived Target must have a reviewed linear mapping whose
+     coefficients come from the source definition, BioModel Composition, or a
+     transparent unit conversion. A Conversion cell may be a literal number,
+     exact expression, or direct BioModel Parameter reference such as
+     `i_N_S_U`; preserve the symbolic reference instead of replacing it with a
+     default or rounded value. Verify that every referenced Parameter exists,
+     evaluates to a finite value, and is unit-compatible. Never infer a formula
+     from the abbreviation alone. Common patterns are:
+
+     | Target | Safe rule when the model/source supports it |
+     | --- | --- |
+     | `COD`/`TCOD` | Sum only Components explicitly included in the source's COD basis. An ASM2D influent example is `S_F + S_VFA + S_U + X_U_E + X_B`; include biomass or other fractions only when defined. |
+     | `SCOD` | Use the explicitly defined soluble COD subset; do not include particulate `X_*` Components. |
+     | `TIN` | `S_NHx + S_NOx`, or the corresponding `S_NH4 + S_NO2 + S_NO3`; do not add `S_N2` unless the source defines it as part of TIN. |
+     | `TN` | Include inorganic and source-defined organic-nitrogen Composition terms; never substitute the TIN formula. |
+     | `TP` | Include `S_PO4` and every source/model-defined organic or polyphosphate term, such as `X_PAO_PP`; do not assume phosphate is the whole TP. |
+     | `TSS` | Use the BioModel/source `i_TSS_*` coefficients for particulate Components; dissolved Components are zero unless explicitly defined otherwise. |
+     | `TS` | In this BioModel context, interpret as total sulfur. Sum sulfur-bearing Components using the BioModel `S` Composition coefficients or the source-defined sulfur species; do not interpret it as total solids. |
+
+   For example, if the DataSet defines `TIN` in `gN/m3` and the BioModel
+   exposes `S_NHx` and `S_NOx` in the same basis, derive `TIN = 1*S_NHx +
+   1*S_NOx`. If units, species, Composition coefficients, or the source
+   definition do not support a defensible derivation, mark the Target
+   `unresolved` and stop before Project creation. When any derived Target is
+   present, use `--json` with the complete reviewed `Variable`, `Target`,
+   `Conversion`, and `Weight` detail rather than relying on the default
+   backend-generated identity table.
+
+   Apply the mapping while assembling the detail, not only in the review text:
+   preserve every BioModel Component as a `Conversion` column, preserve every
+   DataSet Target as a row, write identity `1` for direct compatible matches,
+   write the reviewed numeric or symbolic coefficients for derived rows, and
+   use numeric `0` for non-participating cells. Keep the header's component order
+   from the BioModel, verify units and formula expressions, and reject any required row that is
+   all blank or all zero before submitting `--json`. If several aggregate
+   Targets leave component values underdetermined, disclose the assumptions and
+   do not claim a unique fractionation. If the target relation is nonlinear or
+   depends on a state/measurement absent from the BioModel, Conversion alone
+   cannot represent it; mark it `unresolved` and document the required change.
+   Before any calculation, audit the initial-value baseline for every Inflow and
+   Flow. Record its DataSet value at `time=0`, the matching Solution
+   `Variable.Value`, the original Inflow Conversion expression and its resolved
+   coefficient when applicable, and the effective additive offset. The backend
+   applies that offset to every row and clips negative results; it does not
+   apply this rule to `Measured`, whose observations remain unchanged.
 8. **Report the package.** Return all BioModel, DataSet, and Project IDs and
    their roles, Draft/Private/version-0 state, source evidence map, digitized
    series and calibration details, Description audits, unresolved assumptions,

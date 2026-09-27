@@ -23,6 +23,33 @@ command reports a usage error.
    launch is not a completed calculation.
 6. Use `stop-calculation` only when the user asks to stop the exact Project.
 
+## Initial DataSet value semantics
+
+For calculation, `Solution.Variable.Value` is the baseline for `Inflow` and
+`Flow`; the DataSet value at `time=0` is used only to calculate the additive
+offset. The backend preserves each series' shape by applying that offset to
+every row:
+
+- For `Inflow`, use the selected `Conversion` relation for the component. The
+  coefficient may be a literal or a BioModel Parameter expression; resolve it
+  with the current Parameter values. The offset is `Variable.Value * resolved
+  Conversion coefficient - DataSet Inflow value at `time=0`; add it to the full
+  source series and clamp negative results to zero.
+  If the relation is one-to-one with coefficient `1`, a DataSet series starting
+  at `100` and a Solution value of `1000` becomes `1000` at the first point and
+  every later point is increased by `900`.
+- For `Flow`, the offset is `Variable.Value - DataSet Flow value at `time=0`;
+  add it to every row, clamp negative results to zero, and then convert the
+  resulting flow from `m3/d` to `m3/s` for the calculation.
+- Do not apply either offset rule to `Measured`. Measured values remain the
+  original observations used for comparison with model outputs; they are not
+  shifted to match a Solution Variable value.
+
+Before interpreting a result, record the DataSet first value, the matching
+Solution value, the original Inflow Conversion expression, its resolved value,
+and the resulting offset. Do not pre-shift the stored DataSet to compensate for
+this runtime behavior.
+
 ## Engines
 
 The available interface includes these case-sensitive families; the installed
@@ -37,6 +64,26 @@ Do not invent tuning values. Preserve CLI defaults unless the user's scientific
 goal supplies a reason to change them. Match engine-specific flags to the
 selected family; for example, OAT intensity for OAT, sample count for LHS, and
 population/generation options for GA or RFGA.
+
+### OAT correlation is opt-in
+
+The OAT rank and weighted-integral sensitivity results do not imply that a
+parameter-correlation matrix was calculated. Correlation output is disabled by
+default because it can be expensive for large OAT result sets. When the user
+needs Pearson correlation output or the Dashboard correlation panel, enable
+both switches:
+
+```text
+simpo calculate PROJECT_ID --engine OAT_AR \
+  --auto-plot --auto-plot-correlation --wait
+```
+
+`--auto-plot-correlation` alone is not sufficient in the client workflow: the
+correlation payload is generated only when automatic plotting is also enabled.
+At least two parameters must be marked `Evaluation=true`; with zero or one
+evaluated parameter, an empty correlation result is expected and there is no
+pairwise coefficient to report. State this explicitly instead of interpreting
+an empty object as zero correlation.
 
 ## Launch, wait, and status
 

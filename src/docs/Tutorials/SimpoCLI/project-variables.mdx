@@ -63,6 +63,13 @@ can only change when the source BioModel or DataSet structure is updated.
 The backend may add fields in future versions. Use `columns` instead of
 assuming that this standard list is exhaustive.
 
+When the Project is calculated, do not treat the DataSet's first `Inflow` or
+`Flow` value as the final initial condition. The matching Solution
+`Variable.Value` is the runtime baseline: the backend shifts the full Inflow or
+Flow series from its `time=0` value (using the Inflow Conversion coefficient
+when applicable). `Measured` is not shifted and remains the original
+observation series.
+
 For automation, parse stdout and keep errors on stderr:
 
 ```bash

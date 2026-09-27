@@ -81,6 +81,15 @@ or delete resources automatically.
 
 1. Run `SIM` with reported values and provisional guesses. Verify stability,
    units, event timing, mass balance, and output mapping before fitting.
+   Before interpreting the run, audit every `Inflow` and `Flow` baseline:
+   record the DataSet `time=0` value, the matching Solution `Variable.Value`,
+   the selected Inflow Conversion expression and its resolved coefficient, and
+   the effective offset. Preserve a BioModel Parameter reference such as
+   `i_N_S_U` instead of replacing it with a rounded constant. The
+   runtime uses `Variable.Value * coefficient - DataSet first value` for an
+   Inflow and `Variable.Value - DataSet first value` for a Flow, adds the offset
+   to the full series, clips negative values, and converts Flow to `m3/s`.
+   `Measured` is not shifted and must remain the original observation series.
 2. Run `LHS` for uncertain states and influential parameters when requested.
    LHS explores uncertainty but does not prove identifiability.
 3. Estimate only a small justified set with `GA` or `RFGA`. Each estimated

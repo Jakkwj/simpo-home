@@ -51,8 +51,73 @@ quality to model components without a characterization basis or explicit user
 approval.
 
 Project contains the Solution generated from the selected BioModel and DataSet.
-Use the backend-generated Solution unless the source and user provide enough
-evidence for reviewed Variable, Target, Conversion, and Weight edits.
+Before using the backend-generated Solution, close the Target/Conversion mapping
+for every DataSet Target. The backend's blank/default Conversion is identity-only:
+it fills `1` when a Target symbol is exactly the same as a BioModel Component,
+but it does not infer aggregate targets. A Target may be present structurally
+while its entire Conversion row is empty, which is not a usable scientific
+mapping.
+
+For aggregate Targets, derive a row only from an explicit source definition,
+BioModel Composition, or transparent unit conversion. Conversion cells may be
+literal numbers, exact expressions, or direct BioModel Parameter references.
+Preserve a defined Parameter such as `i_N_S_U` in the submitted row instead of
+evaluating it to a default or rounded number. The calculation resolves it from
+the current Project Variable values. Verify the Parameter exists, evaluates to
+a finite value, and is unit-compatible before submission. Use the following
+common patterns only when their stated basis is satisfied:
+
+| Target | Mapping rule |
+| --- | --- |
+| `COD`/`TCOD` | Sum the Components that the source defines as COD. For the standard ASM2D influent example this can be `S_F + S_VFA + S_U + X_U_E + X_B`; add biomass or other fractions only when documented. |
+| `SCOD` | Sum the documented soluble COD Components only; exclude particulate `X_*` terms. |
+| `TIN` | `S_NHx + S_NOx`, or `S_NH4 + S_NO2 + S_NO3` for separate species, on the same `gN/m3` basis. Exclude `S_N2` unless the source includes dissolved N2 in TIN. |
+| `TN` | Sum inorganic nitrogen and source-defined organic-nitrogen Composition terms; it is not interchangeable with TIN. |
+| `TP` | Include `S_PO4` plus all documented organic-phosphorus and polyphosphate terms, such as `X_PAO_PP`. |
+| `TSS` | Use documented `i_TSS_*` coefficients for particulate Components; dissolved Components are normally zero. |
+| `TS` | In this BioModel context, treat as total sulfur. Sum sulfur-bearing Components using the BioModel `S` Composition coefficients or source-defined sulfur species; do not treat it as total solids. |
+
+Apply the same procedure to any Target not listed above:
+
+1. Resolve its meaning from `Symbol`, `Name`, `Description`, units, and the
+   source definition; do not classify it from the abbreviation alone.
+2. Match direct Components first. For an aggregate, select only Components
+   explicitly included by the source or the relevant Composition row.
+3. Apply the reported or derived coefficient or Parameter expression and any
+   declared unit factor, then verify that every referenced Component and
+   Parameter exists in the BioModel and that the output unit matches the DataSet
+   Target unit.
+4. Reject an empty/all-zero row, conflicting candidate formulas, or an
+   underdetermined fractionation. If the relation is nonlinear or requires a
+   state/measurement absent from the BioModel, Conversion cannot represent it;
+   record the row as `unresolved` until the user or source resolves it.
+
+Record the formula, units, source definition, and classification (`calculated`
+or `reported`) in the Project Description and evidence map. A formula with
+several components is still not a unique influent fractionation: if measured
+aggregate Targets do not determine all component values, retain the residual
+and disclose the approved assumptions.
+
+Use the backend-generated Solution only when all targets are direct compatible
+components or when no custom Target/Conversion mapping is needed. Otherwise
+submit a reviewed complete `Variable`, `Target`, `Conversion`, and `Weight`
+detail with `--json`. If a derived Target cannot be mapped from the selected
+BioModel and source definition, stop with `unresolved` rather than submitting an
+empty Conversion row.
+
+When assembling a custom `Conversion` table, retain the BioModel Component
+header exactly and retain one row for every DataSet Target. For example, with
+components `S_NHx`, `S_NOx`, and `S_N2`, the standard `TIN` row is:
+
+```text
+header: [Target, S_NHx, S_NOx, S_N2]
+TIN:    [TIN,    1,     1,     0]
+```
+
+Use numeric zero for non-participating cells and preserve any additional
+components in the header. This is the mapping to submit, not merely a note in
+the Description. Check every resulting matrix row before `create-project`; an
+empty or all-blank aggregate row means the Project is not ready.
 
 Each object's Markdown Description is part of the evidence package. BioModel
 Description records model and Composition/Ionization derivations; DataSet

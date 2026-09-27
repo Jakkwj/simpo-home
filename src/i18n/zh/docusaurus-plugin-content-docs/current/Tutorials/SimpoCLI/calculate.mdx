@@ -82,7 +82,7 @@ simpo calculate 706 --no-launch
 | `--generation-ga INTEGER` | `200` | 最大迭代代数，至少为 `1` |
 | `--escaped-threshold-ga INTEGER` | `100` | 连续多少代没有改善时提前结束，至少为 `1` |
 | `--ga-initial-value / --no-ga-initial-value` | 关闭 | 是否使用当前 Variable Value 作为 GA/RFGA 初始值 |
-| `--auto-plot-correlation / --no-auto-plot-correlation` | 关闭 | 是否自动绘制相关性图 |
+| `--auto-plot-correlation / --no-auto-plot-correlation` | 关闭 | 是否生成 OAT Pearson 相关性数据和图；需要同时开启 `--auto-plot`，且至少有两个 `Evaluation=true` 的参数 |
 | `--auto-plot-skeleton / --no-auto-plot-skeleton` | 开启 | 是否自动绘制骨架图 |
 
 ## 启动和等待参数
@@ -103,6 +103,40 @@ simpo calculate 706 --no-launch
 等待中的 CLI 退出，SimpoClient 和计算仍会继续。之后可使用
 [`get-calculation-status`](./get-calculation-status) 查询，或使用
 [`stop-calculation`](./stop-calculation) 明确停止。
+
+OAT 的敏感性排序和加权积分结果不等于已经计算了参数相关性。相关性默认关闭；
+需要 Pearson 相关系数或 Dashboard 的 Correlation 面板时，必须同时传入：
+
+```text
+simpo calculate PROJECT_ID --engine OAT_AR \
+  --auto-plot --auto-plot-correlation --wait
+```
+
+`--auto-plot-correlation` 单独开启仍可能得到空的 `correlation` 输出，因为客户端
+只有在自动绘图也开启时才生成相关性数据。另外，至少需要两个
+`Evaluation=true` 的参数；少于两个时没有成对相关系数，空输出是预期行为，不能
+解释为“相关系数为 0”。
+
+## DataSet 初始值规则
+
+计算时，`Solution.Variable.Value` 是 `Inflow` 和 `Flow` 的实际基准值。后端会
+将它与 DataSet 在 `time=0` 的首值比较，得到差值后加到整列，并将负值截断为
+`0`。其中 `Inflow` 需要先按照当前 BioModel/Project Parameter Value 解析选定的
+`Conversion` 表达式：
+
+```text
+Inflow 平移量 = Variable.Value × Conversion 系数 - DataSet 首值
+Flow 平移量   = Variable.Value - DataSet 首值
+```
+
+例如，一对一 Conversion 下，Inflow 首值为 `100`、Solution 中的 Value 为
+`1000` 时，整列平移 `900`，`[100, 120, 90]` 实际计算为
+`[1000, 1020, 990]`。Flow 平移后还会从 `m3/d` 转换为计算使用的 `m3/s`。
+
+这个规则不适用于 `Measured`：Measured 保持原始观测值，用于和模型输出比较，
+不能为了匹配 Variable Value 而平移。记录计算时应使用的 DataSet 首值、Solution
+Value、原始 Conversion 表达式、解析后的系数和平移量，不要预先修改 DataSet 来
+抵消运行时行为。
 
 `--print-protocol` 仅供明确的集成场景使用。启动协议包含短期凭证，不要公开
 或写入公共日志。

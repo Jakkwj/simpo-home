@@ -37,6 +37,33 @@ selected BioModel and DataSet. With `--json`, it parses those tables and builds
 the Project in the same operation; it does not create an empty Project and
 update it afterward.
 
+## Conversion mapping
+
+The default tables provide identity mappings only when a DataSet Target symbol
+matches a BioModel Component. For aggregate Targets such as `COD`, `TIN`, `TN`,
+`TP`, `TSS`, or `TS` (total sulfur), prepare a reviewed `Conversion` row in
+`DETAIL.json`.
+Derive coefficients from the source definition, the BioModel Composition, or an
+explicit unit conversion. For example, with `S_NHx`, `S_NOx`, and `S_N2` columns:
+
+```text
+Target: [TIN, 1, 1, 0]
+```
+
+This example assumes both nitrogen Components use the same `gN/m3` basis and
+does not include dissolved `S_N2`. COD, TP, TSS, and TS (total sulfur) require
+their own documented component sets and coefficients; do not infer them from
+the label. Total solids must be named and defined separately by the source.
+An unresolved or all-zero aggregate row must be reviewed before creation.
+
+Conversion cells may also contain a BioModel Parameter or an expression using
+one. For example, if the BioModel defines `i_N_S_U` as the nitrogen fraction of
+`S_U`, keep `i_N_S_U` in the `TN` row rather than replacing it with its current
+numeric value. The calculation resolves the expression from the current
+Project Variable values. Confirm that every referenced Parameter exists, is
+finite, and is compatible with the target unit, and record the symbolic formula
+in the Project description.
+
 ## Options
 
 | Option | Default | Meaning |

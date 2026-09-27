@@ -62,6 +62,11 @@ DataSet 的结构时，它们才会自动变化。
 后端未来可能增加字段。自动化程序应使用 `columns` 判断字段，不要假设上述
 标准字段列表永远固定。
 
+Project 计算时，不要把 DataSet 中 `Inflow` 或 `Flow` 的首值直接当作最终初始
+条件。对应 Solution 的 `Variable.Value` 才是运行时基准；后端会以 DataSet 的
+`time=0` 首值计算差额，将差额平移到整列（`Inflow` 还要先应用 Conversion 系数）。
+`Measured` 不进行平移，始终保留原始观测序列。
+
 脚本可以只解析 stdout：
 
 ```bash

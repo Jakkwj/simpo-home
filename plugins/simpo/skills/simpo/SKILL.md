@@ -34,6 +34,24 @@ safety guidance, then read only the reference for the requested command group.
   retrieval, or stopping,
   read [Calculation commands](references/calculation.md).
 
+When a sensitivity request asks for parameter correlations, do not assume that
+an OAT run includes them. Correlation output is opt-in: pass both
+`--auto-plot` and `--auto-plot-correlation`, and ensure at least two Project
+Variables have `Evaluation=true`. An empty correlation object is expected when
+the switches are omitted or fewer than two parameters are evaluated; it does
+not mean that all parameter correlations are zero.
+
+When a calculation uses a DataSet, distinguish the runtime initial-value rules:
+`Solution.Variable.Value` sets the baseline for `Inflow` and `Flow`. The backend
+computes the difference from each DataSet series' `time=0` value, adds that
+difference to every row, and clips negative results. `Inflow` applies the
+relevant `Conversion` coefficient before calculating the difference; that cell
+may be a literal, formula, or BioModel Parameter such as `i_N_S_U` and should
+remain symbolic when the selected BioModel defines it. `Flow` does not use a
+Conversion coefficient. `Measured` is different: keep its observations
+unchanged and do not apply an Inflow/Flow offset. Record the expression and its
+resolved value when explaining or comparing a calculation.
+
 Read only the relevant references. Do not load the complete command manual for a
 single operation.
 

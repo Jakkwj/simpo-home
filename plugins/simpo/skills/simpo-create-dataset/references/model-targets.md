@@ -37,6 +37,43 @@ quantity exists in the DataSet/model. The backend permits zero or one true value
 for each marker and rejects more than one. Use `false` for every target when a
 marker does not apply; do not invent oxygen or TSS targets to satisfy a rule.
 
+### Target-to-Component conversion rules
+
+A DataSet Target is an observation label; it does not by itself define a
+Project Conversion. Before pairing the DataSet with a BioModel, classify each
+Target as a direct Component, an explicitly derived aggregate, or unresolved.
+For a derived Target, use a linear row whose coefficients are supported by the
+source definition, the BioModel Composition, or a transparent unit conversion.
+Conversion cells may be literal numbers, exact expressions, or a direct
+BioModel Parameter reference. If the BioModel defines `i_N_S_U`, preserve
+`i_N_S_U` in the `TN` row instead of replacing it with its current default or a
+rounded number. The calculation resolves the expression with the current
+Project Variable values. Verify that every referenced Parameter exists, is
+finite at the selected values, and has a unit-compatible meaning. Do not infer
+a formula from a label alone. Common patterns are:
+
+| Target | Safe rule when the model/source supports it |
+| --- | --- |
+| `COD`/`TCOD` | Sum only Components explicitly included in the source's COD basis. A standard ASM2D influent example is `S_F + S_VFA + S_U + X_U_E + X_B`; include other fractions only when defined. |
+| `SCOD` | Use the documented soluble COD subset; exclude particulate `X_*` Components. |
+| `TIN` | `S_NHx + S_NOx`, or `S_NH4 + S_NO2 + S_NO3` for separate species, on the same `gN/m3` basis. Exclude `S_N2` unless the source defines it as part of TIN. |
+| `TN` | Include inorganic and source-defined organic-nitrogen terms; do not substitute the TIN formula. |
+| `TP` | Include `S_PO4` and every documented organic-phosphorus or polyphosphate term, such as `X_PAO_PP`; phosphate alone is not automatically TP. |
+| `TSS` | Use documented `i_TSS_*` coefficients for particulate Components; dissolved Components are normally zero. |
+| `TS` | In this BioModel context, treat as total sulfur. Sum sulfur-bearing Components using the BioModel `S` Composition coefficients or source-defined sulfur species; do not treat it as total solids. |
+
+For example, when the DataSet defines `TIN` in `gN/m3` and the BioModel
+exposes `S_NHx` and `S_NOx` in that basis, the Project row is
+`TIN = 1*S_NHx + 1*S_NOx`. Store the definition, unit check, formula, and
+source basis in the Project evidence package. If the source or selected model
+does not support a unique mapping, mark the Target `unresolved`; do not create
+an empty Conversion row or claim a unique fractionation. Apply the same
+procedure to any other Target: resolve its meaning and units, match direct
+Components first, derive only source/Composition-supported coefficients, verify
+that all referenced Components exist, and reject conflicting or underdetermined
+candidate formulas. Nonlinear definitions or definitions requiring an absent
+state variable cannot be encoded by a Conversion row and remain `unresolved`.
+
 ## 3. ASM2D target set
 
 Use the BioModel's exact symbols when available. A standard ASM2D-compatible
@@ -101,6 +138,11 @@ TP  = S_PO4
       + i_P_X_U_E*X_U_E + i_P_X_B*X_B
 TSS = i_TSS_X_U_E*X_U_E + i_TSS_X_B*X_B + i_TSS_OHO*X_OHO
 ```
+
+The symbolic Parameter names in these relationships are valid Conversion cell
+values. Keep them symbolic when they are defined by the selected BioModel; only
+use a literal value when the source or model explicitly requires a fixed
+coefficient.
 
 Reference coefficients sometimes used for preliminary checks include
 `i_N_S_U=0.01`, `i_N_S_F=0.03`, `i_N_X_U_E=0.02`, `i_N_X_B=0.04`,

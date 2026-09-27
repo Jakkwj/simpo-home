@@ -71,6 +71,38 @@ when needed. Use `update-project` to replace the detail of an existing Draft.
 Updating Project detail rebuilds the Solution cache and removes results that no
 longer match it.
 
+When a Project is later calculated, `Solution.Variable.Value` is the runtime
+baseline for `Inflow` and `Flow`. The backend additively shifts each complete
+series from its DataSet `time=0` value (`Inflow` first resolves and applies its
+selected Conversion expression), clips negative values, and converts Flow to
+`m3/s`.
+`Measured` is not shifted; it remains the original observation series. See
+[Calculation commands](calculation.md) for the formulas and an example.
+
+The default Solution only provides identity mappings for Targets whose symbols
+match BioModel Components. For aggregate Targets such as `COD`, `TIN`, `TN`,
+`TP`, `TSS`, or `TS`, inspect and complete `Conversion` explicitly before
+creating the Project. Use coefficients supported by the source definition,
+BioModel Composition, or a transparent unit conversion; coefficients may be
+literal numbers or expressions/direct BioModel Parameter references. Preserve a
+defined Parameter such as `i_N_S_U` in the Conversion cell instead of forcing
+its current value into a number. The calculation resolves it from the current
+Project Variable values. Verify that referenced Parameters exist, are finite,
+and are unit-compatible; do not infer a formula from the Target abbreviation
+alone. For example, standard `TIN` may map to
+`S_NHx=1` and `S_NOx=1`, while `TSS` normally uses model-specific `i_TSS_*`
+coefficients for particulate Components. Do not add `S_N2` to TIN without a
+source definition, and in this BioModel context interpret `TS` as total sulfur,
+not total solids or a synonym for TSS. Use `--json` for
+reviewed mappings and record formulas and units in the Project description. A
+structurally valid but blank or all-zero Conversion row is not a valid
+scientific mapping. The same rule applies to any other Target: resolve its
+meaning and units, use direct identity first, derive only source/Composition-
+supported coefficients, and stop as `unresolved` when candidates conflict or
+the component fractionation is underdetermined. Nonlinear definitions or
+definitions requiring an absent state variable cannot be represented by
+Conversion alone.
+
 For synchronization, the command argument is the Release ID and the response
 contains the target Draft ID. For release, the argument is the Draft ID and the
 response contains a new Release ID. Treat these as different records.
