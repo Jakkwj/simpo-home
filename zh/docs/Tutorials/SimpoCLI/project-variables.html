@@ -10,8 +10,8 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="SIMPO" href="/zh/opensearch.xml"><link rel="stylesheet" href="/zh/assets/css/styles.beffceef.css">
-<script src="/zh/assets/js/runtime~main.ef09de17.js" defer="defer"></script>
-<script src="/zh/assets/js/main.f17b4318.js" defer="defer"></script>
+<script src="/zh/assets/js/runtime~main.4ac8f802.js" defer="defer"></script>
+<script src="/zh/assets/js/main.11f9580f.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -43,6 +43,10 @@
 DataSet 的结构时，它们才会自动变化。</p>
 <p>后端未来可能增加字段。自动化程序应使用 <code>columns</code> 判断字段，不要假设上述
 标准字段列表永远固定。</p>
+<p>Project 计算时，不要把 DataSet 中 <code>Inflow</code> 或 <code>Flow</code> 的首值直接当作最终初始
+条件。对应 Solution 的 <code>Variable.Value</code> 才是运行时基准；后端会以 DataSet 的
+<code>time=0</code> 首值计算差额，将差额平移到整列（<code>Inflow</code> 还要先应用 Conversion 系数）。
+<code>Measured</code> 不进行平移，始终保留原始观测序列。</p>
 <p>脚本可以只解析 stdout：</p>
 <div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">variables=&quot;$(simpo get-project-variables 706)&quot; || exit $?</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">printf &#x27;%s\n&#x27; &quot;$variables&quot;</span><br></span></code></pre></div></div>
 <p>修改单个可写字段请使用

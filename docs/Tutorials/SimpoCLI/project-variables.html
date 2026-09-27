@@ -10,8 +10,8 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="SIMPO" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.52cd2a0c.css">
-<script src="/assets/js/runtime~main.9001e673.js" defer="defer"></script>
-<script src="/assets/js/main.1f27a30c.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.315595ee.js" defer="defer"></script>
+<script src="/assets/js/main.e9e7ef42.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -44,6 +44,12 @@ scripts can locate a row, but <code>set-project-variable</code> cannot change th
 can only change when the source BioModel or DataSet structure is updated.</p>
 <p>The backend may add fields in future versions. Use <code>columns</code> instead of
 assuming that this standard list is exhaustive.</p>
+<p>When the Project is calculated, do not treat the DataSet&#x27;s first <code>Inflow</code> or
+<code>Flow</code> value as the final initial condition. The matching Solution
+<code>Variable.Value</code> is the runtime baseline: the backend shifts the full Inflow or
+Flow series from its <code>time=0</code> value (using the Inflow Conversion coefficient
+when applicable). <code>Measured</code> is not shifted and remains the original
+observation series.</p>
 <p>For automation, parse stdout and keep errors on stderr:</p>
 <div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">variables=&quot;$(simpo get-project-variables 706)&quot; || exit $?</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">printf &#x27;%s\n&#x27; &quot;$variables&quot;</span><br></span></code></pre></div></div>
 <p>To change one writable field, use
