@@ -162,6 +162,7 @@ import config from '@generated/docusaurus.config'
   - θ 为温度影响因子
   - T 为温度，℃
   - $S_{O2,sat,std}$ 为标准条件下的清水中饱和溶解氧浓度，约 9.08~9.17 mg/L，工程上常取 9.08 mg/L
+  - $S_{O2,sat}$ 为饱和溶解氧浓度，目前（2026.10.04）固定取 9.02 mg/L
   - α 氧传递修正系数（Oxygen Transfer Ratio）：$k_{L}a(Wastewater)/k_{L}a(Clean Water)$
   - β 氧溶解修正系数（Oxygen Solubility Ratio）：$S_{O2,sat}(Wastewater)/S_{O2,sat}(Clean Water)$
   - V 为反应器体积，m³
@@ -180,9 +181,13 @@ import config from '@generated/docusaurus.config'
 ##### 求解方程
 - 在暂不考虑温度和气压变化的影响时，合并上述3式可得:
     $$
-      dS_{O2}/dt = 279 * Qair * a * (Qair / d / 24)^{-b} * H^c * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std} / V
+      dS_{O2}/dt = k_{L}a * (S_{O2,sat} - S_{O2}) = 279 * Qair * a * (Qair / d / 24)^{-b} * H^c * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std} / V
     $$
-- 注意此时，$dS_{O2}/dt$ 的单位为 **$mgO_2/L/d$**。
+- 如果 β 为 1，则：
+    $$
+      k_{L}a = 279 * Qair * a * (Qair / d / 24)^{-b} * H^c * α / S_{O2,sat,std} / V
+    $$
+- 注意，$dS_{O2}/dt$ 的单位为 **$mgO_2/L/d$**，计算时 $S_{O2,sat}$ 固定取 9.02 mg/L（2026.10.04）。
 :::
 
 在这个案例中，为了保持 $k_{L}a$ 为 $100 h^{-1}$，我们选取了以下这组参数（FOTE为14.1%）：

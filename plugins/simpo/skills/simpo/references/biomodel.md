@@ -8,7 +8,7 @@ do not run `--help` or `simpo me` as routine preflight checks.
 
 | Task | Command | Scope | Important constraint |
 | --- | --- | --- | --- |
-| Create a Draft | `create-biomodel` | `write` | Always Private, Draft, version 0 |
+| Create a Draft | `create-biomodel` | `write` | Always Private, Draft, version 0; blank/JSON creation supports `--async` |
 | List metadata | `get-biomodels` | `read` | Paginated; no complete tables |
 | Read tables | `get-biomodel ID` | `read` | Owned model ID |
 | Replace Draft tables | `update-biomodel ID --json FILE` | `write` | Owned version 0 Draft |
@@ -40,6 +40,10 @@ The name is 1–230 characters and unique within the account. JSON must not
 contain `Balance`; SIMPO derives that read-only table. After success, require a
 positive `id`, the requested name, `state: "Draft"`, `privacy: "Private"`,
 `version: 0`, and the expected `creationMode`.
+
+For blank or JSON creation and for `update-biomodel`, `--async` returns a durable
+Operation ID; add `--wait` to receive the final BioModel result. Use an
+`--idempotency-key` when retrying after a connection timeout.
 
 ## Update
 

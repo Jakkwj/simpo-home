@@ -1,0 +1,68 @@
+---
+title: Create
+---
+
+import config from '@generated/docusaurus.config'
+
+# Create a Project
+
+A Project connects a BioModel to a DataSet. It stores the conversion between
+BioModel Components and DataSet Targets, solver settings, and calculation
+results. New Projects are created as private version `0` Drafts.
+
+## Create from the Project list
+
+Open `/dashboard/projects`, select `Personal Projects`, and choose the new
+Project action. Enter a unique Project name and select the BioModel and DataSet
+to combine. The selected versions are recorded in the Project and can be
+reviewed later from `Profile`.
+
+Both selections are optional:
+
+- If no BioModel is selected, SIMPO creates an empty BioModel.
+- If no DataSet is selected, SIMPO creates an empty DataSet.
+- If the BioModel Components and DataSet Targets have the same symbols, SIMPO
+  can create the initial Solution automatically.
+- Otherwise, open `Detail > Solution` and edit the conversion between
+  Components and Targets before parsing and saving.
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlProject_1} width="80%"/>
+</div>
+
+The name is required and can contain up to 50 characters in the dashboard
+dialog. A description and related paper can be added during creation or later
+from `Profile`/`Edit`.
+
+## Import from an XLSX template
+
+Choose the Project template option in the new Project dialog, download the
+<a href={config.customFields.urlDownloadUrlplateProject} target="_self" download>Project template XLSX file</a>,
+fill in the Solution sheets, and upload it. The template is useful when the
+conversion, variable values, or target weights are already prepared. Validate
+the imported detail in `Detail` before starting a calculation.
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlProject_2} width="80%"/>
+</div>
+
+## Clone a public Project
+
+Open a Project in the public repository and choose `Clone`, or use `Clone` from
+a released version. The clone is copied to Personal Projects as a new Draft;
+its referenced BioModel, DataSet, Solution, and available results are copied
+according to their permissions. Review the linked versions and recalculate
+after changing either the BioModel or DataSet.
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlProject_3} width="80%"/>
+</div>
+
+## Before the first calculation
+
+1. Confirm that the BioModel Components and DataSet Targets represent the same
+   quantities, units, and tanks.
+2. In `Detail > Solution`, check `Conversion`, `Value`, and bounds.
+3. Add or verify measured data and flow connections in the DataSet.
+4. Use `Detail`'s `Parse` action to validate and save the Draft.
+5. Open `Calculation > Console`, choose a task and engine, then start the run.

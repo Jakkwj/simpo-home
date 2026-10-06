@@ -1,0 +1,35 @@
+---
+id: get-operation
+title: 读取异步 Operation
+sidebar_label: get-operation
+---
+
+# `get-operation`：读取异步 Operation
+
+读取 Project 异步创建/更新或计算准备请求产生的持久化后端 Operation。
+
+```text
+simpo get-operation OPERATION_ID [OPTIONS]
+```
+
+响应包含 `operationId`、操作类型、`status`、阶段、进度、资源 ID，以及完成后的
+`result`。终态为 `succeeded`、`failed` 或 `cancelled`。失败记录会保留
+`errorCode` 和 `errorMessage`，应根据这两个字段修正输入。
+
+```json
+{
+  "success": true,
+  "operationId": "op_abc123",
+  "operation": "update-project",
+  "status": "running",
+  "stage": "parsing-solution",
+  "progress": 20,
+  "resourceType": "Project",
+  "resourceId": 789,
+  "errorCode": null,
+  "errorMessage": null,
+  "result": null
+}
+```
+
+需要等待成功结果时，使用 [`wait-operation`](./wait-operation)。

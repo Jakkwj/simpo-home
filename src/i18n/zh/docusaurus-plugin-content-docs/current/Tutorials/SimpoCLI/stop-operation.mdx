@@ -1,0 +1,20 @@
+---
+id: stop-operation
+title: 取消异步 Operation
+sidebar_label: stop-operation
+---
+
+# `stop-operation`：取消排队中的 Operation
+
+取消异步命令返回的、仍处于 `queued` 状态的后端 Operation。
+
+```text
+simpo stop-operation OPERATION_ID [OPTIONS]
+```
+
+只有排队中的 Operation 可以取消。进入 `running` 后，后端会拒绝取消，避免资源
+已经写入而记录被错误标记为 cancelled。运行中的计算应使用
+[`stop-calculation`](./stop-calculation)。
+
+成功响应会返回 `status=cancelled` 的 Operation 记录，并在 `errorCode`、
+`errorMessage` 中说明取消原因。

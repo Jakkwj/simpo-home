@@ -253,6 +253,14 @@ complete command directory.
 | [`get-project-variables`](./SimpoCLI/project-variables) | Read every field in the Solution Variable table | `read` |
 | [`set-project-variable`](./SimpoCLI/set-project-variable) | Update one Variable field in a Draft Project | `write` |
 
+### Operation
+
+| Command | Purpose | Required scope |
+| --- | --- | --- |
+| [`get-operation`](./SimpoCLI/get-operation) | Read an asynchronous backend operation | `read` |
+| [`wait-operation`](./SimpoCLI/wait-operation) | Wait for an operation and return its final result | `read` |
+| [`stop-operation`](./SimpoCLI/stop-operation) | Cancel a queued operation | `write` |
+
 ### Calculation
 
 | Command | Purpose | Required scope |

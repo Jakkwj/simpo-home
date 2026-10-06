@@ -33,14 +33,14 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
     Connected to Simpo Dash                 :done, b2, after b1c, 2022-12-01
     pH Calculation                          :done, b3, after c4a02, 2025-11-27
     AI Paper Resource                       :done, b3a, after b3, 60d
-    Steady State                            :done, c4StedayState, after b3a, 2026-09-15
+    Steady State                            :done, c4StedayState, after b3a, 2026-06-01
 
-    CLI                                     :CLI, after c4StedayState, 30d
-    BSM1                                    :BMS1, after c4StedayState, 30d
-    SCE-UA                                  :SCE-UA, after c4StedayState, 30d
-    BioFilm Reactor                         :BioFilm, after SCE-UA, 30d
-    BSM2                                    :BMS2, after SCE-UA, 30d
-    NSGA-II                                 :NSGA-II, after BioFilm, 30d
+    CLI                                     :done, LI, after c4StedayState, 2026-10-05
+    SCE-UA                                  :done, SCE-UA, after c4StedayState, 2026-10-05
+    BSM1                                    :BMS1, after SCE-UA, 30d
+    ε-NSGA-II                               :ε-NSGA-II, after SCE-UA, 30d
+    BSM2                                    :BMS2, after BMS1, 30d
+    BioFilm Reactor                         :BioFilm, after BMS2, 30d
 
 
     Automatic Evaluation                    :c4a04, after NSGA-II, 60d

@@ -1,0 +1,21 @@
+---
+id: stop-operation
+title: Cancel an asynchronous Operation
+sidebar_label: stop-operation
+---
+
+# `stop-operation`: cancel a queued Operation
+
+Cancel a queued backend Operation returned by an asynchronous command.
+
+```text
+simpo stop-operation OPERATION_ID [OPTIONS]
+```
+
+Only `queued` Operations can be cancelled. Once execution is `running`, the
+backend refuses cancellation so a resource cannot be written while its record
+is incorrectly marked cancelled. For a running calculation use
+[`stop-calculation`](./stop-calculation).
+
+The response is the Operation record with `status=cancelled` and the reason in
+`errorCode`/`errorMessage`.

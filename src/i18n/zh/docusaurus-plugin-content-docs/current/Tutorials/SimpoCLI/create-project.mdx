@@ -64,6 +64,11 @@ Conversion 单元格也可以直接填写 BioModel Parameter 或包含 Parameter
 | `--json FILE` | 生成默认 Solution | 可选的 UTF-8 完整 Solution detail |
 | `--description TEXT` | 空 | 可选 Markdown 描述 |
 | `--timeout SECONDS` | `3700.0` | 解析和 HTTP 请求的最长等待时间 |
+| `--async / --no-async` | 关闭 | 返回异步 `operationId`，不等待写入完成 |
+| `--wait / --no-wait` | 关闭 | 与 `--async` 一起使用时等待 Operation 并返回 Project 结果 |
+| `--operation-wait-timeout SECONDS` | `86400` | 异步等待的最长时间 |
+| `--operation-poll-interval SECONDS` | `2.0` | Operation 状态请求间隔 |
+| `--idempotency-key TEXT` | 不传 | 异步重试时复用同一 Operation 的稳定键 |
 | `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
 | `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
 
@@ -71,6 +76,16 @@ Conversion 单元格也可以直接填写 BioModel Parameter 或包含 Parameter
 
 响应包含新 Project ID、Draft 元数据、关联的 BioModel/DataSet ID 和解析后的
 `detail`。示例中缩写了完整 Solution 表格。
+
+请求较长时，可显式使用持久化 Operation：
+
+```text
+simpo create-project MyProject --biomodel-id 123 --dataset-id 456 \
+  --async --idempotency-key create-my-project
+```
+
+此时立即返回 `operationId` 和初始状态。加上 `--wait` 可等待并返回最终 Project，
+也可以稍后使用 [`wait-operation`](./wait-operation)。
 
 ```json
 {

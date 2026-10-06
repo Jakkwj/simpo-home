@@ -35,6 +35,14 @@ simpo calculate 706 --engine SIM
 simpo calculate 706 --engine OAT_AR --wait --wait-timeout 86400
 ```
 
+使用固定 Seed 的 Scrambled Sobol 初始总体启动 SCE-UA：
+
+```text
+simpo calculate 706 --engine SCEUA \
+  --initialization-method scrambled_sobol \
+  --fixed-initialization-seed --initialization-seed 7 --wait
+```
+
 只准备文件，不启动 SimpoClient：
 
 ```text
@@ -53,8 +61,10 @@ simpo calculate 706 --no-launch
 | `OAT_AR` | 敏感性分析：绝对输出 / 相对输入；推荐的 OAT 变体 |
 | `OAT_RR` | 敏感性分析：相对输出 / 相对输入 |
 | `LHS` | Latin Hypercube Sampling 不确定性分析 |
+| `UNC` | 当前不确定性分析引擎名称；与旧版 `LHS` 使用同一套不确定性流程 |
 | `GA` | Genetic Algorithm 参数估值 |
 | `RFGA` | RFGA 参数估值 |
+| `SCEUA` | Shuffled Complex Evolution（SCE-UA）参数估值 |
 
 通用的 `OAT` 不是 CLI 的公开选项。
 
@@ -85,6 +95,38 @@ simpo calculate 706 --no-launch
 | `--auto-plot-correlation / --no-auto-plot-correlation` | 关闭 | 是否生成 OAT Pearson 相关性数据和图；需要同时开启 `--auto-plot`，且至少有两个 `Evaluation=true` 的参数 |
 | `--auto-plot-skeleton / --no-auto-plot-skeleton` | 开启 | 是否自动绘制骨架图 |
 
+### 通用初始化参数
+
+以下参数用于生成初始总体或样本集的算法：
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--initialization-method TEXT` | `LHS` | `UNC`/`LHS`/`GA`/`RFGA`/`SCEUA` 共用：`LHS`、`scrambled_sobol`、`sobol` 或 `uniform`。 |
+| `--fixed-initialization-seed / --random-initialization-seed` | 随机 | 为 LHS、Scrambled Sobol 或 Uniform 使用可复现 Seed。未 Scrambling 的 Sobol 是确定性的，不使用 Seed。 |
+| `--initialization-seed INTEGER` | `1` | 开启固定 Seed 时使用的正整数，范围 `1` 到 `4294967295`。 |
+| `--inject-initial-value / --no-inject-initial-value` | 继承旧 GA 设置 | 对 GA/RFGA/SCE-UA，将 `Solution.Variable.InitialValue` 注入初始总体。 |
+
+### SCE-UA 参数
+
+`SCEUA` 将总体划分为多个 Complex，执行外层 Shuffle。Complex 使用通用的
+`--threads` 设置，并可以并行计算。
+
+| 选项 | 默认值 | 作用 |
+| --- | --- | --- |
+| `--sceua-num-complexes INTEGER` | 自动 | 独立 Complex 的数量。未传入时使用 `min(max(2, --threads), 8)`。 |
+| `--sceua-complex-population-size INTEGER` | 不传 | 每个 Complex 的点数；后端默认 `2 × dimension + 1`，最小 `dimension + 1`。 |
+| `--sceua-population-size INTEGER` | 不传 | 旧版总总体参数；与每个 Complex 的参数同时传入时必须一致。 |
+| `--sceua-max-evaluations INTEGER` | 不传 | 目标函数总计算预算，包括初始化；后端默认 `20 × 总总体`，且至少为总总体。 |
+| `--sceua-max-shuffles INTEGER` | `0` | 外层 Shuffle 次数的可选硬上限；`0` 表示不启用这个上限。 |
+| `--sceua-convergence-shuffles INTEGER` | `10` | 目标改善不足时连续多少次 Shuffle 后提前停止。 |
+| `--sceua-objective-tolerance FLOAT` | `1e-4` | 最优目标的相对改善阈值；大于 `0` 时必须设置收敛 Shuffle。 |
+| `--sceua-parameter-tolerance FLOAT` | `1e-4` | 参数总体收缩阈值；`0` 表示关闭。 |
+
+SCE-UA 总总体为 `--sceua-num-complexes × --sceua-complex-population-size`。
+普通正式计算使用默认的目标和参数容差。两个提前停止分支是**或**关系：目标函数条件满足，
+**或**参数空间条件满足，SCE-UA 就可以提前结束。`Maximum Shuffles` 是外层 Shuffle
+次数的可选硬上限，设置为 `0` 时不启用；`Maximum Evaluations` 仍是目标函数计算预算。
+
 ## 启动和等待参数
 
 | 选项 | 默认值 | 作用 |
@@ -96,6 +138,11 @@ simpo calculate 706 --no-launch
 | `--poll-interval SECONDS` | `2.0` | 等待时两次状态请求的间隔 |
 | `--wait-timeout SECONDS` | `86400` | CLI 最长轮询时间；不会停止实际计算 |
 | `--timeout SECONDS` | `3700` | 单次后端准备和编译请求的超时时间 |
+| `--async-preparation / --no-async-preparation` | 关闭 | 将准备过程放入持久化后端 Operation 队列 |
+| `--wait-preparation / --no-wait-preparation` | 关闭 | 异步准备完成后再启动 SimpoClient |
+| `--preparation-wait-timeout SECONDS` | `86400` | 等待准备 Operation 的最长时间 |
+| `--preparation-poll-interval SECONDS` | `2.0` | 准备状态请求间隔 |
+| `--idempotency-key TEXT` | 不传 | 异步准备重试时复用同一 Operation 的稳定键 |
 | `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
 | `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
 
@@ -103,6 +150,10 @@ simpo calculate 706 --no-launch
 等待中的 CLI 退出，SimpoClient 和计算仍会继续。之后可使用
 [`get-calculation-status`](./get-calculation-status) 查询，或使用
 [`stop-calculation`](./stop-calculation) 明确停止。
+
+准备过程较长时，可使用 `--async-preparation --no-launch`，保存返回的
+`operationId`，再执行 `wait-operation`。如果希望准备完成后由 CLI 自动启动本机
+客户端，则使用 `--async-preparation --wait-preparation`。
 
 OAT 的敏感性排序和加权积分结果不等于已经计算了参数相关性。相关性默认关闭；
 需要 Pearson 相关系数或 Dashboard 的 Correlation 面板时，必须同时传入：

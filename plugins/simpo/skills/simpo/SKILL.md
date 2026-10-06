@@ -33,6 +33,8 @@ safety guidance, then read only the reference for the requested command group.
 - For calculation preparation, engine selection, status polling, bounded result
   retrieval, or stopping,
   read [Calculation commands](references/calculation.md).
+- For a long-running BioModel/DataSet/Project mutation or asynchronous
+  calculation preparation, read [Operation commands](references/operations.md).
 
 When a sensitivity request asks for parameter correlations, do not assume that
 an OAT run includes them. Correlation output is opt-in: pass both
@@ -40,6 +42,16 @@ an OAT run includes them. Correlation output is opt-in: pass both
 Variables have `Evaluation=true`. An empty correlation object is expected when
 the switches are omitted or fewer than two parameters are evaluated; it does
 not mean that all parameter correlations are zero.
+
+For SCE-UA estimation, use the `SCEUA` engine and read the calculation
+reference for its shared initialization methods, reproducible seed switch,
+Complex population sizing, evaluation budget, and convergence constraints. The
+default Complex count is `min(max(2, --threads), 8)`; the default convergence
+settings are 10 Shuffles, `1e-4` objective tolerance, and `1e-4` parameter
+tolerance. Objective and parameter convergence are an OR condition: either one
+may stop the run. `--sceua-max-shuffles` is an optional outer-cycle cap and `0`
+disables it. The common `--threads` option controls parallel work; there is no
+separate SCE-UA thread option.
 
 When a calculation uses a DataSet, distinguish the runtime initial-value rules:
 `Solution.Variable.Value` sets the baseline for `Inflow` and `Flow`. The backend
@@ -82,6 +94,8 @@ tools; missing tools pause only the affected figure step.
    parsing; SimpoCLI writes progress and errors to stderr.
 5. Parse the JSON response and verify task-specific success fields. Do not equate
    a zero exit code for calculation launch with calculation completion.
+   For an asynchronous submission, retain `operationId` and poll its Operation;
+   do not repeat the write while the original operation is queued or running.
 6. On an ambiguous timeout or connection loss after a write, inspect current
    server state before retrying. Do not blindly repeat create, release, start, or
    stop operations.

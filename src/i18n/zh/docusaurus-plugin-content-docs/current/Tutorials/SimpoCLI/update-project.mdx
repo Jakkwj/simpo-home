@@ -38,6 +38,11 @@ simpo update-project 789 --json ./Solution.json
 | `--json FILE` | 必填 | UTF-8 完整 Solution detail |
 | `--description TEXT` | 保留原值 | 提供时替换描述 |
 | `--timeout SECONDS` | `3700.0` | 解析和 HTTP 请求的最长等待时间 |
+| `--async / --no-async` | 关闭 | 返回异步 `operationId`，不等待写入完成 |
+| `--wait / --no-wait` | 关闭 | 与 `--async` 一起使用时等待 Operation 并返回更新后的 Project |
+| `--operation-wait-timeout SECONDS` | `86400` | 异步等待的最长时间 |
+| `--operation-poll-interval SECONDS` | `2.0` | Operation 状态请求间隔 |
+| `--idempotency-key TEXT` | 不传 | 异步重试时复用同一 Operation 的稳定键 |
 | `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
 | `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
 
@@ -69,3 +74,11 @@ simpo update-project 789 --json ./Solution.json
 ```
 
 示例中缩写了重新解析后的 Solution 行。
+
+更新可能耗时较长时，可用 `--async` 返回 Operation ID，再使用
+`wait-operation` 获取最终结果：
+
+```text
+simpo update-project 789 --json ./Solution.json \
+  --async --idempotency-key update-project-789
+```

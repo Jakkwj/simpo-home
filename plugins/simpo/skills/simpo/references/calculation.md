@@ -57,13 +57,48 @@ help remains authoritative:
 
 - `SIM`: simulation;
 - `OAT_AA`, `OAT_RA`, `OAT_AR`, `OAT_RR`: one-at-a-time sensitivity analysis;
-- `LHS`: uncertainty analysis;
-- `GA`, `RFGA`: parameter estimation.
+- `LHS`, `UNC`: uncertainty analysis (`UNC` is the canonical current code and
+  `LHS` remains accepted for historical calculations);
+- `GA`, `RFGA`, `SCEUA`: parameter estimation. `SCEUA` is the SCE-UA
+  (Shuffled Complex Evolution) engine.
 
 Do not invent tuning values. Preserve CLI defaults unless the user's scientific
 goal supplies a reason to change them. Match engine-specific flags to the
-selected family; for example, OAT intensity for OAT, sample count for LHS, and
-population/generation options for GA or RFGA.
+selected family; for example, OAT intensity for OAT, sample count for UNC/LHS,
+population/generation options for GA or RFGA, and Complex/Shuffle options for
+SCEUA.
+
+### SCE-UA and shared initialization
+
+Use the public engine code `SCEUA` with `simpo calculate`. The initial
+population options are shared with `UNC`, legacy `LHS`, `GA`, and `RFGA`; they
+support `LHS`, `scrambled_sobol`, `sobol`, and `uniform` through
+`--initialization-method`. Enable
+`--fixed-initialization-seed --initialization-seed N` to reproduce LHS,
+scrambled Sobol, or uniform initialization. Unscrambled `sobol` is deterministic
+and does not use a seed. The seed range is `1` through `4294967295`.
+
+`--inject-initial-value` is shared by GA, RFGA, and SCEUA. When enabled, the
+current `Solution.Variable.InitialValue` values are inserted into the initial
+population; it does not replace the remaining generated points.
+
+The total SCE-UA population is:
+
+```text
+total population = --sceua-num-complexes * --sceua-complex-population-size
+```
+
+`--sceua-num-complexes` defaults to `min(max(2, --threads), 8)` when omitted.
+`--sceua-complex-population-size` defaults to `2 * dimension + 1` when omitted,
+must be at least `dimension + 1`, and determines the total population with the
+number of Complexes. `--sceua-max-evaluations` defaults to `20 * total
+population` when omitted and must be at least the total population. The public
+convergence defaults are `10` Shuffles, `1e-4` objective tolerance, and `1e-4`
+parameter tolerance. The objective and parameter criteria are an **OR**: either
+criterion can stop SCE-UA. `--sceua-max-shuffles` is an optional hard cap on
+outer Shuffle cycles; `0` disables that cap. `--threads` is the shared
+parallelism control; Complexes can be evaluated concurrently. A positive
+objective tolerance requires at least one convergence Shuffle.
 
 ### OAT correlation is opt-in
 
@@ -96,6 +131,15 @@ When waiting separately, call `get-calculation-status PROJECT_ID` at a reasonabl
 interval. Treat only the terminal statuses described by the installed help as
 final. Report compilation and calculation failures with the service's concise
 message.
+
+For a preparation step that may outlive one HTTP request, use
+`--async-preparation --no-launch`. The command returns an `operationId`; poll it
+with `wait-operation` and inspect the nested `result.launchProtocol` only after
+the operation succeeds. If the CLI should launch SimpoClient itself, add
+`--wait-preparation`; this waits for preparation before starting the local
+client. This preparation wait is distinct from `calculate --wait`, which waits
+for the later calculation status. `--idempotency-key` makes a retried
+preparation request refer to the same backend operation.
 
 ## Stop
 

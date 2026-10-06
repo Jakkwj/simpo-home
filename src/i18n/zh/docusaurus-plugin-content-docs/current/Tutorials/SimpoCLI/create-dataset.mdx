@@ -28,10 +28,14 @@ simpo create-dataset NAME [--json DETAIL.json] [OPTIONS]
 ```text
 simpo create-dataset InfluentData
 simpo create-dataset InfluentData --json ./DataSet.json
+simpo create-dataset InfluentData --json ./DataSet.json --async
 ```
 
-常用选项包括 `--description`、`--sourcepaper-id` 和 `--timeout`；通用请求选项包括
-`--api-token TOKEN` 和 `--base-url URL`。
+常用选项包括 `--description`、`--sourcepaper-id` 和 `--timeout`；也可使用
+`--async`、`--wait`、`--operation-wait-timeout`、`--operation-poll-interval` 和
+`--idempotency-key` 进入持久化 Operation 流程。通用请求选项包括 `--api-token TOKEN`
+和 `--base-url URL`。不等待时 stdout 返回 `operationId`，使用
+[`wait-operation`](./wait-operation) 查询最终 DataSet。
 
 ## 返回结果
 

@@ -40,6 +40,11 @@ Project keeps the same ID and the response contains the newly parsed `detail`.
 | `--json FILE` | required | UTF-8 complete Solution detail |
 | `--description TEXT` | keep current | Replace the description when supplied |
 | `--timeout SECONDS` | `3700.0` | Maximum parsing and HTTP time |
+| `--async / --no-async` | disabled | Return an asynchronous `operationId` instead of waiting for the write |
+| `--wait / --no-wait` | disabled | With `--async`, wait for the Operation and return the updated Project |
+| `--operation-wait-timeout SECONDS` | `86400` | Maximum asynchronous wait time |
+| `--operation-poll-interval SECONDS` | `2.0` | Delay between Operation status requests |
+| `--idempotency-key TEXT` | omitted | Stable retry key for an asynchronous submission |
 | `--api-token TOKEN` | configured Token | Complete Token override |
 | `--base-url URL` | packaged environment URL | Backend override for this request |
 
@@ -71,3 +76,10 @@ Project keeps the same ID and the response contains the newly parsed `detail`.
 ```
 
 The example abbreviates the newly parsed Solution rows.
+
+For an update that may take longer, return an Operation ID and wait separately:
+
+```text
+simpo update-project 789 --json ./Solution.json \
+  --async --idempotency-key update-project-789
+```

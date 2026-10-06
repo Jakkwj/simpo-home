@@ -240,6 +240,14 @@ Linux 保存路径为 `~/.SimpoCLI/SIMPO_API_TOKEN.json`，Windows 保存路径
 | [`get-project-variables`](./SimpoCLI/project-variables) | 读取 Solution Variable 表的全部字段 | `read` |
 | [`set-project-variable`](./SimpoCLI/set-project-variable) | 修改 Draft Project 中一个 Variable 字段 | `write` |
 
+### Operation
+
+| 命令 | 功能 | 所需 scope |
+| --- | --- | --- |
+| [`get-operation`](./SimpoCLI/get-operation) | 读取后端异步 Operation | `read` |
+| [`wait-operation`](./SimpoCLI/wait-operation) | 等待 Operation 并返回最终结果 | `read` |
+| [`stop-operation`](./SimpoCLI/stop-operation) | 取消排队中的 Operation | `write` |
+
 ### Calculation
 
 | 命令 | 功能 | 所需 scope |

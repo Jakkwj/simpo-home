@@ -61,7 +61,18 @@ const sidebars = {
             'Tutorials/DataSet/Edit',
           ],
         },
-        'Tutorials/Project',
+        {
+          type: 'category',
+          label: 'Project',
+          key: 'Tutorials/Project',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            'Tutorials/Project/Create',
+            'Tutorials/Project/Edit',
+            'Tutorials/Project/Calculation',
+          ],
+        },
         // 'Tutorials/BioModel/Create',
         // 'Tutorials/BioModel/Edit',
 
@@ -189,6 +200,18 @@ const sidebars = {
             'Tutorials/SimpoCLI/release-project',
             'Tutorials/SimpoCLI/project-variables',
             'Tutorials/SimpoCLI/set-project-variable',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Operation',
+          key: 'SimpoCLI/Operation',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            'Tutorials/SimpoCLI/get-operation',
+            'Tutorials/SimpoCLI/wait-operation',
+            'Tutorials/SimpoCLI/stop-operation',
           ],
         },
         {

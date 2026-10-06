@@ -32,6 +32,7 @@ simpo create-biomodel MyModel --description "由自动化脚本创建"
 simpo create-biomodel MyModel --sourcepaper-id 123
 simpo create-biomodel ImportedModel --template ./BioModel.xlsx
 simpo create-biomodel JsonModel --json ./BioModel.json
+simpo create-biomodel JsonModel --json ./BioModel.json --async
 ```
 
 ## 选项
@@ -43,6 +44,11 @@ simpo create-biomodel JsonModel --json ./BioModel.json
 | `--template PATH` | 标准空白模型 | `.xlsx` 模型模板；不能为空且最大为 20 MiB |
 | `--json PATH` | 标准空白模型 | UTF-8 JSON 模型表；最大 20 MiB；不能与 `--template` 同时使用 |
 | `--timeout SECONDS` | `3700.0` | 最长等待时间，用于允许后端完成 Excel 解析 |
+| `--async / --no-async` | 关闭 | 将空白或 JSON 创建提交到持久化 Operation 队列 |
+| `--wait / --no-wait` | 关闭 | 与 `--async` 一起使用时等待并返回最终 BioModel |
+| `--operation-wait-timeout SECONDS` | `86400` | 异步等待的最长时间 |
+| `--operation-poll-interval SECONDS` | `2.0` | Operation 状态请求间隔 |
+| `--idempotency-key TEXT` | 不传 | 异步重试时复用同一 Operation 的稳定键 |
 | `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
 | `--base-url URL` | 安装包对应环境地址 | 仅覆盖本次请求的后端地址 |
 
@@ -82,6 +88,10 @@ simpo create-biomodel JsonModel --json ./BioModel.json
 Token 缺失、没有 `write` scope、名称重复（`HTTP 409`）、模板无效、解析超时
 （`HTTP 504`）或后端无法创建模型时，命令会以非零状态码退出，并将安全错误
 信息写入 stderr。
+
+`--async` 仅支持空白创建或 JSON 创建；`--template` 是 multipart 上传，仍使用同步
+请求。异步且不等待时 stdout 只返回 `operationId`，可用
+[`wait-operation`](./wait-operation) 查询最终结果。
 
 ## 返回结果
 

@@ -13,7 +13,7 @@ pretending it exists in every package.
 
 | Task | Command | Scope |
 | --- | --- | --- |
-| Create a Draft DataSet | `create-dataset NAME [--json DETAIL.json]` | `write` |
+| Create a Draft DataSet | `create-dataset NAME [--json DETAIL.json] [--async]` | `write` |
 | List owned DataSet metadata | `get-datasets` | `read` |
 | Read complete DataSet tables | `get-dataset DATASET_ID` | `read` |
 | Update a Draft DataSet | `update-dataset DATASET_ID --json DETAIL.json` | `write` |
@@ -47,12 +47,12 @@ Draft ID. For release, require `sourceId` to equal the input Draft ID, treat
 
 | Task | Command | Scope |
 | --- | --- | --- |
-| Create a Draft Project | `create-project NAME --biomodel-id ID --dataset-id ID [--json DETAIL.json]` | `write` |
+| Create a Draft Project | `create-project NAME --biomodel-id ID --dataset-id ID [--json DETAIL.json] [--async]` | `write` |
 | List owned Project metadata | `get-projects` | `read` |
 | Read complete Project detail | `get-project PROJECT_ID` | `read` |
 | Read all Solution Variable fields | `get-project-variables PROJECT_ID` | `read` |
 | Update one Variable field | `set-project-variable PROJECT_ID VARIABLE VALUE` | `write` |
-| Update a Draft Project | `update-project PROJECT_ID --json DETAIL.json` | `write` |
+| Update a Draft Project | `update-project PROJECT_ID --json DETAIL.json [--async]` | `write` |
 | Copy a published Project to its Draft | `sync-project PROJECT_ID` | `write` |
 | Release a Draft Project | `release-project PROJECT_ID [--privacy Private|Public]` | `write` |
 
@@ -70,6 +70,12 @@ detail shape returned by `get-project`: `Variable`, `Target`, `Conversion`, and
 when needed. Use `update-project` to replace the detail of an existing Draft.
 Updating Project detail rebuilds the Solution cache and removes results that no
 longer match it.
+
+`create-dataset` and `update-dataset` also accept `--async`, `--wait`,
+`--operation-wait-timeout`, `--operation-poll-interval`, and
+`--idempotency-key`. The backend performs the same parsing, automatic
+`changeValueDataSet` mapping, and linked Project synchronization in either
+mode.
 
 When a Project is later calculated, `Solution.Variable.Value` is the runtime
 baseline for `Inflow` and `Flow`. The backend additively shifts each complete
@@ -111,6 +117,12 @@ For Project create and update responses, require `success: true` and a positive
 `id`. For synchronization, require `sourceId` to equal the input Release ID and
 treat `id` as the target Draft ID. For release, require `sourceId` to equal the
 input Draft ID, treat `id` as the new Release ID, and require `version >= 1`.
+
+With `--async`, Project create/update returns `operationId` and an initial
+`status` instead of a Project result. Add `--wait` to wait for the operation and
+receive the final Project JSON, or use `wait-operation` separately. For retries,
+pass a stable `--idempotency-key`; reusing it with a different payload is a
+backend conflict and must be corrected rather than retried blindly.
 
 ## Update a Variable safely
 

@@ -1,0 +1,48 @@
+---
+id: get-operation
+title: Read an asynchronous Operation
+sidebar_label: get-operation
+---
+
+# `get-operation`: read an asynchronous Operation
+
+Read the durable backend record returned by an asynchronous Project mutation or
+calculation-preparation request.
+
+## Syntax
+
+```text
+simpo get-operation OPERATION_ID [OPTIONS]
+```
+
+The response includes `operationId`, `operation`, `status`, `stage`, `progress`,
+the resource ID when available, and the nested final `result`. Terminal statuses
+are `succeeded`, `failed`, and `cancelled`. Failed records preserve
+`errorCode` and `errorMessage` so the input can be corrected.
+
+```json
+{
+  "success": true,
+  "operationId": "op_abc123",
+  "operation": "update-project",
+  "status": "running",
+  "stage": "parsing-solution",
+  "progress": 20,
+  "resourceType": "Project",
+  "resourceId": 789,
+  "errorCode": null,
+  "errorMessage": null,
+  "result": null
+}
+```
+
+## Options
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--timeout SECONDS` | `10.0` | Maximum time for this HTTP request |
+| `--api-token TOKEN` | configured Token | Complete Token override |
+| `--base-url URL` | packaged environment URL | Backend override for this request |
+
+Use [`wait-operation`](./wait-operation) when a script should wait for a
+successful result instead of implementing its own polling loop.

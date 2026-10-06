@@ -1,0 +1,111 @@
+---
+id: Calculation
+title: 计算
+sidebar_label: 计算
+---
+
+import config from '@generated/docusaurus.config'
+
+# Project 计算
+
+打开 Draft Project，选择 **Calculation**。在 **Console** 中选择任务、设置
+数值参数和算法参数、开始或停止计算，并查看计算日志。已发布的 Project 为只读；
+需要修改设置时，请先克隆为 Personal Draft。
+
+## 计算前检查
+
+1. 修改 BioModel、DataSet、Solution、Conversions、Weights 或 Activator 后，
+   先 Parse 并保存 Project。
+2. 在 `Detail → Solution` 中，将需要分析的变量设置为 `Evaluation=true`。
+3. 对 `Uncertainty` 和 `Estimation`，检查每个待评估变量的 `LowerBound` 和
+   `UpperBound`。Estimation 只有开启 **Inject Initial Value** 后才会使用
+   `InitialValue`。
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlProject_4} width="80%"/>
+</div>
+
+## 通用设置
+
+| 设置 | 含义 |
+| --- | --- |
+| `Task` | `Simulation`、`Sensitivity`、`Uncertainty` 或 `Estimation`。 |
+| `Thread Number` | 计算线程数，默认使用可用的逻辑 CPU 数量。 |
+| `Steady State` | 满足稳态条件后才结束模型计算。 |
+| `Step Tolerance` | 数值积分步长容差，越小通常越精确但越慢。 |
+| `Resolution Rate` | 计算和绘图时保留的原始数据比例。 |
+| `Recalculate` | 强制新建一次计算，不复用设置完全相同的旧结果。 |
+| `Real-Time Plotting` | 计算时实时绘图，关闭后通常可以减少额外开销。 |
+
+## SCE-UA 参数估计
+
+选择 `Estimation`，然后在 `Engine` 中选择 **SCE-UA**。Dashboard 显示名称为
+`SCE-UA`，对应的 SimpoCLI 引擎代码是 `SCEUA`。SCE-UA（Shuffled
+Complex Evolution）将总体划分为多个 Complex，反复进化并在外层 Shuffle，
+用新的试探点替换较差点。各 Complex 可以通过通用的 `Thread Number` 并行计算。
+
+### 初始总体
+
+初始总体有四种方法：
+
+| 方法 | 说明 | Seed |
+| --- | --- | --- |
+| `LHS` | Latin Hypercube Sampling，每个变量的一维区间分层覆盖一次。 | 开启 **Fixed Initial Seed** 时使用 Seed。 |
+| `Sobol (Scrambled)` | Scrambling 的低差异 Sobol 序列。 | 开启 **Fixed Initial Seed** 时使用 Seed。 |
+| `Sobol` | 未 Scrambling 的确定性 Sobol 序列。 | 不使用 Seed。 |
+| `Uniform` | 每个变量范围内独立均匀随机采样。 | 开启 **Fixed Initial Seed** 时使用 Seed。 |
+
+**Fixed Initial Seed** 控制可复现性。在 Project 值、初始化方法、总体大小和
+Seed 开关相同的情况下，初始总体可以复现；关闭后，每次随机初始化通常不同。
+`Initial Seed` 必须是 `1` 到 `4294967295` 的整数。
+
+**Inject Initial Value** 与采样方法相互独立。开启后，当前
+`Solution.Variable.InitialValue` 会被注入 SCE-UA 初始总体，其余点由选定方法生成。
+
+### 总体和搜索预算
+
+| 设置 | 含义和约束 |
+| --- | --- |
+| `Complexes` | 独立 Complex 的数量。未指定时默认为 `min(max(2, Thread Number), 8)`，限制上限可以避免 CPU 线程增加时总体无限变大。 |
+| `Population per Complex` | 每个 Complex 的点数。未设置时后端使用 `2 × dimension + 1`，且不能小于 `dimension + 1`。 |
+| `Maximum Evaluations` | 目标函数最大计算次数，包括初始总体。未设置时后端使用 `20 × 总总体`，且至少应为 `Complexes × Population per Complex`。 |
+| `Maximum Shuffles` | 外层 Shuffle 次数的可选硬上限；`0` 表示不启用，目标函数计算预算仍然有效。 |
+| `Convergence Shuffles` | 默认 `10`。连续多少次 Shuffle 的目标函数改善不足后提前结束。 |
+| `Objective Tolerance` | 默认 `1e-4`。最优目标函数的相对改善阈值，大于 `0` 时要求 `Convergence Shuffles ≥ 1`。 |
+| `Parameter Tolerance` | 默认 `1e-4`。总体在参数空间中的归一化收缩阈值，`0` 表示关闭。 |
+
+总总体大小为：
+
+```text
+总总体 = Complexes × Population per Complex
+```
+
+正式测试可以先使用界面显示的默认值；如果目标函数仍在改善，再增加
+`Maximum Evaluations`。`Maximum Shuffles` 设置为 `0` 时不启用独立的 Shuffle
+次数上限，通常让评价预算和收敛条件共同决定终止。
+
+SCE-UA 的两个提前停止分支是**或**关系：目标函数条件满足，**或**参数空间条件满足，
+算法就可以提前结束。参数范围变小只说明总体已经收缩，不能单独证明已经找到全局最优解。
+
+### 推荐流程
+
+1. 使用 `Sobol (Scrambled)` 或 `LHS`，开启 `Fixed Initial Seed`，记录 Seed。
+2. 将 `Population per Complex` 设置为至少 `2 × dimension + 1`，确认界面显示的总总体。
+3. 正式测试时可将 `Maximum Evaluations` 设置为至少 `20 × 总总体`；快速冒烟测试可以更小。
+4. 普通正式计算使用默认的 `10、1e-4、1e-4`；只有明确需要关闭某个提前停止分支时，
+   才将对应容差设置为 `0`。
+5. 比较不同 Seed 或初始化方法，判断结果是否稳定；单次运行成功不能证明已经找到全局最优解。
+
+## 其它任务
+
+- **Simulation**：使用当前 Solution 计算模型轨迹。
+- **Sensitivity**：使用 OAT 引擎；只有至少两个待评估变量时才有意义地开启相关性绘图。
+- **Uncertainty**：使用选定的初始化方法，在变量边界内生成样本。
+- **Estimation**：可以使用 `GA`、`RFGA` 或 `SCE-UA`。GA/RFGA 使用代数和个体数设置，
+  SCE-UA 使用上面介绍的 Complex 和 Shuffle 设置。
+
+## 结果和可复现性
+
+计算结束后，打开对应结果页并先查看 Report。记录 Task、Engine、Initial Method、
+Seed 开关和数值、总体设置、计算预算及容差设置。修改关联 BioModel、DataSet 或
+Solution 后，旧结果可能失效，解释图表前应重新计算。

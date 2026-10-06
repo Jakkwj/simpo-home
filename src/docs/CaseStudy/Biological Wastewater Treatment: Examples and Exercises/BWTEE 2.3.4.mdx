@@ -161,6 +161,7 @@ The aforementioned calculation method is more suitable for simple laboratory sim
     *   θ is the temperature correction factor
     *   T is the temperature, ℃
     *   $S_{O2,sat,std}$ is the saturated dissolved oxygen concentration in clean water under standard conditions,approximately 9.08~9.17 mg/L, often taken as 9.08 mg/L in engineering practice.
+    *   $S_{O2,sat}$ is the saturated dissolved oxygen concentration, currently fixed at 9.02 mg/L (as of 2026.10.04).
     *   α is the Oxygen Transfer Ratio: $k_{L}a(Wastewater)/k_{L}a(Clean Water)$
     *   β is the Oxygen Solubility Ratio: $S_{O2,sat}(Wastewater)/S_{O2,sat}(Clean Water)$
     *   V is the reactor volume, m³
@@ -182,7 +183,11 @@ The aforementioned calculation method is more suitable for simple laboratory sim
     $$
       dS_{O2}/dt = 279 * Q_{air} * a * (Q_{air} / d / 24)^{-b} * H^c * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std} / V
     $$
-*    Note that at this point, the unit of $dS_{O2}/dt$ is **$mgO_2/L/d$**.
+*   If β is 1, then:
+    $$
+      k_{L}a = 279 * Qair * a * (Qair / d / 24)^{-b} * H^c * α / S_{O2,sat,std} / V
+    $$
+*    Note that, the unit of $dS_{O2}/dt$ is **$mgO_2/L/d$**, when calculating, $S_{O2,sat}$ is fixed at 9.02 mg/L (as of 2026.10.04).
 
 
 

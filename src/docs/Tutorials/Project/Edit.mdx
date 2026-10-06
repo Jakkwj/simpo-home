@@ -1,0 +1,153 @@
+---
+title: Edit
+---
+
+import config from '@generated/docusaurus.config'
+
+# Edit a Project
+
+The editable parts of a Project are `Detail`, `Calculation` settings,
+`Version`, and `Profile`. A released version and a public/private read-only
+view cannot be edited; clone the Project to Personal Projects when an editable
+Draft is needed.
+
+## Detail
+
+The Detail page has three side tabs: `Solution`, `BioModel`, and `DataSet`.
+Changes to a linked BioModel or DataSet can invalidate existing calculation
+results, so parse and save the Project before calculating again.
+
+### Solution
+
+`Solution` is the Project-specific detail that connects model quantities to
+data and controls variable evaluation. Its main table contains:
+
+| Field | Description |
+|---|---|
+| `Variable` | BioModel Component, parameter, `Volume`, or `Flow`. |
+| `Tank` | Tank to which a variable belongs; the tank is shown together with the variable. |
+| `Unit` | Unit inherited from the BioModel or DataSet. |
+| `Value` | Value used as the baseline for simulation and for unfilled DataSet `Inflow`/`Flow` initial values. |
+| `Evaluation` | Include the variable in `Sensitivity`, `Uncertainty`, or `Estimation`. |
+| `InitialValue` | Initial chromosome value used by the genetic algorithm when enabled. |
+| `DecimalPoint` | Decimal precision used to encode estimation chromosomes. |
+| `LowerBound` / `UpperBound` | Search limits for `Uncertainty` and `Estimation`. |
+
+`Value`, bounds, and other editable cells are changed with the table popup
+editor. Values must satisfy their displayed units and bounds. During a
+calculation, the value stored in `Project.Solution` takes precedence over the
+BioModel default value.
+
+The toolbar also opens three auxiliary tables:
+
+- `Conversions`: maps BioModel Components to predicted additional Targets. For
+  example, if `TN = S_NH4 + S_NO3 + 0.1 * X_H`, set the corresponding row to
+  `1`, `1`, and `0.1`. DataSet Targets are shown separately from additional
+  Targets.
+- `Weights`: gives each Target/Tank pair a relative importance in the NSE used
+  by `Uncertainty` and `Estimation`. Weights are normalized automatically; they
+  do not need to sum to `1`.
+- `Activator`: toggles whether each BioModel Process is active in each Tank.
+  Use it to disable, for example, an aeration process in an anoxic or anaerobic
+  Tank.
+
+### Linked BioModel and DataSet
+
+The `BioModel` and `DataSet` side tabs embed their editors. Use their normal
+Draft editing operations to change Components, Parameters, Processes, Targets,
+Tanks, measurements, flows, and connections. The Project header provides
+`Edit` and `Export` for the selected linked object. `Temp` saves incomplete
+detail without format checking; `Parse` validates and saves the complete
+detail. A released linked object is read-only.
+
+### Project actions
+
+- `Temp`: save the Project detail without parsing. Use it while entering
+  incomplete tables.
+- `Parse`: validate the Project, BioModel, and DataSet detail and save them.
+  Parsing can take time; refreshing the page stops a running parse operation.
+- `Edit`: rename the Project, import an XLSX Solution template, choose a paper,
+  or edit the description.
+- `Export`: download the Project Solution as XLSX, edit it locally, and import
+  it again through `Edit`.
+- `Clone` and delete are available from the Project list or from a released
+  Project when the permissions allow them.
+
+## Calculation
+
+For the complete task and algorithm settings, see the dedicated
+[Calculation guide](./Calculation).
+
+Open `Calculation` and use `Console` to select a task and start a calculation.
+The `Start` button is available for a Draft; `STOP` asks for confirmation and
+stops a running task. The progress indicator reports percentage, elapsed time,
+and estimated remaining time. `Log` opens the calculation log.
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlProject_4} width="80%"/>
+</div>
+
+### Console settings
+
+Common settings are:
+
+- `Task`: `Simulation`, `Sensitivity`, `Uncertainty`, or `Estimation`.
+- `Engine`: the numerical engine for the selected task. Sensitivity engines
+  include OAT/AA, OAT/RA, OAT/AR, and OAT/RR forms; Uncertainty supports the
+  configured initialization methods; and Estimation can use GA, RFGA, or SCE-UA.
+- `Steady State`: stop after the calculated state remains unchanged for the
+  configured convergence condition.
+- `Thread Number`: number of parallel calculation threads.
+- `Resolution Rate (%)`: resolution used when generating traces and figures.
+- `Solver` and `Step Tolerance`: numerical integration method and tolerance.
+- `Recalculate`: force a new task instead of reusing a result with identical
+  settings.
+- `Real-Time Plotting`: plot while calculating. Turning it off can increase
+  calculation speed.
+
+Task-specific settings include:
+
+- `Uncertainty`: initialization method, optional fixed seed, and sample number.
+- `Sensitivity`: `Plot Correlation` and `OAT Intensity (%)`. Correlation plots
+  require at least two evaluated variables.
+- `Estimation`: GA/RFGA population controls, or SCE-UA Complex, population,
+  evaluation-budget, and convergence controls. When Complexes are omitted, the
+  default is `min(max(2, Thread Number), 8)`; the convergence defaults are 10
+  Shuffles, `1e-4` objective tolerance, and `1e-4` parameter tolerance. The
+  objective and parameter stop criteria are an OR condition.
+
+### Results
+
+After a successful calculation, the corresponding result tab appears:
+
+- `Simulation` shows predicted and measured curves for each Tank and Target.
+  Use the figure controls to switch Tank/figure, show or hide legends, change
+  line width and scale, set axes, enter fullscreen mode, and download the
+  result.
+- `Sensitivity` shows sensitivity curves and optional correlation figures.
+- `Uncertainty` shows bands, density, skeleton, PCDF, variable, and optimum
+  figures when returned by the selected engine.
+- `Estimation` shows optimum, band, density, skeleton, PCDF, and variable
+  figures, plus the best variables returned by the estimation run.
+
+If a linked BioModel or DataSet Draft changes after a result was generated, the
+result tab is marked for recalculation. Run the task again before interpreting
+the old figures.
+
+## Version
+
+- In `Version`, release the current Draft as a numbered version. Version numbers
+  increase in ascending order.
+- Use `Sort` to change release order and `Print` to export the release list as
+  a PDF.
+- A release can be `Public` or `Private` according to the available
+  permissions. Public releases can be cloned; private releases remain
+  restricted.
+- Use `Sync` on a release to copy that version back to the version `0` Draft.
+
+## Profile
+
+`Profile` displays the Project description, related paper, and the linked
+BioModel and DataSet with their versions, creators, and descriptions. The
+`Quoted` table lists BioModels and DataSets referenced by the Project. The
+description supports Markdown and can be viewed in a larger dialog.

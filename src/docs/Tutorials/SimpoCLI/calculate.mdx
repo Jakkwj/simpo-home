@@ -36,6 +36,14 @@ Start OAT sensitivity analysis and wait for a terminal status:
 simpo calculate 706 --engine OAT_AR --wait --wait-timeout 86400
 ```
 
+Start SCE-UA with a reproducible scrambled Sobol initial population:
+
+```text
+simpo calculate 706 --engine SCEUA \
+  --initialization-method scrambled_sobol \
+  --fixed-initialization-seed --initialization-seed 7 --wait
+```
+
 Only prepare the files without launching SimpoClient:
 
 ```text
@@ -54,8 +62,10 @@ simpo calculate 706 --no-launch
 | `OAT_AR` | Sensitivity: absolute output / relative input; recommended OAT variant |
 | `OAT_RR` | Sensitivity: relative output / relative input |
 | `LHS` | Uncertainty analysis using Latin Hypercube Sampling |
+| `UNC` | Canonical uncertainty-analysis engine alias; uses the same uncertainty workflow as legacy `LHS` |
 | `GA` | Parameter estimation with Genetic Algorithm |
 | `RFGA` | Parameter estimation with the RFGA engine |
+| `SCEUA` | Parameter estimation with Shuffled Complex Evolution (SCE-UA) |
 
 The generic `OAT` code is not a public CLI choice.
 
@@ -86,6 +96,40 @@ The generic `OAT` code is not a public CLI choice.
 | `--auto-plot-correlation / --no-auto-plot-correlation` | disabled | Generate OAT Pearson correlation data and plots; also requires `--auto-plot` and at least two `Evaluation=true` parameters |
 | `--auto-plot-skeleton / --no-auto-plot-skeleton` | enabled | Automatic skeleton plots |
 
+### Shared initialization options
+
+These options are used by the algorithms that generate an initial population
+or sample set:
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--initialization-method TEXT` | `LHS` | Shared by `UNC`/`LHS`/`GA`/`RFGA`/`SCEUA`: `LHS`, `scrambled_sobol`, `sobol`, or `uniform`. |
+| `--fixed-initialization-seed / --random-initialization-seed` | random | Use a reproducible seed for LHS, scrambled Sobol, or uniform. Unscrambled Sobol is deterministic and ignores the seed. |
+| `--initialization-seed INTEGER` | `1` | Positive integer from `1` to `4294967295`, used when fixed seeding is enabled. |
+| `--inject-initial-value / --no-inject-initial-value` | legacy GA value | For GA/RFGA/SCEUA, inject `Solution.Variable.InitialValue` into the initial population. |
+
+### SCE-UA options
+
+`SCEUA` evolves several Complexes and performs outer Shuffle cycles. Complexes
+share the common `--threads` setting and can be evaluated in parallel.
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--sceua-num-complexes INTEGER` | automatic | Number of independent Complexes. When omitted, uses `min(max(2, --threads), 8)`. |
+| `--sceua-complex-population-size INTEGER` | omitted | Points per Complex; the backend defaults to `2 × dimension + 1`, minimum `dimension + 1`. |
+| `--sceua-population-size INTEGER` | omitted | Legacy total population option. Do not combine it with the per-Complex option unless the values agree. |
+| `--sceua-max-evaluations INTEGER` | omitted | Total objective evaluations, including initialization; the backend defaults to `20 × total population` and requires at least total population. |
+| `--sceua-max-shuffles INTEGER` | `0` | Optional hard limit on outer Shuffle cycles; `0` disables this limit. |
+| `--sceua-convergence-shuffles INTEGER` | `10` | Consecutive insufficient-improvement Shuffles before early stopping. |
+| `--sceua-objective-tolerance FLOAT` | `1e-4` | Relative objective improvement threshold; positive values require convergence shuffles. |
+| `--sceua-parameter-tolerance FLOAT` | `1e-4` | Normalized parameter-spread threshold; `0` disables it. |
+
+The total SCE-UA population is `--sceua-num-complexes ×
+--sceua-complex-population-size`. The objective and parameter early-stop
+branches use an **OR** relationship: SCE-UA stops when either criterion is met.
+`Maximum Shuffles` is an optional outer-cycle cap; leave it at `0` when the
+evaluation budget and convergence criteria should determine termination.
+
 ## Launch and wait options
 
 | Option | Default | Meaning |
@@ -97,6 +141,11 @@ The generic `OAT` code is not a public CLI choice.
 | `--poll-interval SECONDS` | `2.0` | Delay between status requests while waiting |
 | `--wait-timeout SECONDS` | `86400` | Maximum time this CLI polls; does not stop the calculation |
 | `--timeout SECONDS` | `3700` | Timeout for the single backend preparation/compilation request |
+| `--async-preparation / --no-async-preparation` | disabled | Queue preparation as a durable backend Operation |
+| `--wait-preparation / --no-wait-preparation` | disabled | Wait for async preparation before launching SimpoClient |
+| `--preparation-wait-timeout SECONDS` | `86400` | Maximum wait for preparation Operation |
+| `--preparation-poll-interval SECONDS` | `2.0` | Delay between preparation status requests |
+| `--idempotency-key TEXT` | omitted | Stable retry key for asynchronous preparation |
 | `--api-token TOKEN` | configured Token | Complete Token override |
 | `--base-url URL` | packaged environment URL | Backend override for this request |
 
@@ -104,6 +153,10 @@ The generic `OAT` code is not a public CLI choice.
 only the waiting CLI exits; SimpoClient and the calculation continue. Check them
 later with [`get-calculation-status`](./get-calculation-status), or explicitly use
 [`stop-calculation`](./stop-calculation).
+
+For long preparation requests, use `--async-preparation --no-launch`, retain the
+returned `operationId`, and run `wait-operation`. If the CLI should start the
+local client after preparation, use `--async-preparation --wait-preparation`.
 
 `--print-protocol` is intended for explicit integrations. The protocol contains
 a short-lived credential and must not be published or written to public logs.

@@ -37,8 +37,20 @@ The same workflow is available in Codex and Claude Code. Invoke it as
 - BioModel create, list, read, update, sync, and release workflows;
 - DataSet create/list/read/update/sync/release workflows;
 - Project create/list/read/update/sync/release and Project Variable read/update workflows;
+- asynchronous Project mutations and calculation preparation through Operation IDs,
+  including detailed failure reasons;
 - calculation preparation, engine selection, status, stop, and paginated result
   retrieval workflows.
+
+For estimation, the Skill also covers the `SCEUA` engine: its four initial
+population methods, fixed-seed reproducibility, shared InitialValue injection,
+Complex population sizing, evaluation budget, and convergence constraints. The
+default Complex count is `min(max(2, --threads), 8)`, and the default convergence
+settings are 10 Shuffles, `1e-4` objective tolerance, and `1e-4` parameter
+tolerance. Objective and parameter convergence are an OR condition, so either
+criterion can stop the run. The shared `--threads` option controls parallel
+Complex work. `--sceua-max-shuffles` is an optional outer-cycle cap; `0`
+disables it.
 
 The documented public commands are:
 `configure`, `me`, `logout`, `create-biomodel`, `update-biomodel`,
@@ -48,6 +60,8 @@ The documented public commands are:
 `get-project`, `update-project`, `sync-project`, `release-project`, `get-project-variables`,
 `set-project-variable`, `calculate`, `get-calculation-status`,
 `get-calculation-result`, and `stop-calculation`.
+The Operation commands are `get-operation`, `wait-operation`, and
+`stop-operation`.
 
 This is Skill coverage, not a promise that an older installed executable exposes
 every documented command. The requested command and backend response are authoritative;

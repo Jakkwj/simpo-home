@@ -8,6 +8,9 @@
 | Validate and save a Token | `simpo configure` | Token validation must succeed |
 | Show current identity and scopes | `simpo me` | authenticated Token |
 | Remove the saved local Token | `simpo logout` | none |
+| Read an asynchronous operation | `simpo get-operation OPERATION_ID` | `read` |
+| Wait for an asynchronous operation | `simpo wait-operation OPERATION_ID` | `read` |
+| Cancel a queued operation | `simpo stop-operation OPERATION_ID` | `write` |
 
 Run the requested command directly. Different installed versions may expose
 different commands; let the CLI report an
@@ -58,3 +61,16 @@ required.
   update SimpoCLI if the operation is not available; never call the OpenAPI
   directly to bypass the CLI.
 - network or timeout after a write: inspect the affected resource before retrying.
+
+## Asynchronous operations
+
+The backend keeps long-running Project create/update and calculation-preparation
+requests in a durable Operation record. Normal CLI behavior remains synchronous.
+When an asynchronous option is selected, the command returns an `operationId`
+and does not mean that the resource has been written. Use `wait-operation` or
+poll `get-operation` until `status` is `succeeded`, `failed`, or `cancelled`.
+
+Failed records preserve `errorCode` and `errorMessage`; relay both fields when
+explaining the failure. A queued operation can be cancelled with
+`stop-operation`. A running operation is not falsely marked cancelled; for a
+running calculation use `stop-calculation`.

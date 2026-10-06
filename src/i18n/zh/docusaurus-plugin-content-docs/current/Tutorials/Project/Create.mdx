@@ -1,0 +1,50 @@
+---
+title: 新建
+---
+
+import config from '@generated/docusaurus.config'
+
+# 新建 Project
+
+Project 将一个 BioModel 与一个 DataSet 连接起来，并保存 Components 与 Targets 之间的转换关系、求解参数和计算结果。新建的 Project 默认是个人的 `Private`、版本 `0` Draft。
+
+## 从 Project 列表新建
+
+打开 `/dashboard/projects`，进入 `Personal Projects`，点击新建 Project。输入唯一的 Project 名称，并选择要组合的 BioModel 和 DataSet。所选版本会记录在 Project 中，之后可以在 `Profile` 查看。
+
+BioModel 和 DataSet 都可以暂不选择：
+
+- 未选择 BioModel 时，SIMPO 会自动创建空的 BioModel。
+- 未选择 DataSet 时，SIMPO 会自动创建空的 DataSet。
+- 如果 BioModel 的 Components 与 DataSet 的 Targets 符号完全相同，SIMPO 可以自动生成初始 Solution。
+- 如果两者不一致，请在 `Detail > Solution` 中编辑 Components 与 Targets 的转换关系，然后解析保存。
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlProject_1} width="80%"/>
+</div>
+
+新建对话框中的名称必填，长度最多为 50 个字符。描述和相关论文可以在新建时填写，也可以之后在 `Profile`/`Edit` 中补充。
+
+## 从 XLSX 模板导入
+
+在新建 Project 对话框中选择模板方式，下载<a href={config.customFields.urlDownloadUrlplateProject} target="_self" download>Project 模板 XLSX 文件</a>，填写 Solution 相关工作表后上传。已有的转换关系、变量值或 Target 权重较多时，使用模板更方便。导入后请在 `Detail` 中检查并解析保存，再开始计算。
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlProject_2} width="80%"/>
+</div>
+
+## 克隆公开 Project
+
+在公开 Project 库中打开 Project，或打开已发布版本后点击 `Clone`。Project 会以新的 Draft 复制到 `Personal Projects`；关联的 BioModel、DataSet、Solution 和已有结果会按照权限复制。修改 BioModel 或 DataSet 后，请检查关联版本并重新计算。
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlProject_3} width="80%"/>
+</div>
+
+## 第一次计算前
+
+1. 确认 BioModel Components 与 DataSet Targets 表示相同的物质、单位和 Tank。
+2. 在 `Detail > Solution` 中检查 `Conversion`、`Value` 和边界值。
+3. 在 DataSet 中检查测量数据和流量连接。
+4. 使用 `Detail` 的 `Parse` 操作校验并保存 Draft。
+5. 打开 `Calculation > Console`，选择任务和引擎后开始计算。

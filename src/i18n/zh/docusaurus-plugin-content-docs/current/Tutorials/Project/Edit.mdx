@@ -1,0 +1,101 @@
+---
+title: 编辑
+---
+
+import config from '@generated/docusaurus.config'
+
+# 编辑 Project
+
+Project 可编辑的部分包括 `Detail`、`Calculation` 设置、`Version` 和 `Profile`。已发布版本以及公开/私有只读页面不能编辑；需要可编辑的 Draft 时，请先克隆到 `Personal Projects`。
+
+## Detail
+
+Detail 页面左侧包含三个菜单：`Solution`、`BioModel` 和 `DataSet`。关联的 BioModel 或 DataSet 修改后，已有计算结果可能失效，因此再次计算前应先解析并保存 Project。
+
+### Solution
+
+`Solution` 是 Project 专属的 Detail，用于连接模型量和数据，并控制哪些变量参与评估。主表包含：
+
+| 字段 | 说明 |
+|---|---|
+| `Variable` | BioModel Component、Parameter、`Volume` 或 `Flow`。 |
+| `Tank` | 变量所属 Tank，界面会与 Variable 一起显示。 |
+| `Unit` | 从 BioModel 或 DataSet 继承的单位。 |
+| `Value` | Simulation 使用的基准值，也用于补充 DataSet `Inflow`/`Flow` 的初始值。 |
+| `Evaluation` | 是否将变量用于 `Sensitivity`、`Uncertainty` 或 `Estimation`。 |
+| `InitialValue` | 启用时，遗传算法使用的初始染色体值。 |
+| `DecimalPoint` | Estimation 中编码染色体时使用的小数精度。 |
+| `LowerBound` / `UpperBound` | `Uncertainty` 和 `Estimation` 的搜索边界。 |
+
+`Value`、边界值等可编辑单元通过表格弹窗修改，数值必须符合显示的单位和边界。计算时，`Project.Solution` 中保存的值优先于 BioModel 的默认值。
+
+工具栏还可以打开三个辅助表：
+
+- `Conversions`：将 BioModel Components 转换为预测的 Additional Targets。例如 `TN = S_NH4 + S_NO3 + 0.1 * X_H` 时，对应行的系数应分别为 `1`、`1` 和 `0.1`。DataSet Targets 与 Additional Targets 分开显示。
+- `Weights`：设置每个 Target/Tank 组合在 `Uncertainty` 和 `Estimation` 中 NSE 的相对重要性。SIMPO 会自动归一化权重，不要求总和为 `1`。
+- `Activator`：控制每个 BioModel Process 是否在每个 Tank 中启用。例如，可以关闭缺氧或厌氧 Tank 中的曝气过程。
+
+### 关联的 BioModel 和 DataSet
+
+`BioModel` 和 `DataSet` 菜单中嵌入了对应编辑器，可以使用它们原有的 Draft 编辑操作修改 Components、Parameters、Processes、Targets、Tanks、测量数据、Flows 和 Connections。Project 页眉提供所选对象的 `Edit` 和 `Export`。`Temp` 保存未完成的 Detail 而不检查格式，`Parse` 校验并保存完整 Detail。已发布的关联对象为只读。
+
+### Project 操作
+
+- `Temp`：不解析格式，保存 Project Detail；适合录入尚未完成的表格。
+- `Parse`：校验并保存 Project、BioModel 和 DataSet 的 Detail。解析可能需要一定时间，刷新页面可以停止正在进行的解析。
+- `Edit`：修改 Project 名称、导入 XLSX Solution 模板、选择论文或编辑描述。
+- `Export`：导出 Project Solution 的 XLSX 文件，在本地编辑后通过 `Edit` 重新导入。
+- `Clone` 和删除操作位于 Project 列表；已发布 Project 是否可克隆取决于权限。
+
+## Calculation
+
+完整的任务和算法设置请参阅独立的[计算指南](./Calculation)。
+
+打开 `Calculation`，在 `Console` 中选择任务并开始计算。Draft 才能使用 `Start`；`STOP` 会先确认再停止正在运行的任务。进度区显示百分比、已用时间和预计剩余时间，`Log` 可以打开计算日志。
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlProject_4} width="80%"/>
+</div>
+
+### Console 设置
+
+常用设置包括：
+
+- `Task`：`Simulation`、`Sensitivity`、`Uncertainty` 或 `Estimation`。
+- `Engine`：当前任务使用的计算引擎。Sensitivity 包括 OAT/AA、OAT/RA、OAT/AR 和 OAT/RR 形式；Uncertainty 支持配置的初始化方法；Estimation 可以使用 GA、RFGA 或 SCE-UA。
+- `Steady State`：当计算状态满足收敛条件后停止。
+- `Thread Number`：并行计算的线程数。
+- `Resolution Rate (%)`：生成轨迹和图片时使用的分辨率。
+- `Solver` 和 `Step Tolerance`：数值积分方法和步长容差。
+- `Recalculate`：强制启动新任务，不复用设置完全相同的已有结果。
+- `Real-Time Plotting`：计算过程中实时绘图。关闭后通常可以提高计算速度。
+
+不同任务的专用设置包括：
+
+- `Uncertainty`：初始化方法、可选的固定 Seed 和样本数。
+- `Sensitivity`：`Plot Correlation` 和 `OAT Intensity (%)`。相关性图至少需要两个启用 `Evaluation` 的变量。
+- `Estimation`：GA/RFGA 的种群设置，或 SCE-UA 的 Complex、总体、计算预算和收敛设置。
+  未显式设置 Complex 数量时，默认使用 `min(max(2, Thread Number), 8)`；收敛参数默认
+  为 10 次 Shuffle、目标容差 `1e-4`、参数容差 `1e-4`。目标值条件和参数空间条件是“或”关系。
+
+### 计算结果
+
+计算成功后，界面会显示相应结果菜单：
+
+- `Simulation`：查看每个 Tank 和 Target 的预测曲线与测量曲线。可以切换 Tank/图片、显示或隐藏图例、调整线宽和缩放、设置坐标轴、全屏查看并下载结果。
+- `Sensitivity`：查看敏感性曲线和可选的相关性图。
+- `Uncertainty`：查看引擎返回的 Band、Density、Skeleton、PCDF、Variable 和 Optimum 图。
+- `Estimation`：查看 Optimum、Band、Density、Skeleton、PCDF 和 Variable 图，以及估计得到的最佳变量。
+
+如果结果生成后关联的 BioModel 或 DataSet Draft 发生变化，结果菜单会提示需要重新计算。解释旧图之前，请重新运行对应任务。
+
+## Version
+
+- 在 `Version` 中将当前 Draft 发布为按数字递增的版本。
+- `Sort` 可以调整发布列表的排序，`Print` 可以将发布记录导出为 PDF。
+- 根据权限，发布版本可以是 `Public` 或 `Private`。Public 版本可以被克隆，Private 版本保持受限。
+- 对发布版本使用 `Sync`，可以将该版本复制回版本 `0` 的 Draft。
+
+## Profile
+
+`Profile` 显示 Project 的描述、相关论文，以及关联 BioModel 和 DataSet 的版本、创建者和描述。`Quoted` 表格列出该 Project 引用的 BioModel 和 DataSet。描述支持 Markdown，也可以在更大的对话框中查看。

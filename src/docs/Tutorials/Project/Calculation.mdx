@@ -1,0 +1,130 @@
+---
+id: Calculation
+title: Calculation
+sidebar_label: Calculation
+---
+
+import config from '@generated/docusaurus.config'
+
+# Project Calculation
+
+Open a Draft Project and select **Calculation**. The **Console** is used to
+choose a task, configure its numerical and algorithm settings, start or stop a
+run, and open the calculation log. A released Project is read-only; clone it
+to a Personal Draft before changing settings.
+
+## Before starting
+
+1. Parse and save the Project after editing its BioModel, DataSet, Solution,
+   Conversions, Weights, or Activator.
+2. Mark the variables to be analyzed with `Evaluation=true` in `Detail →
+   Solution`.
+3. For `Uncertainty` and `Estimation`, check every evaluated variable's
+   `LowerBound` and `UpperBound`. For estimation, `InitialValue` is used only
+   when **Inject Initial Value** is enabled.
+
+<div align="center" style={{marginTop: "0vh"}}>
+  <img src={config.customFields.imgUrlProject_4} width="80%"/>
+</div>
+
+## Common settings
+
+| Setting | Meaning |
+| --- | --- |
+| `Task` | `Simulation`, `Sensitivity`, `Uncertainty`, or `Estimation`. |
+| `Thread Number` | Number of calculation threads. The default uses the available logical CPUs. |
+| `Steady State` | Continue the model calculation until the steady-state condition is met. |
+| `Step Tolerance` | Numerical integration tolerance. Smaller values are more accurate but slower. |
+| `Resolution Rate` | Fraction of raw data retained for calculation and plotting. |
+| `Recalculate` | Force a new run instead of reusing a result with identical settings. |
+| `Real-Time Plotting` | Plot while calculating. Turning it off can reduce overhead. |
+
+## SCE-UA estimation
+
+Select `Estimation` and choose **SCE-UA** in `Engine`. The Dashboard displays
+`SCE-UA`; the equivalent SimpoCLI engine code is `SCEUA`. SCE-UA (Shuffled
+Complex Evolution) evolves several Complexes, periodically shuffles the
+population, and replaces inferior trial points. Complexes can be evaluated in
+parallel through the common `Thread Number` setting.
+
+### Initial population
+
+The initial population can use one of four methods:
+
+| Method | Description | Seed |
+| --- | --- | --- |
+| `LHS` | Latin Hypercube Sampling; each variable is stratified once. | Uses the seed when **Fixed Initial Seed** is on. |
+| `Sobol (Scrambled)` | Scrambled low-discrepancy Sobol sequence. | Uses the seed when **Fixed Initial Seed** is on. |
+| `Sobol` | Unscrambled deterministic Sobol sequence. | Does not use a seed. |
+| `Uniform` | Independent uniform random points in each variable range. | Uses the seed when **Fixed Initial Seed** is on. |
+
+**Fixed Initial Seed** controls reproducibility. With the same Project values,
+initialization method, population size, and enabled seed, the generated initial
+population is reproducible. Turn it off for a different random initialization
+on each run. `Initial Seed` must be an integer from `1` to `4294967295`.
+
+**Inject Initial Value** is independent of the sampling method. When enabled,
+the current `Solution.Variable.InitialValue` values are inserted into the
+initial SCE-UA population; the remaining points come from the selected method.
+
+### Population and search budget
+
+| Setting | Meaning and constraints |
+| --- | --- |
+| `Complexes` | Number of independent Complexes. When omitted, the default is `min(max(2, Thread Number), 8)`; the value is bounded so more CPU threads do not create an unbounded population. |
+| `Population per Complex` | Number of points in each Complex. When omitted, the backend uses `2 × dimension + 1`; it must be at least `dimension + 1`. |
+| `Maximum Evaluations` | Total objective-function evaluation budget, including the initial population. When omitted, the backend uses `20 × total population`; it must be at least `Complexes × Population per Complex`. |
+| `Maximum Shuffles` | Optional hard limit on outer Shuffle cycles. `0` disables this limit; the evaluation budget still applies. |
+| `Convergence Shuffles` | Default `10`. Number of consecutive Shuffles with insufficient objective improvement before early stopping. |
+| `Objective Tolerance` | Default `1e-4`. Relative improvement threshold for the best objective. A positive value requires `Convergence Shuffles ≥ 1`. |
+| `Parameter Tolerance` | Default `1e-4`. Normalized spread threshold for the population in parameter space. `0` disables this criterion. |
+
+The total population is derived as:
+
+```text
+total population = Complexes × Population per Complex
+```
+
+For a first real run, use the displayed defaults, then increase
+`Maximum Evaluations` when the objective is still improving. Leave `Maximum
+Shuffles` at `0` when the evaluation budget and convergence criteria should
+determine termination.
+
+SCE-UA checks the two early-stop branches with an **OR** relationship: it can
+stop when the objective criterion is met **or** when the parameter-space
+criterion is met. A small parameter spread means that the population has
+contracted, but does not by itself prove that the global optimum was found.
+
+### Recommended workflow
+
+1. Start with `Sobol (Scrambled)` or `LHS`, `Fixed Initial Seed` enabled, and
+   record the seed for reproducibility.
+2. Set `Population per Complex` to at least `2 × dimension + 1` and verify the
+   displayed total population.
+3. Set `Maximum Evaluations` to at least `20 × total population` for a formal
+   test; use a smaller value only for a quick smoke test.
+4. Keep the default convergence settings (`10`, `1e-4`, `1e-4`) for ordinary
+   formal runs. Set a tolerance to `0` only when that early-stop branch is
+   intentionally disabled.
+5. Compare independent seeds or initialization methods when assessing result
+   robustness. A single successful run is not evidence that the global optimum
+   has been found.
+
+## Other tasks
+
+- **Simulation** calculates the model trajectory for the current Solution.
+- **Sensitivity** uses an OAT engine. Enable correlation plotting only when at
+  least two evaluated variables are available.
+- **Uncertainty** samples the evaluated variables within their bounds using
+  the selected initialization method and sample number.
+- **Estimation** can use `GA`, `RFGA`, or `SCE-UA`. GA/RFGA keep their own
+  generation and population controls; SCE-UA uses Complex and Shuffle controls
+  described above.
+
+## Results and reproducibility
+
+After completion, open the task's result tab and inspect the report before
+interpreting figures. Record the task, engine, initialization method, seed
+setting and value, population settings, evaluation budget, and tolerance
+settings with any reported optimum. Re-run after changing linked BioModel,
+DataSet, or Solution values because previous results may then be stale.

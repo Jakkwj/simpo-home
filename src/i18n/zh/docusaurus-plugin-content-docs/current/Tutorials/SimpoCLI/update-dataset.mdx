@@ -25,6 +25,7 @@ simpo update-dataset DATASET_ID --json DETAIL.json [OPTIONS]
 
 ```text
 simpo update-dataset 456 --json ./DataSet.json
+simpo update-dataset 456 --json ./DataSet.json --async --wait
 ```
 
 `--description` 和 `--sourcepaper-id` 只在提供时替换原值。更新接口会比较当前 Draft
@@ -34,8 +35,10 @@ DataSet ID 保持不变；返回的 `affectedProjectCount` 是本次重建的关
 数量。关联 Project 中已有的 Simulation、Sensitivity、Uncertainty 和 Estimation
 结果会被标记为需要重新计算。
 
-其它选项包括 `--timeout SECONDS`（默认 `3700.0`）、`--api-token TOKEN` 和
-`--base-url URL`。
+其它选项包括 `--timeout SECONDS`（默认 `3700.0`）、`--async`、`--wait`、
+`--operation-wait-timeout`、`--operation-poll-interval`、`--idempotency-key`、
+`--api-token TOKEN` 和 `--base-url URL`。异步路径与同步路径使用同一个后端解析、
+自动 `changeValueDataSet` 映射和关联 Project 重建逻辑。
 
 ## 标识改名
 

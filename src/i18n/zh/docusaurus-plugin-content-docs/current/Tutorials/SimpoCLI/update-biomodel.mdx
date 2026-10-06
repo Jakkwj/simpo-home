@@ -41,6 +41,11 @@ JSON 格式与 [`create-biomodel`](./create-biomodel) 相同。可以先使用
 | `--description TEXT` | 保留原值 | 替换 Markdown 描述 |
 | `--sourcepaper-id INTEGER` | 保留原值 | 替换来源论文 ID |
 | `--timeout SECONDS` | `3700.0` | 解析和 HTTP 请求的最长等待时间 |
+| `--async / --no-async` | 关闭 | 将更新提交到持久化 Operation 队列 |
+| `--wait / --no-wait` | 关闭 | 与 `--async` 一起使用时等待并返回最终 BioModel |
+| `--operation-wait-timeout SECONDS` | `86400` | 异步等待的最长时间 |
+| `--operation-poll-interval SECONDS` | `2.0` | Operation 状态请求间隔 |
+| `--idempotency-key TEXT` | 不传 | 异步重试时复用同一 Operation 的稳定键 |
 | `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
 | `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
 
@@ -59,6 +64,10 @@ Component 改名还会同步匹配的 `Ionization.Symbol` 单元格。
 BioModel 结构生成。返回字段 `affectedProjectCount` 表示实际同步的 Project 数量。
 受影响 Project 中已有的 Simulation、Sensitivity、Uncertainty 和 Estimation 结果
 会被标记为需要重新计算。
+
+更新可能耗时较长时，使用 `--async` 返回 Operation ID；使用 `--wait` 或单独执行
+`simpo wait-operation OPERATION_ID` 获取最终结果。异步路径仍使用同一个解析器、
+自动改名映射和 Project 同步逻辑。
 
 ## 返回结果
 

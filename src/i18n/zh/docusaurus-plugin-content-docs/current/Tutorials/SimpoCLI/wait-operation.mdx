@@ -1,0 +1,24 @@
+---
+id: wait-operation
+title: 等待异步 Operation
+sidebar_label: wait-operation
+---
+
+# `wait-operation`：等待异步 Operation
+
+轮询 Operation 直到成功。后端记录 `failed` 或 `cancelled` 时，命令会退出失败，
+并保留详细的 `errorCode` 和 `errorMessage`。
+
+```text
+simpo wait-operation OPERATION_ID [OPTIONS]
+```
+
+示例：
+
+```text
+simpo wait-operation op_abc123 --wait-timeout 86400 --poll-interval 2
+```
+
+成功时返回最终 Operation 记录及嵌套的 `result`。Project 创建/更新的 `result` 是
+正常 Project 响应；计算准备的 `result.launchProtocol` 只有准备成功后才存在，属于
+短期敏感凭证，不要公开记录。

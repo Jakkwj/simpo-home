@@ -31,7 +31,15 @@ Claude Code 插件调用名为 `/simpo:simpo`。它包含：
 - BioModel 新建、列表、读取、更新、同步和发布；
 - DataSet 新建、列表、读取、更新、同步和发布；
 - Project 新建、列表、读取、更新、同步、发布，以及 Project Variable 读取和更新；
+- 通过 Operation ID 处理异步 BioModel、DataSet、Project 写入和计算准备，并读取详细失败原因；
 - 计算准备、引擎选择、状态查询、停止和分页结果读取。
+
+对于参数估值，Skill 还覆盖 `SCEUA` 引擎的四种初始总体方法、固定 Seed 可复现性、
+共享的 InitialValue 注入、Complex 总体大小、计算预算和收敛约束。未显式设置时，Complex
+数量默认为 `min(max(2, --threads), 8)`；收敛参数默认为 10 次 Shuffle、目标容差
+`1e-4`、参数容差 `1e-4`。目标值条件和参数空间条件是“或”关系，任一条件满足即可停止。
+并行 Complex 使用通用的 `--threads` 参数控制；`--sceua-max-shuffles` 是可选的外层
+Shuffle 上限，设置为 `0` 时不启用。
 
 文档覆盖的公开顶层命令包括：
 `configure`、`me`、`logout`、`create-biomodel`、`update-biomodel`、
@@ -41,6 +49,7 @@ Claude Code 插件调用名为 `/simpo:simpo`。它包含：
 `get-project`、`update-project`、`sync-project`、`release-project`、`get-project-variables`、
 `set-project-variable`、`calculate`、`get-calculation-status`、
 `get-calculation-result` 和 `stop-calculation`。
+Operation 命令为 `get-operation`、`wait-operation` 和 `stop-operation`。
 
 这里指的是 Skill 的覆盖范围，不代表旧版已安装程序一定提供全部文档命令。实际执行的
 命令及后端响应才是最终依据；如果命令不存在，会报告错误并可能需要升级 SimpoCLI。

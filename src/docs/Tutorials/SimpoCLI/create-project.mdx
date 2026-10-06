@@ -73,6 +73,11 @@ in the Project description.
 | `--json FILE` | generated default Solution | Optional UTF-8 complete Solution detail |
 | `--description TEXT` | empty | Optional Markdown description |
 | `--timeout SECONDS` | `3700.0` | Maximum parsing and HTTP time |
+| `--async / --no-async` | disabled | Return an asynchronous `operationId` instead of waiting for the write |
+| `--wait / --no-wait` | disabled | With `--async`, wait for the Operation and return the Project result |
+| `--operation-wait-timeout SECONDS` | `86400` | Maximum asynchronous wait time |
+| `--operation-poll-interval SECONDS` | `2.0` | Delay between Operation status requests |
+| `--idempotency-key TEXT` | omitted | Stable retry key for an asynchronous submission |
 | `--api-token TOKEN` | configured Token | Complete Token override |
 | `--base-url URL` | packaged environment URL | Backend override for this request |
 
@@ -81,6 +86,16 @@ in the Project description.
 The response contains the new Project ID, Draft metadata, associated
 BioModel/DataSet IDs, and the parsed `detail`. The example abbreviates the
 complete Solution tables.
+
+For a long-running request, opt in to the durable Operation protocol:
+
+```text
+simpo create-project MyProject --biomodel-id 123 --dataset-id 456 \
+  --async --idempotency-key create-my-project
+```
+
+This returns `operationId` and an initial status. Add `--wait` to return the
+final Project, or use [`wait-operation`](./wait-operation) later.
 
 ```json
 {

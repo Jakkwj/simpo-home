@@ -40,6 +40,13 @@ Skill 会直接执行请求的命令；SimpoCLI 与后端负责认证、归属�
 Skill 会区分“准备并启动成功”和“计算完成”。除非明确的集成任务需要，否则不会
 输出包含短期凭证的启动协议。
 
+如需可复现的 SCE-UA 运行，请明确指定公开引擎 `SCEUA`、初始化方法和 Seed：
+
+```text
+请使用 $simpo 对 Project 706 运行 SCEUA，使用 Scrambled Sobol 初始总体，
+固定 Initial Seed 为 7，使用两个 Complex，并等待终止状态。
+```
+
 ## BioModel 发布示例
 
 ```text
