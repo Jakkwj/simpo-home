@@ -68,6 +68,8 @@ Seed 开关相同的情况下，初始总体可以复现；关闭后，每次随
 | --- | --- |
 | `Complexes` | 独立 Complex 的数量。未指定时默认为 `min(max(2, Thread Number), 8)`，限制上限可以避免 CPU 线程增加时总体无限变大。 |
 | `Population per Complex` | 每个 Complex 的点数。未设置时后端使用 `2 × dimension + 1`，且不能小于 `dimension + 1`。 |
+| `Sub-complex Size` | 每次进化步骤从一个 Complex 中抽取并组成临时 Sub-complex 的点数。默认值为 `dimension + 1`，且不能大于 `Population per Complex`。 |
+| `Evolution Steps` | 每个 Complex 在一次 Shuffle 中连续执行的 Sub-complex 进化步骤数。默认等于 `Population per Complex`，至少为 `1`；每一步都会重新选择 Sub-complex。 |
 | `Maximum Evaluations` | 目标函数最大计算次数，包括初始总体。未设置时后端使用 `20 × 总总体`，且至少应为 `Complexes × Population per Complex`。 |
 | `Maximum Shuffles` | 外层 Shuffle 次数的可选硬上限；`0` 表示不启用，目标函数计算预算仍然有效。 |
 | `Convergence Shuffles` | 默认 `10`。连续多少次 Shuffle 的目标函数改善不足后提前结束。 |

@@ -1,0 +1,94 @@
+---
+slug: SIMPO-blog-2026-10-05
+title: "SIMPO 1.4.0 Released: SCE-UA Algorithm"
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+
+
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+  **SIMPO**, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is an intelligent platform for code-free and shareable wastewater treatment process modelling. For specific update details, please see: [SIMPO 1.4.0 Changelog](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026).
+  </div>
+</div>
+
+---
+
+This update brings comprehensive improvements to the calculation engine, resource management, result visualization, and account experience. The highlight is the new **SCE-UA algorithm** in the `Estimation` calculation engine, providing a more powerful option for parameter optimization.
+
+
+## New Features
+
+### SCE-UA for More Powerful Parameter Estimation
+
+The `Estimation` calculation engine now supports the **SCE-UA (Shuffled Complex Evolution - University of Arizona)** algorithm. SCE-UA is a population-based global optimization method: it evolves several groups of candidate parameter sets, called Complexes, and periodically shuffles them so that useful search information can be shared.
+
+As with any optimization algorithm, one successful run does not prove that the global optimum has been found. For important studies, comparing different initialization methods and hyperparameters is recommended.
+
+**In our tests, SCE-UA generally provides faster computation and better solution accuracy than the GA algorithm.**
+
+### More Initialization Sample Methods
+
+`Uncertainty` and `Estimation` now support four methods for generating initial samples:
+
+| Method | How it works | Seed behavior |
+| --- | --- | --- |
+| `LHS` | Latin Hypercube Sampling divides each variable range into strata and selects one point from each stratum, providing broad coverage with relatively few samples. | Reproducible when **Fixed Initial Seed** is enabled. |
+| `Sobol` | A deterministic low-discrepancy sequence that distributes points evenly across a multi-dimensional space. | Deterministic; it does not use a seed. |
+| `Sobol (Scrambled)` | A scrambled Sobol sequence that keeps low-discrepancy coverage while adding controlled variation between runs. | Reproducible when **Fixed Initial Seed** is enabled. |
+| `Uniform` | Draws independent random points uniformly within each variable range. It is a simple baseline, although random clustering can occur. | Reproducible when **Fixed Initial Seed** is enabled. |
+
+Choose `LHS` or `Sobol (Scrambled)` when broad and reproducible coverage is important, `Sobol` when a deterministic sequence is preferred, and `Uniform` as a simple random baseline.
+
+### Seed: Reproducible Initial Samples
+
+Enable **Fixed Initial Seed** and enter an integer from `1` to `4294967295`. As long as the Project values, initialization method, sample or population size, and seed remain the same, SIMPO will generate the same initial samples. This makes comparisons and troubleshooting much easier.
+
+Turning **Fixed Initial Seed** off produces a different random initialization on each run.
+
+The seed controls the initialization stage. To reproduce a complete calculation, other calculation settings must also remain the same.
+
+The `Sobol` method is deterministic and is not affected by the seed.
+
+### Organize BioModels, DataSets, and Projects by Group
+
+The `BioModel`, `DataSet`, and `Project` lists now support grouping. Resources can be organized by topic, experiment, or project stage, making them easier to find and maintain.
+
+### Clearer PointSettlingTank Result Charts
+
+In `PointSettlingTank` `Simulation` and `Optimum` result charts, `Outlet` and `Blanket` are now displayed together. This makes related results easier to compare in a single view.
+
+---
+
+## Experience Improvements
+
+- **Username changes:** You can now change your username whenever needed.
+- **Unified account management:** Password and email changes have been merged into the `Account` page for a shorter, more consistent workflow.
+
+---
+
+## Bug Fixes
+
+- Fixed a calculation issue in `Inflow` and `Flow` when their time axes are not aligned.
+- Corrected the `If` function in `BioModel.Rate` so that common factors in its condition can be extracted correctly.
+- Fixed the saving order of soluble substances in `BioModel`.
+- Renaming a `BioModel`, `DataSet`, or `Project` while editing it now correctly saves all other changes.
+- `DataSet` can now accurately import and export extremely large layouts.
+- Converted time units are now displayed correctly when plotting and saving `Estimation` results.
+- Fixed table multi-selection with the `Ctrl` and `Shift` keys.
+- Fixed an issue where some users did not receive the registration confirmation email.
+
+---
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Add friend, with the note "SIMPO" to join the group chat</b></div>
+  <img src={config.customFields.imgUrlSimpoQR}  width="25%"/>
+</div>
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Welcome to follow our WeChat official account</b></div>
+  <img src={config.customFields.imgUrlWechatAccount}  width="25%"/>
+</div>

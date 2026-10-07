@@ -45,7 +45,15 @@ not mean that all parameter correlations are zero.
 
 For SCE-UA estimation, use the `SCEUA` engine and read the calculation
 reference for its shared initialization methods, reproducible seed switch,
-Complex population sizing, evaluation budget, and convergence constraints. The
+Complex population sizing, Sub-complex evolution controls, evaluation budget,
+and convergence constraints. The public local-evolution options are
+`--sceua-subcomplex-size` (defaults to `dimension + 1`, and cannot exceed the
+population per Complex) and `--sceua-evolution-steps` (defaults to the
+population per Complex, and must be at least `1`). These are the public names
+for the internal NPS and NSPL values: each evolution step selects a new
+Sub-complex, applies one trial update, and writes the accepted result back to
+the Complex before the next step. Projects created before these fields
+existed use these defaults automatically; no database migration is required. The
 default Complex count is `min(max(2, --threads), 8)`; the default convergence
 settings are 10 Shuffles, `1e-4` objective tolerance, and `1e-4` parameter
 tolerance. Objective and parameter convergence are an OR condition: either one

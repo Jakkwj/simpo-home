@@ -118,6 +118,8 @@ share the common `--threads` setting and can be evaluated in parallel.
 | `--sceua-num-complexes INTEGER` | automatic | Number of independent Complexes. When omitted, uses `min(max(2, --threads), 8)`. |
 | `--sceua-complex-population-size INTEGER` | omitted | Points per Complex; the backend defaults to `2 × dimension + 1`, minimum `dimension + 1`. |
 | `--sceua-population-size INTEGER` | omitted | Legacy total population option. Do not combine it with the per-Complex option unless the values agree. |
+| `--sceua-subcomplex-size INTEGER` | automatic | Points selected from each Complex for one temporary Sub-complex evolution step; defaults to `dimension + 1` and cannot exceed points per Complex. |
+| `--sceua-evolution-steps INTEGER` | automatic | Sequential Sub-complex evolution steps for each Complex in one Shuffle; defaults to points per Complex and must be at least `1`. |
 | `--sceua-max-evaluations INTEGER` | omitted | Total objective evaluations, including initialization; the backend defaults to `20 × total population` and requires at least total population. |
 | `--sceua-max-shuffles INTEGER` | `0` | Optional hard limit on outer Shuffle cycles; `0` disables this limit. |
 | `--sceua-convergence-shuffles INTEGER` | `10` | Consecutive insufficient-improvement Shuffles before early stopping. |
@@ -129,6 +131,12 @@ The total SCE-UA population is `--sceua-num-complexes ×
 branches use an **OR** relationship: SCE-UA stops when either criterion is met.
 `Maximum Shuffles` is an optional outer-cycle cap; leave it at `0` when the
 evaluation budget and convergence criteria should determine termination.
+
+During each Shuffle, every Complex performs `Evolution Steps` sequential local
+evolution steps. Each step selects `Sub-complex Size` points from that Complex,
+updates the trial point, and writes the accepted result back before the next
+step selects a new Sub-complex. These two options correspond to the algorithm's
+internal NPS and NSPL controls.
 
 ## Launch and wait options
 

@@ -100,6 +100,19 @@ outer Shuffle cycles; `0` disables that cap. `--threads` is the shared
 parallelism control; Complexes can be evaluated concurrently. A positive
 objective tolerance requires at least one convergence Shuffle.
 
+The local evolution controls are `--sceua-subcomplex-size` and
+`--sceua-evolution-steps`. The first is the number of points in each temporary
+Sub-complex; it defaults to `dimension + 1` and must be no greater than the
+population size of one Complex. The second is the number of Sub-complex
+evolution steps performed for each Complex during one Shuffle; it defaults to
+the Complex population size and must be at least `1`. They are the public names
+for the algorithm's internal NPS and NSPL values: each step selects a new
+Sub-complex, applies one trial update, and writes the accepted result back to
+the Complex before the next step. These controls are independent of the number
+of Complexes and use the common `--threads` setting only for parallel Complex
+evaluation. For old Projects that do not contain these fields, Simpo uses
+these same defaults automatically; no database migration is needed.
+
 ### OAT correlation is opt-in
 
 The OAT rank and weighted-integral sensitivity results do not imply that a

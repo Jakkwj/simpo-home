@@ -116,6 +116,8 @@ simpo calculate 706 --no-launch
 | `--sceua-num-complexes INTEGER` | 自动 | 独立 Complex 的数量。未传入时使用 `min(max(2, --threads), 8)`。 |
 | `--sceua-complex-population-size INTEGER` | 不传 | 每个 Complex 的点数；后端默认 `2 × dimension + 1`，最小 `dimension + 1`。 |
 | `--sceua-population-size INTEGER` | 不传 | 旧版总总体参数；与每个 Complex 的参数同时传入时必须一致。 |
+| `--sceua-subcomplex-size INTEGER` | 自动 | 每个 Complex 在一次临时 Sub-complex 进化步骤中抽取的点数；默认 `dimension + 1`，不能大于每个 Complex 的点数。 |
+| `--sceua-evolution-steps INTEGER` | 自动 | 每个 Complex 在一次 Shuffle 中连续执行的 Sub-complex 进化步骤数；默认等于每个 Complex 的点数，至少为 `1`。 |
 | `--sceua-max-evaluations INTEGER` | 不传 | 目标函数总计算预算，包括初始化；后端默认 `20 × 总总体`，且至少为总总体。 |
 | `--sceua-max-shuffles INTEGER` | `0` | 外层 Shuffle 次数的可选硬上限；`0` 表示不启用这个上限。 |
 | `--sceua-convergence-shuffles INTEGER` | `10` | 目标改善不足时连续多少次 Shuffle 后提前停止。 |
@@ -126,6 +128,10 @@ SCE-UA 总总体为 `--sceua-num-complexes × --sceua-complex-population-size`�
 普通正式计算使用默认的目标和参数容差。两个提前停止分支是**或**关系：目标函数条件满足，
 **或**参数空间条件满足，SCE-UA 就可以提前结束。`Maximum Shuffles` 是外层 Shuffle
 次数的可选硬上限，设置为 `0` 时不启用；`Maximum Evaluations` 仍是目标函数计算预算。
+
+每次 Shuffle 中，每个 Complex 按 `Evolution Steps` 连续执行局部进化。每一步从该
+Complex 中选择 `Sub-complex Size` 个点组成临时 Sub-complex，接受的新试探点先写回
+Complex，然后下一步重新选择 Sub-complex。这两个参数对应算法内部的 NPS 和 NSPL 控制量。
 
 ## 启动和等待参数
 

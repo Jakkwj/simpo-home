@@ -73,6 +73,8 @@ initial SCE-UA population; the remaining points come from the selected method.
 | --- | --- |
 | `Complexes` | Number of independent Complexes. When omitted, the default is `min(max(2, Thread Number), 8)`; the value is bounded so more CPU threads do not create an unbounded population. |
 | `Population per Complex` | Number of points in each Complex. When omitted, the backend uses `2 × dimension + 1`; it must be at least `dimension + 1`. |
+| `Sub-complex Size` | Number of points selected from each Complex to form a temporary Sub-complex for one evolution step. It defaults to `dimension + 1` and must not exceed `Population per Complex`. |
+| `Evolution Steps` | Number of sequential Sub-complex evolution steps performed by each Complex during one Shuffle. It defaults to `Population per Complex` and must be at least `1`; a new Sub-complex is selected at each step. |
 | `Maximum Evaluations` | Total objective-function evaluation budget, including the initial population. When omitted, the backend uses `20 × total population`; it must be at least `Complexes × Population per Complex`. |
 | `Maximum Shuffles` | Optional hard limit on outer Shuffle cycles. `0` disables this limit; the evaluation budget still applies. |
 | `Convergence Shuffles` | Default `10`. Number of consecutive Shuffles with insufficient objective improvement before early stopping. |
