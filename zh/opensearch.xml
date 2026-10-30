@@ -4,8 +4,8 @@
   <ShortName>SIMPO</ShortName>
   <Description>Search SIMPO</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">https://www.simpowater.org/zh/img/logo3.ico</Image>
-  <Url type="text/html" method="get" template="https://www.simpowater.org/zh/search?q={searchTerms}"/>
-  <Url type="application/opensearchdescription+xml" rel="self" template="https://www.simpowater.org/zh/opensearch.xml" />
-  <moz:SearchForm>https://www.simpowater.org/zh/</moz:SearchForm>
+  <Image width="16" height="16" type="image/x-icon">https://www.simpowater.com/zh/img/logo3.ico</Image>
+  <Url type="text/html" method="get" template="https://www.simpowater.com/zh/search?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self" template="https://www.simpowater.com/zh/opensearch.xml" />
+  <moz:SearchForm>https://www.simpowater.com/zh/</moz:SearchForm>
 </OpenSearchDescription>
