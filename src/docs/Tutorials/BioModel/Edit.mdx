@@ -243,36 +243,40 @@ These fractions are conversion rules, not blanket replacements for every coeffic
   - Ionization: determines the ionization mode; weak acids/bases use One Step or Stepwise, while strong acids/bases use Complete.
   - Factor: conversion factor, in mol/mg.
   - pK1/pK2/pK3: the ionization constant for each step.
-  - pKw: the ionization constant of water, usually 14. This value can be edited only in the first row.
+  - pKw: the ionization constant of water, usually {/* SIMPO_PKW */}14{/* /SIMPO_PKW */}. This value can be edited only in the first row.
   - Enter the values in the table below in Ionization and SIMPO will calculate pH automatically. You must also convert the Components and Target on the Project Conversion page for pH to appear explicitly in the calculation results.
 
 
+{/* BEGIN GENERATED IONIZATION */}
+{/* Generated from SimpoHome/data/ionization/ionization.json; version 1; sha256 b95db023316a3dfb1afdc52204bc2a2a0fab1834e4f8c9e6042edc00091a2478. Do not edit this block. */}
+
 | Symbol | Compound | Step | Ionization | Factor (mol/mg) | pK1 | pK2 | pK3 |
-|---|---|---|---|---|---|--|--|
-| Borate | Weak Acid   | Mono  | One Step  | 1/(10.8*1000) | 9.24(9.23) | | |
-| Nitrite | Weak Acid   | Mono  | One Step  | 1/(14*1000) | 3.15(3.35) | | |
-| Arsenite | Weak Acid   | Mono  | One Step  | 1/(75*1000) | 9.29 | | |
-| Formate | Weak Acid   | Mono  | One Step  | 1/(16*1000) | 3.74(3.77) | | |
-| Acetate | Weak Acid   | Mono  | One Step  | 1/(64*1000) | 4.76(4.77) | | |
-| Propionate | Weak Acid   | Mono  | One Step  | 1/(112*1000) | 4.87(4.89) | | |
-| Butyrate | Weak Acid   | Mono  | One Step  | 1/(160*1000) | 4.82 | | |
-| Valerate | Weak Acid  | Mono  | One Step  | 1/(208*1000) | 4.84 | | |
-| Hexanoate | Weak Acid  | Mono  | One Step  | 1/(256*1000) | 4.86 | | |
-| Lactate | Weak Acid  | Mono  | One Step  | 1/(96*1000) | 3.86(3.89) | | |
-| Carbonate | Weak Acid  | Di  | Stepwise  | 1/(12*1000) | 6.35(6.37) | 10.33(10.31) | |
-| Sulfide | Weak Acid  | Di | Stepwise  | 1/(32*1000) | 7.02(7.05) | 13.9(12.92)| |
-| Silicate | Weak Acid  | Di  | Stepwise  | 1/(28*1000) | 9.84 | 13.2 | |
-| Sulfite | Weak Acid  | Di  | Stepwise  | 1/(32*1000) | 1.86(1.89) | 7.19(7.20) | |
-| Thiosulfate | Weak Acid  |Di  | Stepwise | 1/(64*1000) | 0.6 | 1.6 | |
-| Oxalate | Weak Acid  | Di  | Stepwise  | 1/(16*1000) | 1.25 | 4.72(4.29) | |
-| Phosphate | Weak Acid  | Tri  | Stepwise  | 1/(31*1000) | 2.15(2.16) | 7.20(7.21) | 12.38(12.32) |
-| Arsenate | Weak Acid  | Tri | Stepwise  | 1/(75*1000) | 2.24(2.19) | 6.96(6.92) | 11.50(11.49) |
-| Ammonium | Weak Base  | Mono | One Step  | 1/(14*1000) | 4.76(4.74) | |
-| Nitrate | Strong Acid  | Mono  | Complete | 1/(14*1000) | | |
-| Chloride | Strong Acid  | Mono  | Complete  | 1/(35.5*1000) | | |
-| Sulfate | Strong Acid  | Di  | Complete  | 1/(32*1000) | | |
-| Magnesium | Strong Base  | Di  | Complete  | 1/(24*1000) | | |
-| Calcium | Strong Base  | Di  | Complete  | 1/(40*1000) | | |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Borate | Weak Acid | Mono | One Step | 1/(10.8*1000) | 9.24 |  |  |
+| Nitrite | Weak Acid | Mono | One Step | 1/(14*1000) | 3.15 |  |  |
+| Arsenite | Weak Acid | Mono | One Step | 1/(75*1000) | 9.29 |  |  |
+| Formate | Weak Acid | Mono | One Step | 1/(16*1000) | 3.74 |  |  |
+| Acetate | Weak Acid | Mono | One Step | 1/(64*1000) | 4.76 |  |  |
+| Propionate | Weak Acid | Mono | One Step | 1/(112*1000) | 4.87 |  |  |
+| Butyrate | Weak Acid | Mono | One Step | 1/(160*1000) | 4.82 |  |  |
+| Valerate | Weak Acid | Mono | One Step | 1/(208*1000) | 4.84 |  |  |
+| Hexanoate | Weak Acid | Mono | One Step | 1/(256*1000) | 4.86 |  |  |
+| Lactate | Weak Acid | Mono | One Step | 1/(96*1000) | 3.86 |  |  |
+| Carbonate | Weak Acid | Di | Stepwise | 1/(12*1000) | 6.35 | 10.33 |  |
+| Sulfide | Weak Acid | Di | Stepwise | 1/(32*1000) | 7.02 | 13.9 |  |
+| Silicate | Weak Acid | Di | Stepwise | 1/(28*1000) | 9.84 | 13.2 |  |
+| Sulfite | Weak Acid | Di | Stepwise | 1/(32*1000) | 1.86 | 7.19 |  |
+| Thiosulfate | Weak Acid | Di | Stepwise | 1/(64*1000) | 0.6 | 1.6 |  |
+| Oxalate | Weak Acid | Di | Stepwise | 1/(16*1000) | 1.25 | 4.72 |  |
+| Phosphate | Weak Acid | Tri | Stepwise | 1/(31*1000) | 2.15 | 7.2 | 12.38 |
+| Arsenate | Weak Acid | Tri | Stepwise | 1/(75*1000) | 2.24 | 6.96 | 11.5 |
+| Ammonium | Weak Base | Mono | One Step | 1/(14*1000) | 4.76 |  |  |
+| Nitrate | Strong Acid | Mono | Complete | 1/(14*1000) |  |  |  |
+| Chloride | Strong Acid | Mono | Complete | 1/(35.5*1000) |  |  |  |
+| Sulfate | Strong Acid | Di | Complete | 1/(32*1000) |  |  |  |
+| Magnesium | Strong Base | Di | Complete | 1/(24*1000) |  |  |  |
+| Calcium | Strong Base | Di | Complete | 1/(40*1000) |  |  |  |
+{/* END GENERATED IONIZATION */}
 
 
 

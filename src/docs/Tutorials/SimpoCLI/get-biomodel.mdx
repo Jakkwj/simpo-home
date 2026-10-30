@@ -7,7 +7,8 @@ sidebar_label: get-biomodel
 # `get-biomodel`: read one BioModel
 
 Read one BioModel owned by the current API Token user, including its parsed
-`Component`, `Parameter`, `Matrix`, `Composition`, and other available tables.
+`Component`, `Parameter`, `Matrix`, optional `Formula`, `Composition`, and other
+available tables.
 
 ## Requirements
 
@@ -67,6 +68,7 @@ tables):
     "Component": [{"0": "Symbol", "1": "Unit"}],
     "Parameter": [{"0": "Symbol", "1": "Unit", "2": "DefaultValue"}],
     "Matrix": [{"0": "Name", "1": "Rate"}],
+    "Formula": [{"0": "Component", "1": "Formula"}],
     "Composition": []
   },
   "createdAt": "2026-09-20T10:00:00",

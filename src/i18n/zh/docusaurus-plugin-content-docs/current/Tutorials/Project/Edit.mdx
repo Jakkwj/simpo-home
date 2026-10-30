@@ -29,11 +29,14 @@ Detail 页面左侧包含三个菜单：`Solution`、`BioModel` 和 `DataSet`。
 
 `Value`、边界值等可编辑单元通过表格弹窗修改，数值必须符合显示的单位和边界。计算时，`Project.Solution` 中保存的值优先于 BioModel 的默认值。
 
-工具栏还可以打开三个辅助表：
+工具栏还可以打开五个辅助表：
 
 - `Conversions`：将 BioModel Components 转换为预测的 Additional Targets。例如 `TN = S_NH4 + S_NO3 + 0.1 * X_H` 时，对应行的系数应分别为 `1`、`1` 和 `0.1`。DataSet Targets 与 Additional Targets 分开显示。
 - `Weights`：设置每个 Target/Tank 组合在 `Uncertainty` 和 `Estimation` 中 NSE 的相对重要性。SIMPO 会自动归一化权重，不要求总和为 `1`。
 - `Activator`：控制每个 BioModel Process 是否在每个 Tank 中启用。例如，可以关闭缺氧或厌氧 Tank 中的曝气过程。
+- `Constraint`：在动态计算中把测量 Target 映射到指定 Tank 的 BioModel Component；稳态计算不应用 Constraint。
+- `Retention`：DataSet 中每个 Tank 固定对应一行。`HRT` 决定该 Tank 体积是否计入系统 HRT 分子；`SRT` 决定该 Tank 固体库存是否计入系统 SRT 分子。Tank 名称由 DataSet 固定，不能在此修改。
+  旧 Project 缺少此表时，解析器会生成默认选择；使用 HRT/SRT 结果前应逐项检查。
 
 ### 关联的 BioModel 和 DataSet
 
@@ -42,10 +45,38 @@ Detail 页面左侧包含三个菜单：`Solution`、`BioModel` 和 `DataSet`。
 ### Project 操作
 
 - `Temp`：不解析格式，保存 Project Detail；适合录入尚未完成的表格。
-- `Parse`：校验并保存 Project、BioModel 和 DataSet 的 Detail。解析可能需要一定时间，刷新页面可以停止正在进行的解析。
+- `Parse`：校验并保存 Project、BioModel 和 DataSet 的 Detail。解析可能需要一定时间，请等保存确认后再刷新页面。
 - `Edit`：修改 Project 名称、导入 XLSX Solution 模板、选择论文或编辑描述。
 - `Export`：导出 Project Solution 的 XLSX 文件，在本地编辑后通过 `Edit` 重新导入。
 - `Clone` 和删除操作位于 Project 列表；已发布 Project 是否可克隆取决于权限。
+
+### 关联输入的联合保存
+
+在 Project Detail 页点击 `Parse`，会将 Solution 与当前已加载、可编辑的
+BioModel/DataSet Draft 输入一起提交。尚未打开的编辑器和已发布的依赖不会提交。
+后端先解析最新依赖，再重建受影响的 Solution，全部成功后，在同一个数据库事务中
+写入 Detail 和计算缓存；不再分多次请求依次保存 Project、BioModel、DataSet。
+
+保存会等待已打开编辑器的实际数据请求完成，包括 DataSet 的 `Unit` 表。
+若加载失败，继续阻止保存，并在相应编辑器显示 `Retry loading`。重试只补加载缺失或
+失败的表，不重新加载已经编辑过的表；不会把“尚未加载”当成“用户主动清空表”。
+
+例如，可以同时将 DataSet Target 标记为 `Total Suspended Solids` 并开启
+`Retention.SRT`。SRT 校验使用此次提交的新 Target 设置，而不是数据库中的旧 DataSet。
+即使只修改 Project 设置，或依赖输入没有变化，正式保存仍会校验 Solution。
+
+Tank、Target、Component、Parameter、Process 改名时，按名称保留仍兼容的 Solution
+设置，包括 `Activator`、`Constraint` 和 `Retention`。新增 Tank 使用默认 Retention
+选项，已有的 `False` 不会被重置。删除仍被 Constraint 引用的对象会明确报错，
+不会悄悄删除该约束。
+
+修改共享 Draft 时，也会重建本人引用它的其他 Draft Project。任一受影响的 Project
+校验失败，此次保存均不提交，错误信息会指出失败的 Project。页面保留编辑值和改名记录，
+可修正后重试。勾选的结果删除操作也只在成功提交后生效，且仅针对当前 Project。
+
+`Temp` 使用相同的事务，但不完整校验 Solution：保存草稿输入，并清空受影响 Project
+的计算缓存；计算前需要执行 `Parse`。基本输入检查仍然适用。网络失败只表示保存状态
+未确认，不一定表示数据库已经回滚。Release/版本操作仍与此次联合保存分开处理。
 
 ## Calculation
 

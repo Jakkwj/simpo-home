@@ -28,14 +28,15 @@ description.
 Use the current header:
 
 ```json
-{"0":"Symbol","1":"Unit","2":"Name","3":"Description","4":"Oxygen","5":"TSS"}
+{"0":"Symbol","1":"Unit","2":"StandardTarget","3":"Name","4":"Description"}
 ```
 
-Mark a dissolved-oxygen target (`Oxygen: true`, normally `S_O2`) or a
-total-suspended-solids target (`TSS: true`, normally `X_TSS`) only when that
-quantity exists in the DataSet/model. The backend permits zero or one true value
-for each marker and rejects more than one. Use `false` for every target when a
-marker does not apply; do not invent oxygen or TSS targets to satisfy a rule.
+Set `StandardTarget` to `Dissolved Oxygen` (normally `S_O2`) or
+`Total Suspended Solids` (normally `X_TSS`) only when that quantity exists in
+the DataSet/model. Leave it as `""` for an ordinary Target. The backend permits
+zero or one Target for each standard role and rejects duplicates or other text.
+Do not invent oxygen or TSS targets to satisfy a rule. Historical Oxygen/TSS
+boolean columns are input compatibility only and must not be emitted by new JSON.
 
 ### Target-to-Component conversion rules
 

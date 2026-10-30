@@ -15,7 +15,10 @@ calculation results that no longer match the updated input.
 - Token scope: `write`
 - `PROJECT_ID` must identify an owned version `0` Draft.
 - `Variable`, `Target`, `Conversion`, and `Weight` arrays are required.
-- `Activator` may be omitted or empty and is generated when needed.
+- `Activator`, `Constraint`, and legacy `Retention` may be omitted. Constraint rows use
+  `Tank`, `Component`, `Target`, and `Interpolation` (`Previous` or `Linear`);
+  Retention uses one `Tank`, `HRT`, and `SRT` record per DataSet Tank, with
+  JSON booleans. See [`create-project`](./create-project#optional-constraint-table).
 
 ## Syntax
 
@@ -67,7 +70,9 @@ Project keeps the same ID and the response contains the newly parsed `detail`.
     "Target": [],
     "Conversion": [],
     "Weight": [],
-    "Activator": []
+    "Activator": [],
+    "Constraint": [],
+    "Retention": []
   },
   "createdAt": "2026-09-25T12:00:00",
   "updatedAt": "2026-09-25T12:30:00",

@@ -20,7 +20,8 @@ sidebar_label: update-biomodel
 - BioModel 必须属于当前 Token 用户。
 - BioModel 必须是 `state=Draft` 且 `version=0`。
 - JSON 必须包含 `Component`、`Parameter` 和 `Matrix` 数组。
-- `Composition` 和 `Ionization` 可选。
+- `Formula`、`Composition` 和 `Ionization` 可选。Formula 行遵循
+  `create-biomodel` 中相同的代数组分规则。
 - `Balance` 是只读派生表，禁止提交。
 
 ## 命令格式

@@ -55,6 +55,44 @@ The SimpoCLI Skill provides the on-demand `$simpo` workflow in Codex and
 `/simpo:simpo` in Claude Code; it keeps the CLI manual out of unrelated
 conversations and reads only the relevant command reference when invoked.
 
+### DataSet Skill synchronization with SimpoAI
+
+The CLI Skill at `plugins/simpo/skills/simpo-create-dataset/` is the shared rule
+source. The AI port retains the complete workflow, all four references and both
+optional helpers; its `adapter.md` maps execution to browser tools and review.
+From this repository root, run `python3 plugins/simpo/tools/sync_dataset_skill.py`
+and then the same command with `--check`. The sibling backend is selected by
+default; use `--backend-root /path/to/SimpoBackend/backend/litestar` otherwise.
+The read-only check fails on missing or changed generated files.
+
+## Shared Ionization parameters
+
+The data, generator, tests, and [maintenance guide](data/ionization/README.md)
+are kept together in `data/ionization/`.
+
+Maintain the website/Skill constants only in `data/ionization/ionization.json`. The table
+uses the primary values outside parentheses; preserve explicit workbook/user
+overrides. From this repository root:
+
+```bash
+python3 data/ionization/generate_ionization.py
+python3 data/ionization/generate_ionization.py --check
+python3 -m unittest discover -s data/ionization -p 'test_generate_ionization.py'
+```
+
+Generation updates the marked tables in both BioModel Edit translations and
+the portable CLI Skill reference. It also updates the SimpoAI reference when a
+sibling `SimpoBackend/backend/litestar` checkout is present. For another checkout,
+pass `--backend-root /path/to/SimpoBackend/backend/litestar`. To refresh parameter
+blocks in an installed Skill with these generation markers, also pass
+`--skills-root /path/to/skills`; use the normal Skill update for instruction changes.
+Generated copies remain self-contained and do not fetch the website at runtime.
+Increment the data version when changing reference values; the generated content
+also includes a source hash. Review and commit all affected repositories together.
+Website `npm run build` and CI check for stale local copies; standalone deployments
+do not need the other repository. `npm run references:generate` and
+`npm run references:check` expose the same commands from `src/`.
+
 ## Resource
 
 - Join us in building and enhancing [Paper Resource](https://www.simpowater.org/resource) with the help of powerful **AI tools** (such as: **Geimini**). Your contributions can significantly enhance and expand the collection, making it more valuable for the entire community.

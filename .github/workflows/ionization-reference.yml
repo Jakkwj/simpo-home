@@ -1,0 +1,13 @@
+name: Ionization reference
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check generated reference tables
+        run: python3 data/ionization/generate_ionization.py --check
+      - name: Test reference generation
+        run: python3 -m unittest discover -s data/ionization -p 'test_generate_ionization.py'

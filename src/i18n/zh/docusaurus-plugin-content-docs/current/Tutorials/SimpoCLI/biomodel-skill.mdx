@@ -9,7 +9,7 @@ sidebar_label: 总览
 所有 SIMPO Skill、Codex/Claude Code 调用名称和安装目录请参阅 [Skill 总览](./simpo-skills)。
 
 SIMPO BioModel Skill 帮助 AI 编程助手从论文或用户明确的模型定义中建立模型、核对证据、
-推导有依据的 Composition 与 Ionization，并通过 SimpoCLI 创建 SIMPO BioModel。
+提取有依据的 Formula，并推导 Composition 与 Ionization，最后通过 SimpoCLI 创建 SIMPO BioModel。
 目前支持 Codex 和 Claude Code，请参阅对应平台的安装与使用详情。
 
 这是面向模型提取与推导的专用工作流，并不是通用 SimpoCLI 说明书。如果只是列出资源、
@@ -37,7 +37,7 @@ Claude Code 插件命令为 `/simpo:simpo-create-biomodel`。
 仅有水质条件不足以唯一确定 BioModel。如果只有进水或设计条件，请使用
 [DataSet Skill](./dataset-skill)，或同时提供生物反应方程及模型模板。
 
-两种模式都会将来源、推导依据、单位、假设、未解决项以及 Composition/Ionization
+两种模式都会将来源、推导依据、单位、假设、未解决项以及 Formula/Composition/Ionization
 的处理决定写入 BioModel 的 Description。这是可审核的依据摘要，不是 AI 对话记录。
 
 ## 默认分析规则

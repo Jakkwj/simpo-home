@@ -1,0 +1,391 @@
+{
+  "version": 1,
+  "source_url": "https://www.simpowater.com/zh/docs/Tutorials/BioModel/Edit#4-ionization",
+  "pKw": 14,
+  "ions": [
+    {
+      "id": "borate",
+      "name": {
+        "en": "Borate",
+        "zh": "硼酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Mono",
+      "ionization": "One Step",
+      "factor_denominator": 10800,
+      "pK": [
+        9.24,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "nitrite",
+      "name": {
+        "en": "Nitrite",
+        "zh": "亚硝酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Mono",
+      "ionization": "One Step",
+      "factor_denominator": 14000,
+      "pK": [
+        3.15,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "arsenite",
+      "name": {
+        "en": "Arsenite",
+        "zh": "亚砷酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Mono",
+      "ionization": "One Step",
+      "factor_denominator": 75000,
+      "pK": [
+        9.29,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "formate",
+      "name": {
+        "en": "Formate",
+        "zh": "甲酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Mono",
+      "ionization": "One Step",
+      "factor_denominator": 16000,
+      "pK": [
+        3.74,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "acetate",
+      "name": {
+        "en": "Acetate",
+        "zh": "乙酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Mono",
+      "ionization": "One Step",
+      "factor_denominator": 64000,
+      "pK": [
+        4.76,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "propionate",
+      "name": {
+        "en": "Propionate",
+        "zh": "丙酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Mono",
+      "ionization": "One Step",
+      "factor_denominator": 112000,
+      "pK": [
+        4.87,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "butyrate",
+      "name": {
+        "en": "Butyrate",
+        "zh": "丁酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Mono",
+      "ionization": "One Step",
+      "factor_denominator": 160000,
+      "pK": [
+        4.82,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "valerate",
+      "name": {
+        "en": "Valerate",
+        "zh": "戊酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Mono",
+      "ionization": "One Step",
+      "factor_denominator": 208000,
+      "pK": [
+        4.84,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "hexanoate",
+      "name": {
+        "en": "Hexanoate",
+        "zh": "己酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Mono",
+      "ionization": "One Step",
+      "factor_denominator": 256000,
+      "pK": [
+        4.86,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "lactate",
+      "name": {
+        "en": "Lactate",
+        "zh": "乳酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Mono",
+      "ionization": "One Step",
+      "factor_denominator": 96000,
+      "pK": [
+        3.86,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "carbonate",
+      "name": {
+        "en": "Carbonate",
+        "zh": "碳酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Di",
+      "ionization": "Stepwise",
+      "factor_denominator": 12000,
+      "pK": [
+        6.35,
+        10.33,
+        null
+      ]
+    },
+    {
+      "id": "sulfide",
+      "name": {
+        "en": "Sulfide",
+        "zh": "硫化物"
+      },
+      "compound": "Weak Acid",
+      "step": "Di",
+      "ionization": "Stepwise",
+      "factor_denominator": 32000,
+      "pK": [
+        7.02,
+        13.9,
+        null
+      ]
+    },
+    {
+      "id": "silicate",
+      "name": {
+        "en": "Silicate",
+        "zh": "硅酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Di",
+      "ionization": "Stepwise",
+      "factor_denominator": 28000,
+      "pK": [
+        9.84,
+        13.2,
+        null
+      ]
+    },
+    {
+      "id": "sulfite",
+      "name": {
+        "en": "Sulfite",
+        "zh": "亚硫酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Di",
+      "ionization": "Stepwise",
+      "factor_denominator": 32000,
+      "pK": [
+        1.86,
+        7.19,
+        null
+      ]
+    },
+    {
+      "id": "thiosulfate",
+      "name": {
+        "en": "Thiosulfate",
+        "zh": "硫代硫酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Di",
+      "ionization": "Stepwise",
+      "factor_denominator": 64000,
+      "pK": [
+        0.6,
+        1.6,
+        null
+      ]
+    },
+    {
+      "id": "oxalate",
+      "name": {
+        "en": "Oxalate",
+        "zh": "草酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Di",
+      "ionization": "Stepwise",
+      "factor_denominator": 16000,
+      "pK": [
+        1.25,
+        4.72,
+        null
+      ]
+    },
+    {
+      "id": "phosphate",
+      "name": {
+        "en": "Phosphate",
+        "zh": "磷酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Tri",
+      "ionization": "Stepwise",
+      "factor_denominator": 31000,
+      "pK": [
+        2.15,
+        7.2,
+        12.38
+      ]
+    },
+    {
+      "id": "arsenate",
+      "name": {
+        "en": "Arsenate",
+        "zh": "砷酸盐"
+      },
+      "compound": "Weak Acid",
+      "step": "Tri",
+      "ionization": "Stepwise",
+      "factor_denominator": 75000,
+      "pK": [
+        2.24,
+        6.96,
+        11.5
+      ]
+    },
+    {
+      "id": "ammonium",
+      "name": {
+        "en": "Ammonium",
+        "zh": "铵盐"
+      },
+      "compound": "Weak Base",
+      "step": "Mono",
+      "ionization": "One Step",
+      "factor_denominator": 14000,
+      "pK": [
+        4.76,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "nitrate",
+      "name": {
+        "en": "Nitrate",
+        "zh": "硝酸盐"
+      },
+      "compound": "Strong Acid",
+      "step": "Mono",
+      "ionization": "Complete",
+      "factor_denominator": 14000,
+      "pK": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "chloride",
+      "name": {
+        "en": "Chloride",
+        "zh": "氯化物"
+      },
+      "compound": "Strong Acid",
+      "step": "Mono",
+      "ionization": "Complete",
+      "factor_denominator": 35500,
+      "pK": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "sulfate",
+      "name": {
+        "en": "Sulfate",
+        "zh": "硫酸盐"
+      },
+      "compound": "Strong Acid",
+      "step": "Di",
+      "ionization": "Complete",
+      "factor_denominator": 32000,
+      "pK": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "magnesium",
+      "name": {
+        "en": "Magnesium",
+        "zh": "镁盐"
+      },
+      "compound": "Strong Base",
+      "step": "Di",
+      "ionization": "Complete",
+      "factor_denominator": 24000,
+      "pK": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "id": "calcium",
+      "name": {
+        "en": "Calcium",
+        "zh": "钙盐"
+      },
+      "compound": "Strong Base",
+      "step": "Di",
+      "ionization": "Complete",
+      "factor_denominator": 40000,
+      "pK": [
+        null,
+        null,
+        null
+      ]
+    }
+  ]
+}

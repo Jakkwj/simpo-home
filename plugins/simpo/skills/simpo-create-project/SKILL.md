@@ -7,7 +7,7 @@ description: Reproduce a wastewater-treatment SCI paper as linked SIMPO BioModel
 
 Use this Skill for an end-to-end paper reproduction workflow. It is an
 orchestrator: it reuses the Paper mode of `simpo-create-biomodel` and
-`simpo-create-dataset`, including their Composition, Ionization, DataSet schema,
+`simpo-create-dataset`, including their Formula, Composition, Ionization, DataSet schema,
 figure-digitization, and validation rules. It adds paper-level figure roles,
 multi-DataSet/Project dependency planning, and the reviewed
 Simulation -> Uncertainty -> Estimation -> Simulation loop. Do not reimplement
@@ -94,7 +94,7 @@ the missing evidence.
    monitoring location, and missing-value meaning.
    Reused JSON, workbooks, and old test outputs are not new extraction evidence.
    Recheck their equations (including switches or clipping), concentration/time
-   units, figure-specific parameter columns, and Composition/Ionization against
+   units, figure-specific parameter columns, and Formula/Composition/Ionization against
    the source. Match each Description to the actual submitted tables. Missing
    calibration metadata keeps legacy plot points provisional; never call them
    freshly digitized or fully reviewed.
@@ -107,7 +107,7 @@ the missing evidence.
    measurement.
 5. **Build the BioModel through its Paper mode.** Apply the installed
    `simpo-create-biomodel` Skill and all of its linked references to extract
-   Components, Parameters, Matrix, Composition, and Ionization. Do not duplicate
+   Components, Parameters, Matrix, Formula, Composition, and Ionization. Do not duplicate
    those rules here. Put the evidence and derivation audit in the BioModel
    Description and require a Private Draft, version 0.
 6. **Build one or more DataSets through Paper mode.** Apply the installed
@@ -177,6 +177,21 @@ the missing evidence.
    do not claim a unique fractionation. If the target relation is nonlinear or
    depends on a state/measurement absent from the BioModel, Conversion alone
    cannot represent it; mark it `unresolved` and document the required change.
+   Add optional Solution `Constraint` records only when the source or user
+   explicitly requires a measured Target to drive a Component state. Each record
+   contains `Tank`, `Component`, `Target`, and `Interpolation` (`Previous` or
+   `Linear`). Verify all references, exact Target/Component unit equality, a
+   nonempty first Measured value, and unique Tank/Component pairs. Disclose that
+   constrained Measured series are excluded from the weighted fitting objective.
+   Add a `Retention` record for every DataSet Tank when the Project will use
+   steady-state HRT/SRT results. Each named record contains `Tank`, boolean
+   `HRT`, and boolean `SRT`; Tank names must match exactly and may not be omitted
+   or duplicated. Select HRT volumes and SRT solids inventories separately.
+   SRT also requires exactly one DataSet Target whose `StandardTarget` is
+   `Total Suspended Solids` and a reviewed nonempty Conversion row for that
+   Target. Do not confuse a Target symbol named TSS with this semantic marker.
+   Legacy Project input may omit Retention and receive generated defaults, but
+   review those defaults before interpreting a steady-state result.
    Before any calculation, audit the initial-value baseline for every Inflow and
    Flow. Record its DataSet value at `time=0`, the matching Solution
    `Variable.Value`, the original Inflow Conversion expression and its resolved

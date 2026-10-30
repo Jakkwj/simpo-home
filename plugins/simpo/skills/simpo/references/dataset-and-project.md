@@ -66,10 +66,27 @@ is tank-specific.
 Without `--json`, it generates the default Solution tables. With `--json`, it
 parses the supplied Solution detail during creation. Use the same
 detail shape returned by `get-project`: `Variable`, `Target`, `Conversion`, and
-`Weight` are required; `Activator` may be omitted or empty and will be generated
-when needed. Use `update-project` to replace the detail of an existing Draft.
+`Weight` are required; `Activator`, `Constraint`, and legacy `Retention` may be omitted.
+Activator will be generated when needed. Use `update-project` to replace the detail of an existing Draft.
 Updating Project detail rebuilds the Solution cache and removes results that no
 longer match it.
+
+`Constraint` is an optional list of named records with exactly `Tank`,
+`Component`, `Target`, and `Interpolation`. It forces the selected Component in
+the Tank to follow the matching DataSet Measured Target. References must exist,
+Target and Component units must match, each Tank/Component pair must be unique,
+and `Interpolation` must be `Previous` or `Linear`. The first Measured value
+cannot be empty; a constrained Measured series is removed from the weighted
+fitting objective. Do not add a Constraint unless the user or source explicitly
+requires an observed series to drive model state.
+
+`Retention` is a named-record list with exactly one row per DataSet Tank and
+fields `Tank`, `HRT`, and `SRT`. HRT/SRT are booleans. HRT selects Tank volumes
+for the system hydraulic-retention numerator; SRT selects Tank TSS inventories
+for the solids-retention numerator. SRT requires a DataSet Target with
+`StandardTarget: "Total Suspended Solids"` and a nonempty Conversion row.
+Legacy input may omit the table and receive generated defaults; review them
+before using steady-state HRT/SRT results.
 
 `create-dataset` and `update-dataset` also accept `--async`, `--wait`,
 `--operation-wait-timeout`, `--operation-poll-interval`, and

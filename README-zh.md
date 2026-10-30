@@ -52,6 +52,44 @@ SimpoCLI Skill 提供按需加载的 `$simpo`（Codex）和
 `/simpo:simpo`（Claude Code）工作流；调用时只读取相关命令参考，不会把完整
 CLI 说明书带入无关对话。
 
+### DataSet Skill 的 SimpoAI 同步
+
+SimpoCLI 的 `plugins/simpo/skills/simpo-create-dataset/` 是共用规则源。
+AI 端完整保留主流程、四份参考和两个可选辅助脚本，仅在 `adapter.md` 中适配网页工具与确认方式。
+修改规则后在本仓库根目录运行：
+
+```bash
+python3 plugins/simpo/tools/sync_dataset_skill.py
+python3 plugins/simpo/tools/sync_dataset_skill.py --check
+```
+
+默认使用同级 `SimpoBackend/backend/litestar`；其它目录使用 `--backend-root` 指定。
+`--check` 不写文件，发现缺失或不同步时返回非零。完整原文及来源摘要由脚本生成，避免移植时漏掉规则。
+
+## 共用 Ionization 参数
+
+数据、生成脚本和测试集中在 [`data/ionization/`](data/ionization/README.md)，
+完整命令、生成目标和维护流程见该目录的说明。
+
+网页和 Skill 的电离参数只维护 `data/ionization/ionization.json`，采用原表括号外数值，
+保留原工作簿／用户明确指定的值。在本仓库根目录执行：
+
+```bash
+python3 data/ionization/generate_ionization.py
+python3 data/ionization/generate_ionization.py --check
+python3 -m unittest discover -s data/ionization -p 'test_generate_ionization.py'
+```
+
+脚本更新中英文 BioModel Edit 页以及 CLI Skill 参考文档中的生成区域。
+存在同级 `SimpoBackend/backend/litestar` 仓库时，一并更新 SimpoAI 的参考文档；
+非同级部署使用 `--backend-root /path/to/SimpoBackend/backend/litestar` 指定。
+已安装且带生成标记的 Skill 可用 `--skills-root /path/to/skills` 同步参数区；
+Skill 行为说明有变化时仍使用正常的 Skill 更新流程。
+各副本可独立使用，运行时无需访问网页。参数变更时递增数据版本，生成内容同时携带
+来源摘要；统一审阅并提交涉及的仓库。网页 `npm run build` 和 CI 会检查本地生成内容
+是否过期，独立部署不要求另一个仓库存在。`src/` 下也可执行
+`npm run references:generate`、`npm run references:check`。
+
 ## Resource
 
 - 加入我们，使用强大的**AI 工具**（如：**Geimini**）来构建和增强[论文资源](https://www.simpowater.com/resource)。您的贡献可以显著提升和扩展资源库，使其对整个社区更有价值。

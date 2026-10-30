@@ -29,6 +29,15 @@ simpo calculate PROJECT_ID [OPTIONS]
 simpo calculate 706 --engine SIM
 ```
 
+先求稳态，再使用线性插值运行动态输入序列：
+
+```text
+simpo calculate 706 --engine SIM \
+  --execution-mode steady_state_then_dynamic \
+  --input-interpolation linear \
+  --steady-state-input-average-method linear
+```
+
 启动 OAT 敏感性分析并等待终态：
 
 ```text
@@ -78,8 +87,28 @@ simpo calculate 706 --no-launch
 | `--step-tolerance FLOAT` | `0.05` | `0.0001` 到 `0.2` |
 | `--auto-plot / --no-auto-plot` | 关闭 | 是否实时绘制本地图表 |
 | `--force-recalculate / --no-force-recalculate` | 关闭 | 强制重新计算，不允许复用相同设置的结果 |
-| `--steady-state / --no-steady-state` | 关闭 | 是否计算稳态 |
+| `--execution-mode TEXT` | `dynamic` | `dynamic`、`steady_state` 或 `steady_state_then_dynamic` |
+| `--input-interpolation TEXT` | `previous` | 动态 Flow/Inflow 插值：`previous` 或 `linear`；别名为 `--dynamic-input-interpolation-method` |
+| `--steady-state-input-average-method TEXT` | `previous` | 稳态输入归并：`previous`、`linear` 或 `arithmetic` |
 | `--platform TEXT` | 安装包对应平台 | `linux`、`windows` 或 `mac`；通常不传 |
+
+### 计算模式与输入处理
+
+| 模式 | 行为 |
+| --- | --- |
+| `dynamic` | 只运行原始动态时间序列。 |
+| `steady_state` | 将 Flow 和 Inflow 时间序列归并为常数，只求稳态。 |
+| `steady_state_then_dynamic` | 先求稳态并把结果作为初始状态，再继续运行原始动态时间序列。 |
+
+`--input-interpolation` 控制动态计算中求解器时间点位于两个采样点之间时如何取得
+`Flow` 和 `Inflow`。`previous` 为零阶保持；`linear` 在相邻采样点之间线性插值，
+最后一个采样点之后保持末值。纯稳态计算会忽略这个选项。
+
+`--steady-state-input-average-method` 控制 `steady_state` 以及
+`steady_state_then_dynamic` 初始化阶段如何把时间序列归并为常数。`previous` 按阶跃
+信号计算时长加权平均，`linear` 对线性插值信号积分，`arithmetic` 不考虑时间间距或
+Flow 权重，直接对有效行求算术平均。对于 Inflow 浓度，`previous` 和 `linear` 会以
+匹配的 Flow 做水力加权。纯动态计算会忽略这个选项。
 
 ## 分析专用参数
 

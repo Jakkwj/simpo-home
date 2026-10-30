@@ -1,0 +1,86 @@
+---
+slug: SIMPO-blog-2026-10-30
+title: SIMPO 1.5.0 发布：计算模式升级
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+
+
+
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+  **SIMPO** 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：[SIMPO 1.5.0 更新日志](http://www.simpowater.com/zh/changelog/SIMPO%20Client/2026)。
+  </div>
+</div>
+
+---
+
+
+在本次大版本更新中，我们对底层计算逻辑进行了深度打磨，不仅将计算模式全面升级为 3 种，更对稳态计算进行优化。同时，**SimpoDash** 中文支持也终于安排上了！
+
+
+
+
+## 计算模式升级，稳态结果一键复用
+
+现在，Simpo 提供三种强大的计算模式供您选择：
+* **Dynamic**：经典的动态模拟。
+* **Steady-State**：纯粹的稳态模拟。
+* **Steady-State Dynamic**：以稳态解直接作为初始值的动态模拟，告别繁琐的初值调试！
+
+当 **Steady-State** 或 **Steady-State Dynamic** 计算完成后，系统将自动生成详尽的稳态结果，包含各 **Component**、**HRT** 以及 **SRT** 等关键指标。同时，稳态计算得出的 **Component** 值现在支持直接通过 **SetToValue** 一键写入到 **Variable** 中。
+
+---
+
+
+## 更科学的稳态均值处理
+
+为了确保稳态模拟输入的准确性，1.5.0 版本重构了时间序列的平均值处理逻辑：
+
+* **第一步：基准偏移校准**
+  - 系统会先结合 `Solution.Variable` 与原 `DataSet` 的差值，对整个时间序列进行平移校准。
+  - 例如：当 Variable 中某流量设定为 100，而 DataSet 对应值为 10 时，该流量序列将整体向上偏移 90。
+
+* **第二步：灵活的时间序列插值**
+  - 通过 `steady_state_input_average_method` 对原序列进行插值预处理，支持三种模式：
+    * `previous`（默认）：使用前值填充
+    * `linear`：线性插值
+    * `arithmetic`：普通行平均
+
+* **第三步：分类加权计算**
+  * **Flow**：采用按时间间隔加权的阶梯平均，即 `Q_avg = ∑(Qi × Δti) / ∑Δti`。
+  * **Inflow**：若存在对应流量，将自动采用更科学的**流量加权平均**，即 `C_avg = ∑(Ci × Qi × Δti) / ∑(Qi × Δti)`。
+  * **Measured**：优化为**算术平均值**（替代了旧版本仅取首尾行的做法）。
+
+---
+
+
+
+## 体验与底层全面优化
+
+* **新增 `Constraint` 页面**：在 `Project.Solution` 中，您现在可以强制指定某一个 Tank 内特定 Component 的固定值。这非常适合用于**将模型计算的溶解氧直接锁定为实际测量值**。
+* **新增 `Formula` 页面**：在 `BioModel` 中，支持通过代数公式直接指定某组分的计算方式（通常为 **TSS**）。这不仅能有效避免这一类通过系数计算的组分对初始值的干扰，还能提升计算速度。
+* **新增 `Retention` 页面**：在 `Solution` 中，您可以自由勾选指定哪些 Tank 参与系统 `HRT` 和 `SRT` 的计算，复杂工艺段的停留时间核算从此一目了然。
+* **实测点折线图一键切换**：看图对比更直观。现在，结果图表中的 Measured 点支持点击切换为**折线图模式**（`空格键`可快速切换）。
+* **SimpoDash 支持中英双语**：SimpoDash 现已全面支持中文界面，支持中英文一键无感切换。
+* **Target 标准目标定位升级**：`DataSet` 的 Target 表新增 `StandardTarget` 列，可精准定位哪些目标是 `Dissolved Oxygen`（溶解氧）和 `Total Suspended Solids`（总悬浮固体），同时移除了原有的 DO 列，数据结构更规范。
+* **交互升级**：全新优化的 Console（控制台）页面交互体验。
+* **算法改进**：进一步优化了稳态计算的结束判定条件。
+* **架构升级**：后端鉴权机制全面升级为更安全稳定的 `session` 模式。
+* **Bug 修正**：修复了 Balance 计算顺序问题，现在它将正确地发生在动力学参数平移之前。
+
+
+---
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>添加好友，备注 SIMPO 加入交流群</b></div>
+  <img src={config.customFields.imgUrlSimpoQR}  width="25%"/>
+</div>
+
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>欢迎关注微信公众号</b></div>
+  <img src={config.customFields.imgUrlWechatAccount}  width="25%"/>
+</div>

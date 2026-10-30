@@ -3,6 +3,10 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
+    "references:generate": "python3 ../data/ionization/generate_ionization.py",
+    "references:check": "python3 ../data/ionization/generate_ionization.py --check",
+    "references:test": "python3 -m unittest discover -s ../data/ionization -p 'test_generate_ionization.py'",
+    "prebuild": "npm run references:check",
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",

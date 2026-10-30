@@ -12,8 +12,10 @@ const darkTheme = themes.dracula;
 const title = "SIMPO";
 // const urlConsole = 'https://dashboard.simpowater.org/dashboard/home'
 
-const urlHome = "https://www.simpowater.org";
-const urlConsole = "https://dash.simpowater.org/dashboard/home";
+const urlHome = process.env.SIMPO_HOME_ORIGIN || "https://www.simpowater.com";
+const dashOrigin =
+  process.env.SIMPO_DASH_ORIGIN || "https://dash.simpowater.com";
+const urlConsole = `${dashOrigin}/dashboard/home`;
 const urlLogo = "https://i.postimg.cc/rsPqvJNJ/logo3.png";
 const imgWechat =
   "https://i.postimg.cc/QMH7KHW2/qrcode-for-gh-5d1b634e9478-1280.jpg";
@@ -144,16 +146,16 @@ const config = {
     // urlDownloadClientWindows: 'https://github.com/Jakkwj/simpo-home/releases/download/v1.0.0/SimpoClient_1.0.0.exe',
     // urlDownloalClientUbuntu: 'https://github.com/Jakkwj/simpo-home/releases/download/v1.0.0/SimpoClient_1.0.0_amd64.deb',
     urlDownloadClientWindows:
-      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.4.1.exe",
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.5.0.exe",
     urlDownloalClientUbuntu:
-      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.4.1_amd64.deb",
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.5.0_amd64.deb",
 
     // SimpoCLI 与 SimpoClient 使用同一个长期 package release。构建脚本
     // 发布的文件名必须与这里完全一致；更新 CLI 版本时同步更新这两个地址。
     urlDownloadCLIWindows:
-      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.1.6_windows_x64.exe",
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.1.7_windows_x64.exe",
     urlDownloadCLILinux:
-      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.1.6_amd64.deb",
+      "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.1.7_amd64.deb",
 
     // 登录用户在此创建、查看和撤销属于自己的 OpenAPI Token。
     urlDashApiTokens:
@@ -188,7 +190,7 @@ const config = {
     urlDownloadUrlplateProject:
       "https://gitee.com/Jakkwj/simpo-home/releases/download/template/Solution.xlsx",
 
-    iframeIfSignSrc: "https://dash.simpowater.org/ifsign",
+    iframeIfSignSrc: `${dashOrigin}/ifsign`,
   },
 
   // urlDownloadClientWindows: 'https://sludge.readthedocs.io/en/latest/_downloads/4269e5ad1fd14053bd80f03977e51dad/SimpoClient_installer.exe',
@@ -417,7 +419,7 @@ const config = {
       announcementBar: {
         id: "announcementBar",
         content:
-          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2026">SimpoClient v1.4.1</a> has been released!</strong>',
+          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2026">SimpoClient v1.5.0</a> has been released!</strong>',
         isCloseable: true,
         // backgroundColor: '#5e72e4',
         // textColor: '#ffffff',

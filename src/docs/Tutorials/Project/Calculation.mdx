@@ -39,6 +39,363 @@ to a Personal Draft before changing settings.
 | `Recalculate` | Force a new run instead of reusing a result with identical settings. |
 | `Real-Time Plotting` | Plot while calculating. Turning it off can reduce overhead. |
 
+## Steady-State Input Averaging and Measured
+
+Steady-state calculation compresses time-series inputs into constant boundary
+values. The compression is performed after `Solution.Variable` initial values
+have shifted `Inflow` and `Flow`. Therefore the steady-state input is not the
+average of the raw DataSet; it is “shift first, then average with the selected
+method.”
+
+### Flow and Inflow
+
+`steady_state_input_average_method` supports three methods:
+
+| Method | Calculation |
+| --- | --- |
+| `previous` | Treat each value as a step signal held from its time point, then average by duration. |
+| `linear` | Linearly interpolate between adjacent time points and average by trapezoidal integration. |
+| `arithmetic` | Ignore time spacing and average the valid rows directly. |
+
+For `previous` and `linear`, each `Inflow` concentration column uses the
+matching `Flow` column (the same inflow name) as its hydraulic weight. The
+steady-state concentration is:
+
+$$
+C_{\mathrm{average}} = \frac{\int Q(t) C(t)\,\mathrm{d}t}{\int Q(t)\,\mathrm{d}t}
+$$
+
+`Q(t)` and `C(t)` follow the selected `previous` or `linear` interpretation.
+`Flow` itself is averaged over time and is not flow-weighted. With
+`arithmetic`, both `Flow` and `Inflow` are row-wise arithmetic means, and
+`Inflow` does not use flow weights. Missing rows are excluded from the average.
+
+The Flow average depends on the selected method. Let the event times be
+`t_0 < t_1 < ... < t_n`, let `Q_i = Q(t_i)`, and let
+`Δt_i = t_{i+1} - t_i`.
+
+For `previous`, each value is held until the next event:
+
+$$
+Q_{\mathrm{average,previous}}
+= \frac{\sum_{i=0}^{n-1} Q_i\,\Delta t_i}
+{\sum_{i=0}^{n-1} \Delta t_i}
+$$
+
+For `linear`, adjacent events are connected by a straight line:
+
+$$
+Q_{\mathrm{average,linear}}
+= \frac{\sum_{i=0}^{n-1}
+\frac{Q_i+Q_{i+1}}{2}\,\Delta t_i}
+{\sum_{i=0}^{n-1} \Delta t_i}
+$$
+
+For `arithmetic`, time spacing is ignored:
+
+$$
+Q_{\mathrm{average,arithmetic}}
+= \frac{1}{n+1}\sum_{i=0}^{n}Q_i
+$$
+
+The public DataSet Flow unit is `m³/d`. SIMPO converts Flow to `m³/s`
+internally for the Fortran hydraulics calculation, and averaging operates on
+that internal series. Before writing the steady-state result workbook, Flow is
+converted back to `m³/d`. The `Flow` sheet therefore uses the same unit as the
+DataSet rather than exposing the internal `m³/s` value.
+
+### Steady-State Representation of Measured
+
+`Measured` contains outlet observations rather than influent boundary
+conditions, so it always uses the arithmetic mean of valid observations. It is
+not weighted by time spacing or Flow. In a steady-state DataSet, `Measured` is
+compressed to two rows, `0 day` and `10000 day`, and every target has the same
+mean value on both rows. The second row only preserves the solver's full
+steady-state horizon; it is not a second real observation.
+
+This prevents a transient first or last observation from determining the
+steady-state target and keeps the target constant during steady-state
+integration. Dynamic calculations continue to use the original `Measured`
+time series.
+
+### Inflow/Flow Shift Order
+
+When a `Solution.Variable` Inflow or Flow initial value differs from the first
+DataSet value, SIMPO adds that difference to the complete corresponding time
+series and clips the result at zero. Steady-state averaging then runs on this
+shifted series:
+
+```text
+effective input series = DataSet series + (Solution initial - DataSet first value)
+steady-state input = average(effective input series)
+```
+
+Consequently, the Inflow and Flow values in the steady-state result describe
+the shifted boundary inputs actually supplied to the solver, not the average
+of the unshifted DataSet.
+
+### Example: From Shift to Steady-State Result
+
+Suppose an influent named `In1` has three events, with time measured in hours:
+
+| Time | DataSet Flow (`m³/d`) | Split `S_U` (`mg/L`) |
+| ---: | ---: | ---: |
+| 0 | 1000 | 40 |
+| 1 | 2000 | 60 |
+| 3 | 3000 | 80 |
+
+Set the `Solution.Variable` initial value of `Flow_In1` to `1500 m³/d` and the
+initial value of the COD-related `S_U` to `50 mg/L`. Here `S_U` is the actual
+influent component obtained when Conversion splits COD and other aggregate
+targets. If the DataSet directly provides `S_U`, the same calculation applies.
+The offsets are:
+
+```text
+Flow offset = 1500 - 1000 = 500 m³/d
+S_U offset  = 50 - 40 = 10 mg/L
+```
+
+The effective series used for steady-state averaging is therefore:
+
+```text
+Flow = [1500, 2500, 3500] m³/d
+S_U  = [50, 70, 90] mg/L
+```
+
+With `previous`, the durations are `1 h` and `2 h`. The Flow result is:
+
+$$
+Q_{\mathrm{average}}
+= \frac{1500\times1 + 2500\times2}{1+2}
+= 2166.67\ \mathrm{m^3/d}
+$$
+
+The internal value supplied to the solver is:
+
+$$
+2166.67/86400 = 0.025077\ \mathrm{m^3/s}
+$$
+
+The flow-weighted `S_U` result is:
+
+$$
+C_{\mathrm{average}}
+= \frac{50\times1500\times1 + 70\times2500\times2}
+{1500\times1 + 2500\times2}
+= 65.38\ \mathrm{mg/L}
+$$
+
+The steady-state `Flow` sheet therefore writes approximately `2166.67 m³/d`,
+not the internal `0.025077 m³/s`; the corresponding `S_U` value in `Inflow` is
+approximately `65.38 mg/L`. With `arithmetic`, Flow would be
+`(1500+2500+3500)/3 = 2500 m³/d`, while `S_U` would not use Flow weights and
+would be `(50+70+90)/3 = 70 mg/L`. If the original input is COD, Conversion
+determines each resulting component, including `S_U`, separately.
+
+### Steady-State Result Workbook
+
+Steady-state runs write `Result__SIM__SteadyState__.xlsx` with these sheets:
+
+| Sheet | Contents |
+| --- | --- |
+| `Component` | Final steady-state BioComponent concentrations in each tank; the former `BioComponent` name is no longer used. |
+| `Target` | Aggregate targets obtained by applying `Solution.Conversion` to the steady-state `Component`; rows are targets and columns are tanks. |
+| `Volume` | Final steady-state volume of each tank. |
+| `Inflow` | Shifted and averaged influent component values actually used by the steady-state run. |
+| `Flow` | Averaged flow values actually used by the steady-state run. |
+| `Measured` | Two identical rows containing the valid-observation arithmetic mean at `0` and `10000 day`. |
+| `Retention` | Per-Tank HRT, TSS inventory, external solids loss and SRT contribution, plus the selected system HRT/SRT totals. |
+| `Metadata` | Execution mode, input averaging method, and `Converged` status. |
+
+`Target` is not a second average of the original time series. It is calculated from the
+final steady-state component state:
+
+$$
+Target_{k,j}=\sum_i Conversion_{k,i}\,Component_{i,j}
+$$
+
+Here $k$ is an aggregate target, $i$ is a BioComponent, and $j$ is a tank. Numeric
+coefficients and BioModel-parameter expressions in `Conversion` are resolved before
+export, so this sheet uses the same `Conversion × BioComponent` definition as the
+dynamic `BioTarget` result.
+
+`Converged=true` means the Fortran log contains `Steady-State Arrived:`, which
+confirms that the steady-state convergence criterion was met. If the run only
+reached its configured time horizon without that marker, `Converged=false`.
+Both cases can produce a final state, but `false` must not be interpreted as
+converged.
+The steady-state Dashboard Report displays the same `Converged` result. Its
+tooltip states that `true` met the steady-state criteria and `false` did not.
+An older report that did not store this field hides the item instead of being
+misclassified as `false`.
+
+The Dashboard **Steady State Result** dialog uses separate tabs for seven result types:
+`Component`, `Target`, `Volume`, `Inflow`, `Flow`, `Measured`, and `Retention`. `Inflow` and
+`Flow` are the averaged inputs actually used by the steady-state run.
+`Measured` contains one arithmetic mean of the valid observations rather than
+duplicating the dynamic points already stored in the original DataSet. Only
+`Component` rows can be synchronized back to Project Variables with
+`SetToValue`.
+
+### HRT and SRT
+
+`Solution.Retention` contains one fixed row per DataSet Tank. Its two boolean
+columns select the inventories used in the system totals; they do not hide the
+per-Tank diagnostic results. For the steady-state averaged flow snapshot, SIMPO
+calculates each Tank HRT from that Tank's hydraulic through-flow:
+
+$$
+HRT_j=\frac{V_j}{Q_{through,j}}
+$$
+
+The system HRT uses the sum of only the Tank volumes selected by `HRT`, divided
+by the sum of all true external liquid influent flows. Internal recycles are not
+included. A chemical-dosing stream contributes once when it is modeled as an
+external liquid influent:
+
+$$
+HRT_{system}=\frac{\sum_{j\in HRT}V_j}{\sum Q_{external\ inflow}}
+$$
+
+SRT requires exactly one DataSet Target whose `StandardTarget` is
+`Total Suspended Solids` and a non-empty `Solution.Conversion` row for that
+Target. The numerator is the TSS inventory in Tanks selected by `SRT`. The
+denominator is the TSS mass leaving through external `Outflow` and `Wasted`
+connections; internal recycle solids remain inside the system:
+
+$$
+SRT_{system}=\frac{\sum_{j\in SRT}V_j X_{TSS,j}}
+{\sum_{k\in \{Outflow,Wasted\}} Q_k X_{TSS,source(k)}}
+$$
+
+The workbook reports all times in days, flows in `m³/d`, and mass inventory/loss
+in `kg` and `kg/d` when the TSS unit is a recognized mass concentration. The
+same system HRT and SRT are also shown in the steady-state Report.
+
+## Steady-State Convergence and Constraint
+
+SIMPO treats `Steady-State` and `Dynamic` as different calculation phases:
+
+| Phase | `Solution.Constraint` | Boundary input | Stop condition |
+| --- | --- | --- | --- |
+| Steady-State | Disabled. Components evolve naturally through BioReaction and Hydraulics. | Compressed constant Inflow/Flow. | Ends after the real-time window test passes. |
+| Dynamic | Enabled. Constrained components are written back after every accepted step. | Original time series. | Runs to the final Measured time. |
+| First phase of `steady_state_then_dynamic` | Disabled. | Steady-state averaged inputs. | Saves the state after convergence. |
+| Second phase of `steady_state_then_dynamic` | Enabled. | Original dynamic inputs. | Continues from the saved steady state. |
+
+The steady-state result therefore does not replace selected components with
+`Constraint`, and it does not set `BioReaction` to zero after convergence. The
+exported `Component` sheet contains the state accepted after both reactions and
+hydraulic transport.
+
+### Choosing the window
+
+SRT is not known at the beginning, so it is not a required input. The solver
+starts with a conservative real-time window estimated from the initial volumes
+and flows:
+
+$$
+T_{window,0} = \max\left(1\ \mathrm{day},\;5\times
+\frac{V_{total}}{Q_{external}}\right)
+$$
+
+Here $V_{total}$ is the sum of non-negative `Volume_in` values and
+$Q_{external}$ is the sum of the non-negative flows on Connection rows from a
+DataSet `Inflow` into a process tank. Internal recycle, wasting, tank-to-tank,
+pump, and direct bypass-to-outflow flows are excluded. An external liquid-dosing
+flow is added to the main influent rather than selected alone as the whole-plant
+flow. This prevents a small PAC or sludge flow from becoming the denominator of
+the whole-plant HRT. If there
+is no positive external inflow, the initial window falls back to one day and
+failed windows still expand automatically. If a window fails, its real duration
+is doubled:
+
+$$
+T_{window,next}=2T_{window,current}
+$$
+
+Slow biomass, PAC inventory, and long-SRT cases therefore receive longer
+observation windows automatically; SRT does not need to be known in advance.
+
+### Window checks
+
+For every component and tank, the solver records the starting state and the
+window maximum and minimum. At the end of a window it checks all of the
+following:
+
+1. End-to-end state change: $\Delta C = |C_{end}-C_{start}|$;
+2. Window range: $R_C=C_{max}-C_{min}$;
+3. Net daily change rate:
+
+$$
+r_{C,day}=\frac{|C_{end}-C_{start}|}{T_{window}}
+\times 1\ \mathrm{day}
+$$
+
+State errors use combined absolute and relative tolerances:
+
+$$
+\mathrm{limit}(C)=\varepsilon_{abs}+\varepsilon_{rel}
+\max\left(|C_{start}|,|C_{end}|,10^{-12}\right)
+$$
+
+The current default absolute and relative state tolerances are both `1e-4`;
+the absolute and relative daily-rate tolerances are also both `1e-4`. End-to-end
+change, window range, and daily net rate must all pass for every component and
+tank, and three consecutive windows must pass before the log reports
+`Steady-State Arrived:`. One passing window is not sufficient.
+
+This is not a comparison of only two adjacent internal steps. Internal steps
+advance `BioReaction + Hydraulics`; the convergence test compares the beginning
+and end of a complete real-time window and also checks the range inside that
+window for hidden oscillation.
+
+### Compatibility parameters and metadata
+
+The legacy API parameters `steady_state_truncate` and
+`steady_state_escaped_threshold` remain temporarily accepted for compatibility,
+but they no longer determine convergence. The convergence method and the rule
+that disables `Constraint` during the steady-state phase are documented here
+rather than repeated as fixed workbook fields. In the result workbook
+`Metadata`, `Converged` is `true` only when the steady-state arrival marker
+appears in the log. The Dashboard Report reuses the same result.
+
+## Dynamic Input Interpolation
+
+`dynamic_input_interpolation_method` controls how dynamic `Flow` and `Inflow`
+boundary values are evaluated between recorded input times. It does not
+compress a time series into a steady-state value:
+
+| Method | Dynamic boundary signal |
+| --- | --- |
+| `previous` | Zero-order hold: the latest value remains constant until the next input event. |
+| `linear` | Linear interpolation between adjacent input events; the final value is held after the last event. |
+
+For example, if an input concentration is `10 mg/L` at `0 h` and `20 mg/L` at
+`2 h`, `previous` supplies `10 mg/L` during the interval, while `linear`
+supplies `15 mg/L` at `1 h`. The same interpolation choice is applied to
+dynamic `Flow` values. Choose `previous` for stepwise/event inputs and `linear`
+when the measurements represent a continuously varying signal.
+
+The Dashboard exposes this setting separately from
+`steady_state_input_average_method`:
+
+- Dynamic calculations use `dynamic_input_interpolation_method`; the steady-
+  state averaging choice is ignored.
+- Steady-State calculations use `steady_state_input_average_method` to reduce
+  the input series; the dynamic interpolation choice is ignored.
+- Steady-State Dynamic calculations use the steady-state averaging method for
+  initialization, then the dynamic interpolation method when the original time
+  series resumes.
+
+The dynamic interpolation methods are `previous` and `linear`. The steady-state
+average methods are `previous`, `linear`, and `arithmetic`; see the preceding
+section for their formulas and Flow-weighting behavior. The API field is
+`dynamicInputInterpolationMethod`. The older `inputInterpolation` field remains
+accepted for backward compatibility, but new integrations should use the
+explicit name. Neither setting affects `Measured` observations or the
+independent interpolation selected for `Solution.Constraint`.
+
 ## SCE-UA estimation
 
 Select `Estimation` and choose **SCE-UA** in `Engine`. The Dashboard displays

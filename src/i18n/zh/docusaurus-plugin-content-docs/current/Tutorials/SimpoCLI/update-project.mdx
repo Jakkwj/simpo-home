@@ -14,7 +14,10 @@ sidebar_label: update-project
 - Token scope：`write`
 - `PROJECT_ID` 必须是当前用户拥有的 version `0` Draft。
 - `Variable`、`Target`、`Conversion`、`Weight` 必须提供。
-- `Activator` 可以省略或为空，必要时由解析器生成。
+- `Activator`、`Constraint` 和兼容旧数据的 `Retention` 可以省略。Constraint 行使用 `Tank`、
+  `Component`、`Target` 和 `Interpolation`（`Previous` 或 `Linear`）；参见
+  [`create-project`](./create-project#可选-constraint-表)。Retention 使用与 DataSet Tank
+  一一对应的 `Tank`、`HRT`、`SRT` 记录，HRT/SRT 必须为 JSON 布尔值。
 
 ## 命令格式
 
@@ -65,7 +68,9 @@ simpo update-project 789 --json ./Solution.json
     "Target": [],
     "Conversion": [],
     "Weight": [],
-    "Activator": []
+    "Activator": [],
+    "Constraint": [],
+    "Retention": []
   },
   "createdAt": "2026-09-25T12:00:00",
   "updatedAt": "2026-09-25T12:30:00",

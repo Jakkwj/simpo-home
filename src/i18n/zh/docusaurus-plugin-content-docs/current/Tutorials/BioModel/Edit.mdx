@@ -241,35 +241,39 @@ Processes 和 Compositions 中的系数如果来自氧化还原或元素质量�
   - Ionization：确定电离方式；弱酸/弱碱使用 One Step 或 Stepwise，强酸/强碱使用 Complete。
   - Factor：转化系数，单位为 mol/mg。
   - pK1/pK2/pK3：每一步的电离常数。
-  - pKw：水的电离常数，通常为 14。该值只在第一行可以编辑。
+  - pKw：水的电离常数，通常为 {/* SIMPO_PKW */}14{/* /SIMPO_PKW */}。该值只在第一行可以编辑。
 - 按照下方表格的内容填入 Ionization 中，SIMPO 就会自动计算 pH 了。当然你还需要通过 Project Conversion 页面将 Components 和 Target 进行转化，才能明确地显示在计算结果中。
 
+{/* BEGIN GENERATED IONIZATION */}
+{/* Generated from SimpoHome/data/ionization/ionization.json; version 1; sha256 b95db023316a3dfb1afdc52204bc2a2a0fab1834e4f8c9e6042edc00091a2478. Do not edit this block. */}
+
 | Symbol | Compound | Step | Ionization | Factor（mol/mg） | pK1 | pK2 | pK3 |
-|---|---|---|---|---|---|--|--|
-| 硼酸盐（Borate） | Weak Acid   | Mono  | One Step  | 1/(10.8*1000) | 9.24(9.23) | | |
-| 亚硝酸盐（Nitrite） | Weak Acid   | Mono  | One Step  | 1/(14*1000) | 3.15(3.35) | | |
-| 亚砷酸盐（Arsenite） | Weak Acid   | Mono  | One Step  | 1/(75*1000) | 9.29 | | |
-| 甲酸盐（Formate） | Weak Acid   | Mono  | One Step  | 1/(16*1000) | 3.74(3.77) | | |
-| 乙酸盐（Acetate） | Weak Acid   | Mono  | One Step  | 1/(64*1000) | 4.76(4.77) | | |
-| 丙酸盐（Propionate） | Weak Acid   | Mono  | One Step  | 1/(112*1000) | 4.87(4.89) | | |
-| 丁酸盐（Butyrate） | Weak Acid   | Mono  | One Step  | 1/(160*1000) | 4.82 | | |
-| 戊酸盐（Valerate） | Weak Acid  | Mono  | One Step  | 1/(208*1000) | 4.84 | | |
-| 己酸盐（Hexanoate） | Weak Acid  | Mono  | One Step  | 1/(256*1000) | 4.86 | | |
-| 乳酸盐（Lactate） | Weak Acid  | Mono  | One Step  | 1/(96*1000) | 3.86(3.89) | | |
-| 碳酸盐（Carbonate） | Weak Acid  | Di  | Stepwise  | 1/(12*1000) | 6.35(6.37) | 10.33(10.31) | |
-| 硫化物（Sulfide） | Weak Acid  | Di | Stepwise  | 1/(32*1000) | 7.02(7.05) | 13.9(12.92)| |
-| 硅酸盐（Silicate） | Weak Acid  | Di  | Stepwise  | 1/(28*1000) | 9.84 | 13.2 | |
-| 亚硫酸盐（Sulfite） | Weak Acid  | Di  | Stepwise  | 1/(32*1000) | 1.86(1.89) | 7.19(7.20) | |
-| 硫代硫酸盐（Thiosulfate） | Weak Acid  |Di  | Stepwise | 1/(64*1000) | 0.6 | 1.6 | |
-| 草酸盐（Oxalate） | Weak Acid  | Di  | Stepwise  | 1/(16*1000) | 1.25 | 4.72(4.29) | |
-| 磷酸盐（Phosphate） | Weak Acid  | Tri  | Stepwise  | 1/(31*1000) | 2.15(2.16) | 7.20(7.21) | 12.38(12.32) |
-| 砷酸盐（Arsenate） | Weak Acid  | Tri | Stepwise  | 1/(75*1000) | 2.24(2.19) | 6.96(6.92) | 11.50(11.49) |
-| 铵盐（Ammonium） | Weak Base  | Mono | One Step  | 1/(14*1000) | 4.76(4.74) | |
-| 硝酸盐（Nitrate） | Strong Acid  | Mono  | Complete | 1/(14*1000) | | |
-| 氯化物（Chloride） | Strong Acid  | Mono  | Complete  | 1/(35.5*1000) | | |
-| 硫酸盐（Sulfate） | Strong Acid  | Di  | Complete  | 1/(32*1000) | | |
-| 镁盐（Magnesium） | Strong Base  | Di  | Complete  | 1/(24*1000) | | |
-| 钙盐（Calcium） | Strong Base  | Di  | Complete  | 1/(40*1000) | | |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 硼酸盐（Borate） | Weak Acid | Mono | One Step | 1/(10.8*1000) | 9.24 |  |  |
+| 亚硝酸盐（Nitrite） | Weak Acid | Mono | One Step | 1/(14*1000) | 3.15 |  |  |
+| 亚砷酸盐（Arsenite） | Weak Acid | Mono | One Step | 1/(75*1000) | 9.29 |  |  |
+| 甲酸盐（Formate） | Weak Acid | Mono | One Step | 1/(16*1000) | 3.74 |  |  |
+| 乙酸盐（Acetate） | Weak Acid | Mono | One Step | 1/(64*1000) | 4.76 |  |  |
+| 丙酸盐（Propionate） | Weak Acid | Mono | One Step | 1/(112*1000) | 4.87 |  |  |
+| 丁酸盐（Butyrate） | Weak Acid | Mono | One Step | 1/(160*1000) | 4.82 |  |  |
+| 戊酸盐（Valerate） | Weak Acid | Mono | One Step | 1/(208*1000) | 4.84 |  |  |
+| 己酸盐（Hexanoate） | Weak Acid | Mono | One Step | 1/(256*1000) | 4.86 |  |  |
+| 乳酸盐（Lactate） | Weak Acid | Mono | One Step | 1/(96*1000) | 3.86 |  |  |
+| 碳酸盐（Carbonate） | Weak Acid | Di | Stepwise | 1/(12*1000) | 6.35 | 10.33 |  |
+| 硫化物（Sulfide） | Weak Acid | Di | Stepwise | 1/(32*1000) | 7.02 | 13.9 |  |
+| 硅酸盐（Silicate） | Weak Acid | Di | Stepwise | 1/(28*1000) | 9.84 | 13.2 |  |
+| 亚硫酸盐（Sulfite） | Weak Acid | Di | Stepwise | 1/(32*1000) | 1.86 | 7.19 |  |
+| 硫代硫酸盐（Thiosulfate） | Weak Acid | Di | Stepwise | 1/(64*1000) | 0.6 | 1.6 |  |
+| 草酸盐（Oxalate） | Weak Acid | Di | Stepwise | 1/(16*1000) | 1.25 | 4.72 |  |
+| 磷酸盐（Phosphate） | Weak Acid | Tri | Stepwise | 1/(31*1000) | 2.15 | 7.2 | 12.38 |
+| 砷酸盐（Arsenate） | Weak Acid | Tri | Stepwise | 1/(75*1000) | 2.24 | 6.96 | 11.5 |
+| 铵盐（Ammonium） | Weak Base | Mono | One Step | 1/(14*1000) | 4.76 |  |  |
+| 硝酸盐（Nitrate） | Strong Acid | Mono | Complete | 1/(14*1000) |  |  |  |
+| 氯化物（Chloride） | Strong Acid | Mono | Complete | 1/(35.5*1000) |  |  |  |
+| 硫酸盐（Sulfate） | Strong Acid | Di | Complete | 1/(32*1000) |  |  |  |
+| 镁盐（Magnesium） | Strong Base | Di | Complete | 1/(24*1000) |  |  |  |
+| 钙盐（Calcium） | Strong Base | Di | Complete | 1/(40*1000) |  |  |  |
+{/* END GENERATED IONIZATION */}
 
 
 

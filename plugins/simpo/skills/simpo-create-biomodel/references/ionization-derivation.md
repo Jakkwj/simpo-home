@@ -1,12 +1,21 @@
 # Ionization Derivation Workflow
 
-Use this workflow when the paper defines acid/base species and pH must be
-calculated in SIMPO. `ionization_derive` controls whether missing Ionization
-data may be derived; preserve rows explicitly reported by the paper even when
-derivation is off. Include it only when the modeled
-Component, its concentration basis, acid/base system, and equilibrium constants
-are supported by the paper or by an explicitly disclosed external chemical
-reference. Do not infer it from a Component name alone.
+In paper and user-defined modes, assess dissolved Components when
+`ionization_derive=on` (the default), even if the paper has no pH submodel.
+Read this workflow before deciding to omit Ionization. Match the actual species
+and concentration basis to the built-in SIMPO parameter table in section 6.
+Its values are available reference defaults: their absence from the paper or
+lack of live web access is not a reason to skip a matching row.
+
+Use explicit, applicable paper/user values when provided; otherwise use the
+built-in defaults and identify them as SIMPO reference data in the audit.
+Unknown reference temperature does not block using an acknowledged SIMPO
+default; do not claim a temperature-specific validation or invent a correction.
+A known incompatible species, mass basis, or explicitly required condition must
+be resolved or reported separately. Do not infer species from its symbol alone.
+With derivation off, retain only source-reported rows. Verified workbook imports
+preserve their original rows and values, including values different from these
+defaults. Never overwrite them merely to match the reference table.
 
 ## 1. Use the exact SIMPO schema
 
@@ -27,8 +36,7 @@ Use this header row:
   Parenthesized arithmetic such as `1/(14*1000)` is shown in the reference
   spreadsheet but is not accepted by the current JSON parser; simplify it
   before submission. Do not copy parenthetical literature
-  alternatives such as `9.24(9.23)` into JSON; choose one documented value and
-  explain the choice in the audit note.
+  alternatives into JSON; the built-in table already selects the primary value.
 - Put `pKw` in the first data row only. It must be non-null there and null in
   every later row. Row order therefore affects storage of `pKw` but does not
   establish chemical priority.
@@ -55,13 +63,16 @@ For every proposed row, record:
 - the total dissolved Component represented by the state variable;
 - its acid/base family and number of modeled dissociation steps;
 - the Component's mass basis, such as mgN/L, mgS/L, mgC/L, or mg compound/L;
-- the temperature and source for pK and pKw values;
+- the source for pK/pKw (built-in SIMPO defaults or applicable paper/user data);
+- any explicitly given temperature conditions; disclose unspecified conditions
+  without making them an automatic veto on built-in defaults;
 - whether the supplied weak-base constant is pKb or the pKa of its conjugate
   acid.
 
 Do not add Ionization for a mixed COD pool, an empirical Component, or a state
-variable whose mass basis or acid/base family is unknown. Ask for review or omit
-the whole table when the uncertainty materially changes pH.
+variable whose mass basis or acid/base family is unknown. Report unsupported
+candidates separately; one unresolved species does not erase other supported
+rows. Disclose the resulting limitation on pH coverage.
 
 ## 4. Derive Factor
 
@@ -86,40 +97,62 @@ a Factor merely because a similarly named row appears in a reference table.
 
 ## 5. Select pK values consistently
 
-- For weak acids, enter stepwise pKa values in `pK1`, `pK2`, and `pK3`.
-- SIMPO's weak-base formulas use pKb. If a source gives the conjugate-acid pKa,
-  convert it at the same temperature:
+- Use the primary values in section 6 for supported species; the parenthetical
+  alternatives from the original website are not selected or averaged.
+- For weak acids, enter stepwise pKa values. SIMPO weak-base rows use pKb;
+  the built-in Weak Base entries already use that convention, so do not
+  convert them again. If a separate source gives conjugate-acid pKa, convert
+  consistently using `pKb = pKw - pKa(conjugate acid)`.
+- Use the built-in pKw default unless applicable paper/user data specifies
+  another value. Store pKw in the first data row only. Do not mix it with
+  incompatible condition-specific constants or invent temperature corrections.
+- Record built-in defaults as SIMPO reference values, not values extracted
+  from the paper. A missing paper pH model, pK table, or Project pH Target
+  does not itself prevent preparing BioModel Ionization rows.
 
-  ```text
-  pKb = pKw - pKa(conjugate acid)
-  ```
+## 6. Built-in SIMPO parameter reference
 
-- Preserve the order of stepwise constants. Do not average alternative values
-  or combine constants measured under incompatible temperature/ionic-strength
-  conditions.
-- Use a pKw appropriate to the model temperature. `14` is a common value near
-  25 °C, not a universal constant.
+<!-- BEGIN GENERATED IONIZATION -->
+<!-- Generated from SimpoHome/data/ionization/ionization.json; version 1; sha256 b95db023316a3dfb1afdc52204bc2a2a0fab1834e4f8c9e6042edc00091a2478. Do not edit this block. -->
 
-## 6. JSON example
+SIMPO built-in parameter set v1. [Documentation](https://www.simpowater.com/zh/docs/Tutorials/BioModel/Edit#4-ionization). Default pKw: **14**.
 
-The following illustrates schema and concentration-basis handling. The pK
-values are examples and require source verification for the target model:
+These are approved SIMPO reference defaults for derivation, not dummy examples. The primary values outside parentheses in the source table are selected; do not average or substitute the parenthetical alternatives. Use these local values without a live webpage lookup.
 
-```json
-"Ionization": [
-  {"0":"Symbol","1":"Compound","2":"Step","3":"Ionization","4":"Factor","5":"pK1","6":"pK2","7":"pK3","8":"pKw"},
-  {"0":"S_NO3","1":"Strong Acid","2":"Mono","3":"Complete","4":"1/14000","5":null,"6":null,"7":null,"8":14},
-  {"0":"S_NO2","1":"Weak Acid","2":"Mono","3":"One Step","4":"1/14000","5":3.15,"6":null,"7":null,"8":null},
-  {"0":"S_S2","1":"Weak Acid","2":"Di","3":"Stepwise","4":"1/32000","5":7.02,"6":13.9,"7":null,"8":null},
-  {"0":"S_SO4","1":"Strong Acid","2":"Di","3":"Complete","4":"1/32000","5":null,"6":null,"7":null,"8":null}
-]
-```
+| Species | Compound | Step | Ionization | Factor (mol/mg) | pK1 | pK2 | pK3 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Borate / 硼酸盐 | Weak Acid | Mono | One Step | 1/10800 | 9.24 |  |  |
+| Nitrite / 亚硝酸盐 | Weak Acid | Mono | One Step | 1/14000 | 3.15 |  |  |
+| Arsenite / 亚砷酸盐 | Weak Acid | Mono | One Step | 1/75000 | 9.29 |  |  |
+| Formate / 甲酸盐 | Weak Acid | Mono | One Step | 1/16000 | 3.74 |  |  |
+| Acetate / 乙酸盐 | Weak Acid | Mono | One Step | 1/64000 | 4.76 |  |  |
+| Propionate / 丙酸盐 | Weak Acid | Mono | One Step | 1/112000 | 4.87 |  |  |
+| Butyrate / 丁酸盐 | Weak Acid | Mono | One Step | 1/160000 | 4.82 |  |  |
+| Valerate / 戊酸盐 | Weak Acid | Mono | One Step | 1/208000 | 4.84 |  |  |
+| Hexanoate / 己酸盐 | Weak Acid | Mono | One Step | 1/256000 | 4.86 |  |  |
+| Lactate / 乳酸盐 | Weak Acid | Mono | One Step | 1/96000 | 3.86 |  |  |
+| Carbonate / 碳酸盐 | Weak Acid | Di | Stepwise | 1/12000 | 6.35 | 10.33 |  |
+| Sulfide / 硫化物 | Weak Acid | Di | Stepwise | 1/32000 | 7.02 | 13.9 |  |
+| Silicate / 硅酸盐 | Weak Acid | Di | Stepwise | 1/28000 | 9.84 | 13.2 |  |
+| Sulfite / 亚硫酸盐 | Weak Acid | Di | Stepwise | 1/32000 | 1.86 | 7.19 |  |
+| Thiosulfate / 硫代硫酸盐 | Weak Acid | Di | Stepwise | 1/64000 | 0.6 | 1.6 |  |
+| Oxalate / 草酸盐 | Weak Acid | Di | Stepwise | 1/16000 | 1.25 | 4.72 |  |
+| Phosphate / 磷酸盐 | Weak Acid | Tri | Stepwise | 1/31000 | 2.15 | 7.2 | 12.38 |
+| Arsenate / 砷酸盐 | Weak Acid | Tri | Stepwise | 1/75000 | 2.24 | 6.96 | 11.5 |
+| Ammonium / 铵盐 | Weak Base | Mono | One Step | 1/14000 | 4.76 |  |  |
+| Nitrate / 硝酸盐 | Strong Acid | Mono | Complete | 1/14000 |  |  |  |
+| Chloride / 氯化物 | Strong Acid | Mono | Complete | 1/35500 |  |  |  |
+| Sulfate / 硫酸盐 | Strong Acid | Di | Complete | 1/32000 |  |  |  |
+| Magnesium / 镁盐 | Strong Base | Di | Complete | 1/24000 |  |  |  |
+| Calcium / 钙盐 | Strong Base | Di | Complete | 1/40000 |  |  |  |
+<!-- END GENERATED IONIZATION -->
 
 ## 7. Review and downstream setup
 
 Show the proposed Ionization rows, Factor derivations, pK/pKw sources,
-temperature, and material assumptions to the user before submission. Mark every
-externally sourced value as derived/reference data rather than paper-extracted.
+available temperature information, and material assumptions before submission.
+Identify built-in values by SIMPO parameter-set version; do not call them
+paper-extracted or freshly verified external data.
 
 Ionization defines SIMPO's RIIC/pH relationship but is not sufficient by itself
 to expose pH in a Project. Define `pH` as a DataSet Target and map it in Project

@@ -9,9 +9,10 @@ adapted for an assistant analysis followed by the SimpoCLI JSON interface.
 - Confirm that the source is a research paper about a wastewater-treatment
   model, not merely a general treatment paper.
 - Search a reliable bibliographic source for the paper's DOI when network access
-  is available. If no DOI can be verified, report `Not SCI` and stop unless the
-  user explicitly overrides this eligibility check. If network access is not
-  available, state that DOI eligibility remains unverified rather than guessing.
+  is available. If no DOI can be verified, record `DOI unverified` and the
+  search/access limitation. A DOI is not evidence of SCI indexing, and its
+  absence does not establish `Not SCI`. Missing essential model evidence, not
+  a missing DOI alone, is the reason to stop extraction.
 - Never let a missing DOI or a failed search turn into an invented citation.
 
 ## Evidence and reporting
@@ -153,6 +154,76 @@ in the same order, followed by `Rate`:
   without an independent exact derivation. When the option is off, preserve the
   source notation.
 
+## Substrate depletion and nonnegativity
+
+Perform this scientific check for each process/Component pair with a consuming
+stoichiometric contribution. It remains required when `source_correction` is
+off; report findings separately from transcription corrections.
+
+- Determine coefficient signs from the declared parameter values and supported
+  ranges, not from the presence of a minus sign in the cell text. If a sign or
+  rate direction is uncertain or changes over the supported domain, record the
+  conditions and mark the unresolved cases explicitly.
+- For a dynamic concentration `C_j` with `nu_ij < 0` and a nonnegative forward
+  rate `r_i`, verify that the rate vanishes at `C_j = 0`, with the other states
+  in their admissible domain. Check each consumed Component separately. For a
+  signed reversible rate, inspect both consuming directions through the signed
+  contribution `nu_ij * r_i`; a negative matrix coefficient alone does not
+  identify consumption in the reverse direction.
+- Inspect the full expression and declared Formula dependencies. Merely finding
+  the Component symbol in Rate is insufficient. `C_j/(K + C_j)` with `K > 0`
+  provides depletion protection, as does a finite rate proportional to `C_j`,
+  such as biomass decay `b * X_B`. Do not multiply by another Monod factor when
+  an equivalent constraint already exists. An inhibition term `K/(K + C_j)` or
+  a positive constant does not shut the reaction off at depletion. Undefined
+  denominators, including `0/0`, are unresolved rather than evidence of safety.
+- Follow Formula dependencies on their feasible state domain instead of setting
+  an algebraically dependent Component independently to zero. A fixed external
+  reservoir or an explicit reaction-availability constraint may justify a
+  different treatment only with evidence of how it is represented and enforced.
+  Do not assume a solver prevents depletion or treat an ordinary dynamic state
+  as an inexhaustible reservoir to excuse a missing constraint.
+- When a constraint is missing, retain the original expression and propose an
+  evidenced remedy. A candidate is `Rate_original * C_j/(K_switch + C_j)`, with
+  `K_switch > 0` and the same concentration unit as `C_j`. Record its source or
+  explicit modeling assumption and the effect on the original kinetics. Do not
+  invent a value, use zero, or choose an unexplained tiny value solely to pass
+  the check. If the parameter basis is missing, leave the remedy unresolved.
+  Expand the original Rate when writing SIMPO tables; `Rate_original` here is
+  explanatory notation, not a new allowed symbol.
+
+Record each checked pair in the Description audit with process, Component,
+coefficient/sign conditions, original Rate, zero-boundary evidence, and status
+(`protected`, `missing`, `unresolved`, or `not_applicable` with a reason). For
+changes, also record the proposed/applied Rate, new parameters and their units
+and basis, and the user's modeling decision. Present the findings in the normal
+creation review. Preserve source values for exact workbook imports and report
+suggestions separately. A new availability factor is a **kinetic extension /
+depletion protection**, not an automatic source correction; apply it only when
+its scientific assumptions and parameters are resolved within the reviewed
+model specification. Do not silently change a fitted rate or claim the paper
+contained the added term.
+
+Passing this boundary check is not proof that an entire simulation stays
+nonnegative: discretization, solver tolerances, transport, and other processes
+still need validation. A zero `Balance` residual does not establish depletion
+protection either.
+
+### Example: elemental sulfur in Xu et al. (2016)
+
+In [Xu et al. (2016)](https://doi.org/10.1016/j.watres.2016.01.011), Table S1
+(supplement p. 3), processes C and D consume elemental sulfur (`S_S0` when that
+symbol is used in the imported model). Their Rates contain `eta(S)`, and the
+main text, section 4, deliberately adopts a constant sulfur term after comparing
+it with a Monod term. A positive constant does not provide depletion protection
+for a dynamic `S_S0`; flag that boundary behavior without labeling the author's
+choice a transcription error. A proposed extension can retain the original
+`eta(S)` and multiply each original C/D Rate by
+`S_S0/(K_switch_S0 + S_S0)`. The added parameter needs its own units, basis, and
+review; it is not a reported paper parameter. Preserve the original expressions
+and compare the extension's behavior near depletion and over the calibration
+range before claiming equivalence or validity.
+
 ## Composition
 
 `Composition` contains balance coefficients; it is distinct from the
@@ -198,9 +269,11 @@ When included:
 ## Ionization
 
 `Ionization` defines the acid/base contribution of dissolved Components to
-SIMPO's RIIC/pH calculation. Omit it when the paper and defensible chemical
-references do not establish the species, concentration basis, equilibrium
-constants, and temperature assumptions. If Ionization is requested or useful,
+SIMPO's RIIC/pH calculation. Match species and concentration basis to the built-in
+SIMPO reference parameters in the derivation workflow. These defaults can be
+used without live lookup or paper-provided pK values; disclose their source and
+any condition limitations. Use applicable paper/user values when provided.
+Do not invent missing species or temperature corrections. If Ionization is requested or useful,
 read `references/ionization-derivation.md` and follow it in full.
 
 - Use the exact header `Symbol`, `Compound`, `Step`, `Ionization`, `Factor`,
@@ -210,7 +283,8 @@ read `references/ionization-derivation.md` and follow it in full.
 - Derive `Factor` from the Component's actual reporting basis; for example,
   NO3-N uses the molar mass of N, not the full nitrate ion.
 - Treat all selected pK values, conversions, temperature assumptions, and
-  external references as auditable model decisions. Do not guess them.
+  SIMPO defaults or external references as auditable model decisions. Do not
+  guess missing values or describe defaults as paper-extracted.
 - Put pKw only in the first data row and keep unused pK fields null.
 - Do not add `pH` to Component. A Project needs a DataSet `pH` Target and a
   Project Conversion mapping to expose pH results.

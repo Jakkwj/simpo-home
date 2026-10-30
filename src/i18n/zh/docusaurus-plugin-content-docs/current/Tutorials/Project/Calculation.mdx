@@ -37,6 +37,314 @@ import config from '@generated/docusaurus.config'
 | `Recalculate` | 强制新建一次计算，不复用设置完全相同的旧结果。 |
 | `Real-Time Plotting` | 计算时实时绘图，关闭后通常可以减少额外开销。 |
 
+## 稳态计算的输入平均与 Measured
+
+稳态计算需要把时间序列输入压缩为一个恒定边界值。压缩发生在
+`Solution.Variable` 对 `Inflow` 和 `Flow` 的初始值偏移之后，因此稳态输入不是
+原始 DataSet 的平均值，而是“先按 Solution 偏移，再按指定方法平均”的结果。
+
+### Flow 和 Inflow
+
+`steady_state_input_average_method` 支持三种方法：
+
+| 方法 | 计算方式 |
+| --- | --- |
+| `previous` | 将每个值视为从该时间点开始保持不变的阶梯信号，按持续时间平均。 |
+| `linear` | 在相邻时间点之间线性插值，按梯形积分平均。 |
+| `arithmetic` | 忽略时间间隔，直接对有效数据行求算术平均。 |
+
+对于 `previous` 和 `linear`，`Inflow` 浓度列会使用同一进水名称对应的
+`Flow` 作为流量权重。浓度的稳态值为：
+
+$$
+C_{\mathrm{average}} = \frac{\int Q(t) C(t)\,\mathrm{d}t}{\int Q(t)\,\mathrm{d}t}
+$$
+
+其中 `Q(t)` 和 `C(t)` 按所选的 `previous` 或 `linear` 规则插值/保持。`Flow`
+本身不再用流量加权，而是按时间平均。使用 `arithmetic` 时，`Flow` 和
+`Inflow` 都直接按行平均，`Inflow` 也不使用流量权重。空值行不参与平均。
+
+Flow 的平均公式取决于平均方法。设输入事件时间为
+`t_0 < t_1 < ... < t_n`，`Q_i = Q(t_i)`，`Δt_i = t_{i+1}-t_i`：
+
+对于 `previous`，每个值在下一个事件前保持不变，因此：
+
+$$
+Q_{\mathrm{average,previous}}
+= \frac{\sum_{i=0}^{n-1} Q_i\,\Delta t_i}
+{\sum_{i=0}^{n-1} \Delta t_i}
+$$
+
+对于 `linear`，相邻事件之间使用线性插值，因此：
+
+$$
+Q_{\mathrm{average,linear}}
+= \frac{\sum_{i=0}^{n-1}
+\frac{Q_i+Q_{i+1}}{2}\,\Delta t_i}
+{\sum_{i=0}^{n-1} \Delta t_i}
+$$
+
+对于 `arithmetic`，不使用时间间隔：
+
+$$
+Q_{\mathrm{average,arithmetic}}
+= \frac{1}{n+1}\sum_{i=0}^{n}Q_i
+$$
+
+DataSet 的公开 Flow 单位是 `m³/d`。SIMPO 在内部先把 Flow 转成 `m³/s`
+供 Fortran 水力学计算，平均运算也在这个内部序列上进行；写入稳态结果 Excel
+时再转回 `m³/d`。因此 `Flow` sheet 应与 DataSet 的单位一致，而不是显示内部的
+`m³/s` 值。
+
+### Measured 的稳态表示
+
+`Measured` 是出水观测样本，不是进水边界条件，因此始终使用有效观测值的
+算术平均，不做时间间隔或 Flow 加权。稳态 DataSet 中的 `Measured` 被压缩为
+两行：`0 day` 和 `10000 day`；两行的每个指标都写入同一个平均值。第二行只是
+让求解器保留完整的稳态时间范围，不代表第二个真实观测时刻。
+
+这意味着稳态目标值不会因首行或尾行的瞬时异常而改变，也不会在稳态积分期间
+随时间变化。动态计算仍使用原始 `Measured` 时间序列。
+
+### Inflow/Flow 的偏移顺序
+
+如果 `Solution.Variable` 中的 Inflow 或 Flow 初始值与 DataSet 首值不同，SIMPO
+会把差值加到整个对应时间序列（并将结果限制为非负）。然后才进行稳态平均：
+
+```text
+实际输入序列 = DataSet 序列 + (Solution 初始值 - DataSet 首值)
+稳态输入值 = 实际输入序列的平均值
+```
+
+因此，稳态结果中的 Inflow 和 Flow 反映的是偏移后的边界输入，而不是偏移前的
+DataSet 平均值。
+
+### 从偏移到稳态结果的例子
+
+假设一个进水 `In1` 有三个事件，时间单位为小时：
+
+| 时间 | DataSet Flow (`m³/d`) | 拆分后的 `S_U` (`mg/L`) |
+| ---: | ---: | ---: |
+| 0 | 1000 | 40 |
+| 1 | 2000 | 60 |
+| 3 | 3000 | 80 |
+
+`Solution.Variable` 将 `Flow_In1` 的初始值设为 `1500 m³/d`，将 COD 对应的
+`S_U` 初始值设为 `50 mg/L`。这里的 `S_U` 是 Conversion 根据 COD 等综合指标
+拆分后的实际进水组分；如果 DataSet 直接提供 `S_U`，计算过程相同。因此先计算偏移量：
+
+```text
+Flow 偏移量 = 1500 - 1000 = 500 m³/d
+S_U 偏移量  = 50 - 40 = 10 mg/L
+```
+
+把偏移量加到每个事件后，实际用于稳态平均的序列为：
+
+```text
+Flow = [1500, 2500, 3500] m³/d
+S_U  = [50, 70, 90] mg/L
+```
+
+使用 `previous` 时，持续时间是 `1 h` 和 `2 h`。Flow 的结果为：
+
+$$
+Q_{\mathrm{average}}
+= \frac{1500\times1 + 2500\times2}{1+2}
+= 2166.67\ \mathrm{m^3/d}
+$$
+
+内部计算值会转换为：
+
+$$
+2166.67/86400 = 0.025077\ \mathrm{m^3/s}
+$$
+
+`S_U` 的流量加权结果为：
+
+$$
+C_{\mathrm{average}}
+= \frac{50\times1500\times1 + 70\times2500\times2}
+{1500\times1 + 2500\times2}
+= 65.38\ \mathrm{mg/L}
+$$
+
+所以稳态结果 `Flow` sheet 写入约 `2166.67 m³/d`，而不是内部值
+`0.025077 m³/s`；`Inflow` sheet 中对应的 `S_U` 约为 `65.38 mg/L`。如果选择
+`arithmetic`，则 Flow 为 `(1500+2500+3500)/3 = 2500 m³/d`，`S_U` 不使用
+Flow 权重而为 `(50+70+90)/3 = 70 mg/L`。如果原始输入是 COD，最终各组分
+（包括 `S_U`）的数值由 Conversion 的拆分规则分别得到。
+
+### 稳态结果 Excel
+
+稳态计算会生成 `Result__SIM__SteadyState__.xlsx`，主要工作表含义如下：
+
+| 工作表 | 内容 |
+| --- | --- |
+| `Component` | 各池体稳态结束时的 BioComponent 浓度；旧名称 `BioComponent` 已取消。 |
+| `Target` | 按 Solution.Conversion 将稳态 `Component` 转换后的综合指标；行是 Target，列是池体。 |
+| `Volume` | 各池体稳态结束时的体积。 |
+| `Inflow` | 实际用于稳态计算的、已偏移并平均后的进水组分值。 |
+| `Flow` | 实际用于稳态计算的、已平均后的流量值。 |
+| `Measured` | 两行相同的有效观测算术平均值，时间为 `0` 和 `10000 day`。 |
+| `Retention` | 每个 Tank 的 HRT、TSS 库存、外排固体量和 SRT 贡献，以及按选择项汇总的系统 HRT/SRT。 |
+| `Metadata` | 执行模式、输入平均方法和 `Converged` 状态。 |
+
+`Target` 不是重新对原始时间序列求平均，而是对稳态结束时的组分状态进行转换：
+
+$$
+Target_{k,j}=\sum_i Conversion_{k,i}\,Component_{i,j}
+$$
+
+其中 $k$ 是综合指标，$i$ 是 BioComponent，$j$ 是池体。Conversion 中的数值或
+BioModel 参数表达式会先解析为实际数值，再写入结果。因此该工作表与动态结果中
+由 `Conversion × BioComponent` 得到的 `BioTarget` 保持一致。
+
+`Converged=true` 只表示 Fortran 日志出现 `Steady-State Arrived:`，即满足稳态
+收敛判据后到达；如果只是运行到配置的时间范围但没有出现该标记，
+`Converged=false`。两种情况都可能写出最后状态，但 `false` 不应被解释为已收敛。
+Dashboard 的稳态 Report 也会显示同一个 `Converged` 结果；提示信息仅说明
+`true` 已达到稳态标准、`false` 未达到稳态标准。旧报告没有保存该字段时隐藏此项，
+不会误判为 `false`。
+
+Dashboard 的 **Steady State Result** 对话框使用独立 Tab 分别显示 `Component`、
+`Target`、`Volume`、`Inflow`、`Flow`、`Measured` 和 `Retention` 七类结果。其中 `Inflow`、`Flow` 是实际用于稳态
+计算的平均输入；`Measured` 只显示一组有效观测值的算术平均值，不重复展示原
+DataSet 已有的动态观测点。只有 `Component` 可以通过 `SetToValue` 同步回项目变量。
+
+### HRT 与 SRT
+
+`Solution.Retention` 为 DataSet 中每个 Tank 固定保留一行。两列布尔值只控制哪些
+库存进入系统汇总，不会隐藏各 Tank 的诊断结果。对于稳态计算实际使用的平均流量
+快照，单池 HRT 按该 Tank 的水力通过流量计算：
+
+$$
+HRT_j=\frac{V_j}{Q_{through,j}}
+$$
+
+系统 HRT 的分子只累计 `HRT=True` 的 Tank 体积，分母使用所有真正外部液体进水
+流量之和。内部回流不会进入该分母；如果药剂投加被建模为一股外部液体进水，
+则其流量只计入一次：
+
+$$
+HRT_{system}=\frac{\sum_{j\in HRT}V_j}{\sum Q_{external\ inflow}}
+$$
+
+SRT 要求 DataSet 中恰好有一个 Target 的 `StandardTarget` 为
+`Total Suspended Solids`，且该 Target 在 `Solution.Conversion` 中存在非空换算行。
+分子是 `SRT=True` 的 Tank 中 TSS 库存之和；分母是从外部 `Outflow` 和 `Wasted`
+连接离开系统的 TSS 质量流率，内部回流固体仍属于系统内部：
+
+$$
+SRT_{system}=\frac{\sum_{j\in SRT}V_j X_{TSS,j}}
+{\sum_{k\in \{Outflow,Wasted\}} Q_k X_{TSS,source(k)}}
+$$
+
+结果中的时间统一为 day，流量为 `m³/d`；TSS 单位属于可识别的质量浓度时，库存和
+外排量分别以 `kg`、`kg/d` 显示。稳态 Report 也会显示同一组系统 HRT 和 SRT。
+
+## 稳态收敛判据与 Constraint
+
+SIMPO 将 `Steady-State` 和 `Dynamic` 视为两种不同的计算阶段：
+
+| 阶段 | `Solution.Constraint` | 输入边界 | 结束方式 |
+| --- | --- | --- | --- |
+| Steady-State | 不应用。组分由 BioReaction 和 Hydraulics 自然变化。 | 使用压缩后的恒定 Inflow/Flow。 | 通过真实时间窗口判据后结束。 |
+| Dynamic | 应用。每个接受的计算步将约束组分写回指定值。 | 使用原始时间序列。 | 运行到 Measured 的最后时间。 |
+| `steady_state_then_dynamic` 的第一段 | 不应用。 | 使用稳态平均输入。 | 通过稳态判据后保存状态。 |
+| `steady_state_then_dynamic` 的第二段 | 应用。 | 恢复原始动态输入。 | 从保存的稳态状态继续运行。 |
+
+这意味着 Steady-State 结果不是把某些组分强制替换成 `Constraint`，也不会在
+达到判据后把 `BioReaction` 置零。保存的 `Component` 是反应和水力输运共同作用
+后实际接受的状态。
+
+### 窗口如何确定
+
+开始时并不知道 SRT，因此不要求用户预先填写 SRT。求解器先用初始体积和流量估计
+一个保守窗口：
+
+$$
+T_{window,0} = \max\left(1\ \mathrm{day},\;5\times
+\frac{V_{total}}{Q_{external}}\right)
+$$
+
+其中 $V_{total}$ 是 `Volume_in` 中非负体积之和，$Q_{external}$ 是
+DataSet.Connection 中所有“从 `Inflow` 进入工艺池”的连接流量经非负限制后的总和。
+内部回流、排泥、池间输送、Pump 流量以及直接旁路到出水边界的流量不会进入该分母。
+外部液体药剂流量会与主进水相加，而不会被单独选作全厂处理流量；因此很小的 PAC
+投加流量或排泥流量不会把 HRT 放大到数千天。
+如果没有正的外部进水，初始窗口回退为 1 天，之后仍可按失败窗口自动扩展。
+如果窗口检查失败，窗口按真实时间翻倍：
+
+$$
+T_{window,next}=2T_{window,current}
+$$
+
+因此慢的生物量、PAC 库存或长 SRT 案例会自动获得更长观察时间，不需要在计算开始
+时知道 SRT。
+
+### 每个窗口检查什么
+
+窗口内记录每个组分和池体的最大值、最小值以及窗口起点状态。窗口结束时同时检查：
+
+1. 首尾状态变化：$\Delta C = |C_{end}-C_{start}|$；
+2. 窗口波动：$R_C=C_{max}-C_{min}$；
+3. 每日净变化率：
+
+$$
+r_{C,day}=\frac{|C_{end}-C_{start}|}{T_{window}}
+\times 1\ \mathrm{day}
+$$
+
+状态误差使用绝对误差和相对误差的组合阈值：
+
+$$
+\mathrm{limit}(C)=\varepsilon_{abs}+\varepsilon_{rel}
+\max\left(|C_{start}|,|C_{end}|,10^{-12}\right)
+$$
+
+当前默认状态绝对/相对阈值均为 `1e-4`，每日净变化率的绝对/相对阈值也均为
+`1e-4`。首尾变化、窗口波动和每日净变化率必须对所有组分和池体同时满足阈值，
+并连续通过 3 个窗口才记录 `Steady-State Arrived:`。单个窗口通过不代表已经稳态。
+
+这里的比较不是相邻两个内部步之间的简单比较。内部步只用于推进
+`BioReaction + Hydraulics`；稳态判据比较的是完整真实时间窗口的起点和终点，并
+额外检查窗口内是否有隐藏振荡。
+
+### 兼容参数与结果标记
+
+旧 API 中的 `steady_state_truncate` 和 `steady_state_escaped_threshold` 暂时保留，
+以避免外部调用报错，但它们不再决定稳态。稳态收敛方法以及稳态阶段禁用
+`Constraint` 的规则统一在本文档说明，不再作为固定字段重复写入结果工作簿。
+结果 Excel 的 `Metadata` 中，`Converged` 只有在日志出现稳态到达标记时才为
+`true`；Dashboard Report 复用同一个判定结果。
+
+## 动态输入插值方法
+
+`dynamic_input_interpolation_method` 用于决定动态计算中，两个输入事件时间点
+之间如何计算 `Flow` 和 `Inflow` 边界值。它不会把整段时间序列压缩成稳态输入值：
+
+| 方法 | 动态边界信号 |
+| --- | --- |
+| `previous` | 零阶保持：当前值保持不变，直到下一个输入事件。 |
+| `linear` | 相邻输入事件之间线性插值；最后一个事件之后保持最后值。 |
+
+例如，某进水浓度在 `0 h` 时为 `10 mg/L`，在 `2 h` 时为 `20 mg/L`：选择
+`previous` 时，整个区间使用 `10 mg/L`；选择 `linear` 时，`1 h` 时使用
+`15 mg/L`。动态 `Flow` 也使用相同的插值方法。若数据表示阶梯式/事件式输入，通常
+选择 `previous`；若测量值代表连续变化的信号，可选择 `linear`。
+
+Dashboard 将此参数与 `steady_state_input_average_method` 分开设置：
+
+- `Dynamic` 只使用 `dynamic_input_interpolation_method`，不使用稳态输入平均方法。
+- `Steady-State` 使用 `steady_state_input_average_method` 汇总输入序列，不使用动态插值方法。
+- `Steady-State Dynamic` 先用稳态平均方法初始化，再在恢复原始时序后使用动态插值方法。
+
+动态插值方法为 `previous` 和 `linear`。稳态输入平均方法为 `previous`、`linear`
+和 `arithmetic`；具体公式及 Inflow 的流量加权规则见前一节。API 字段名称为
+`dynamicInputInterpolationMethod`。旧字段 `inputInterpolation` 仍会被接受，以兼容
+旧客户端；新调用应使用语义明确的新名称。这两个设置都不改变 `Measured` 观测数据，
+也不改变 `Solution.Constraint` 自己的插值设置。
+
 ## SCE-UA 参数估计
 
 选择 `Estimation`，然后在 `Engine` 中选择 **SCE-UA**。Dashboard 显示名称为

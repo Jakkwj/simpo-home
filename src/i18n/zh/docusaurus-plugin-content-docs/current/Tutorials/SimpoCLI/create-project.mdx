@@ -15,7 +15,7 @@ sidebar_label: create-project
 - Project 名称为 1 至 230 个字符，且在当前账户中唯一。
 - BioModel 和 DataSet ID 必须属于当前用户，并且存在各自的同名 version `0` Draft。
 - 传入 `--json` 时必须包含 `Variable`、`Target`、`Conversion`、`Weight` 数组；
-  `Activator` 可以省略或为空，必要时由解析器生成。
+  `Activator`、`Constraint` 和兼容旧数据的 `Retention` 可以省略；必要时由解析器生成默认表。
 
 ## 命令格式
 
@@ -32,6 +32,39 @@ simpo create-project MyProject --biomodel-id 123 --dataset-id 456 --json ./Solut
 
 不传 JSON 时，根据所选 BioModel 和 DataSet 生成默认 Solution；传入 JSON 时会在
 同一次操作中解析并生成 Project，不会先创建空白 Project 再执行更新。
+
+## 可选 Constraint 表
+
+`Constraint` 可以在计算时强制某个 Tank 中的 BioModel Component 跟随对应的
+DataSet `Measured` Target。它使用具名记录数组：
+
+```json
+"Constraint": [
+  {
+    "Tank": "Tank1",
+    "Component": "S_O2",
+    "Target": "DO",
+    "Interpolation": "Linear"
+  }
+]
+```
+
+`Tank`、`Component` 和 `Target` 必须已经存在，Target 与 Component 的单位必须一致，
+每个 Tank/Component 组合必须唯一。`Interpolation` 为 `Previous` 或 `Linear`。
+匹配的 Measured 首值不能为空；线性插值在最后一个观测值之后保持末值。被约束的
+Measured 序列不会再计入加权拟合目标。
+
+## Retention 表
+
+`Retention` 必须与 DataSet Tank 一一对应。`HRT` 和 `SRT` 必须使用 JSON 布尔值，
+不能写成字符串。旧输入可以省略该表，解析器会生成默认值，但建议用户逐项检查。
+
+```json
+"Retention": [
+  {"Tank": "Aeration", "HRT": true, "SRT": true},
+  {"Tank": "Clarifier", "HRT": true, "SRT": true}
+]
+```
 
 ## Conversion 映射
 
@@ -104,7 +137,9 @@ simpo create-project MyProject --biomodel-id 123 --dataset-id 456 \
     "Target": [],
     "Conversion": [],
     "Weight": [],
-    "Activator": []
+    "Activator": [],
+    "Constraint": [],
+    "Retention": []
   },
   "createdAt": "2026-09-25T12:00:00",
   "updatedAt": "2026-09-25T12:00:00",

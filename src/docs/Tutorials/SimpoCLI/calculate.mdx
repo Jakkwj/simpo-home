@@ -30,6 +30,16 @@ Start a Simulation and return after SimpoClient is launched:
 simpo calculate 706 --engine SIM
 ```
 
+Solve the steady state first, then run the dynamic input series with linear
+interpolation:
+
+```text
+simpo calculate 706 --engine SIM \
+  --execution-mode steady_state_then_dynamic \
+  --input-interpolation linear \
+  --steady-state-input-average-method linear
+```
+
 Start OAT sensitivity analysis and wait for a terminal status:
 
 ```text
@@ -79,8 +89,31 @@ The generic `OAT` code is not a public CLI choice.
 | `--step-tolerance FLOAT` | `0.05` | `0.0001` to `0.2` |
 | `--auto-plot / --no-auto-plot` | disabled | Enable or disable real-time local plotting |
 | `--force-recalculate / --no-force-recalculate` | disabled | Force a new calculation instead of allowing result reuse |
-| `--steady-state / --no-steady-state` | disabled | Enable or disable steady-state calculation |
+| `--execution-mode TEXT` | `dynamic` | `dynamic`, `steady_state`, or `steady_state_then_dynamic` |
+| `--input-interpolation TEXT` | `previous` | Dynamic Flow/Inflow interpolation: `previous` or `linear`; alias: `--dynamic-input-interpolation-method` |
+| `--steady-state-input-average-method TEXT` | `previous` | Steady-state input reduction: `previous`, `linear`, or `arithmetic` |
 | `--platform TEXT` | package platform | `linux`, `windows`, or `mac`; normally omit |
+
+### Execution modes and input handling
+
+| Mode | Behavior |
+| --- | --- |
+| `dynamic` | Run the original time series only. |
+| `steady_state` | Reduce Flow and Inflow series to constants and solve only the steady state. |
+| `steady_state_then_dynamic` | Solve the steady state first, use it as the initial state, then continue with the original dynamic time series. |
+
+`--input-interpolation` controls how dynamic `Flow` and `Inflow` values are
+evaluated between recorded time points. `previous` is a zero-order hold;
+`linear` interpolates between adjacent samples and holds the final value after
+the last sample. It is ignored by a steady-state-only run.
+
+`--steady-state-input-average-method` controls how time series become constants
+for `steady_state` and the initialization phase of
+`steady_state_then_dynamic`. `previous` computes the duration average of a step
+signal, `linear` integrates a linearly interpolated signal, and `arithmetic`
+averages valid rows without time-spacing or Flow weighting. For Inflow
+concentrations, `previous` and `linear` use the matching Flow as a hydraulic
+weight. This option is ignored by a dynamic-only run.
 
 ## Analysis-specific options
 

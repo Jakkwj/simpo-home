@@ -21,7 +21,8 @@ Release and Standard versions are immutable and cannot be updated.
 - The BioModel must belong to the Token user.
 - The BioModel must have `state=Draft` and `version=0`.
 - The JSON must contain `Component`, `Parameter`, and `Matrix` arrays.
-- `Composition` and `Ionization` are optional.
+- `Formula`, `Composition`, and `Ionization` are optional. Formula rows follow
+  the same algebraic-component rules documented by `create-biomodel`.
 - `Balance` is read-only and must not be submitted.
 
 ## Syntax

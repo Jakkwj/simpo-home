@@ -27,19 +27,24 @@ The time value may be `day`, `hour`, `minute`, or `second`; preserve the
 source time basis instead of converting a batch experiment only to satisfy a
 template.
 
+`Time` controls the timestamps and may be `hour` while `Flow` remains `m3/d`.
+The current parser fixes Volume to `m3`, Flow to `m3/d`, Area to `m2`, and Height
+to `m`; convert source values to these units and record the conversion. Do not
+change the Flow unit to `m3/h` merely because the time-series axis uses hours.
+
 ### Target
 
 Use the model-target reference and this header:
 
 ```json
-{"0":"Symbol","1":"Unit","2":"Name","3":"Description","4":"Oxygen","5":"TSS"}
+{"0":"Symbol","1":"Unit","2":"StandardTarget","3":"Name","4":"Description"}
 ```
 
-Symbols must be unique and must not use reserved node words. Marker cells are
-JSON booleans, not the strings `"true"` and `"false"`. At most one target may
-be marked `Oxygen: true` and at most one may be marked `TSS: true`; leave all
-markers false when the model/DataSet has no dissolved-oxygen or total-solids
-target. The backend does not require either marker to be present.
+Symbols must be unique and must not use reserved node words. `StandardTarget`
+is `""`, `"Dissolved Oxygen"`, or `"Total Suspended Solids"`. At most one Target
+may use each nonempty value; use `""` when neither role applies. Historical
+Oxygen/TSS boolean columns are accepted only while reading old data and must not
+be written by this workflow.
 
 ### Tank
 

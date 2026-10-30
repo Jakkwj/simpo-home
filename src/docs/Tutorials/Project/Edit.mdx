@@ -38,7 +38,7 @@ editor. Values must satisfy their displayed units and bounds. During a
 calculation, the value stored in `Project.Solution` takes precedence over the
 BioModel default value.
 
-The toolbar also opens three auxiliary tables:
+The toolbar also opens five auxiliary tables:
 
 - `Conversions`: maps BioModel Components to predicted additional Targets. For
   example, if `TN = S_NH4 + S_NO3 + 0.1 * X_H`, set the corresponding row to
@@ -50,6 +50,13 @@ The toolbar also opens three auxiliary tables:
 - `Activator`: toggles whether each BioModel Process is active in each Tank.
   Use it to disable, for example, an aeration process in an anoxic or anaerobic
   Tank.
+- `Constraint`: maps measured Targets to BioModel Components for dynamic
+  calculations. Constraints are not applied during steady-state calculation.
+- `Retention`: contains exactly one row for every DataSet Tank. `HRT` selects
+  volumes included in the system HRT numerator; `SRT` selects solids inventories
+  included in the system SRT numerator. The Tank names are fixed by the DataSet.
+  Legacy Projects without this table receive generated defaults when parsed;
+  review the generated selections before using HRT/SRT results.
 
 ### Linked BioModel and DataSet
 
@@ -65,13 +72,51 @@ detail. A released linked object is read-only.
 - `Temp`: save the Project detail without parsing. Use it while entering
   incomplete tables.
 - `Parse`: validate the Project, BioModel, and DataSet detail and save them.
-  Parsing can take time; refreshing the page stops a running parse operation.
+  Parsing can take time; wait for the save confirmation before refreshing.
 - `Edit`: rename the Project, import an XLSX Solution template, choose a paper,
   or edit the description.
 - `Export`: download the Project Solution as XLSX, edit it locally, and import
   it again through `Edit`.
 - `Clone` and delete are available from the Project list or from a released
   Project when the permissions allow them.
+
+### Saving related inputs together
+
+On the Project Detail page, `Parse` submits Solution and the currently loaded,
+editable BioModel/DataSet Draft inputs together. Unopened editors and released
+dependencies are not submitted. The server parses the latest dependency inputs,
+rebuilds the affected Solutions, then commits their detail and calculation caches
+in one database transaction. It does not save Project, BioModel, and DataSet in
+separate requests.
+
+Saving waits for the loaded editors' actual data requests to finish, including
+the DataSet `Unit` table. If loading fails, saving stays blocked and the affected
+editor offers `Retry loading`. Retry fetches missing/failed tables without
+reloading tables you have already edited; an unloaded table is never submitted
+as an intentional empty table.
+
+For example, marking a DataSet Target as `Total Suspended Solids` and enabling
+`Retention.SRT` can be saved together. SRT validation uses the new Target setting,
+not the previously saved DataSet. Formal saving still validates Solution when
+only Project settings changed or dependency inputs are unchanged.
+
+Tank, Target, Component, Parameter, and Process renames preserve compatible
+Solution values by name, including `Activator`, `Constraint`, and `Retention`.
+New Tanks receive default Retention selections; existing `False` selections are
+not reset. Removing an item still referenced by a Constraint causes a validation
+error instead of silently deleting that Constraint.
+
+Changing a shared Draft also rebuilds your other Draft Projects that reference
+it. If any affected Project fails validation, none of the changes in this save
+are committed; the error identifies the failing Project. The editor keeps your
+inputs and rename records for correction and retry. Requested result deletion
+also takes effect only after a successful commit, and only for the current Project.
+
+`Temp` uses the same transaction but does not fully validate Solutions. It stores
+draft inputs and clears the affected Project calculation caches; run `Parse`
+before calculating. Basic input checks still apply. A network failure means the
+save status is unconfirmed, not necessarily rolled back. Release/version actions
+remain separate from this joint save workflow.
 
 ## Calculation
 

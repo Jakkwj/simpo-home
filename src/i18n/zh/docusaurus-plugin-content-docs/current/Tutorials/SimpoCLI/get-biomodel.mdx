@@ -7,7 +7,7 @@ sidebar_label: get-biomodel
 # `get-biomodel`：读取一个 BioModel
 
 读取当前 API Token 用户拥有的一个 BioModel，包括解析后的 `Component`、
-`Parameter`、`Matrix`、`Composition` 以及其他已有表格。
+`Parameter`、`Matrix`、可选的 `Formula`、`Composition` 以及其他已有表格。
 
 ## 使用条件
 
@@ -65,6 +65,7 @@ JSON 响应包含元数据、replacer 列表、各表数量以及 `detail` 中�
     "Component": [{"0": "Symbol", "1": "Unit"}],
     "Parameter": [{"0": "Symbol", "1": "Unit", "2": "DefaultValue"}],
     "Matrix": [{"0": "Name", "1": "Rate"}],
+    "Formula": [{"0": "Component", "1": "Formula"}],
     "Composition": []
   },
   "createdAt": "2026-09-20T10:00:00",

@@ -150,10 +150,11 @@ SIMPO-safe name is introduced.
    linked to a BioModel by `create-dataset`.
 5. Build the complete DataSet detail object. Preserve the source time unit when
    it is one of the backend-supported values (`day`, `hour`, `minute`, or
-   `second`). Use the current Target schema when TSS is applicable; the backend
-   also accepts the historical four- and five-column forms. Mark Oxygen/TSS only
-   when those quantities exist (zero or one true marker for each), and never add
-   a fictional target just to satisfy a template. Keep every name and target
+   `second`). Use the current five-column Target schema with `StandardTarget`
+   after `Unit`; the backend reads historical Oxygen/TSS marker forms only for
+   compatibility. Use `Dissolved Oxygen` or `Total Suspended Solids` only when
+   that quantity exists (zero or one Target for each standard role), and never
+   add a fictional target just to satisfy a template. Keep every name and target
    symbol consistent across Tank, Pump, Measured, Inflow, Flow, and Connection.
    Use only `CSTR` and `Point Settling` tank types in this workflow unless the
    user provides a separately validated current SIMPO format for another type.

@@ -1,6 +1,6 @@
 ---
 name: simpo-create-biomodel
-description: Create a reviewed SIMPO BioModel Draft from a model paper, PDF, equations, supplementary material, or a user-defined process/model specification. Use when asked to extract or derive Components, Parameters, Matrix, Composition, or Ionization, design a model from explicit reactions and kinetics, or submit a reviewed model JSON to SIMPO.
+description: Create a reviewed SIMPO BioModel Draft from a model paper, PDF, equations, supplementary material, or a user-defined process/model specification. Use when asked to extract or derive Components, Parameters, Matrix, Formula, Composition, or Ionization, design a model from explicit reactions and kinetics, or submit a reviewed model JSON to SIMPO.
 ---
 
 # Create a SIMPO BioModel
@@ -12,7 +12,7 @@ modes:
   supplementary material.
 - **User-defined mode**: build a model from an explicit user specification of
   model family, Components, reactions, rate equations, parameters, units, and
-  optional Composition/Ionization.
+  optional Formula/Composition/Ionization.
 
 The prompt may be written in English or Chinese. Submit it through the installed
 `simpo create-biomodel` command only after the model name, evidence or user
@@ -49,9 +49,12 @@ settings, not `simpo` CLI flags:
   Composition values, but retain values explicitly reported by the paper.
 - `ionization_derive`: `on` or `off` (default `on`). When on, attempt
   Ionization whenever the model has relevant dissolved species, but include
-  rows only when species, basis, equilibrium, and temperature evidence are
-  sufficient; it never authorizes guessing. When off, do not infer Ionization
-  values, but retain rows explicitly reported by the paper.
+  rows supported by species and concentration basis. Use applicable paper/user
+  constants first, otherwise use the built-in SIMPO defaults in the derivation
+  reference (primary values outside parentheses). Disclose their source/version;
+  missing paper constants or temperature metadata does not block these defaults.
+  Resolve known condition conflicts and never invent corrections. When off, do
+  not infer Ionization values, but retain rows explicitly reported by the paper.
 - `source_correction`: `on` or `off` (default `on`). When on, automatically
   correct only high-confidence source transcription issues, such as clear OCR,
   copying, decimal-separator, unit-label, or equation/table consistency errors.
@@ -65,6 +68,9 @@ left unspecified; use the defaults above. Present any exact coefficient
 normalization as a reported-value-to-stored-expression change in the review
 summary before submitting the model.
 
+Always audit substrate depletion using the analysis rules, even with
+`source_correction` off. This check does not authorize kinetic changes.
+
 ## Input modes and model boundary
 
 Classify the request before extracting values. In Paper mode, preserve the
@@ -75,8 +81,8 @@ initial-state meaning. A flow rate or water-quality brief alone does not define
 a unique BioModel; route those conditions to `simpo-create-dataset` unless the
 user also supplies a model template or explicit biological equations.
 
-Never invent a reaction, kinetic expression, Component, parameter, Composition
-coefficient, or Ionization row merely to make a user-defined model complete. If
+Never invent a reaction, kinetic expression, Component, parameter, Formula,
+Composition coefficient, or Ionization row merely to make a user-defined model complete. If
 the structure is not determined, report `insufficient_equations` and stop before
 the API write. A selected ASM or other existing template is evidence of the
 model family, not permission to silently add unsupported processes.
@@ -89,11 +95,13 @@ structured Markdown audit, not raw internal chain-of-thought. It must include:
 - input mode and model purpose;
 - paper citation and page/table/equation locations, or the user's explicit
   model specification;
-- Component, Parameter, Matrix, Composition, and Ionization derivation notes;
+- Component, Parameter, Matrix, Formula, Composition, and Ionization derivation notes;
 - classifications for material values: `reported`, `calculated`, `assumed`,
   `unresolved`, and any source corrections;
 - units, fraction normalizations, balance diagnostics, and why unsupported
-  cells remain `null` or rows are omitted; and
+  cells remain `null` or rows are omitted;
+- depletion findings per consuming process/Component pair and any kinetic
+  extensions, following the analysis rules; and
 - unresolved scientific choices and the next review or calibration step.
 
 Keep the JSON tables limited to SIMPO-supported fields. Put reasoning that a
@@ -128,8 +136,8 @@ excluding private conversational chain-of-thought.
 1. Classify the input as Paper mode or User-defined mode. In Paper mode, identify
    the title, authors, year, DOI, relevant tables, equations, and supplements.
    Verify that it is a wastewater-treatment model research paper and look up its
-   DOI when network access is available. If no DOI can be found, report `Not SCI`
-   and stop unless the user explicitly asks to proceed despite that check. In
+   DOI when network access is available. If no DOI can be verified, record
+   `DOI unverified`; a missing DOI does not establish SCI indexing status. In
    User-defined mode, record the requested model family, process scope, symbols,
    reactions, equations, parameters, units, and initial-state definitions. Do
    not invent a DOI, citation, model variable, parameter, equation, or value. If
@@ -142,7 +150,11 @@ excluding private conversational chain-of-thought.
    `Balance` is nonzero or a value looks unusual. When it is off, keep the
    original value and record the suspected issue without correcting it. Then
    extract the model in the stages described by the reference: Components and Parameters first, then the Stoichiometric
-   Matrix using the finalized component order, then Composition and Ionization.
+   Matrix using the finalized component order, then Formula, Composition, and Ionization.
+   Use Formula only for a Component that the source or user specification
+   explicitly defines algebraically from other registered Components and
+   Parameters. Do not convert an ordinary differential state into Formula merely
+   because an equivalent diagnostic expression can be written.
    If `matrix_fractions` is on, replace only those rounded Matrix or Composition
    coefficients whose exact rational form is independently established; retain
    all other reported values unchanged. If Composition is absent and
@@ -153,28 +165,37 @@ excluding private conversational chain-of-thought.
    Composition to balance before creation; the backend `Balance` result is a
    diagnostic for omissions, basis conflicts, or a non-closed model. Keep a trace
    from every nontrivial value to a page, table, equation, external chemical
-   reference, or explicit derivation. When `ionization_derive` is on, derive
-   Ionization only with its dedicated workflow and only when the acid/base
-   family, concentration basis, constants, and temperature assumptions are
-   supportable; when it is off, include only explicitly reported Ionization data.
-3. Validate symbol uniqueness, table headers and order, formula references,
+   reference (including the built-in SIMPO parameter set), or explicit derivation.
+   When `ionization_derive` is on, use its dedicated workflow to match the
+   acid/base family and concentration basis, adopting applicable paper/user
+   values or built-in defaults. Disclose condition limitations; do not require
+   missing temperature metadata to be supplied before using SIMPO defaults.
+   When it is off, include only explicitly reported Ionization data.
+3. Validate symbol uniqueness, table headers and order, rate and Formula references,
    units, matrix dimensions, Composition row order, and Ionization combinations,
    Factors, pK values, and pKw placement. Mark uncertain or
    placeholder values plainly. Do not silently fill gaps with plausible values.
+   Formula must have exactly `Component` and `Formula` columns; each target must
+   exist in Component, and its expression may use only registered Components and
+   Parameters, finite numbers, parentheses, and `+ - * /`. A Formula Component
+   cannot reference itself or another Formula Component.
    Remember that the current parser treats empty Composition cells as zero when
    computing `Balance`; disclose this whenever `null` cells remain.
+   Follow "Substrate depletion and nonnegativity" in the analysis rules for each
+   consuming process/Component pair. Record missing or unresolved constraints
+   and any proposed kinetic extensions separately from source corrections.
 4. Show the user the proposed model name, input mode, paper citation or user
    specification, component and parameter lists, process/rate matrix summary,
-   Composition and Ionization rows, their derivation/source notes, Description
-   audit, and unresolved material uncertainties. Applied
+   Formula, Composition, and Ionization rows, their derivation/source notes, Description
+   audit (including depletion findings), and unresolved material uncertainties. Applied
    high-confidence source corrections do not require a separate manual
    confirmation; include their complete Markdown audit in the description. Ask
    the user to resolve material scientific ambiguities and approve creation
    before making the API request. A clear request to create the model authorizes
    creation only when no material ambiguity remains.
 5. Write a UTF-8 JSON object containing only supported model tables:
-   `Component`, `Parameter`, and `Matrix` are required; `Composition` and
-   `Ionization` are optional. Never include `Balance`: it is read-only and
+   `Component`, `Parameter`, and `Matrix` are required; `Formula`, `Composition`,
+   and `Ionization` are optional. Never include `Balance`: it is read-only and
    derived by the backend. Do not include response metadata such as `id`,
    `state`, `privacy`, `version`, `Paper`, or analysis `Description` as model
    table keys. Put the citation, concise evidence-based analysis notes, derivation

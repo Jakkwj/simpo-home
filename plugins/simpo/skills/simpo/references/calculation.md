@@ -50,6 +50,36 @@ Solution value, the original Inflow Conversion expression, its resolved value,
 and the resulting offset. Do not pre-shift the stored DataSet to compensate for
 this runtime behavior.
 
+## Execution mode and input methods
+
+Use `--execution-mode` with one of three canonical values:
+
+- `dynamic`: run the original time series;
+- `steady_state`: reduce Flow and Inflow to constant inputs and solve only the
+  steady state;
+- `steady_state_then_dynamic`: solve the steady state first, use that state as
+  the dynamic initial condition, and then run the original time series.
+
+Use `--input-interpolation previous|linear` (also accepted as
+`--dynamic-input-interpolation-method`) for dynamic Flow/Inflow values between
+samples. `previous` is zero-order hold; `linear` interpolates adjacent samples
+and holds the final value after the last sample.
+
+Use `--steady-state-input-average-method previous|linear|arithmetic` for the
+steady-state phase. `previous` duration-averages a step signal, `linear`
+integrates a linearly interpolated signal, and `arithmetic` averages valid rows
+without time-spacing or Flow weighting. For Inflow concentrations, `previous`
+and `linear` use the matching Flow as a hydraulic weight. State all three
+settings before starting a calculation; do not use the old Boolean
+`--steady-state` interface for new requests.
+
+For a steady-state result, inspect the `Retention` rows as well as Component
+and Target. Per-Tank HRT uses each Tank's through-flow. System HRT divides the
+selected HRT Tank volume by true external influent flow. System SRT divides the
+selected SRT Tank TSS inventory by TSS leaving external Outflow and Wasted
+connections; internal recycles are not external losses. Require `Converged=true`
+before describing the result as a converged steady state.
+
 ## Engines
 
 The available interface includes these case-sensitive families; the installed

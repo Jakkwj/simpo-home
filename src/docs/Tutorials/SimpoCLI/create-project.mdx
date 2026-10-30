@@ -17,7 +17,8 @@ same create operation.
 - The BioModel and DataSet IDs must belong to the Token user, and their
   same-name version `0` Drafts must exist.
 - With `--json`, `Variable`, `Target`, `Conversion`, and `Weight` arrays are
-  required. `Activator` may be omitted or empty and is generated when needed.
+  required. `Activator`, `Constraint`, and legacy `Retention` may be omitted;
+  defaults are generated when needed.
 
 ## Syntax
 
@@ -36,6 +37,41 @@ Without `--json`, the backend generates the default Solution tables from the
 selected BioModel and DataSet. With `--json`, it parses those tables and builds
 the Project in the same operation; it does not create an empty Project and
 update it afterward.
+
+## Optional Constraint table
+
+`Constraint` can force a BioModel Component in one Tank to follow a matching
+DataSet `Measured` Target during calculation. It is an array of named records:
+
+```json
+"Constraint": [
+  {
+    "Tank": "Tank1",
+    "Component": "S_O2",
+    "Target": "DO",
+    "Interpolation": "Linear"
+  }
+]
+```
+
+`Tank`, `Component`, and `Target` must already exist; Target and Component units
+must match, and each Tank/Component pair must be unique. `Interpolation` is
+`Previous` or `Linear`. The first matching Measured value cannot be empty;
+linear interpolation holds the last known value after the final observation.
+A constrained Measured series is excluded from the weighted fitting objective.
+
+## Retention table
+
+`Retention` has exactly one row for every DataSet Tank. `HRT` and `SRT` must be
+JSON booleans, not strings. Legacy input may omit the table; the parser then
+generates defaults, but explicitly reviewing the selections is recommended.
+
+```json
+"Retention": [
+  {"Tank": "Aeration", "HRT": true, "SRT": true},
+  {"Tank": "Clarifier", "HRT": true, "SRT": true}
+]
+```
 
 ## Conversion mapping
 
@@ -114,7 +150,9 @@ final Project, or use [`wait-operation`](./wait-operation) later.
     "Target": [],
     "Conversion": [],
     "Weight": [],
-    "Activator": []
+    "Activator": [],
+    "Constraint": [],
+    "Retention": []
   },
   "createdAt": "2026-09-25T12:00:00",
   "updatedAt": "2026-09-25T12:00:00",

@@ -81,6 +81,12 @@ or delete resources automatically.
 
 1. Run `SIM` with reported values and provisional guesses. Verify stability,
    units, event timing, mass balance, and output mapping before fitting.
+   Select and record one execution mode: `dynamic`, `steady_state`, or
+   `steady_state_then_dynamic`. For a dynamic phase, record
+   `--input-interpolation previous|linear`; for a steady-state phase, record
+   `--steady-state-input-average-method previous|linear|arithmetic`. Use the
+   combined mode only when the reviewed protocol requires steady-state
+   initialization before the original dynamic series.
    Before interpreting the run, audit every `Inflow` and `Flow` baseline:
    record the DataSet `time=0` value, the matching Solution `Variable.Value`,
    the selected Inflow Conversion expression and its resolved coefficient, and

@@ -26,12 +26,13 @@ Detail 页面包含 Flowchart、Targets、Tanks 和 Links，以下操作均适�
 ### Targets
 
 Targets 是测量变量，也是 DataSet 与 BioModel Components 的连接对象，包含
-`Symbol`、`Unit`、`Name`、`Description` 和 `Oxygen`。
+`Symbol`、`Unit`、`StandardTarget`、`Name` 和 `Description`。
 
 - `Symbol` 和 `Unit` 必填。
 - Symbol 以字母开头，只能使用字母、数字和下划线，不能连续使用下划线。
 - Symbol 必须唯一，不能与保留字或其他 DataSet 名称冲突。
-- 为曝气计算使用的溶解氧目标设置 `Oxygen`。
+- 普通 Target 的 `StandardTarget` 留空；曝气目标选择 `Dissolved Oxygen`；
+  稳态 SRT 使用的 TSS 目标选择 `Total Suspended Solids`。每个标准值最多只能分配给一个 Target。
 
 ### Tanks
 

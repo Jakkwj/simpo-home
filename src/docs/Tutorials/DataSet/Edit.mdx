@@ -29,14 +29,16 @@ and flows.
 ### Targets
 
 Targets connect measured variables to BioModel Components. The table contains
-`Symbol`, `Unit`, `Name`, `Description`, and `Oxygen`.
+`Symbol`, `Unit`, `StandardTarget`, `Name`, and `Description`.
 
 - `Symbol` and `Unit` are required.
 - A Symbol starts with a letter and uses only letters, numbers, and underscores;
   consecutive underscores are not allowed.
 - Symbols must be unique and cannot conflict with reserved words or other
   DataSet names.
-- Set `Oxygen` for the dissolved-oxygen target used by aeration calculations.
+- Leave `StandardTarget` empty for ordinary targets. Use `Dissolved Oxygen` for
+  the aeration target or `Total Suspended Solids` for the TSS target used in
+  steady-state SRT calculation. Each value can be assigned to at most one Target.
 
 ### Tanks
 

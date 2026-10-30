@@ -41,6 +41,14 @@ contain `Balance`; SIMPO derives that read-only table. After success, require a
 positive `id`, the requested name, `state: "Draft"`, `privacy: "Private"`,
 `version: 0`, and the expected `creationMode`.
 
+`Component`, `Parameter`, and `Matrix` are required JSON tables. `Formula`,
+`Composition`, and `Ionization` are optional. `Formula` has exactly two
+columns, `Component` and `Formula`. Each target must already exist in
+`Component`; expressions may use registered Components and Parameters, finite
+numbers, parentheses, and `+ - * /`. A Formula Component cannot reference
+itself or another Formula Component. Preserve Formula when reading, updating,
+synchronizing, or reviewing a model.
+
 For blank or JSON creation and for `update-biomodel`, `--async` returns a durable
 Operation ID; add `--wait` to receive the final BioModel result. Use an
 `--idempotency-key` when retrying after a connection timeout.
