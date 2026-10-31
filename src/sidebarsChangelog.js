@@ -5,6 +5,46 @@ const sidebars = {
 
     {
       type: 'category',
+      label: 'SIMPO Client',
+      collapsible: true,
+      collapsed: false, // 默认展开, 后续多了在折叠
+      // "link": {
+      //   "type": "generated-index",
+      //   "description": "Changelog of the core source code of SIMPO."
+      //   // type: 'doc',
+      //   // id: 'Changelog/index',
+      //  },
+
+      items: [
+        'SIMPO Client/2026',
+        {
+          type: 'category',
+          label: 'Earlier',
+          key: 'SIMPO Client/Earlier',
+          collapsible: true,
+          collapsed: true, // 默认折叠
+          items: [
+            'SIMPO Client/Earlier/2025',
+            'SIMPO Client/Earlier/2024',
+            'SIMPO Client/Earlier/2023',
+          ],
+        },
+
+        // {
+        //   type: 'category',
+        //   label: 'SIMPO Client',
+        //   items: [
+        //     'SIMPO Client/2023',
+        //   ]
+        // },
+
+
+
+      ],
+    },
+
+    {
+      type: 'category',
       label: 'SIMPO Dash',
       collapsible: true,
       collapsed: false, // 默认展开, 后续多了在折叠
@@ -120,45 +160,7 @@ const sidebars = {
 
     },
 
-    {
-      type: 'category',
-      label: 'SIMPO Client',
-      collapsible: true,
-      collapsed: false, // 默认展开, 后续多了在折叠
-      // "link": {
-      //   "type": "generated-index",
-      //   "description": "Changelog of the core source code of SIMPO."
-      //   // type: 'doc',
-      //   // id: 'Changelog/index',
-      //  },
 
-      items: [
-        'SIMPO Client/2026',
-        {
-          type: 'category',
-          label: 'Earlier',
-          key: 'SIMPO Client/Earlier',
-          collapsible: true,
-          collapsed: true, // 默认折叠
-          items: [
-            'SIMPO Client/Earlier/2025',
-            'SIMPO Client/Earlier/2024',
-            'SIMPO Client/Earlier/2023',
-          ],
-        },
-
-        // {
-        //   type: 'category',
-        //   label: 'SIMPO Client',
-        //   items: [
-        //     'SIMPO Client/2023',
-        //   ]
-        // },
-
-
-
-      ],
-    },
 
 
   ],

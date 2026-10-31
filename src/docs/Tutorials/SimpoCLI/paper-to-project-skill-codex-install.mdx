@@ -6,6 +6,24 @@ sidebar_label: Install
 
 # Install in Codex
 
+## Install and update with SimpoCLI
+
+These commands require **SimpoCLI 0.1.8 or later**. Download and install a newer
+CLI once if your current version does not have them.
+
+```bash
+simpo skills install simpo-create-project --target codex
+simpo skills update simpo-create-project --target codex --check
+simpo skills update simpo-create-project --target codex
+```
+
+Project installs its three dependencies automatically. Omit the Skill name to
+install all four or update installed Skills. All four share a version such as
+`0.1.8-skills.1`; the revision can advance independently of the CLI. Start a new
+assistant session afterwards. Existing manual installations and local changes
+are protected; `--force` backs them up before replacement and returns the backup
+location.
+
 Ask Codex's built-in Skill Installer to install the Skill from the repository:
 
 ```text

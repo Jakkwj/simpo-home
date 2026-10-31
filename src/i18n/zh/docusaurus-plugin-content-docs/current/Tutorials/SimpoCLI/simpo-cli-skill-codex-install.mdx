@@ -6,6 +6,20 @@ sidebar_label: 安装
 
 # 在 Codex 中安装 SimpoCLI Skill
 
+## 使用 SimpoCLI 安装和更新
+
+SimpoCLI **0.1.8 起**支持以下命令；旧 CLI 需要先下载安装新版。
+
+```bash
+simpo skills install simpo --target codex
+simpo skills update simpo --target codex --check
+simpo skills update simpo --target codex
+```
+
+安装 Project 会补齐另外三项依赖。省略名称时安装全部四项，更新命令更新已安装的
+Skills。四项共用 `0.1.8-skills.1` 这样的版本，后缀独立递增。已有手工安装或本地
+修改时默认停止覆盖；加 `--force` 会先备份，并返回备份目录。完成后开启新的助手会话。
+
 将 Skill 直接安装到 Codex 的 Skill 目录。
 
 完整的 Codex/Claude Code 安装目录和功能对照请参阅 [Skill 总览](./simpo-skills)。
@@ -31,9 +45,9 @@ simpo configure
 默认安装目录为 `~/.codex/skills/simpo`；如果设置了 `CODEX_HOME`，则使用
 `$CODEX_HOME/skills/simpo`。
 
-## 从本仓库安装
+## 从仓库安装的备用方式
 
-推荐让 Codex 内置的 Skill Installer 从 GitHub 安装：
+也可以让 Codex 内置的 Skill Installer 从 GitHub 安装：
 
 ```text
 Use $skill-installer to install this Skill from:
@@ -63,5 +77,5 @@ cp -R plugins/simpo/skills/simpo \
 
 ## 更新
 
-Skill Installer 不会覆盖已经存在的 Skill。请先备份或删除已安装的
-`$CODEX_HOME/skills/simpo` 目录，再安装最新 GitHub 副本并重新启动 Codex 会话。
+推荐使用上方 `simpo skills update`。旧安装器或手工复制的目录，首次迁移使用
+`simpo skills install --target codex --force`，先备份再纳入 CLI 管理。

@@ -36,6 +36,35 @@ directly; the CLI and backend enforce the required scopes:
 - `write`: create/update/sync/release BioModels, DataSets, and Projects, and update Project Variables;
 - `calculate`: prepare, inspect, and stop calculations.
 
+## CLI and Skills updates
+
+Starting with CLI 0.1.8, use these commands only when the user requests maintenance:
+
+```bash
+simpo update --check
+simpo update
+simpo skills list --target codex
+simpo skills install --target codex
+simpo skills update --target codex --check
+simpo skills update --target codex
+```
+
+Use `--target claude` for Claude Code local-directory Skills. Installing
+`simpo-create-project` includes all three dependencies. Omitted names install
+all four or update installed Skills. Skills share `X.Y.Z-skills.N` versions;
+CLI compatibility is declared separately. Neither update operation needs an API
+Token. Old CLIs lacking these commands require a downloaded installer first.
+
+Linux CLI updates use sudo/dpkg. Windows returns `scheduled` while a detached
+installer waits for the CLI to exit; UAC may appear. Read the returned
+`status_file` and `installer_log` to confirm `installed` or diagnose `failed`.
+Do not report a scheduled update as installed. Skills updates require a new
+assistant session. Manual installations and modified files require explicit
+`--force`, which backs them up before replacement; report the backup location.
+Claude Marketplace plugins remain managed through Claude's `/plugin` manager;
+the CLI never writes plugin caches or installs local duplicates. Local Claude
+Skills use `/simpo` instead of `/simpo:simpo`.
+
 ## Output and automation
 
 Successful results are JSON on stdout. Progress and errors go to stderr. In a

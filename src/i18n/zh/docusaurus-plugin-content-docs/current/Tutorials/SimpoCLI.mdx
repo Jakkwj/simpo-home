@@ -279,3 +279,30 @@ simpo me --base-url http://127.0.0.1:8888
 ```
 
 Token 必须属于当前选择的后端环境。
+
+## 更新程序和 Skills
+
+从 **0.1.8** 起，CLI 支持主动检查更新、安装最新版或指定版本：
+
+```bash
+simpo update --check
+simpo update
+simpo update --version 0.1.8
+```
+
+旧版没有 `update` 命令时，需要先下载安装新版。更新使用公开发布清单，不需要
+API Token，也不会在普通命令执行时自动联网检查更新。下载校验 SHA-256 和大小。
+Linux amd64 使用 `sudo dpkg` 安装并验证版本；Windows x64 在当前 CLI 退出后启动
+系统安装器，可能出现 UAC 提示。Windows 返回 `scheduled` 表示已安排，需检查返回的
+`status_file` 和 `installer_log` 确认 `installed` 或排查 `failed`。不支持降级。
+
+Skills 单独安装、升级，不需要重新安装 CLI：
+
+```bash
+simpo skills install --target codex
+simpo skills update --target codex
+simpo skills install --target claude
+simpo skills update --target claude
+```
+
+详细目录、版本、依赖和本地备份说明见 [Skill 总览](./SimpoCLI/simpo-skills)。

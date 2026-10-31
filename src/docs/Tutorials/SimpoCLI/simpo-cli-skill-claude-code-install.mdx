@@ -6,6 +6,30 @@ sidebar_label: Installation
 
 # Install SimpoCLI Skill for Claude Code
 
+## Install and update with SimpoCLI
+
+These commands require **SimpoCLI 0.1.8 or later**. Download and install a newer
+CLI once if your current version does not have them.
+
+```bash
+simpo skills install simpo --target claude
+simpo skills update simpo --target claude --check
+simpo skills update simpo --target claude
+```
+
+Project installs its three dependencies automatically. Omit the Skill name to
+install all four or update installed Skills. All four share a version such as
+`0.1.8-skills.1`; the revision can advance independently of the CLI. Start a new
+assistant session afterwards. Existing manual installations and local changes
+are protected; `--force` backs them up before replacement and returns the backup
+location.
+
+This installs personal-directory Skills, invoked as `/simpo`,
+`/simpo-create-project`, etc. If you installed the Marketplace plugin below,
+keep using Claude's plugin update manager. The CLI refuses duplicate local
+installation and never edits plugin caches. Plugin invocations retain the
+`/simpo:simpo` namespace.
+
 The `simpo` Claude Code plugin packages the same `simpo` Skill and references
 used by the direct Codex Skill installation. It routes SIMPO work through the
 installed SimpoCLI and does not contain an API Token.

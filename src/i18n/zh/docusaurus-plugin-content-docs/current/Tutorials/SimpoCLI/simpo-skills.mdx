@@ -59,7 +59,67 @@ pdftoppm -v
 未完成的渲染或数字化报告为成功。SimpoCLI 的 `calculate` 命令另有单独要求：安装匹配
 版本的 SimpoClient。
 
-## 安装 Skill
+## 使用 SimpoCLI 安装和更新
+
+SimpoCLI **0.1.8 起**支持管理两个助手的个人目录 Skills：
+
+```bash
+simpo skills list --target codex
+simpo skills install --target codex
+simpo skills update --target codex --check
+simpo skills update --target codex
+simpo skills install --target claude
+simpo skills update --target claude
+```
+
+不指定名称时安装全部四项；更新命令选择已安装的 Skills。可以添加
+`simpo-create-project` 等名称选择一个工作流，Project 会自动补齐其余三项依赖。
+四项共用 `0.1.8-skills.1` 这样的版本号，仅 Skills 更新时递增后缀，最低兼容 CLI
+版本单独声明。`--version` 可指定已发布版本，不支持降级。旧 CLI 需要先下载安装新版，
+后续程序升级使用 `simpo update`。
+
+Codex 遵循 `CODEX_HOME`，Claude 遵循 `CLAUDE_CONFIG_DIR`，默认目录分别是
+`~/.codex/skills` 和 `~/.claude/skills`。本地 Claude Skills 使用 `/simpo`、
+`/simpo-create-project` 调用；插件使用 `/simpo:simpo`、
+`/simpo:simpo-create-project`。已注册 SIMPO Marketplace 插件时，CLI 会拒绝本地
+安装，应继续通过 Claude 插件管理器更新。切换到本地 Skills 前请先卸载插件。
+
+下载会校验 SHA-256 和大小，安装会替换完整目录、移除旧版遗留文件。
+手工安装及本地修改默认不会被覆盖；加 `--force` 会先备份，并返回备份目录。
+已有手工安装或 Skill Installer 安装时，可以这样迁移：
+
+```bash
+simpo skills install --target codex --force
+```
+
+安装或更新后请开启新的助手会话。
+
+## 维护者：发布新版 Skills
+
+发布 Skills 时，**只需手动修改 `plugins/simpo/release.json` 中的 `version`**。
+例如从 `0.1.8-skills.1` 改为 `0.1.8-skills.2`。`cli_min_version` 仅在最低 CLI
+兼容要求变化时调整。其余版本由发布脚本自动同步：
+
+| 文件 | 版本维护方式 |
+| --- | --- |
+| `plugins/simpo/release.json` | 手动设置 Skills 版本和最低兼容 CLI 版本。 |
+| `.claude-plugin/marketplace.json` | 脚本同步 `simpo` 插件版本。 |
+| `plugins/simpo/.claude-plugin/plugin.json` | 脚本同步插件版本。 |
+| `plugins/simpo/releases/index.json` | 脚本写入 Skills 版本、兼容要求、下载地址、文件大小和 SHA-256。 |
+
+完成 Skill 源码修改后，在 **SimpoHome 根目录**执行：
+
+```bash
+python3 plugins/simpo/tools/build_release.py
+```
+
+脚本会同步另外三个 JSON，并生成新版 ZIP，例如
+`plugins/simpo/releases/SIMPOSkills_0.1.8-skills.2.zip`。将修改过的 Skill 源码、
+这四个 JSON 和新 ZIP 一起提交并推送到 GitHub `master`，客户端才能发现新版。
+保留旧版本的 ZIP 和发布清单记录；已发布版本内容不可覆盖，内容变化时递增修订号。
+仅更新 Skills 不需要重新打包 CLI，也不需要传入 `--cli-version`。
+
+## 仓库和 Marketplace 备用方式
 
 ### Codex
 

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "cli": [
+    {
+      "version": "0.1.8",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.1.8_amd64.deb",
+          "size": 28020956,
+          "sha256": "dd1edcff5b0f27e245a796f4de560d32a1eb6d6c778acb892f9dae4ecaf9753b"
+        },
+        "windows-x64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.1.8_windows_x64.exe",
+          "size": 17521803,
+          "sha256": "5fc858b7d2fb5ca92cbfd20b5b876e681914c63e44a9324a71534df4b1709612"
+        }
+      }
+    }
+  ],
+  "skills": [
+    {
+      "version": "0.1.8-skills.1",
+      "cli_min_version": "0.1.8",
+      "artifact": {
+        "url": "https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/SIMPOSkills_0.1.8-skills.1.zip",
+        "size": 75428,
+        "sha256": "613737556b58fcd8d5879e9c04fba1929748629008a3a3345fa5bf3ebaa590d4"
+      }
+    }
+  ]
+}

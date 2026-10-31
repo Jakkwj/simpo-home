@@ -293,3 +293,33 @@ simpo me --base-url http://127.0.0.1:8888
 ```
 
 The Token must belong to the selected backend environment.
+
+## Update the CLI and Skills
+
+Starting with **0.1.8**, explicitly check or install CLI releases:
+
+```bash
+simpo update --check
+simpo update
+simpo update --version 0.1.8
+```
+
+If your old CLI has no `update` command, download and install a newer version
+once. Updates use a public catalog without an API Token. Ordinary commands do
+not check for updates. Downloads are verified using SHA-256 and size. Linux
+amd64 uses sudo/dpkg and verifies the installed version. Windows x64 schedules
+an installer after CLI exit and may show a UAC prompt; `scheduled` is not
+installation success. Check the returned `status_file` and `installer_log` for
+`installed` or `failed`. Downgrades are refused.
+
+Skills can be installed and updated separately:
+
+```bash
+simpo skills install --target codex
+simpo skills update --target codex
+simpo skills install --target claude
+simpo skills update --target claude
+```
+
+See the [Skills overview](./SimpoCLI/simpo-skills) for directories, shared
+bundle versions, dependencies and local backup behavior.

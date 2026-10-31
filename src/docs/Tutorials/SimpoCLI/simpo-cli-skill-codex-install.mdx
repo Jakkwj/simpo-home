@@ -6,6 +6,24 @@ sidebar_label: Installation
 
 # Install SimpoCLI Skill for Codex
 
+## Install and update with SimpoCLI
+
+These commands require **SimpoCLI 0.1.8 or later**. Download and install a newer
+CLI once if your current version does not have them.
+
+```bash
+simpo skills install simpo --target codex
+simpo skills update simpo --target codex --check
+simpo skills update simpo --target codex
+```
+
+Project installs its three dependencies automatically. Omit the Skill name to
+install all four or update installed Skills. All four share a version such as
+`0.1.8-skills.1`; the revision can advance independently of the CLI. Start a new
+assistant session afterwards. Existing manual installations and local changes
+are protected; `--force` backs them up before replacement and returns the backup
+location.
+
 Install the Skill directly into Codex's Skill directory.
 
 See the [Skills overview](./simpo-skills) for the complete Codex/Claude Code
@@ -33,9 +51,9 @@ Never paste the Token into Codex.
 The default installation directory is `~/.codex/skills/simpo`. When
 `CODEX_HOME` is set, use `$CODEX_HOME/skills/simpo` instead.
 
-## Install from this repository
+## Alternative repository installation
 
-The recommended route is to ask Codex's built-in Skill Installer to install the
+Alternatively, ask Codex's built-in Skill Installer to install the
 Skill from GitHub:
 
 ```text
@@ -67,6 +85,6 @@ installed SimpoCLI and safely operates SIMPO resources.
 
 ## Update
 
-The Skill Installer does not overwrite an existing Skill. Back up or remove the
-installed `$CODEX_HOME/skills/simpo` directory, install the latest GitHub copy,
-and start a new Codex session.
+Use `simpo skills update` above. To migrate an existing manual or Skill Installer
+installation, run `simpo skills install --target codex --force`; the CLI backs it
+up before taking over management.

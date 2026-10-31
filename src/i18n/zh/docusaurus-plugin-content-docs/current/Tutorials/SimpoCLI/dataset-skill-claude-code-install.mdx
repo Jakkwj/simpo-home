@@ -6,6 +6,24 @@ sidebar_label: 安装
 
 # 在 Claude Code 中安装 DataSet Skill
 
+## 使用 SimpoCLI 安装和更新
+
+SimpoCLI **0.1.8 起**支持以下命令；旧 CLI 需要先下载安装新版。
+
+```bash
+simpo skills install simpo-create-dataset --target claude
+simpo skills update simpo-create-dataset --target claude --check
+simpo skills update simpo-create-dataset --target claude
+```
+
+安装 Project 会补齐另外三项依赖。省略名称时安装全部四项，更新命令更新已安装的
+Skills。四项共用 `0.1.8-skills.1` 这样的版本，后缀独立递增。已有手工安装或本地
+修改时默认停止覆盖；加 `--force` 会先备份，并返回备份目录。完成后开启新的助手会话。
+
+这是个人目录安装，调用名为 `/simpo`、`/simpo-create-project` 等。若已通过
+Marketplace 安装插件，请继续使用 Claude 插件管理器更新；CLI 会拒绝重复安装，
+不会修改插件缓存。插件仍使用 `/simpo:simpo` 等命名空间调用。
+
 Claude Code 版本包含在 SIMPO Marketplace 的 `simpo` 插件中。该插件同时提供通用
 SimpoCLI、BioModel 创建和 DataSet 创建 Skill。
 

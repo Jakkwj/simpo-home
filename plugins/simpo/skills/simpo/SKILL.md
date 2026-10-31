@@ -24,7 +24,7 @@ safety guidance, then read only the reference for the requested command group.
 
 ## Route the task
 
-- For installation, Token configuration, identity, scope, logout, output, or
+- For CLI/Skills installation or updates, Token configuration, identity, scope, logout, output, or
   authentication problems, read [Token and CLI basics](references/token-and-cli.md).
 - For any BioModel create/get/update/sync/release task, read
   [BioModel commands](references/biomodel.md).

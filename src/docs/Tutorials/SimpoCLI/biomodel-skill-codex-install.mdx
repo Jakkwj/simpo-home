@@ -6,6 +6,24 @@ sidebar_label: Installation
 
 # Install BioModel Skill for Codex
 
+## Install and update with SimpoCLI
+
+These commands require **SimpoCLI 0.1.8 or later**. Download and install a newer
+CLI once if your current version does not have them.
+
+```bash
+simpo skills install simpo-create-biomodel --target codex
+simpo skills update simpo-create-biomodel --target codex --check
+simpo skills update simpo-create-biomodel --target codex
+```
+
+Project installs its three dependencies automatically. Omit the Skill name to
+install all four or update installed Skills. All four share a version such as
+`0.1.8-skills.1`; the revision can advance independently of the CLI. Start a new
+assistant session afterwards. Existing manual installations and local changes
+are protected; `--force` backs them up before replacement and returns the backup
+location.
+
 Install this Skill directly from the repository into Codex's Skill directory.
 
 See the [Skills overview](./simpo-skills) for the complete Skill directory and
@@ -25,9 +43,9 @@ If no valid Token is saved, run `simpo configure` interactively when needed.
 The default Skill directory is `~/.codex/skills/simpo-create-biomodel`; with
 `CODEX_HOME` set, use `$CODEX_HOME/skills/simpo-create-biomodel`.
 
-## Install from this repository
+## Alternative repository installation
 
-Recommended:
+Alternative:
 
 ```text
 Use $skill-installer to install this Skill from:
@@ -59,6 +77,6 @@ Private Draft BioModel through SimpoCLI. Continue with
 
 ## Update
 
-The Skill Installer does not overwrite an existing Skill. Back up or remove the
-installed `$CODEX_HOME/skills/simpo-create-biomodel` directory, install the
-latest GitHub copy, and start a new Codex session.
+Use `simpo skills update` above. To migrate an existing manual or Skill Installer
+installation, run `simpo skills install --target codex --force`; the CLI backs it
+up before taking over management.

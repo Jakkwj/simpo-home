@@ -69,7 +69,73 @@ explains how to install it or use an equivalent renderer. It does not claim
 that rendering or digitization completed. SimpoCLI's `calculate` command has a
 separate requirement: the matching SimpoClient installation.
 
-## Install the Skills
+## Install and update with SimpoCLI
+
+**SimpoCLI 0.1.8 or later** supports personal-directory Skills for both assistants:
+
+```bash
+simpo skills list --target codex
+simpo skills install --target codex
+simpo skills update --target codex --check
+simpo skills update --target codex
+simpo skills install --target claude
+simpo skills update --target claude
+```
+
+Install selects all four Skills; update selects installed Skills. Add a name,
+such as `simpo-create-project`, to select one workflow. Project automatically
+includes its three dependencies. All four share a bundle version such as
+`0.1.8-skills.1`; Skills-only changes increment the revision. Minimum CLI
+compatibility is declared separately. `--version` selects a published version;
+downgrades are refused. Older CLIs must first be upgraded using a downloaded
+installer; subsequent CLI upgrades use `simpo update`.
+
+Codex respects `CODEX_HOME`; Claude respects `CLAUDE_CONFIG_DIR`. Defaults are
+`~/.codex/skills` and `~/.claude/skills`. Local Claude Skills use `/simpo` and
+`/simpo-create-project`, while plugins use `/simpo:simpo` and
+`/simpo:simpo-create-project`. The CLI refuses local installation if a registered
+SIMPO Marketplace plugin is present; use Claude's plugin manager to update that
+installation. Uninstall the plugin before switching to local Skills.
+
+Downloads are verified against SHA-256 and size. Complete directories are
+replaced, removing stale files. Manual installations and modified files are
+protected: `--force` backs them up before replacement and returns the backup
+directory. To migrate an existing manual or Skill Installer installation:
+
+```bash
+simpo skills install --target codex --force
+```
+
+Start a new assistant session after installation or update.
+
+## For maintainers: publish a Skills version
+
+For a Skills release, **manually change only `version` in
+`plugins/simpo/release.json`**, for example from `0.1.8-skills.1` to
+`0.1.8-skills.2`. Change `cli_min_version` only when the minimum CLI compatibility
+requirement changes. The release builder synchronizes the other versions:
+
+| File | Version maintenance |
+| --- | --- |
+| `plugins/simpo/release.json` | Maintainer sets the Skills version and minimum compatible CLI version. |
+| `.claude-plugin/marketplace.json` | Builder synchronizes the `simpo` plugin version. |
+| `plugins/simpo/.claude-plugin/plugin.json` | Builder synchronizes the plugin version. |
+| `plugins/simpo/releases/index.json` | Builder records the Skills version, compatibility requirement, download URL, size and SHA-256. |
+
+After finishing Skill source changes, run from the **SimpoHome repository root**:
+
+```bash
+python3 plugins/simpo/tools/build_release.py
+```
+
+The builder updates the other three JSON files and generates the new ZIP, such
+as `plugins/simpo/releases/SIMPOSkills_0.1.8-skills.2.zip`. Commit the modified
+Skills source, all four JSON files and the new ZIP together, then push to GitHub
+`master` so clients can discover the release. Keep previous ZIPs and catalog
+entries. Published releases are immutable; changed content requires a new
+revision. Skills-only releases need no CLI rebuild or `--cli-version` argument.
+
+## Repository and Marketplace alternatives
 
 ### Codex
 

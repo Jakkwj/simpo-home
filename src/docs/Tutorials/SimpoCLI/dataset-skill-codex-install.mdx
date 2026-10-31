@@ -6,6 +6,24 @@ sidebar_label: Installation
 
 # Install DataSet Skill for Codex
 
+## Install and update with SimpoCLI
+
+These commands require **SimpoCLI 0.1.8 or later**. Download and install a newer
+CLI once if your current version does not have them.
+
+```bash
+simpo skills install simpo-create-dataset --target codex
+simpo skills update simpo-create-dataset --target codex --check
+simpo skills update simpo-create-dataset --target codex
+```
+
+Project installs its three dependencies automatically. Omit the Skill name to
+install all four or update installed Skills. All four share a version such as
+`0.1.8-skills.1`; the revision can advance independently of the CLI. Start a new
+assistant session afterwards. Existing manual installations and local changes
+are protected; `--force` backs them up before replacement and returns the backup
+location.
+
 Install the complete Skill directory from the repository. See the
 [Skills overview](./simpo-skills) for the full directory and function table.
 
@@ -18,9 +36,9 @@ The default installation directory is
 `~/.codex/skills/simpo-create-dataset`. If `CODEX_HOME` is set, use
 `$CODEX_HOME/skills/simpo-create-dataset`.
 
-## Install from this repository
+## Alternative repository installation
 
-Recommended:
+Alternative:
 
 ```text
 Use $skill-installer to install this Skill from:
@@ -53,6 +71,6 @@ Continue with [Codex usage and examples](./dataset-skill-codex-usage).
 
 ## Update
 
-The Skill Installer does not overwrite an existing Skill. Back up or remove the
-installed directory, install the latest repository copy, and start a new Codex
-session.
+Use `simpo skills update` above. To migrate an existing manual or Skill Installer
+installation, run `simpo skills install --target codex --force`; the CLI backs it
+up before taking over management.
