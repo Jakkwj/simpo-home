@@ -12,8 +12,9 @@ the reported model behavior.
 3. Separate observations and predictions
 4. Handle missing values
 5. Configure the calculation loop
-6. Judge convergence and identifiability
-7. Report the result
+6. Diagnose failure to accumulate biomass
+7. Judge convergence and identifiability
+8. Report the result
 
 ## 1. Classify figures
 
@@ -83,8 +84,8 @@ or delete resources automatically.
    units, event timing, mass balance, and output mapping before fitting.
    Select and record one execution mode: `dynamic`, `steady_state`, or
    `steady_state_then_dynamic`. For a dynamic phase, record
-   `--input-interpolation previous|linear`; for a steady-state phase, record
-   `--steady-state-input-average-method previous|linear|arithmetic`. Use the
+   the input interpolation method (`previous` or `linear`); for a steady-state phase, record
+   the input averaging method (`previous`, `linear`, or `arithmetic`). Use the
    combined mode only when the reviewed protocol requires steady-state
    initialization before the original dynamic series.
    Before interpreting the run, audit every `Inflow` and `Flow` baseline:
@@ -101,16 +102,63 @@ or delete resources automatically.
 3. Estimate only a small justified set with `GA` or `RFGA`. Each estimated
    Project Variable needs a finite initial value, `Evaluation=true`, and finite
    bounds satisfying lower < initial < upper. Fixed variables remain
-   `Evaluation=false`. Use field names returned by `simpo get-project-variables`.
-4. Use only relevant engine options. A `--wait` timeout does not stop the client
-   or calculation, and `--wait` must not be combined with `--no-launch`.
+   `Evaluation=false`. Use field names returned by the current Project Variable read tool.
+4. Use only relevant engine options, following the execution adapter. A timeout
+   while waiting for a result does not prove the calculation stopped; query its
+   actual state before continuing.
 5. Accept estimates only after reviewing completed results and preserving prior
    values. Re-run `SIM` and compare calibration and validation separately.
 
 Do not tune against validation data unless the run is explicitly reclassified as
 exploratory. Do not fit many correlated parameters merely to improve an overlay.
 
-## 6. Judge convergence and identifiability
+## 6. Diagnose failure to accumulate biomass
+
+Before changing kinetics or fitting parameters, inspect the actual bacterial
+Components, their tank-specific trajectories, and the execution mode. TSS alone
+does not identify viable biomass. Distinguish a low initial seed from a decline
+after initialization; report evidence for a mechanism rather than declaring
+washout from a low end value alone. Check these three common causes:
+
+1. **Excessive sludge wasting (`Qw`).** Identify the actual waste Connection and
+   Flow name; it need not be named Qw. Read the DataSet series and the matching
+   `Solution.Variable.Value` baseline to establish the effective flow after
+   runtime offsets. Check selected solids inventories, waste and effluent TSS
+   mass losses, and the resulting SRT. Excessive wasting can lower SRT until
+   biomass cannot accumulate; internal return sludge is not external wasting.
+   Propose a supported reduction of Qw when the evidence points to this cause,
+   retaining hydraulic balance and documenting the operating assumption.
+2. **Insufficient particulate separation in `Point Settling`.** Read the
+   effective `SettlingFactor`, outlet/blanket flow split, and effluent TSS.
+   The factor directs a fraction of particulates to the blanket; too small a
+   value can lose bacteria with the effluent. Its usual sludge-retaining
+   reference magnitude is `0.999` to `1`, with a case-specific value reviewed
+   against effluent TSS. This is not a hard validation range or evidence to
+   overwrite a reported value. Assess effluent and wasting losses together.
+3. **Too little initial bacterial seed.** Read each relevant bacterial
+   Component/tank row in `Solution.Variable`, specifically the `Value` column.
+   Check actual Inflow/Conversion as well: influent usually does not supply
+   seed bacteria, so adequate initial biomass must be present in the system.
+   If those initial values are too low, propose increasing them to justified
+   values with units and source/assumption notes, then rerun an authorized
+   calculation and compare trajectories. Do not increase every particulate
+   Component, invent universal seed values, or confuse the runtime `Value`
+   with the `InitialValue` column used for estimation population injection.
+
+In `dynamic`, the component initial states come from Variable.Value. In
+`steady_state_then_dynamic`, the dynamic phase starts from the computed steady
+state; raising Value alone does not guarantee a larger dynamic seed. Inspect
+the steady-state biomass and actual oxygen supply first. DO Constraint is
+disabled during any steady-state phase, even when measured DO is available.
+
+Retention HRT/SRT selects statistical volumes and solids inventories, not
+physical separation or growth. Correct its accounting boundary when needed,
+but do not claim that enabling SRT restores biomass. If TSS mapping or mass
+loss data are unavailable, report that SRT/washout cannot yet be quantified.
+Preserve baseline values and results, state the proposed change and expected
+effect, and change/recalculate only within the user's authorized scope.
+
+## 7. Judge convergence and identifiability
 
 Check repeated-run stability, bound-hitting, correlations, uncertainty response,
 residual structure, and independent validation. Stop expanding the fit when
@@ -121,7 +169,7 @@ Record any switch function, clipping rule, event, reset, or undocumented equatio
 change needed for the published result as an implementation discrepancy. Compare
 the literal-paper and corrected scenarios when feasible.
 
-## 7. Report the result
+## 8. Report the result
 
 Report target-level RMSE, MAE, normalized error, maximum deviation, timing error,
 or qualitative shape mismatch as appropriate. State data provenance and do not

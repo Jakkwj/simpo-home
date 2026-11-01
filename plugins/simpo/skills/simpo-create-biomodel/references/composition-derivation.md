@@ -87,6 +87,39 @@ own concentration basis is explicitly TSS (or the model explicitly defines one
 unit of the Component as one unit of TSS). Do not assume all `X_` Components have
 a TSS coefficient of `1`.
 
+#### Derive a TSS Formula when the Component exists
+
+Formula commonly exposes aggregate TSS as a BioModel Component. If such a
+Component is already registered, attempt the derivation from the Composition
+TSS row, using reported cells or cells derived under the current
+`composition_derive` option. Deriving Formula from existing Composition does not
+require enabling derivation of missing Composition cells.
+
+1. Identify the actual TSS Component by its definition and units, not its name
+   alone. Establish which independent Components contribute to its total.
+2. Form the weighted sum of those Components using their TSS coefficients.
+   Preserve registered Parameter expressions and exact fractions. For example,
+   if the only contributors are `X_H` and `X_I` with documented coefficients
+   `i_TSS_H` and `i_TSS_I`, the expression for the existing `X_TSS` is
+   `i_TSS_H*X_H + i_TSS_I*X_I`. These example names are not new model symbols.
+3. Exclude the target itself and avoid double-counting aggregate Components;
+   its own Composition coefficient is not a term in its Formula. Do not
+   reference another Formula Component. Verify the resulting TSS unit/basis and
+   use only the permitted arithmetic and registered symbols.
+4. Write the supported expression into the proposed two-column Formula table
+   and record the coefficients, sources, unit conversions, and derivation.
+   Missing Composition is not permission to guess: use an independently
+   reported TSS equation if available; otherwise leave Formula absent and
+   record the missing evidence. A required unknown coefficient (`null`) is not
+   zero, even though the Balance calculation normalizes empty cells to zero.
+
+If the existing TSS Component is explicitly an independent differential state,
+resolve that modeling conflict before replacing it algebraically. If the
+BioModel has no TSS Component, do not add one automatically; a DataSet TSS
+Target may instead be mapped through Project Conversion. BioModel Formula,
+DataSet `StandardTarget`, and Project Conversion have different roles; adding
+Formula alone does not enable SRT statistics.
+
 ### ThOD
 
 Prefer an explicit COD/ThOD definition from the paper or its adopted model. If

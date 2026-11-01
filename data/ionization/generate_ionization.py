@@ -2,9 +2,9 @@
 """Generate docs and portable Skill parameter tables from the adjacent ionization.json.
 
 Run from any directory. --check detects drift without writing. A sibling
-SimpoBackend checkout is included when present; --backend-root selects an
-explicit litestar root. --skills-root also updates an installed Skill copy.
-Only marked parameter blocks are replaced; surrounding instructions stay local.
+SimpoSkills checkout receives the shared reference; build/export its targets
+after changing data. Legacy checkouts without generated packages retain the old
+backend/installed-copy flags. Only marked parameter blocks are replaced.
 """
 
 import argparse
@@ -187,17 +187,28 @@ def replace_block(original, content, *, mdx=False):
     return before + begin + "\n" + content + "\n" + end + after
 
 
-def generate(root=ROOT, *, backend_root=None, skills_root=None, check=False):
+def generate(root=ROOT, *, backend_root=None, skills_root=None, source_root=None, check=False):
     data = json.loads((root / SOURCE).read_text(encoding="utf-8"))
     validate(data)
     targets = [(root / path, locale) for locale, path in DOCS.items()]
-    targets.append((root / CLI_REFERENCE, None))
-    if backend_root is None:
-        sibling = root.parent / "SimpoBackend/backend/litestar"
-        if sibling.is_dir():
-            backend_root = sibling
-    if backend_root is not None:
-        targets.append((backend_root / AI_REFERENCE, None))
+    if source_root is None:
+        sibling = root.parent / "SimpoSkills"
+        if (sibling / "skills/simpo-create-biomodel/skill.json").is_file():
+            source_root = sibling
+    if source_root is not None:
+        if backend_root is not None or skills_root is not None:
+            raise ValueError("Update the SimpoSkills source, then build/export; direct edits to generated or installed copies are disabled.")
+        targets.append((source_root / "skills/simpo-create-biomodel/references/ionization-derivation.md", None))
+    else:
+        if (root / "plugins/simpo/generated.json").is_file():
+            raise ValueError("Generated Skills require the private SimpoSkills checkout; pass --source-root.")
+        targets.append((root / CLI_REFERENCE, None))
+        if backend_root is None:
+            sibling = root.parent / "SimpoBackend/backend/litestar"
+            if sibling.is_dir():
+                backend_root = sibling
+        if backend_root is not None:
+            targets.append((backend_root / AI_REFERENCE, None))
     if skills_root is not None:
         targets.append(
             (
@@ -237,6 +248,7 @@ def generate(root=ROOT, *, backend_root=None, skills_root=None, check=False):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--source-root", type=Path, help="Private SimpoSkills checkout; updates source instead of generated copies")
     parser.add_argument(
         "--backend-root", type=Path, help="SimpoBackend/backend/litestar directory"
     )
@@ -248,6 +260,7 @@ def main():
         changed = generate(
             backend_root=args.backend_root,
             skills_root=args.skills_root,
+            source_root=args.source_root,
             check=args.check,
         )
     except (OSError, ValueError, KeyError, TypeError) as exc:

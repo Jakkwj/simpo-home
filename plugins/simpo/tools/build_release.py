@@ -19,10 +19,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 PLUGIN = ROOT / "plugins/simpo"
-VERSION = re.compile(
-    r"((?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*))-skills\.([1-9]\d*)"
+LEGACY_VERSION = re.compile(
+    r"((?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*))-skills\.([1-9][0-9]*)"
 )
-CLI_VERSION = re.compile(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)")
+CLI_VERSION = re.compile(r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)")
 NAMES = (
     "simpo",
     "simpo-create-biomodel",
@@ -33,6 +33,65 @@ RAW_BASE = (
     "https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/"
 )
 CLI_BASE = "https://gitee.com/Jakkwj/simpo-home/releases/download/package/"
+
+
+def version_key(value, *, skills=False):
+    if isinstance(value, str) and CLI_VERSION.fullmatch(value):
+        parts = tuple(map(int, value.split(".")))
+        return (*parts, 1, 0) if skills else parts
+    legacy = LEGACY_VERSION.fullmatch(value) if skills and isinstance(value, str) else None
+    if legacy:
+        return (*version_key(legacy[1]), 0, int(legacy[2]))
+    raise ValueError(f"Invalid {'Skills' if skills else 'CLI'} version: {value!r}")
+
+
+def read_catalog(path, schema):
+    catalog = (
+        json.loads(path.read_text(encoding="utf-8"))
+        if path.exists()
+        else {"schema_version": schema, "cli": [], "skills": []}
+    )
+    if not isinstance(catalog, dict) or catalog.get("schema_version") != schema:
+        raise ValueError(f"Unsupported release catalog schema: {path}")
+    for kind in ("cli", "skills"):
+        entries = catalog.get(kind)
+        if not isinstance(entries, list):
+            raise ValueError(f"Invalid {kind} catalog: {path}")
+        seen = set()
+        for entry in entries:
+            if not isinstance(entry, dict):
+                raise ValueError(f"Invalid release entry: {path}")
+            version = entry.get("version")
+            version_key(version, skills=kind == "skills")
+            if version in seen:
+                raise ValueError(f"Duplicate release {version}: {path}")
+            seen.add(version)
+            if kind == "skills":
+                version_key(entry.get("cli_min_version"))
+                if schema == 1 and not LEGACY_VERSION.fullmatch(version):
+                    raise ValueError("Legacy catalog cannot contain independent Skill versions.")
+    return catalog
+
+
+def merge_catalogs(current, legacy):
+    """Import old releases and recover interrupted catalog writes without losing history."""
+    for kind in ("cli", "skills"):
+        entries = {entry["version"]: entry for entry in current[kind]}
+        for entry in legacy[kind]:
+            version = entry["version"]
+            old = entries.get(version)
+            if old and old != entry:
+                if kind != "cli":
+                    raise ValueError(f"Catalogs disagree on immutable Skills {version}.")
+                combined = dict(old["artifacts"])
+                for platform, details in entry["artifacts"].items():
+                    if platform in combined and combined[platform] != details:
+                        raise ValueError(f"Catalogs disagree on immutable CLI {version}/{platform}.")
+                    combined[platform] = details
+                entry = {"version": version, "artifacts": combined}
+            entries[version] = entry
+        current[kind] = list(entries.values())
+    return current
 
 
 def write_atomic(path: Path, data: bytes):
@@ -89,6 +148,33 @@ def build_bundle(destination: Path, source: Path):
                 archive.writestr(info, path.read_bytes())
 
 
+def verify_generated(plugin: Path):
+    """Only publish exact allowlisted artifacts exported by SimpoSkills."""
+    path = plugin / "generated.json"
+    if not path.exists():
+        return  # Legacy release fixtures/checkouts predating generated packages.
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    if manifest.get("schema_version") != 1 or manifest.get("target") != "cli-public":
+        raise ValueError("Invalid public generated manifest.")
+    expected = manifest["files"]
+    actual = {
+        file.relative_to(plugin).as_posix()
+        for file in (plugin / "skills").rglob("*")
+        if file.is_file() and "__pycache__" not in file.parts and file.suffix not in {".pyc", ".pyo"}
+    } | {"release.json"}
+    if actual != set(expected):
+        raise ValueError("Public Skill files differ from the allowlist; rebuild/export from SimpoSkills.")
+    for name, digest in expected.items():
+        relative = Path(name)
+        if relative.is_absolute() or ".." in relative.parts or "\\" in name:
+            raise ValueError("Unsafe generated file path.")
+        file = plugin / relative
+        if any(part.is_symlink() for part in [file, *file.parents]):
+            raise ValueError("Do not publish linked generated files.")
+        if hashlib.sha256(file.read_bytes()).hexdigest() != digest:
+            raise ValueError(f"Generated file changed: {name}; edit the SimpoSkills source and export again.")
+
+
 def publish(
     *,
     cli_versions=(),
@@ -96,20 +182,18 @@ def publish(
     plugin: Path = PLUGIN,
     root: Path = ROOT,
 ) -> dict:
+    verify_generated(plugin)
     config = json.loads((plugin / "release.json").read_text(encoding="utf-8"))
     version, minimum = config["version"], config["cli_min_version"]
-    if not VERSION.fullmatch(version) or not CLI_VERSION.fullmatch(minimum):
-        raise ValueError("Expected X.Y.Z-skills.N and an X.Y.Z minimum CLI version.")
+    version_key(version, skills=True)
+    version_key(minimum)
     output = plugin / "releases"
     output.mkdir(parents=True, exist_ok=True)
-    index_path = output / "index.json"
-    catalog = (
-        json.loads(index_path.read_text(encoding="utf-8"))
-        if index_path.exists()
-        else {"schema_version": 1, "cli": [], "skills": []}
+    index_path = output / "index-v2.json"
+    legacy_path = output / "index.json"
+    catalog = merge_catalogs(
+        read_catalog(index_path, 2), read_catalog(legacy_path, 1)
     )
-    if catalog.get("schema_version") != 1:
-        raise ValueError("Unsupported release catalog schema")
     filename = f"SIMPOSkills_{version}.zip"
     with tempfile.TemporaryDirectory(prefix=".bundle-", dir=output) as temporary:
         built = Path(temporary) / filename
@@ -117,7 +201,7 @@ def publish(
         destination = output / filename
         if destination.exists() and destination.read_bytes() != built.read_bytes():
             raise ValueError(
-                f"Published Skills {version} are immutable; increment the Skills revision in release.json."
+                f"Published Skills {version} are immutable; increment the Skill package version in SimpoSkills."
             )
         release = {
             "version": version,
@@ -129,13 +213,12 @@ def publish(
         )
         if old and old != release:
             raise ValueError(
-                "Existing release metadata differs; increment the Skills revision."
+                "Existing release metadata differs; increment the Skill package version."
             )
         # Validate every requested installer before changing the catalog or plugin metadata.
         cli_entries = []
         for cli_version in cli_versions:
-            if not CLI_VERSION.fullmatch(cli_version):
-                raise ValueError(f"Invalid CLI version: {cli_version}")
+            version_key(cli_version)
             installers = {}
             for platform, suffix in (
                 ("linux-amd64", "amd64.deb"),
@@ -171,13 +254,13 @@ def publish(
         catalog["cli"] = [
             old for old in catalog["cli"] if old["version"] != entry["version"]
         ] + [entry]
-    catalog["cli"].sort(key=lambda entry: tuple(map(int, entry["version"].split("."))))
-    catalog["skills"].sort(
-        key=lambda entry: (
-            *map(int, VERSION.fullmatch(entry["version"])[1].split(".")),
-            int(VERSION.fullmatch(entry["version"])[2]),
-        )
-    )
+    catalog["cli"].sort(key=lambda entry: version_key(entry["version"]))
+    catalog["skills"].sort(key=lambda entry: version_key(entry["version"], skills=True))
+    legacy = {
+        "schema_version": 1,
+        "cli": catalog["cli"],
+        "skills": [entry for entry in catalog["skills"] if LEGACY_VERSION.fullmatch(entry["version"])],
+    }
     metadata_path = plugin / ".claude-plugin/plugin.json"
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     metadata["version"] = version
@@ -189,6 +272,7 @@ def publish(
     write_atomic(metadata_path, encode(metadata))
     write_atomic(marketplace_path, encode(marketplace))
     write_atomic(index_path, encode(catalog))
+    write_atomic(legacy_path, encode(legacy))
     return catalog
 
 

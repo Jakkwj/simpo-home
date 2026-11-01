@@ -1,7 +1,7 @@
 # Model Targets and Influent Fractionation
 
 Use a target set compatible with the BioModel that will later be used in a
-Project. `simpo create-dataset` creates only the DataSet; it does not link or
+Project. DataSet creation creates only the DataSet; it does not link or
 clone a BioModel. Record the recommended model family in the review and
 description.
 

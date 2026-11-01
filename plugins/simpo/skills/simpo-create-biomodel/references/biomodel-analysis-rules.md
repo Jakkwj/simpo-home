@@ -2,7 +2,7 @@
 
 Use this reference when turning a wastewater-treatment model paper into SIMPO
 tables. It preserves the domain requirements used by the backend AI prompt,
-adapted for an assistant analysis followed by the SimpoCLI JSON interface.
+adapted for assistant analysis followed by reviewed SIMPO resource creation.
 
 ## Paper eligibility
 
@@ -29,7 +29,7 @@ adapted for an assistant analysis followed by the SimpoCLI JSON interface.
   paper contents stay on-device. Follow the data-handling policy of the model
   configured for the user's assistant session.
 - Keep the paper title and DOI/citation in this note. A paper DOI is not a
-  SIMPO `sourcepaperId`; only pass `--sourcepaper-id` when the user knows the
+  SIMPO `sourcepaperId`; only attach a source-paper database ID when the user knows the
   database ID.
 
 ## Source correction
@@ -49,7 +49,7 @@ scientific conclusions.
   retain the source value and report the conflict as unresolved.
 - With `off`, preserve the source representation exactly. Report suspected
   errors, but do not change the extracted value or formula.
-- Every applied correction must be written in Markdown in the `--description`
+- Every applied correction must be written in Markdown in the Description
   audit note, including the source location, original value, corrected value,
   evidence, and confidence. Use this compact format:
 
@@ -292,8 +292,8 @@ read `references/ionization-derivation.md` and follow it in full.
 ## JSON submission shape
 
 Submit model tables only. Do not include the paper title, `Description`, or
-`Balance` as root keys in the `--json` file. Put citation and concise analysis
-notes in `simpo create-biomodel --description`.
+`Balance` as root keys in the submitted table JSON. Put citation and concise analysis
+notes in the BioModel Description.
 
 ```json
 {
@@ -318,5 +318,5 @@ notes in `simpo create-biomodel --description`.
 `Ionization` are optional. Do not create an `Ionization` table from guesswork;
 use the dedicated derivation workflow and omit the table when evidence is
 insufficient. Never include `Balance`, even
-when reusing a `simpo get-biomodel` response: the API rejects it and computes
+when reusing a BioModel read response: the API rejects it and computes
 the result itself.

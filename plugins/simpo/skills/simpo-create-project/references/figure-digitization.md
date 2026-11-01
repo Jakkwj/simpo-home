@@ -27,19 +27,8 @@ export metadata.
    unrelated series. Use manual clicks when automatic segmentation is
    ambiguous.
 5. Export CSV or JSON and inspect a representative set of points against the
-   rendered figure. Normalize a CSV export into an auditable series file:
-
-   ```text
-   python3 /path/to/simpo-create-dataset/scripts/import_digitized_series.py \
-     figure-4b.csv \
-     --output figure-4b-S_NH.json --figure "Fig. 4b" --series "S_NH" \
-     --x-name "time" --x-unit "d" --y-name "S_NH" --y-unit "mg/L" \
-     --uncertainty "approximately one marker width"
-   ```
-
-   Resolve `/path/to/simpo-create-dataset` to the installed DataSet Skill
-   directory. This helper is shared with `simpo-create-dataset`; the Project
-   Skill does not maintain a separate copy.
+   rendered figure. Normalize the reviewed export into an auditable series
+   using the execution adapter, preserving the original values and audit fields.
 
    Preserve the tool project file when it stores calibration and extraction
    settings.
@@ -86,4 +75,4 @@ approximation. A visually plausible curve is not sufficient evidence.
   identity are established.
 
 Keep digitized estimates separate from directly reported table values in the
-Markdown audit passed to `simpo create-dataset`.
+Markdown audit saved with the DataSet.

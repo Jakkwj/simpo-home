@@ -67,6 +67,30 @@ class IonizationGenerationTests(unittest.TestCase):
         self.assertEqual(rows["ammonium"]["pK"], [4.76, None, None])
         self.assertEqual(self.data["pKw"], 14)
 
+    def test_unified_source_updates_without_touching_generated_copies(self):
+        source = self.root.parent / "SimpoSkills"
+        reference = source / "skills/simpo-create-biomodel/references/ionization-derivation.md"
+        reference.parent.mkdir(parents=True)
+        reference.write_bytes(self.targets[2].read_bytes())
+        (reference.parent.parent / "skill.json").write_text("{}")
+        old_copies = {p: p.read_bytes() for p in self.targets[2:]}
+        with redirect_stdout(io.StringIO()):
+            self.assertTrue(gen.generate(self.root))
+            self.assertFalse(gen.generate(self.root, check=True))
+        self.assertIn("SIMPO built-in parameter set", reference.read_text())
+        self.assertEqual(old_copies, {p: p.read_bytes() for p in self.targets[2:]})
+        with self.assertRaisesRegex(ValueError, "direct edits"):
+            gen.generate(self.root, backend_root=self.backend)
+
+    def test_generated_checkout_requires_source_before_any_writes(self):
+        marker = self.root / "plugins/simpo/generated.json"
+        marker.parent.mkdir(parents=True, exist_ok=True)
+        marker.write_text("{}")
+        before = self.targets[0].read_bytes()
+        with self.assertRaisesRegex(ValueError, "private SimpoSkills"):
+            gen.generate(self.root)
+        self.assertEqual(before, self.targets[0].read_bytes())
+
     def test_check_is_read_only_and_generation_is_idempotent(self):
         before = {p: p.read_bytes() for p in self.targets}
         self.assertTrue(self.generate(check=True))

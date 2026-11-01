@@ -101,7 +101,7 @@ and disclose the approved assumptions.
 Use the backend-generated Solution only when all targets are direct compatible
 components or when no custom Target/Conversion mapping is needed. Otherwise
 submit a reviewed complete `Variable`, `Target`, `Conversion`, and `Weight`
-detail with `--json`. If a derived Target cannot be mapped from the selected
+detail through the execution adapter. If a derived Target cannot be mapped from the selected
 BioModel and source definition, stop with `unresolved` rather than submitting an
 empty Conversion row.
 

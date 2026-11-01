@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "name": "simpo-create-project",
+  "target": "cli-public",
+  "rules_version": "2",
+  "version": "1.0.0",
+  "workflow_sha256": "9148561f2ffbe7e6e584fd470c4b8cb95e9408385c98e0e23ec5271316da4215",
+  "adapter_sha256": "f8612a28ae778b1a8217c5d445682eff31c9fd46e90dfd993b7637dd6df5c08d",
+  "files": {
+    "SKILL.md": "faa3e2041c6f836c531246a7653a90ce5266246a02f76a29e68c96715769aac2",
+    "agents/openai.yaml": "e119261c48852c7a6cd0844ffabd226c2b823c471248d13bf2c85c327fb7a0b3",
+    "references/figure-digitization.md": "741803bfbe9ab5f3d8b12510952c61cd75ba9a8c59b6f185734f3d4ce144812d",
+    "references/paper-reproduction-workflow.md": "3d268674e1edf26b059d534f9a5fe23820fd54ce20bf467a4a47bc8d8ae8a227",
+    "references/paper-to-resources.md": "7e42da5693dc4ee2978167dc4eec4edfa24cc84f48d4de4a6c3bf40174036d13"
+  }
+}

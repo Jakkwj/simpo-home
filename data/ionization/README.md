@@ -1,7 +1,7 @@
 # Ionization 共用参数与生成工具
 
 中英文网页、SimpoCLI Skill 和 SimpoAI Skill 的电离参考参数统一维护在本目录的
-[ionization.json](ionization.json) 中。修改这一份数据，再运行生成脚本，即可更新各端参考表。
+[ionization.json](ionization.json) 中。修改这一份数据，再运行生成脚本更新文档与 SimpoSkills 共用参考，随后构建并导出两端产物。
 生成文件随各端发布，运行时无需联网读取网页。
 
 ## 文件说明
@@ -59,8 +59,7 @@ npm run references:test
 | --- | --- | --- |
 | 英文网页 | `SimpoHome/src/docs/Tutorials/BioModel/Edit.mdx` | 构建网站时渲染英文表格 |
 | 中文网页 | `SimpoHome/src/i18n/zh/docusaurus-plugin-content-docs/current/Tutorials/BioModel/Edit.mdx` | 构建网站时渲染中文表格 |
-| SimpoCLI 对应 Skill | `SimpoHome/plugins/simpo/skills/simpo-create-biomodel/references/ionization-derivation.md` | Skill 加载电离推导参考时读取本地表格 |
-| SimpoAI Skill | `SimpoBackend/backend/litestar/app/services/ai/skills/simpo-create-biomodel/references/ionization-derivation.md` | 后端加载 Skill 参考时读取本地表格 |
+| Skill 共用源 | `SimpoSkills/skills/simpo-create-biomodel/references/ionization-derivation.md` | 两端构建时复用，导出后运行时读取本地副本 |
 
 网页使用各自语言的名称，Skill 参考表包含中英文名称。网页保留 `1/(14*1000)` 形式的
 Factor 展示，Skill 使用可直接解析的 `1/14000`；两者由同一分母生成。网页中的默认 pKw
@@ -70,40 +69,24 @@ Factor 展示，Skill 使用可直接解析的 `1/14000`；两者由同一分母
 以及网页中 `SIMPO_PKW` 标记包围的值。保留标记本身和区域外的手写说明。每个生成区域
 携带数据版本及 SHA-256 摘要，便于检查来源。
 
-### SimpoAI 后端的路径
+### 统一 Skill 源与后续导出
 
-默认自动查找同级仓库：
-
-```text
-GitHub/
-├── SimpoHome/
-└── SimpoBackend/backend/litestar/
-```
-
-同级后端存在时，一并生成或检查 SimpoAI 的参考文件；不存在时，仅处理 SimpoHome 内的
-两个网页和 CLI Skill。后端在其他位置时，请显式指定；以下命令在本目录执行，
-将 `/path/to/...` 替换为实际路径：
+默认寻找同级私有 `SimpoSkills` 仓库；也可用 `--source-root /path/to/SimpoSkills`
+明确指定。生成器只更新网站文档及共用源，不直接改写两端生成产物。
+然后在 SimpoSkills 根目录执行：
 
 ```bash
-python3 generate_ionization.py --backend-root /path/to/SimpoBackend/backend/litestar
-python3 generate_ionization.py --backend-root /path/to/SimpoBackend/backend/litestar --check
+python3 tools/build.py
+python3 tools/check.py --dist
+python3 tools/export.py
 ```
 
-显式指定的后端目录或目标文件缺失会报错。脚本会先读取并验证所有选定目标，再开始写入。
+也可在 SimpoSkills 运行 `python3 tools/update_ionization.py`，仅更新共用参考。
+已安装用户副本通过正常发布和 `simpo skills update` 更新。
 
-### 同步已经安装的 Skill
-
-仓库中的 CLI Skill 更新后，已安装的副本不会自动跟着变化。可以正常更新 Skill，
-也可以用 `--skills-root` 同步已有生成标记的参数区域，例如：
-
-```bash
-python3 generate_ionization.py --skills-root "$HOME/.codex/skills"
-python3 generate_ionization.py --skills-root "$HOME/.codex/skills" --check
-```
-
-`--skills-root` 指向包含 `simpo-create-biomodel/` 的目录；可与 `--backend-root` 一起使用。
-它只同步参数生成区域，不安装 Skill，也不更新其行为规则。旧副本缺少生成标记时，
-先更新完整 Skill，再执行参数同步。
+旧版尚未迁移的仓库仍支持 `--backend-root`、`--skills-root`。使用统一源后不再
+允许这些选项直接修改下游副本；已存在公开生成清单却找不到源仓库时会明确报错。
+所有生成目标先完整读取和验证，再开始写入。
 
 ## 数据维护规则
 

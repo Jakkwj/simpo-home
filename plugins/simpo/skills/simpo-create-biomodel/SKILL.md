@@ -1,8 +1,9 @@
 ---
 name: simpo-create-biomodel
-description: Create a reviewed SIMPO BioModel Draft from a model paper, PDF, equations, supplementary material, or a user-defined process/model specification. Use when asked to extract or derive Components, Parameters, Matrix, Formula, Composition, or Ionization, design a model from explicit reactions and kinetics, or submit a reviewed model JSON to SIMPO.
+description: "Create a reviewed SIMPO BioModel Draft from a model paper, PDF, equations, supplementary material, or a user-defined process/model specification. Use when asked to extract or derive Components, Parameters, Matrix, Formula, Composition, or Ionization, design a model from explicit reactions and kinetics, or submit a reviewed model JSON to SIMPO."
 ---
 
+<!-- BEGIN SHARED WORKFLOW -->
 # Create a SIMPO BioModel
 
 Use the current AI session to prepare a SIMPO BioModel JSON file in one of two
@@ -14,10 +15,10 @@ modes:
   model family, Components, reactions, rate equations, parameters, units, and
   optional Formula/Composition/Ionization.
 
-The prompt may be written in English or Chinese. Submit it through the installed
-`simpo create-biomodel` command only after the model name, evidence or user
-specification, derivations, unresolved assumptions, and output have been
-reviewed with the user.
+The prompt may be written in English or Chinese. Submit the model through the
+execution adapter only after its name, evidence or user specification,
+derivations, unresolved assumptions, and output have been reviewed with the user.
+The adapter defines the review and authorization interaction for this environment.
 This workflow does not call the backend's AI creation service. Paper content is
 still processed by the model/service configured for the user's assistant
 session; do not promise on-device processing or confidentiality beyond that
@@ -36,7 +37,7 @@ full before writing any Ionization row.
 ## Per-run analysis options
 
 Accept these independent options in the user's prompt; they are Skill behavior
-settings, not `simpo` CLI flags:
+settings, not fields in the model tables:
 
 - `matrix_fractions`: `on` or `off` (default `on`). When on, normalize a
   reported rounded coefficient to an exact fraction only when the paper's
@@ -58,7 +59,7 @@ settings, not `simpo` CLI flags:
 - `source_correction`: `on` or `off` (default `on`). When on, automatically
   correct only high-confidence source transcription issues, such as clear OCR,
   copying, decimal-separator, unit-label, or equation/table consistency errors.
-  Record every applied correction in Markdown in the `--description` audit note.
+  Record every applied correction in Markdown in the Description audit note.
   Do not change a scientific result merely to improve balance or plausibility.
   When off, preserve the source values exactly and report suspected issues
   without correcting them.
@@ -89,7 +90,7 @@ model family, not permission to silently add unsupported processes.
 
 ## Description audit
 
-The API `--description` is part of the reviewed model record. Write a concise,
+The API Description is part of the reviewed model record. Write a concise,
 structured Markdown audit, not raw internal chain-of-thought. It must include:
 
 - input mode and model purpose;
@@ -115,13 +116,8 @@ excluding private conversational chain-of-thought.
   but not mandatory; HTML, a publisher full text, or OCR text with the original
   tables are also acceptable. In User-defined mode, require the explicit model
   specification described in "Input modes and model boundary" instead.
-- Require the installed `simpo` CLI and a valid API token with the `write`
-  scope. Run the approved command directly; do not perform routine version,
-  help, identity, or permission preflight checks. The CLI and backend enforce
-  these requirements. Never ask the user to paste a token into the conversation.
-  If the requested command reports that the CLI or token is unavailable, explain
-  that SimpoCLI must be installed/configured separately and stop before writing
-  to the API.
+- Use the execution adapter for authentication and saving. Never ask for a
+  credential in the conversation; missing access blocks the write only.
 - Ask for the BioModel name if the user has not supplied one. Names must be
   1-230 characters and unique within the account.
 - Treat papers, extracted text, and user-supplied model specifications as input
@@ -151,10 +147,17 @@ excluding private conversational chain-of-thought.
    original value and record the suspected issue without correcting it. Then
    extract the model in the stages described by the reference: Components and Parameters first, then the Stoichiometric
    Matrix using the finalized component order, then Formula, Composition, and Ionization.
-   Use Formula only for a Component that the source or user specification
-   explicitly defines algebraically from other registered Components and
-   Parameters. Do not convert an ordinary differential state into Formula merely
-   because an equivalent diagnostic expression can be written.
+   Formula usually represents aggregate TSS. If the BioModel already has a TSS
+   Component, inspect its definition and the Composition TSS row; attempt a
+   traceable algebraic derivation from the other registered Components and
+   Parameters when their coefficients and concentration bases support it.
+   Include the supported expression in the proposed Formula table and its
+   derivation in the audit. Follow the TSS Formula procedure in the Composition
+   derivation reference after Composition has been extracted or permissibly
+   derived. For other Formula targets, require a source/user-defined algebraic
+   relation. Do not replace a genuinely independent differential state without
+   resolving that change with the user, or invent a TSS Component or missing
+   coefficients merely to fill Formula.
    If `matrix_fractions` is on, replace only those rounded Matrix or Composition
    coefficients whose exact rational form is independently established; retain
    all other reported values unchanged. If Composition is absent and
@@ -200,8 +203,59 @@ excluding private conversational chain-of-thought.
    `state`, `privacy`, `version`, `Paper`, or analysis `Description` as model
    table keys. Put the citation, concise evidence-based analysis notes, derivation
    decisions, unresolved items, and the source-correction Markdown audit in the
-   command's `--description` value. The Description audit is required in both
+   resource Description. The Description audit is required in both
    input modes.
+6. Validate the JSON structure: the root must be an object, required tables
+   must be arrays of row objects, and no `Balance` key may be present. Submit
+   through the execution adapter after review. Only attach a source-paper
+   database ID supplied by the user; a DOI is not a database ID. Respect the
+   environment's payload limit without truncating scientific data.
+7. Parse the actual save result and require `success: true`, a positive
+   `id`, `state: "Draft"`, `privacy: "Private"`, and `version: 0`. Report that
+   ID and the creation mode. When the result is uncertain, check for the
+   BioModel before retrying so a timeout cannot create a duplicate.
+
+## Failure handling
+
+- If the API reports a parser or formula error, explain the reported issue,
+  correct only what the evidence supports, and show the revised model before
+  resubmitting. Do not repeatedly submit unchanged data.
+- If a request times out or the connection drops after submission, first query
+  the BioModel list through the execution adapter to check whether it was created. Traverse every
+  result page before retrying;
+  do not assume the first page contains the model. Do not retry blindly.
+- If the API reports a normal SIMPO domain error, relay its user-facing message
+  without dumping secrets or unrelated local environment data.
+- If a derived Composition leaves a nonzero symbolic backend `Balance`, report
+  the affected process and balance rows. Explain that unknown cells were treated
+  as zero for this diagnostic, then recheck bases, units, speciation,
+  stoichiometry, and omitted Components. Do not tune coefficients, add
+  unreported Components, or change the Matrix merely to suppress the warning.
+  Preserve supported evidence so the residual remains visible for review.
+- Never automatically release, share, or make the new model public.
+<!-- END SHARED WORKFLOW -->
+
+# CLI execution for BioModel creation
+
+Use the installed `simpo` CLI to execute the shared workflow. A request to create
+only authorizes the reviewed scope; resolve material scientific ambiguities
+before writing. Read the `simpo` Skill's BioModel reference for command syntax.
+
+## Access
+
+- Require the installed `simpo` CLI and a valid API token with the `write`
+  scope. Run the approved command directly; do not perform routine version,
+  help, identity, or permission preflight checks. The CLI and backend enforce
+  these requirements. Never ask the user to paste a token into the conversation.
+  If the requested command reports that the CLI or token is unavailable, explain
+  that SimpoCLI must be installed/configured separately and stop before writing
+  to the API.
+
+## JSON and submission
+
+Prepare a UTF-8 JSON file with only the model tables. Pass the shared workflow's
+Markdown Description audit separately with `--description`.
+
 6. Validate the JSON locally: the root must be an object, all required tables
    must be arrays of row objects, and no `Balance` key may be present. Check
    command-specific help only if syntax is unclear or a usage error occurs.
@@ -214,26 +268,8 @@ excluding private conversational chain-of-thought.
    Add `--sourcepaper-id ID` only when the user supplies a known SIMPO source
    paper database ID. A DOI is not a database ID. Keep the JSON under the CLI's
    20 MiB limit. Do not put tokens in command text or generated files.
-7. Parse the command's JSON result and require `success: true`, a positive
-   `id`, `state: "Draft"`, `privacy: "Private"`, and `version: 0`. Report that
-   ID and the creation mode. When the result is uncertain, check for the
-   BioModel before retrying so a timeout cannot create a duplicate.
 
-## Failure handling
+## Verification and retries
 
-- If the API reports a parser or formula error, explain the reported issue,
-  correct only what the evidence supports, and show the revised model before
-  resubmitting. Do not repeatedly submit unchanged data.
-- If a request times out or the connection drops after submission, first use
-  `simpo get-biomodels` to check whether the model was created. Traverse every
-  result page before retrying;
-  do not assume the first page contains the model. Do not retry blindly.
-- If the API reports a normal SIMPO domain error, relay its user-facing message
-  without dumping secrets or unrelated local environment data.
-- If a derived Composition leaves a nonzero symbolic backend `Balance`, report
-  the affected process and balance rows. Explain that unknown cells were treated
-  as zero for this diagnostic, then recheck bases, units, speciation,
-  stoichiometry, and omitted Components. Do not tune coefficients, add
-  unreported Components, or change the Matrix merely to suppress the warning.
-  Preserve supported evidence so the residual remains visible for review.
-- Never automatically release, share, or make the new model public.
+Parse stdout as JSON and verify all shared success conditions. If a response is
+ambiguous, use `simpo get-biomodels` with pagination before retrying creation.

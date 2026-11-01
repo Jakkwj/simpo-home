@@ -1,4 +1,4 @@
 {
-  "version": "0.1.8-skills.1",
-  "cli_min_version": "0.1.8"
+  "version": "1.0.0",
+  "cli_min_version": "0.1.9"
 }

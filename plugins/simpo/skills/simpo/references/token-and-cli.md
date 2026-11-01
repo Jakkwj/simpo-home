@@ -51,9 +51,12 @@ simpo skills update --target codex
 
 Use `--target claude` for Claude Code local-directory Skills. Installing
 `simpo-create-project` includes all three dependencies. Omitted names install
-all four or update installed Skills. Skills share `X.Y.Z-skills.N` versions;
-CLI compatibility is declared separately. Neither update operation needs an API
-Token. Old CLIs lacking these commands require a downloaded installer first.
+all four or update installed Skills. All four Skills share an independent `X.Y.Z`
+bundle version, starting at `1.0.0`, which requires CLI 0.1.9 or later. Upgrade
+older CLIs first. CLI compatibility is declared separately; legacy
+`X.Y.Z-skills.N` installations remain recognizable by the newer CLI. Neither
+update operation needs an API Token. Old CLIs lacking these commands require a
+downloaded installer first.
 
 Linux CLI updates use sudo/dpkg. Windows returns `scheduled` while a detached
 installer waits for the CLI to exit; UAC may appear. Read the returned

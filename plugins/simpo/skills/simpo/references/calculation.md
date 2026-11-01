@@ -60,6 +60,11 @@ Use `--execution-mode` with one of three canonical values:
 - `steady_state_then_dynamic`: solve the steady state first, use that state as
   the dynamic initial condition, and then run the original time series.
 
+Component initial states in `dynamic` come from `Solution.Variable.Value`.
+Solution.Constraint is enabled for dynamic phases and disabled for steady-state
+phases. A measured DO Constraint therefore cannot compensate for missing
+physical oxygen supply during steady-state initialization.
+
 Use `--input-interpolation previous|linear` (also accepted as
 `--dynamic-input-interpolation-method`) for dynamic Flow/Inflow values between
 samples. `previous` is zero-order hold; `linear` interpolates adjacent samples
@@ -79,6 +84,39 @@ selected HRT Tank volume by true external influent flow. System SRT divides the
 selected SRT Tank TSS inventory by TSS leaving external Outflow and Wasted
 connections; internal recycles are not external losses. Require `Converged=true`
 before describing the result as a converged steady state.
+
+## When bacteria fail to accumulate
+
+Read the relevant bacterial Component/tank trajectories, initial states, and
+execution mode before changing kinetics. TSS alone is not a viable-biomass
+measurement. Check these common causes using the actual configuration:
+
+1. **Qw too large:** identify the waste Connection and its actual Flow name,
+   inspect the DataSet flow and runtime Variable.Value offset, and compare the
+   system solids inventory with waste/effluent TSS mass loss. Excessive wasting
+   can make SRT too low to retain biomass. A supported reduction of Qw must
+   preserve hydraulic balance; internal recycles are not external sludge loss.
+2. **Point Settling factor too small:** inspect the effective SettlingFactor,
+   outlet/blanket split, and effluent TSS. The factor directs particulates to
+   the blanket; too small a value can wash them out. `0.999` to `1` is the usual
+   sludge-retaining reference magnitude, with the actual value reviewed against
+   effluent TSS. It is not a mandatory parser range or permission to replace
+   source data silently.
+3. **Bacterial initial Value too low:** read the exact bacterial Component/tank
+   rows in `Solution.Variable.Value`. Inflow usually carries no seed bacteria;
+   verify its actual Conversion rather than assuming this. Propose increasing
+   inadequate initial values with justified units and source/assumption notes,
+   then recalculate within the user's authorization. Do not change unrelated
+   particulate Components or confuse runtime `Value` with estimation
+   `InitialValue`. In combined mode, dynamic initial conditions come from the
+   steady-state result, so inspect that result and its oxygen supply first.
+
+Read before a supported variable update; use the exact returned name and tank
+as described in [Project operations](dataset-and-project.md). Preserve prior
+values/results and compare an authorized rerun. For analysis-only requests,
+give recommendations without updating or launching calculations. Retention
+flags only select HRT/SRT statistics; enabling SRT does not restore bacteria.
+Missing TSS mapping or mass-loss data prevents a quantitative washout diagnosis.
 
 ## Engines
 

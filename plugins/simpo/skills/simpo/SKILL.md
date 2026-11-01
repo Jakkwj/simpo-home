@@ -1,6 +1,6 @@
 ---
 name: simpo
-description: Operate SIMPO through the installed SimpoCLI safely and efficiently. Use when asked to install or configure SimpoCLI, inspect the current SIMPO identity or scopes, create/read/update/sync/release BioModels, DataSets, or Projects, read or change Project Variables, start/monitor/stop calculations, retrieve paginated calculation results, troubleshoot a simpo command, or generate a script that consumes SimpoCLI JSON output.
+description: "Operate SIMPO through the installed SimpoCLI safely and efficiently. Use when asked to install or configure SimpoCLI, inspect the current SIMPO identity or scopes, create/read/update/sync/release BioModels, DataSets, or Projects, read or change Project Variables, start/monitor/stop calculations, retrieve paginated calculation results, troubleshoot a simpo command, or generate a script that consumes SimpoCLI JSON output."
 ---
 
 # SimpoCLI

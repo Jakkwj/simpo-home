@@ -26,6 +26,15 @@
         "size": 75428,
         "sha256": "613737556b58fcd8d5879e9c04fba1929748629008a3a3345fa5bf3ebaa590d4"
       }
+    },
+    {
+      "version": "0.1.8-skills.2",
+      "cli_min_version": "0.1.8",
+      "artifact": {
+        "url": "https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/SIMPOSkills_0.1.8-skills.2.zip",
+        "size": 79791,
+        "sha256": "c6cc54c6bbe022a144232eea7ec4c4c8cae2a2875b8d8b3557234f4e47233411"
+      }
     }
   ]
 }

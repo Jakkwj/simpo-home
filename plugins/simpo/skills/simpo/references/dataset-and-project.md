@@ -77,16 +77,33 @@ the Tank to follow the matching DataSet Measured Target. References must exist,
 Target and Component units must match, each Tank/Component pair must be unique,
 and `Interpolation` must be `Previous` or `Linear`. The first Measured value
 cannot be empty; a constrained Measured series is removed from the weighted
-fitting objective. Do not add a Constraint unless the user or source explicitly
-requires an observed series to drive model state.
+fitting objective. A common candidate is tank-specific measured DO when the
+case lacks sufficient aeration/oxygen-transfer inputs such as kLa or Qair:
+map the actual DO Target and Component, propose the Constraint, and document
+the imposed-DO assumption instead of inventing aeration data. A measured scalar
+needs a justified time interval/constant-series assumption. Do not constrain
+all observations by default; other uses need a source/user-defined reason.
+Constraint is enabled in `dynamic`, disabled in `steady_state`, and enabled
+only after the steady-state phase in `steady_state_then_dynamic`; it cannot
+replace missing physical oxygen supply during steady-state initialization.
 
 `Retention` is a named-record list with exactly one row per DataSet Tank and
 fields `Tank`, `HRT`, and `SRT`. HRT/SRT are booleans. HRT selects Tank volumes
 for the system hydraulic-retention numerator; SRT selects Tank TSS inventories
 for the solids-retention numerator. SRT requires a DataSet Target with
 `StandardTarget: "Total Suspended Solids"` and a nonempty Conversion row.
-Legacy input may omit the table and receive generated defaults; review them
-before using steady-state HRT/SRT results.
+For a settling tank, set `HRT=false` when `BioCalculated=false` (the usual case),
+and `HRT=true` when `BioCalculated=true`. With the TSS StandardTarget and a valid
+Conversion, enable SRT for tanks holding the system sludge inventory, including
+settling tanks even if their HRT/BioCalculated flags are false. Without the TSS
+mapping, leave SRT off and report the missing prerequisite. Auxiliary virtual
+tanks, such as a dedicated chemical phosphorus removal tank, normally use
+`HRT=true` and `SRT=false`, even when TSS mapping exists. Identify them by their
+documented modeling role and record any case-specific exception; do not enable
+SRT for every tank solely because the TSS Target is present. Legacy input may
+generate HRT=true for every tank; review and explicitly set the intended
+accounting boundary. These flags select statistics, not biological activity or
+physical solids retention, and cannot fix bacterial washout.
 
 `create-dataset` and `update-dataset` also accept `--async`, `--wait`,
 `--operation-wait-timeout`, `--operation-poll-interval`, and

@@ -1,0 +1,18 @@
+{
+  "schema_version": 2,
+  "name": "simpo",
+  "target": "cli-public",
+  "rules_version": "2",
+  "version": "1.0.0",
+  "workflow_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "adapter_sha256": "a1ccf4bf99479d7f3ed170098cc8a4e817bccdb2ab4a1190926ad296ba48cb12",
+  "files": {
+    "SKILL.md": "c805e6c425cabae96d8d42c82f35359fd4de50344a6baceb1939417f5a2d32c9",
+    "agents/openai.yaml": "68fa2a8df16a6af2de3135e785c4e80354e0579aef8a481a761728819aadda3c",
+    "references/biomodel.md": "07c7dd5218c03f67710f16b6a91aea0ae8b749db99dec7eb36a79c3a5f44e285",
+    "references/calculation.md": "925539d363bf4890e0e3388c27d27f4f9889ddc440c22bf931e61590e0d82792",
+    "references/dataset-and-project.md": "f7f4ae64c4d5d443f52fa3e948f5e7ec2c4ed2689c3dd44a5d162cce151f11f8",
+    "references/operations.md": "d54abade3cce054283021e2dc6289bbdab07fba7085e59569b515e086559ca7e",
+    "references/token-and-cli.md": "ec7afb26192c4fde627ab6d1f61d16725d0ea51441724913d8a5a0c97e8c4fd1"
+  }
+}

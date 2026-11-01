@@ -49,6 +49,15 @@ numbers, parentheses, and `+ - * /`. A Formula Component cannot reference
 itself or another Formula Component. Preserve Formula when reading, updating,
 synchronizing, or reviewing a model.
 
+Formula commonly represents TSS. If a TSS Component already exists, attempt a
+weighted-sum Formula from the Composition TSS coefficients of the contributing
+Components, with compatible units and registered Parameter expressions.
+Exclude the target itself and other aggregate totals to avoid self-reference
+and double-counting; never treat an unknown coefficient as zero. Use the
+`simpo-create-biomodel` Composition derivation reference for this procedure.
+Keep the derivation in the review audit; do not invent a TSS Component or
+silently replace a source-defined independent differential state.
+
 For blank or JSON creation and for `update-biomodel`, `--async` returns a durable
 Operation ID; add `--wait` to receive the final BioModel result. Use an
 `--idempotency-key` when retrying after a connection timeout.

@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "name": "simpo-create-biomodel",
+  "target": "cli-public",
+  "rules_version": "2",
+  "version": "1.0.0",
+  "workflow_sha256": "9046bbabc2413e70a83668981b6d3c3b06dcad4c5306267f843c18e795b87103",
+  "adapter_sha256": "6e0e1a91524160e826a8ee13eb29cd71f9e496096fc3cc63018439f8d1a30081",
+  "files": {
+    "SKILL.md": "b05a7cb0c994c4e127baadc268976e2a14f3b1ab119ed6c84383b15b6a7bbb83",
+    "agents/openai.yaml": "1bb9d3d1e6a80f778a5283515ef835500bec6a6dd02582284ffd0e2d66d00fd2",
+    "references/biomodel-analysis-rules.md": "5e41fbe94d45b754a2948fbd9e72cbf5461870983280b5ad741c278ab73f8fb7",
+    "references/composition-derivation.md": "5853554dab3ae66148d1ec3c7309f5e6ebd1d5382e16abc4f6c3bc970f58fc5a",
+    "references/ionization-derivation.md": "f55f485a54b56638dfa56b2f93482ae146c3f78fcc18ce6e8b7dd37f56358374"
+  }
+}

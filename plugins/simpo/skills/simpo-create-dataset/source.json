@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "name": "simpo-create-dataset",
+  "target": "cli-public",
+  "rules_version": "2",
+  "version": "1.0.0",
+  "workflow_sha256": "f89d17842350b5131d7c34a45626728228060a74573fe028a03a0d2e17a3415f",
+  "adapter_sha256": "421530128a668e7cc572020a4fde2baa1b163e6ae6c66aa30370b3f090846f59",
+  "files": {
+    "SKILL.md": "74b5adaee45945242cbcdab7ebbc171c20c47272a172b218e6ba9f232b9dba69",
+    "agents/openai.yaml": "366b4fefde8b5f47d78ac4b05f8d792194f85103e279d9f4a130bdd83bc2c380",
+    "references/dataset-json-format.md": "35e48e161242ef162b94c5d614c1f8243ba697f5169d70ab6ea67e832cc0a0b8",
+    "references/model-targets.md": "b093814467b6c02cda6faf815dab29b813733e27620435942dea77739dc15c00",
+    "references/paper-extraction.md": "c1367c0cb70cb5519ba5ab6b28f9d48a2581020389fa4adf91dd69dc5161ea44",
+    "references/process-design-rules.md": "f7935ec93057adc5225593da3a0bbb764a30d3c687b43a5546e57a22a4a8aa96",
+    "scripts/import_digitized_series.py": "ea7a64231e0267ec4c5b95ac21d334b2be3bdf08efd208f177d513de9829ee05",
+    "scripts/prepare_paper_figures.py": "991868bf050fdc46eeaaff1fc008c3e1dd04d649c82572c786a69802e1c8334a"
+  }
+}

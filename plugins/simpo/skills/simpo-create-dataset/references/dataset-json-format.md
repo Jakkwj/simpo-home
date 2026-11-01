@@ -54,8 +54,21 @@ be written by this workflow.
 
 - `CSTR`: `BioCalculated=true`; numeric `Volume`; `SettlingFactor=null`;
   nonnegative diffuser count/depth; alpha and beta from 0 to 1.
-- `Point Settling`: `BioCalculated=false`; `Volume=[outlet, blanket]`;
+- `Point Settling`: normally `BioCalculated=false`; use `true` when biological
+  reactions in the settler are part of the reviewed model;
+  `Volume=[outlet, blanket]`;
   `SettlingFactor` from 0 to 1; diffuser/alpha/beta cells are `null`.
+
+For later Project Retention, a settling tank with `BioCalculated=false` should
+have HRT off; if `BioCalculated=true`, HRT should be on. Its SRT inclusion is
+independent: include relevant sludge inventories when a TSS StandardTarget and
+valid Project Conversion exist.
+
+Auxiliary virtual tanks, for example a dedicated tank simulating chemical
+phosphorus removal, normally have Project Retention `HRT=true`, `SRT=false`.
+Record their modeling role so Project creation includes their volume in HRT
+but excludes their solids inventory from SRT, even when TSS mapping is present.
+Document any case-specific exception rather than inferring one from the name.
 
 ### Pump
 
@@ -142,7 +155,7 @@ closed batch reactor with no external inflow, flow, or liquid connection.
 
 ## Validation and submission
 
-The SIMPO parser invoked by `simpo create-dataset --json` is the authoritative
+The SIMPO DataSet parser is the authoritative
 validator and follows the backend version currently in use. Before submission,
 review the JSON in the current session for headers, naturally ordered numeric
 keys, names, table references, initial flow values, expression syntax, and
@@ -152,4 +165,4 @@ does not prove biological performance or equipment adequacy.
 
 Submit the JSON object itself, not a wrapper containing `DataSet`, `Answer`,
 `Description`, metadata, or a BioModel recommendation. Put narrative material
-in `--description` instead.
+in Description instead.

@@ -94,6 +94,15 @@ For `Point Settling`, store the two compartment volumes as
 the assumed split and factor. Do not claim a detailed clarifier design from this
 simplified representation.
 
+For ordinary sludge-retaining operation, the usual `SettlingFactor` reference
+magnitude is `0.999` to `1`; it is the particulate fraction directed to the
+blanket. A factor that is too small can cause particulate/biomass loss through
+the outlet. Review it against actual effluent TSS and the flow split, preserving
+reported case values unless an explicitly reviewed correction is justified.
+This range is an operating guideline, not a parser limit or a guarantee of
+zero effluent TSS. Record an adopted value as an assumption when evidence is
+missing; do not silently set every settler to `1`.
+
 ## 4. Hydraulic topology
 
 - Define every independent flow in `Flow` and use its exact name in
