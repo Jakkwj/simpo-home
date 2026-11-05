@@ -3,7 +3,7 @@
 For daily releases, the sibling `SimpoClient/build.py` is the unified entrypoint:
 
 ```bash
-python ../SimpoClient/build.py --app client --version 1.5.3 --dry-run
+python ../SimpoClient/build.py --app client --version 1.6.0 --dry-run
 python ../SimpoClient/build.py --app cli --version 0.1.10
 python ../SimpoClient/build.py --app skills --version 1.0.1
 ```
@@ -19,6 +19,21 @@ level entrypoints. CLI-only registration is independent of Skills exports:
 python3 plugins/simpo/tools/build_release.py --cli-only --cli-version 0.1.10
 ```
 
+For a Client version still in release preparation, a full rebuild can explicitly
+replace the current platform's existing local catalog entry:
+
+```bash
+python ../SimpoClient/build.py --app client --version 1.6.0 --replace-existing
+```
+
+The Client publisher also accepts `--replace-existing` when registering installers
+with checked build receipts. Installer and package checks still run before a
+single catalog write; other platforms, versions, CLI and Skills are preserved.
+Without the flag, different content for an existing version/platform is rejected.
+This changes local metadata only. Upload the matching files before pushing the
+catalog; after a public release, increment the version so installed users can
+detect the update. The flag applies only to full Client builds.
+
 CLI releases use `X.Y.Z`. All four public Skills share an independent `X.Y.Z`
 bundle version, starting at `1.0.0`. The private Web package also starts at
 `1.0.0` and advances separately when only Web content changes. A Skills-only
@@ -31,10 +46,12 @@ remain supported by the new CLI and sort before a stable release at the same
 The updater uses the public catalog at
 `https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/index-v2.json`
 (schema 2, containing both independent and historical Skill versions).
-The legacy `index.json` stays at schema 1 and contains only `X.Y.Z-skills.N`
-Skills so CLI 0.1.8 keeps working. The release builder synchronizes published
-CLI installer entries to **both** catalogs, allowing old clients to upgrade.
-CLI 0.1.9 falls back to the legacy catalog only if the new URL returns HTTP 404.
+The release builder reads and updates only `index-v2.json`; it does not generate
+or synchronize `index.json`, or merge legacy history back into the new catalog.
+The existing schema 1 `index.json` is retained unchanged for old clients and
+contains only the previously recorded CLI and `X.Y.Z-skills.N` releases.
+CLI 0.1.9 still falls back to that legacy catalog only if the new URL returns
+HTTP 404; this runtime behavior is unchanged.
 Skills ZIPs live beside that catalog. CLI installers keep the existing Gitee
 `package` release URLs used by the website. All artifacts include SHA-256 and
 size; downloads require HTTPS. The CLI does not query an update service during
@@ -67,7 +84,7 @@ release archives are stored in `plugins/simpo/releases/`.
 | `.claude-plugin/marketplace.json` | Release builder synchronizes the plugin version. |
 | `plugins/simpo/.claude-plugin/plugin.json` | Release builder synchronizes the plugin version. |
 | `plugins/simpo/releases/index-v2.json` | Full release history, URL, size, SHA-256, and compatibility. |
-| `plugins/simpo/releases/index.json` | Legacy Skills history and synchronized CLI installer entries. |
+| `plugins/simpo/releases/index.json` | Existing legacy catalog, retained unchanged; no new entries are generated. |
 
 Web-only changes use an independent internal version and do not require a public
 release. Public content changes increment the Skill package version; previously
@@ -95,11 +112,11 @@ users do not need access to SimpoSkills. Building/exporting itself does not push
 deploy, or update installed user Skills. Keep previous release ZIPs and catalog
 entries. A Skills-only release needs no CLI rebuild or `--cli-version` argument.
 
-For the `1.0.0` transition, first build, test, upload, and announce CLI `0.1.9`
-installers for the supported platforms. Keep both catalogs and historical ZIPs
-when publishing `1.0.0`. CLI 0.1.8 users run `simpo update` first, then
-`simpo skills update --target codex` (or `claude`) using the new CLI. Preparing
-the catalogs locally does not mean a CLI 0.1.9 installer is available online.
+For users migrating from CLI 0.1.8, the retained legacy catalog can advertise
+only its previously recorded installers. Upgrade to one of those versions or
+manually install a newer CLI, then run `simpo skills update --target codex`
+(or `claude`). New CLI and Skills releases are announced only in `index-v2.json`.
+Preparing the catalog locally does not mean the installer is available online.
 
 The old `sync_dataset_skill.py` is a compatibility wrapper for exporting the
 private `web-internal` target. It no longer derives Web instructions from these

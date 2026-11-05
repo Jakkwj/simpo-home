@@ -26,8 +26,8 @@ def checked_release(installer: Path) -> tuple[str, str, dict, dict | None]:
     if not split and receipt.get("offline") is not True:
         raise ValueError("A complete offline SimpoClient build receipt is required.")
     version = receipt.get("version")
-    if version_key(version) < (1, 5, 2):
-        raise ValueError("Client releases before 1.5.2 do not support command-line upgrades.")
+    if version_key(version) < (1, 6, 0):
+        raise ValueError("Client releases before 1.6.0 do not support command-line upgrades.")
     version_key(receipt.get("protocol_version"))
     platform = receipt.get("platform")
     filenames = {
@@ -54,10 +54,11 @@ def checked_release(installer: Path) -> tuple[str, str, dict, dict | None]:
     return version, platform, details, package
 
 
-def publish(installers, *, catalog_path: Path = PLUGIN / "releases/index-v2.json") -> dict:
+def publish(installers, *, catalog_path: Path = PLUGIN / "releases/index-v2.json",
+            replace_existing: bool = False) -> dict:
     if not installers:
         raise ValueError("Select at least one built installer explicitly.")
-    catalog = read_catalog(catalog_path, 2)
+    catalog = read_catalog(catalog_path)
     clients = catalog.setdefault("client", [])
     if not isinstance(clients, list):
         raise ValueError("Invalid Client release catalog.")
@@ -68,7 +69,7 @@ def publish(installers, *, catalog_path: Path = PLUGIN / "releases/index-v2.json
         if version in entries or not (entry.get("offline") is True or entry.get("distribution") == "split"):
             raise ValueError("Duplicate or unsupported Client release in catalog.")
         entries[version] = entry
-    # Check every receipt and immutable platform before any catalog write.
+    # Validate every selected build before writing, including explicit replacements.
     for installer in installers:
         version, platform, details, package = checked_release(Path(installer))
         split = package is not None
@@ -80,12 +81,18 @@ def publish(installers, *, catalog_path: Path = PLUGIN / "releases/index-v2.json
             raise ValueError(f"Client {version} already uses a different distribution format.")
         if split:
             previous_package = entry["packages"].get(platform)
-            if previous_package and previous_package != package:
-                raise ValueError(f"Client {version}/{platform} package already published with different bytes.")
+            if previous_package and previous_package != package and not replace_existing:
+                raise ValueError(
+                    f"Client {version}/{platform} package already registered in local catalog "
+                    "with different bytes. Use --replace-existing to replace this draft release."
+                )
             entry["packages"][platform] = package
         previous = entry["artifacts"].get(platform)
-        if previous and previous != details:
-            raise ValueError(f"Client {version}/{platform} already published with different bytes.")
+        if previous and previous != details and not replace_existing:
+            raise ValueError(
+                f"Client {version}/{platform} already registered in local catalog "
+                "with different bytes. Use --replace-existing to replace this draft release."
+            )
         entry["artifacts"][platform] = details
     catalog["client"] = sorted(entries.values(), key=lambda entry: version_key(entry["version"]))
     write_atomic(catalog_path, encode(catalog))
@@ -96,8 +103,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("installers", nargs="+", type=Path)
     parser.add_argument("--catalog", type=Path, default=PLUGIN / "releases/index-v2.json")
+    parser.add_argument(
+        "--replace-existing", action="store_true",
+        help="Replace selected version/platform metadata in the local catalog during release preparation.",
+    )
     args = parser.parse_args()
-    publish(args.installers, catalog_path=args.catalog)
+    publish(args.installers, catalog_path=args.catalog, replace_existing=args.replace_existing)
     print(f"Updated local Client catalog: {args.catalog}")
 
 

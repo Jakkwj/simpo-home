@@ -49,6 +49,7 @@ class ReleaseBuildTests(unittest.TestCase):
         self.assertEqual(catalog["cli"], [])
         self.assertEqual(catalog, self.publish())
         self.assertEqual(before, artifact.read_bytes())
+        self.assertFalse((self.plugin / "releases/index.json").exists())
         with zipfile.ZipFile(artifact) as archive:
             self.assertEqual(set(archive.namelist()),
                              {f"{name}/SKILL.md" for name in release.NAMES})
@@ -78,7 +79,7 @@ class ReleaseBuildTests(unittest.TestCase):
 
     def test_changed_skills_require_new_revision(self):
         self.publish()
-        index = self.plugin / "releases/index.json"
+        index = self.plugin / "releases/index-v2.json"
         before = index.read_bytes()
         (self.plugin / "skills/simpo/SKILL.md").write_text("New workflow")
         with self.assertRaisesRegex(ValueError, "immutable"):
@@ -96,14 +97,10 @@ class ReleaseBuildTests(unittest.TestCase):
         (self.plugin / "releases/index-v2.json").write_text(json.dumps(catalog))
         self.assertEqual(self.publish()["client"], clients)
 
-    def test_independent_version_migrates_history_and_preserves_old_cli_catalog(self):
+    def test_independent_version_preserves_v2_history_and_existing_bundles(self):
         old_catalog = self.publish()
         old_zip = self.plugin / "releases/SIMPOSkills_0.1.8-skills.1.zip"
         old_bytes = old_zip.read_bytes()
-        legacy_path = self.plugin / "releases/index.json"
-        legacy_bytes = legacy_path.read_bytes()
-        # Simulate the first upgrade from a publisher that only wrote schema 1.
-        (self.plugin / "releases/index-v2.json").unlink()
         (self.plugin / "release.json").write_text(
             '{"version":"1.0.0","cli_min_version":"0.1.9"}'
         )
@@ -111,20 +108,16 @@ class ReleaseBuildTests(unittest.TestCase):
         self.assertEqual(catalog["schema_version"], 2)
         self.assertEqual([e["version"] for e in catalog["skills"]], ["0.1.8-skills.1", "1.0.0"])
         self.assertEqual(catalog["skills"][0], old_catalog["skills"][0])
-        self.assertEqual(legacy_path.read_bytes(), legacy_bytes)
         self.assertEqual(old_zip.read_bytes(), old_bytes)
         self.assertEqual(catalog, self.publish())
         self.assertEqual(json.loads((self.plugin / ".claude-plugin/plugin.json").read_text())["version"], "1.0.0")
-        directory = self.root / "resource/cli"
-        directory.mkdir(parents=True)
-        (directory / "SimpoCLI_0.1.9_amd64.deb").write_bytes(b"new CLI")
-        catalog = self.publish(cli_versions=["0.1.9"])
-        legacy = json.loads(legacy_path.read_text())
-        self.assertEqual(legacy["cli"], catalog["cli"])
-        self.assertEqual([e["version"] for e in legacy["skills"]], ["0.1.8-skills.1"])
+        self.assertFalse((self.plugin / "releases/index.json").exists())
+        index = self.plugin / "releases/index-v2.json"
+        before = index.read_bytes()
         (self.plugin / "skills/simpo/SKILL.md").write_text("Different bytes")
         with self.assertRaisesRegex(ValueError, "immutable"):
             self.publish()
+        self.assertEqual(index.read_bytes(), before)
 
     def test_numeric_versions_and_stable_release_order(self):
         versions = ["1.10.0", "1.2.0", "0.1.8-skills.10", "0.1.8-skills.2", "1.0.0-skills.100", "1.0.0"]
@@ -134,17 +127,94 @@ class ReleaseBuildTests(unittest.TestCase):
             with self.subTest(version=version), self.assertRaises(ValueError):
                 release.version_key(version, skills=True)
 
-    def test_conflicting_history_fails_before_writing(self):
-        self.publish()
-        path = self.plugin / "releases/index-v2.json"
-        before = path.read_bytes()
+    def test_both_publishers_ignore_existing_legacy_catalog_without_rewriting_it(self):
+        catalog = self.publish()
+        catalog["client"] = [{"version": "1.5.2", "offline": True, "artifacts": {}}]
+        index = self.plugin / "releases/index-v2.json"
         legacy_path = self.plugin / "releases/index.json"
-        legacy = json.loads(legacy_path.read_text())
+        legacy = json.loads(json.dumps(catalog))
+        legacy["schema_version"] = 1
+        legacy.pop("client")
         legacy["skills"][0]["artifact"]["sha256"] = "0" * 64
-        legacy_path.write_text(json.dumps(legacy))
-        with self.assertRaisesRegex(ValueError, "disagree on immutable"):
-            self.publish()
-        self.assertEqual(path.read_bytes(), before)
+        legacy["skills"].append({
+            "version": "0.1.7-skills.1", "cli_min_version": "0.1.7",
+            "artifact": legacy["skills"][0]["artifact"],
+        })
+        legacy["cli"] = [{"version": "0.1.7", "artifacts": {}}]
+        directory = self.root / "resource/cli"
+        directory.mkdir(parents=True)
+        (directory / "SimpoCLI_0.1.9_amd64.deb").write_bytes(b"linux")
+        publishers = {
+            "skills": lambda: self.publish(cli_versions=["0.1.9"]),
+            "cli": lambda: release.publish_cli(cli_versions=["0.1.9"], root=self.root, plugin=self.plugin),
+        }
+        legacy_contents = {
+            "conflicting_and_legacy_only_releases": json.dumps(legacy).encode(),
+            "malformed": b"not valid JSON\n",
+        }
+        for name, publish in publishers.items():
+            for state, contents in legacy_contents.items():
+                with self.subTest(publisher=name, legacy=state):
+                    index.write_text(json.dumps(catalog))
+                    legacy_path.write_bytes(contents)
+                    result = publish()
+                    self.assertEqual(result["skills"], catalog["skills"])
+                    self.assertEqual(result["client"], catalog["client"])
+                    self.assertEqual([entry["version"] for entry in result["cli"]], ["0.1.9"])
+                    self.assertEqual(json.loads(index.read_text()), result)
+                    self.assertEqual(legacy_path.read_bytes(), contents)
+
+    def test_missing_v2_does_not_recover_releases_from_legacy_catalog(self):
+        legacy = self.publish()
+        legacy["schema_version"] = 1
+        legacy["cli"] = [{"version": "0.1.7", "artifacts": {}}]
+        legacy_path = self.plugin / "releases/index.json"
+        legacy_bytes = json.dumps(legacy).encode()
+        legacy_path.write_bytes(legacy_bytes)
+        (self.plugin / "release.json").write_text(
+            '{"version":"1.0.0","cli_min_version":"0.1.9"}'
+        )
+        directory = self.root / "resource/cli"
+        directory.mkdir(parents=True)
+        (directory / "SimpoCLI_0.1.9_amd64.deb").write_bytes(b"linux")
+        publishers = {
+            "skills": (lambda: self.publish(cli_versions=["0.1.9"]), ["1.0.0"]),
+            "cli": (lambda: release.publish_cli(cli_versions=["0.1.9"], root=self.root, plugin=self.plugin), []),
+        }
+        index = self.plugin / "releases/index-v2.json"
+        for name, (publish, skills_versions) in publishers.items():
+            with self.subTest(publisher=name):
+                index.unlink()
+                result = publish()
+                self.assertEqual(result["schema_version"], 2)
+                self.assertEqual([entry["version"] for entry in result["cli"]], ["0.1.9"])
+                self.assertEqual([entry["version"] for entry in result["skills"]], skills_versions)
+                self.assertEqual(json.loads(index.read_text()), result)
+                self.assertEqual(legacy_path.read_bytes(), legacy_bytes)
+
+    def test_invalid_v2_is_rejected_without_legacy_fallback(self):
+        catalog = self.publish()
+        catalog["schema_version"] = 1
+        legacy_bytes = json.dumps(catalog).encode()
+        index = self.plugin / "releases/index-v2.json"
+        legacy_path = index.with_name("index.json")
+        legacy_path.write_bytes(legacy_bytes)
+        invalid_catalogs = {
+            "legacy_schema": (legacy_bytes, "Unsupported release catalog schema"),
+            "malformed_json": (b"not valid JSON\n", "Expecting value"),
+            "invalid_entries": (b'{"schema_version":2,"cli":[],"skills":null}', "Invalid skills catalog"),
+        }
+        for name, publish in {
+            "skills": self.publish,
+            "cli": lambda: release.publish_cli(cli_versions=["0.1.9"], root=self.root, plugin=self.plugin),
+        }.items():
+            for state, (contents, message) in invalid_catalogs.items():
+                with self.subTest(publisher=name, invalid_v2=state):
+                    index.write_bytes(contents)
+                    with self.assertRaisesRegex(ValueError, message):
+                        publish()
+                    self.assertEqual(index.read_bytes(), contents)
+                    self.assertEqual(legacy_path.read_bytes(), legacy_bytes)
 
     def generated_manifest(self):
         files = {"release.json": hashlib.sha256((self.plugin / "release.json").read_bytes()).hexdigest()}
@@ -156,7 +226,7 @@ class ReleaseBuildTests(unittest.TestCase):
     def test_generated_public_package_rejects_unlisted_private_file(self):
         self.generated_manifest()
         self.publish()
-        index = self.plugin / "releases/index.json"
+        index = self.plugin / "releases/index-v2.json"
         before = index.read_bytes()
         (self.plugin / "skills/simpo/private-note.md").write_text("Internal instructions")
         with self.assertRaisesRegex(ValueError, "allowlist"):
@@ -168,6 +238,7 @@ class ReleaseBuildTests(unittest.TestCase):
         (self.plugin / "skills/simpo/SKILL.md").write_text("Unreviewed edits")
         with self.assertRaisesRegex(ValueError, "Generated file changed"):
             self.publish()
+        self.assertFalse((self.plugin / "releases/index-v2.json").exists())
         self.assertFalse((self.plugin / "releases/index.json").exists())
 
     def test_explicit_cli_versions_missing_installers_and_platform_merge(self):
@@ -210,12 +281,13 @@ class ReleaseBuildTests(unittest.TestCase):
         self.assertEqual(set(result["cli"][0]["artifacts"]), {"linux-amd64", "windows-x64"})
         self.assertEqual(result["skills"], catalog["skills"])
         self.assertEqual(result["client"], catalog["client"])
-        self.assertEqual(json.loads(index.with_name("index.json").read_text())["cli"], result["cli"])
+        self.assertFalse(index.with_name("index.json").exists())
         for path, before in protected.items():
             self.assertEqual(path.read_bytes(), before)
 
-    def test_cli_only_failures_leave_both_catalogs_unchanged(self):
+    def test_cli_only_failures_leave_v2_and_existing_legacy_file_unchanged(self):
         self.publish()
+        (self.plugin / "releases/index.json").write_bytes(b"Frozen legacy catalog\n")
         indexes = [self.plugin / "releases" / name for name in ("index.json", "index-v2.json")]
         before = [path.read_bytes() for path in indexes]
         for versions, platforms in (([], []), (["0.1.9"], ["windows-x64"]), (["0.1.9"], ["unknown"])):

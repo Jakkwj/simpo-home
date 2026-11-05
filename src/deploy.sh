@@ -9,7 +9,7 @@ if [ "$1" == "proxy" ]; then  # ./deploy.sh proxy 运行时
     yarn config set https-proxy $proxy_ip
 fi
 
-git add -A && git commit -m "1.5.1 released" && git push -u origin master
+git add -A && git commit -m "1.6.0 released" && git push -u origin master
 # git push -u origin master
 
 # 2026.11.05 这个 github page 的部署 应该可以取消了

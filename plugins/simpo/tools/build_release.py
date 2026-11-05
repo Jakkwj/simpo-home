@@ -4,6 +4,7 @@ Prepare the local catalog after building production installers. Upload and verif
 the installer bytes before pushing the catalog to GitHub. The catalog and Skills
 ZIPs themselves are committed to this repository. --cli-only registers CLI builds
 without requiring a Skills export. No credentials or upload operations are used.
+Only index-v2.json is read and updated; legacy index.json files are left untouched.
 """
 
 from __future__ import annotations
@@ -46,13 +47,13 @@ def version_key(value, *, skills=False):
     raise ValueError(f"Invalid {'Skills' if skills else 'CLI'} version: {value!r}")
 
 
-def read_catalog(path, schema):
+def read_catalog(path):
     catalog = (
         json.loads(path.read_text(encoding="utf-8"))
         if path.exists()
-        else {"schema_version": schema, "cli": [], "skills": []}
+        else {"schema_version": 2, "cli": [], "skills": []}
     )
-    if not isinstance(catalog, dict) or catalog.get("schema_version") != schema:
+    if not isinstance(catalog, dict) or catalog.get("schema_version") != 2:
         raise ValueError(f"Unsupported release catalog schema: {path}")
     for kind in ("cli", "skills"):
         entries = catalog.get(kind)
@@ -69,30 +70,7 @@ def read_catalog(path, schema):
             seen.add(version)
             if kind == "skills":
                 version_key(entry.get("cli_min_version"))
-                if schema == 1 and not LEGACY_VERSION.fullmatch(version):
-                    raise ValueError("Legacy catalog cannot contain independent Skill versions.")
     return catalog
-
-
-def merge_catalogs(current, legacy):
-    """Import old releases and recover interrupted catalog writes without losing history."""
-    for kind in ("cli", "skills"):
-        entries = {entry["version"]: entry for entry in current[kind]}
-        for entry in legacy[kind]:
-            version = entry["version"]
-            old = entries.get(version)
-            if old and old != entry:
-                if kind != "cli":
-                    raise ValueError(f"Catalogs disagree on immutable Skills {version}.")
-                combined = dict(old["artifacts"])
-                for platform, details in entry["artifacts"].items():
-                    if platform in combined and combined[platform] != details:
-                        raise ValueError(f"Catalogs disagree on immutable CLI {version}/{platform}.")
-                    combined[platform] = details
-                entry = {"version": version, "artifacts": combined}
-            entries[version] = entry
-        current[kind] = list(entries.values())
-    return current
 
 
 def write_atomic(path: Path, data: bytes):
@@ -206,14 +184,8 @@ def cli_entries(catalog, cli_versions, *, cli_directory=None, root=ROOT, platfor
     return entries
 
 
-def write_catalogs(catalog, output):
-    legacy = {
-        "schema_version": 1,
-        "cli": catalog["cli"],
-        "skills": [entry for entry in catalog["skills"] if LEGACY_VERSION.fullmatch(entry["version"])],
-    }
+def write_catalog(catalog, output):
     write_atomic(output / "index-v2.json", encode(catalog))
-    write_atomic(output / "index.json", encode(legacy))
 
 
 def publish_cli(*, cli_versions, cli_directory=None, platforms=(), plugin=PLUGIN, root=ROOT):
@@ -221,12 +193,12 @@ def publish_cli(*, cli_versions, cli_directory=None, platforms=(), plugin=PLUGIN
     if not cli_versions:
         raise ValueError("Select at least one CLI version explicitly.")
     output = plugin / "releases"
-    catalog = merge_catalogs(read_catalog(output / "index-v2.json", 2), read_catalog(output / "index.json", 1))
+    catalog = read_catalog(output / "index-v2.json")
     entries = cli_entries(catalog, cli_versions, cli_directory=cli_directory, root=root, platforms=platforms)
     for entry in entries:
         catalog["cli"] = [old for old in catalog["cli"] if old["version"] != entry["version"]] + [entry]
     catalog["cli"].sort(key=lambda entry: version_key(entry["version"]))
-    write_catalogs(catalog, output)
+    write_catalog(catalog, output)
     return catalog
 
 
@@ -245,10 +217,7 @@ def publish(
     output = plugin / "releases"
     output.mkdir(parents=True, exist_ok=True)
     index_path = output / "index-v2.json"
-    legacy_path = output / "index.json"
-    catalog = merge_catalogs(
-        read_catalog(index_path, 2), read_catalog(legacy_path, 1)
-    )
+    catalog = read_catalog(index_path)
     filename = f"SIMPOSkills_{version}.zip"
     with tempfile.TemporaryDirectory(prefix=".bundle-", dir=output) as temporary:
         built = Path(temporary) / filename
@@ -293,7 +262,7 @@ def publish(
             entry["version"] = version
     write_atomic(metadata_path, encode(metadata))
     write_atomic(marketplace_path, encode(marketplace))
-    write_catalogs(catalog, output)
+    write_catalog(catalog, output)
     return catalog
 
 
