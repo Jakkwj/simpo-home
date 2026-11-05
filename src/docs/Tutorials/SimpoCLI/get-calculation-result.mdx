@@ -110,6 +110,25 @@ Use `--engine SIM` or `--engine Simulation` with one exact Balance section:
 | `steady_state_balance` | Rates from the saved steady-state snapshot, using each item's returned unit |
 | `dynamic_balance` | Cumulative quantities over the entire saved dynamic interval, including inventory change |
 
+The updated CLI and backend also accept `UNC`, `LHS`, or `Uncertainty`, and
+`GA`, `RFGA`, `SCEUA`, or `Estimation`, for the **final best-solution simulation**.
+These sections remain at the engine root, not below `best_result`. They describe
+one selected parameter set, not all candidates or the prediction band. This
+support is included in the updated 0.2.0 CLI source; an earlier installed build
+with the same version may not include it. Both the CLI and backend need the update.
+
+```text
+simpo get-calculation-result PROJECT_ID --engine UNC \
+  --section dynamic_balance --view summary --limit 10
+simpo get-calculation-result PROJECT_ID --engine SCEUA \
+  --section dynamic_balance --view diagnostics --limit 10
+```
+
+Check availability and `balance.analysis_source="best_solution"`. Run settings
+come from the saved best-solution context, not the parent search report. Missing
+context settings remain unknown. Older best-fit curves cannot replace a missing
+balance snapshot, and this read does not fall back to a separate SIM result.
+
 For `steady_state_then_dynamic`, the dynamic interval excludes the preceding
 steady-state iterations. Reading a Balance view does not run a calculation,
 change the Fortran result, reintegrate saved series, or reconstruct missing

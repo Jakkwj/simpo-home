@@ -263,7 +263,7 @@ backend's Token ownership and scope checks.
 ### Saved Balance views
 
 Balance uses the same `get-calculation-result` command, with no new retrieval
-command. After locating the SIM sections, select the saved scope and view:
+command. After locating the actual engine sections, select the saved scope and view:
 
 ```text
 simpo get-calculation-result PROJECT_ID --engine SIM \
@@ -283,6 +283,15 @@ and `concentrations`. The four detail views require both `--dimension` and
 may be filtered by dimension and key, but not tank. Without `--view`, generic
 result retrieval is unchanged and Balance filters are not accepted.
 
+Besides `SIM`/`Simulation`, these views support the final best-solution
+simulation saved under `UNC`/`LHS`/`Uncertainty` and
+`GA`/`RFGA`/`SCEUA`/`Estimation`. For example, use `--engine UNC --section
+dynamic_balance --view summary`; the section is at the engine root, not under
+`best_result`. Check the saved `best_solution` provenance and availability.
+These results represent one selected parameter set, not all candidates or the
+prediction band. Historical best-fit curves alone cannot supply missing Balance
+data, and another engine's SIM result must not be substituted.
+
 Use `calculation-result-analysis` from the same Skills package when explaining
 these results. It contains the shared Balance scientific rules used by SimpoAI.
 The response includes saved `balance` metadata, `selection`, and ordinary
@@ -291,6 +300,10 @@ Balance is unavailable, not zero or closed. These views are read-only and do
 not recalculate results, modify Fortran, render charts, or trace influent origin.
 
 This option set requires SimpoCLI 0.1.10 and the corresponding backend support.
+Best-solution views additionally require an updated CLI and backend that accept
+these engines; the updated 0.2.0 source includes this support, but an earlier
+installed build with the same version may not. Use the command's returned
+capabilities/errors rather than the version number alone.
 If the installed command rejects an option, inspect its help after the error;
 do not bypass it with direct API requests or automatically upgrade the user.
 The saved report's `resolution_rate` is already a percentage, whereas

@@ -15,6 +15,16 @@
           "sha256": "7a47463b672820af4b1664b0b338cc12c1a6b362176d935c1a3c2752f9414e48"
         }
       }
+    },
+    {
+      "version": "0.2.1",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.1_amd64.deb",
+          "size": 27437216,
+          "sha256": "3f8ebdd5377a816f35d8286a8eb98d1dd054bd8f636452010e1f3f46061150c1"
+        }
+      }
     }
   ],
   "client": [

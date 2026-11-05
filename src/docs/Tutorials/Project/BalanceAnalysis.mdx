@@ -8,8 +8,9 @@ sidebar_label: Balance Analysis
 
 Balance Analysis explains what enters and leaves your simulated system, what
 reactions produce or consume, and whether the recorded contributions account
-for the change in stored material. Use it after a **Simulation** to investigate
-an element such as nitrogen, an individual Component, or a combined Target.
+for the change in stored material. Use it after a **Simulation**, or for the
+final best-solution simulation from **Uncertainty** or **Estimation**, to
+investigate an element such as nitrogen, an individual Component, or a combined Target.
 
 The usual workflow is: **run the simulation → open Balance Analysis → choose
 the accounting item → review its balance and any diagnostics → inspect the
@@ -34,6 +35,24 @@ The analysis is prepared from the calculation results. Opening the dialog does
 not rerun the solver or change the saved concentrations. Editing a model later
 does not update the balance of an earlier run.
 
+### Balance of the best solution
+
+For **Uncertainty** or **Estimation**, run the calculation as usual. After the
+search finishes, the calculation program runs the selected best parameter set
+once more to save the complete balance contributions. This final simulation
+uses the run's execution mode, solver settings, and output resolution.
+
+Its balance belongs to that one best solution. It is not an average balance of
+the candidates and does not describe the prediction band. A good fit to
+measurements and a balance within tolerance are separate checks. The final
+simulation adds one run after the search, not one additional run per candidate.
+
+Use an updated calculation client and a newly prepared calculation program
+that support this final simulation. Historical best-fit curves alone do not
+contain enough information to reconstruct balance results. If there is no
+usable best solution, no completed balance snapshot, or no saved information
+confirming its best-solution source, the analysis is unavailable in the dashboard.
+
 For **Composition**, supply the relevant coefficients in the BioModel. For
 **Target**, provide the corresponding Conversion in the Project Solution.
 Missing definitions are not invented or replaced by zeros. Component analysis
@@ -49,6 +68,12 @@ BioModel does not add analysis to an existing result.
 In the Draft Project, go to **Calculation → Simulation**. In the result toolbar,
 next to the steady-state result and result-folder controls, click the icon whose
 tooltip is **Balance Analysis**. It opens a separate dialog.
+
+For a best-solution balance, open **Calculation → Uncertainty** or
+**Calculation → Estimation** and use the result-toolbar icon whose tooltip
+is **Best-solution Balance Analysis**. The dialog identifies the best-solution source; it does not show the Project's
+separate Simulation result. Finish saving and loading the final results before
+opening it.
 
 - If both stages are available, choose **Steady State** or **Dynamic** beside
   the dialog title. A single-stage result does not need this switch.
@@ -251,6 +276,9 @@ Dynamic names add `Dynamic__`, such as
 
 For numeric tables, use the simulation result folder: steady-state runs write
 `Result__SIM__SteadyState__.xlsx`; dynamic results use `Result__SIM__.xlsx`.
+For a best solution, these workbooks are in the corresponding **Uncertainty**
+or **Estimation** run folder. Use that run's result-folder control to find them;
+do not substitute files from a separate Simulation run.
 
 | Worksheet | Use |
 | --- | --- |

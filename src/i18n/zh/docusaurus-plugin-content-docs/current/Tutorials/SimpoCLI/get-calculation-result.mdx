@@ -107,6 +107,17 @@ simpo get-calculation-result PROJECT_ID \
 | `steady_state_balance` | 已保存稳态快照中的收支速率，单位以各核算项返回值为准 |
 | `dynamic_balance` | 整个已保存动态区间内的累计量，包括库存变化 |
 
+更新后的 CLI 与后端还支持 `UNC`、`LHS`、`Uncertainty`，以及 `GA`、`RFGA`、`SCEUA`、`Estimation` 的**最终最优解模拟**。平衡分支仍在引擎根目录，不在 `best_result` 下；它仅代表一组最优参数，不代表全部候选或预测区间。此支持已加入更新后的 0.2.0 CLI 源码，但同版本号的较早安装包可能尚不包含，需要 CLI 与后端均包含这项更新。
+
+```text
+simpo get-calculation-result PROJECT_ID --engine UNC \
+  --section dynamic_balance --view summary --limit 10
+simpo get-calculation-result PROJECT_ID --engine SCEUA \
+  --section dynamic_balance --view diagnostics --limit 10
+```
+
+核对可用性及 `balance.analysis_source="best_solution"`。运行设置来自保存的最优解上下文，不借用父搜索报告；缺失设置保持未知。旧最优拟合曲线不能替代缺失的平衡快照，读取时也不会回退到独立的 SIM 结果。
+
 对于 `steady_state_then_dynamic`，动态区间不包含此前的稳态迭代时间。读取平衡
 视图不会启动计算、修改 Fortran 结果、重新积分已保存的序列，也不会根据当前模型
 补建缺失的核算数据。

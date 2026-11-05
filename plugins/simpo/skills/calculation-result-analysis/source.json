@@ -2,12 +2,12 @@
   "schema_version": 2,
   "name": "calculation-result-analysis",
   "target": "cli-public",
-  "rules_version": "3",
-  "version": "1.0.1",
-  "workflow_sha256": "6b2b1c16509f64d499d941c96cd5ddc2b6b57f9323143dce671633431e8a90d5",
-  "adapter_sha256": "4906e875eaf12cd47f43485e2cc39f13469c4841585393e44729f420c138aa41",
+  "rules_version": "4",
+  "version": "1.1.0",
+  "workflow_sha256": "f2f684172cb0c4bd7be2d6d06704ab65b6c72a1e415a70a2da8a8b9790e758c5",
+  "adapter_sha256": "ca324ef1fefc9cf6a1c0f8d66d8bd1e7ad8c23881082cc838b914c9377bc3497",
   "files": {
-    "SKILL.md": "08b5c22792ba050a2e84b2e70e0c6e6801a73571ee2b5fe73e09c4fcd7ba723a",
-    "references/balance-analysis.md": "135a123da7010d2bcf7b8b1a672c64319d933c2fd2ff209c9b6d3ad16d4f060c"
+    "SKILL.md": "696a48131178cd04c104756c66ca5e0b613dcb30c7d4c01994b51e7a577d1821",
+    "references/balance-analysis.md": "529e95f84230e77dc8f569828cca7b76c9762436b52c9aa66eb6895a58a847fb"
   }
 }

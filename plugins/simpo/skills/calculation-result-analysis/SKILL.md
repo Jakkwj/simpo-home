@@ -27,7 +27,7 @@ description: "Analyze saved SIMPO simulation, sensitivity, uncertainty, and esti
 
 ## 稳态、动态与字段含义
 
-- 当前求解器明确规定：`dynamic` 使用 Project.Variable 初值并启用 Solution.Constraint；`steady_state` 禁用 Constraint；`steady_state_then_dynamic` 先禁用 Constraint 求自然稳态，再以该稳态解作为动态初值并启用 Constraint。依赖 DO Constraint 的项目还要核对稳态阶段的实际曝气、KLa、控制器或供氧反应，不能把 Measured DO 当作持续供氧，也不能将既定行为直接断言为求解器故障。
+- 当前求解器在稳态和动态阶段均应用已配置的 Solution.Constraint。稳态约束采用所选稳态输入平均方法，不按流量加权；动态约束采用随时间变化的值。`dynamic` 使用 Project.Variable 初值；`steady_state_then_dynamic` 以稳态终态作为动态初值。历史运行按其实际版本与保存证据解释，不能把当前规则套到旧结果。依赖 DO Constraint 的项目还要核对实际曝气、KLa、控制器或供氧反应，不能把 Measured DO 当作持续供氧。
 - `steady_state_result.setToValue` 是 Dashboard 上“将此结果回填 Variable”的勾选状态，上传默认 false，与求解时是否施加 Constraint 无关。不能把 false 当作约束未生效的证据。
 - Retention.HRT/SRT 与结果的 HRT Included/SRT Included 选择系统停留时间的统计池体，不是固体截留、反应或生长约束开关；不要建议靠打开 SRT Included 来恢复生物量。
 - 辅助虚拟池（例如专门模拟化学除磷的池）通常设置 `HRT=true`、`SRT=false`：体积计入 HRT，固体库存不计入 SRT。按实际建模用途识别，并核对统计边界及已有的例外说明；即使存在 TSS StandardTarget 和有效 Conversion，也不能据此把虚拟池自动计入 SRT。
@@ -55,7 +55,7 @@ description: "Analyze saved SIMPO simulation, sensitivity, uncertainty, and esti
 
 用户询问 Mass Balance、Reaction Analysis、Composition/Component/Target 收支、动态累计差异、约束补偿或异常汇总时，先按执行适配加载 [平衡分析规则](references/balance-analysis.md)。仅查询状态或下载原始结果不需要加载此参考。
 
-从同一次运行的核算摘要和异常开始，按问题展开有关的收支项、池体反应、反应或浓度异常。保留系统返回的状态和证据；无需为了展示完整而遍历每个指标。当前流程只读取、筛选和解释既有结果，不重新积分、不重新计算、不推断某股进水的最终组分去向。
+从同一次运行的核算摘要和异常开始，按问题展开有关的收支项、池体反应、反应或浓度异常。不确定性和参数估计仅在保存了明确标记的最优解平衡时可作此分析；它代表一次最优解模拟，不代表候选集合或预测区间。保留系统返回的状态和证据；无需为了展示完整而遍历每个指标。当前流程只读取、筛选和解释既有结果，不重新积分、不重新计算、不推断某股进水的最终组分去向。
 
 ## 回答内容
 
@@ -106,8 +106,24 @@ simpo get-calculation-result PROJECT_ID --engine SIM \
 
 Use the supplied Project ID and exact identifiers from the response; the example
 Component is not a default. For saved steady-state accounting, select
-`--section steady_state_balance` instead. All Balance views require SIM and one
-of these exact sections. Do not append a view to a generic nested result path.
+`--section steady_state_balance` instead. Use the actual saved engine: `SIM`/
+`Simulation`, `UNC`/`LHS`/`Uncertainty`, or `GA`/`RFGA`/`SCEUA`/`Estimation`.
+The latter two families provide the final best-solution simulation only, not
+the whole candidate ensemble. Both exact Balance sections are at the engine
+root, not below `best_result`. Do not append a view to a generic nested path.
+
+```text
+simpo get-calculation-result PROJECT_ID --engine UNC \
+  --section dynamic_balance --view summary --limit 5
+simpo get-calculation-result PROJECT_ID --engine SCEUA \
+  --section dynamic_balance --view diagnostics --limit 10
+```
+
+Check `balance.analysis_source` and availability for these best-solution views.
+An old best-fit curve is insufficient to reconstruct accounting. Missing
+best-solution provenance must not fall back to SIM. Runtime settings come from
+the saved best-solution context, not the parent search report or current Project
+settings; missing settings remain unknown.
 
 | Option | Meaning |
 | --- | --- |
@@ -150,6 +166,10 @@ residual or no anomalies. Unsupported options require a CLI supporting Balance
 views (minimum package version 0.1.10) and a compatible backend; a newer CLI
 alone cannot add missing backend capabilities. Report the limitation without
 automatically upgrading or rerunning a calculation.
+
+Best-solution engine support is included in the updated 0.2.0 CLI source and
+requires a matching backend. Earlier installed builds with the same version
+may lack it; do not infer support or initiate an upgrade from the number alone.
 
 The report's `resolution_rate` is already a percentage; the calculation command
 `--resolution-rate` takes a ratio (`1` means `100%`). Do not pass a report value
