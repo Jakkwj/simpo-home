@@ -38,6 +38,12 @@ import TabItem from "@theme/TabItem";
        {/* or <a href={config.customFields.urlDownloalNetdiskWindows} target="_self" download>Windows (Netdist)</a>. */}
     </li>
     <li>
+      **升级**: `1.6.0` 后的版本支持命令行可以直接升级：
+      - 查看版本：`SimpoClient --version`。
+      - 检查是否有可用新版本：`SimpoClient update --check`。
+      - 版本升级：`SimpoClient update`。
+    </li>
+    <li>
       **卸载**: 在开始菜单点击 <code>Uninstall SimpoClient</code>，或者点击运行 <code>C:\Program Files\SimpoClient\unins000.exe</code>。
     </li>
     <li>
@@ -70,6 +76,12 @@ import TabItem from "@theme/TabItem";
         运行此命令进行安装：<code>sudo dpkg -i SimpoClient_VERSION_amd64.deb</code>。`VERSION`是最新版本号。
       </li>
     </ul>
+  </li>
+  <li>
+    **升级**: `1.6.0` 后的版本支持命令行可以直接升级：
+    - 查看版本：`SimpoClient --version`。
+    - 检查是否有可用新版本：`SimpoClient update --check`。
+    - 版本升级：`SimpoClient update`。
   </li>
   <li>
     **卸载**：运行 <code>sudo dpkg -r simpoclient</code>。标准卸载会删除程序，

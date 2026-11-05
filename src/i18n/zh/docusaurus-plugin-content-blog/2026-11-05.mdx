@@ -1,0 +1,105 @@
+---
+slug: SIMPO-blog-2026-11-05
+title: SIMPO 1.6.0 发布：平衡分析
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+import massBalanceImage from '@site/static/img/blog/2026-11-05/mass-balance-zh.png'
+import reactionAnalysisImage from '@site/static/img/blog/2026-11-05/reaction-analysis-zh.png'
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+  **SIMPO** 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看：[SIMPO 1.6.0 更新日志](/changelog/SIMPO%20Client/2026#2026-11-05))。
+  </div>
+</div>
+
+---
+
+完成一次模拟后，除了观察浓度曲线，您可能还想知道：系统的物质收支是否闭合？某个组分主要在哪些池体中产生，又被哪些反应消耗？
+
+**SIMPO 1.6.0** 新增**平衡分析**功能，通过桑基图展示质量收支和反应贡献，让模拟结果更容易核对和解释。同时，SimpoClient 支持直接通过命令行升级，账户登录与 Dashboard 的使用体验也有了新的改进。
+
+## 平衡分析：从浓度曲线到质量收支
+
+现在，您可以在项目的 **Calculation → Simulation** 页面，点击 **平衡分析（Balance Analysis）** 图标，查看本次计算的质量平衡与反应分析。
+
+### 质量平衡：核对系统的完整收支
+
+物质从哪里进入系统，通过哪些过程产生或消耗，最终又从哪里离开？质量平衡将这些贡献汇总在同一张桑基图中，帮助您核对系统边界内的收支。
+
+- **外部输入与输出**：查看进水、出水和排泥等穿过系统边界的贡献。
+- **反应与物理过程**：区分生化反应、物理传质和 Constraint 补偿等收支项。
+- **动态库存变化**：动态计算还会计入池内期初、期末的库存变化。
+
+您可以按 **Composition、Component 或 Target** 选择核算项，例如模型中已定义的元素组成、某个具体组分，或通过 Conversion 定义的综合指标。桑基图中的流带宽度表示贡献量，配合下方的收支汇总与明细，可以进一步核对各项数值。
+
+<figure>
+  <a href={massBalanceImage} target="_blank" rel="noopener noreferrer">
+    <img src={massBalanceImage} alt="LieDe2 案例的稳态氮质量平衡：查看外部输入、输出及各项收支贡献。点击图片查看完整原图。" loading="lazy" style={{display: "block", width: "100%", maxHeight: "560px", objectFit: "contain"}} />
+  </a>
+  <figcaption>LieDe2 案例的稳态氮质量平衡：查看外部输入、输出及各项收支贡献。点击图片查看完整原图。</figcaption>
+</figure>
+
+### 反应分析：定位产生和消耗的来源
+
+对于同一个组分，产生与消耗可能同时发生。只看最终浓度或净变化，往往难以判断各个反应的作用。
+
+**反应分析**分别展示总产生、总消耗和净产生，并保留各池体、各反应的贡献。您可以展开池体节点查看反应明细，比较哪些过程是主要的产生或消耗来源。
+
+例如，分析氨氮时，可以查看它在不同池体、不同反应中的产生与消耗贡献，再结合质量平衡中的进出水与库存变化，理解模拟结果。
+
+<figure>
+  <a href={reactionAnalysisImage} target="_blank" rel="noopener noreferrer">
+    <img src={reactionAnalysisImage} alt="LieDe2 案例的稳态氨氮反应分析：按池体和反应展示产生与消耗贡献。点击图片查看完整原图。" loading="lazy" style={{display: "block", width: "100%", maxHeight: "560px", objectFit: "contain"}} />
+  </a>
+  <figcaption>LieDe2 案例的稳态氨氮反应分析：按池体和反应展示产生与消耗贡献。点击图片查看完整原图。</figcaption>
+</figure>
+
+**使用前请注意：平衡分析需要本次计算保存相应的收支数据，旧计算结果可能需要重新运行。** 具体操作与读图方法可参阅[平衡分析教程](/zh/docs/Tutorials/Project/BalanceAnalysis)。
+
+---
+
+## SimpoClient 支持命令行升级
+
+更新计算端更加方便了！SimpoClient 现在支持直接在终端查看版本、检查新版本并执行升级。
+
+查看当前版本：
+
+```bash
+SimpoClient --version
+```
+
+检查是否有可用新版本：
+
+```bash
+SimpoClient update --check
+```
+
+执行版本升级：
+
+```bash
+SimpoClient update
+```
+
+---
+
+## 账户与界面体验优化
+
+- **支持 GitHub 和 Google 注册与登录**：您现在可以使用第三方账户注册或登录 SIMPO。
+- **支持删除账号**：账户管理新增删除账号功能。
+- **表格列下拉过滤**：Dashboard 表格支持通过列下拉菜单筛选数据，查找所需内容更方便。
+- **Activity 日历图**：Dashboard 首页新增 Activity 日历图，方便查看活动记录。
+- **适配不同尺寸屏幕**：优化页面在不同屏幕尺寸下的布局与显示体验。
+
+---
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>添加好友，备注 SIMPO 加入交流群</b></div>
+  <img src={config.customFields.imgUrlSimpoQR}  width="25%"/>
+</div>
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>欢迎关注微信公众号</b></div>
+  <img src={config.customFields.imgUrlWechatAccount}  width="25%"/>
+</div>

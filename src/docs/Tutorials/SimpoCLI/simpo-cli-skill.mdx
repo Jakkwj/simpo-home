@@ -40,7 +40,23 @@ The same workflow is available in Codex and Claude Code. Invoke it as
 - asynchronous Project mutations and calculation preparation through Operation IDs,
   including detailed failure reasons;
 - calculation preparation, engine selection, status, stop, and paginated result
-  retrieval workflows.
+  retrieval workflows, including saved steady-state and dynamic Balance views.
+
+Balance querying uses the existing
+[`get-calculation-result`](./get-calculation-result) command, with
+`--engine SIM`, `--section steady_state_balance` or `dynamic_balance`, and
+`--view summary|diagnostics|terms|tanks|reactions|concentrations`. The view names
+are alternatives; choose one per request. Use `--dimension`, `--key`, and
+`--tank` according to that command's filtering rules. These options require
+SimpoCLI 0.1.10 or later and a compatible backend.
+
+For interpretation, use the companion
+[`calculation-result-analysis` Skill](./simpo-skills#calculation-result-analysis).
+It shares its scientific rules with SimpoAI's Web workflow and explains saved
+results, accounting differences, and reaction contributions. Analysis reads are
+read-only: they do not start calculations, change parameters, or reintegrate
+saved results. An unavailable Balance result is not a zero balance, and a
+dynamic accounting difference alone does not establish a simulation error.
 
 For estimation, the Skill also covers the `SCEUA` engine: its four initial
 population methods, fixed-seed reproducibility, shared InitialValue injection,

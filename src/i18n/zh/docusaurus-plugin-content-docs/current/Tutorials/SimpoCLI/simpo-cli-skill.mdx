@@ -32,7 +32,19 @@ Claude Code 插件调用名为 `/simpo:simpo`。它包含：
 - DataSet 新建、列表、读取、更新、同步和发布；
 - Project 新建、列表、读取、更新、同步、发布，以及 Project Variable 读取和更新；
 - 通过 Operation ID 处理异步 BioModel、DataSet、Project 写入和计算准备，并读取详细失败原因；
-- 计算准备、引擎选择、状态查询、停止和分页结果读取。
+- 计算准备、引擎选择、状态查询、停止和分页结果读取，包括已保存的稳态与动态平衡视图。
+
+平衡查询使用已有的 [`get-calculation-result`](./get-calculation-result) 命令，
+配合 `--engine SIM`、`--section steady_state_balance` 或 `dynamic_balance`，
+并从 `summary`、`diagnostics`、`terms`、`tanks`、`reactions`、`concentrations`
+中选择一个 `--view`。按照命令的筛选规则使用 `--dimension`、`--key` 和 `--tank`。
+这些选项要求 SimpoCLI 0.1.10 或更高版本，并需要兼容的后端。
+
+需要解释结果时，使用配套的
+[`calculation-result-analysis` Skill](./simpo-skills#calculation-result-analysis)。
+它与 SimpoAI Web 工作流共用科学规则，用于解释已保存的结果、核算差异与反应贡献。
+分析读取保持只读，不启动计算、不修改参数、不重新积分保存结果。Balance 不可用不
+表示收支为零，动态核算差异本身也不能直接证明模拟错误。
 
 对于参数估值，Skill 还覆盖 `SCEUA` 引擎的四种初始总体方法、固定 Seed 可复现性、
 共享的 InitialValue 注入、Complex 总体大小、计算预算和收敛约束。未显式设置时，Complex

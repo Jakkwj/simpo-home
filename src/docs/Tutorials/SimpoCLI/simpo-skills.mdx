@@ -22,6 +22,7 @@ installation and invocation syntax differs.
 | [SIMPO BioModel](./biomodel-skill) | Build a reviewed BioModel from a paper or explicit user-defined components, reactions, and kinetics; record supported derivations. | `$simpo-create-biomodel` | `$CODEX_HOME/skills/simpo-create-biomodel`<br />Default: `~/.codex/skills/simpo-create-biomodel` | `/simpo:simpo-create-biomodel` | Recommended: managed by the `simpo` plugin.<br />Fallback: `~/.claude/skills/simpo-create-biomodel` |
 | [SIMPO DataSet](./dataset-skill) | Design from engineering conditions or extract a treatment process, operating data, and time series from papers/reports; validate the SIMPO tables and prepare a reviewed DataSet. | `$simpo-create-dataset` | `$CODEX_HOME/skills/simpo-create-dataset`<br />Default: `~/.codex/skills/simpo-create-dataset` | `/simpo:simpo-create-dataset` | Recommended: managed by the `simpo` plugin.<br />Fallback: `~/.claude/skills/simpo-create-dataset` |
 | [SIMPO Project](./paper-to-project-skill) | Read one SCI paper, digitize figure data with calibration evidence, and prepare linked BioModel, DataSet, and Project Drafts. | `$simpo-create-project` | `$CODEX_HOME/skills/simpo-create-project`<br />Default: `~/.codex/skills/simpo-create-project` | `/simpo:simpo-create-project` | Recommended: managed by the `simpo` plugin.<br />Fallback: `~/.claude/skills/simpo-create-project` |
+| [Calculation result analysis](#calculation-result-analysis) | Interpret saved simulation, sensitivity, uncertainty, and estimation results, including Mass Balance, Reaction Analysis, and accounting diagnostics. | `$calculation-result-analysis` | `$CODEX_HOME/skills/calculation-result-analysis`<br />Default: `~/.codex/skills/calculation-result-analysis` | `/simpo:calculation-result-analysis` | Recommended: managed by the `simpo` plugin.<br />Fallback: `~/.claude/skills/calculation-result-analysis` |
 
 Claude Code's recommended Marketplace installation is managed by Claude Code.
 The fallback paths above are the direct personal Skill directories used when
@@ -41,8 +42,53 @@ plugin support is unavailable.
 - Use **SIMPO Project** when one SCI paper should produce a linked BioModel,
   DataSet, and Project. It coordinates the two extraction workflows and adds a
   calibrated figure-data step for values that appear only in plots.
+- Use **Calculation result analysis** to explain saved results, compare them
+  with observations, or investigate balance and reaction contributions. A
+  status-only query or raw-result download can use SimpoCLI directly.
 - Combine the specialized Skills with SimpoCLI when the resulting BioModel or
   DataSet must later be inspected, updated, released, or used in a Project.
+
+## Calculation result analysis {#calculation-result-analysis}
+
+`calculation-result-analysis` is the fifth public Skill. It shares its scientific
+analysis rules with SimpoAI's Web workflow; the CLI adapter reads through
+SimpoCLI, while the Web adapter uses the existing `get_project_results` tool.
+It covers ordinary calculation results as well as Balance analysis.
+
+Balance reads remain part of
+[`get-calculation-result`](./get-calculation-result), with
+`--engine SIM --section steady_state_balance` or `dynamic_balance`. Available
+views are `summary`, `diagnostics`, `terms`, `tanks`, `reactions`, and
+`concentrations`. The Skill starts with relevant summaries or diagnostics, then
+reads the requested Composition, Component, or Target details with pagination.
+The `tanks` view summarizes reaction contributions by tank; it is not a complete
+mass balance for each tank.
+
+For example, invoke the installed Skill with a real Project ID:
+
+```text
+$calculation-result-analysis Explain the saved dynamic balance for Project 514.
+Start with the diagnostics, then inspect the reaction contributions of any item
+that needs attention. Keep the saved units and distinguish missing data from zero.
+```
+
+In the Claude Code plugin, replace the invocation with
+`/simpo:calculation-result-analysis`; a personal-directory installation uses
+`/calculation-result-analysis`.
+
+This is a **read-only analysis** workflow: it does not change parameters, rerun
+the solver, reintegrate saved results, or infer the final fate of a particular
+influent source. A missing Balance result is unavailable, not a zero balance.
+Dynamic differences are reported with their absolute and relative values,
+saved integration method, and sample count. Such a difference may come from
+post-processing integration, numerical solving, or missing accounting terms;
+it does not by itself establish a simulation error.
+
+The CLI Balance options require **SimpoCLI 0.1.10 or later** and a compatible
+backend. The result-analysis Skill is included in the **1.1.0 package source**;
+repository exports do not by themselves publish that version. Check the
+published package contents before installing; older four-Skill packages do not
+contain this workflow.
 
 ## Python and Poppler requirements
 
@@ -69,7 +115,7 @@ explains how to install it or use an equivalent renderer. It does not claim
 that rendering or digitization completed. SimpoCLI's `calculate` command has a
 separate requirement: the matching SimpoClient installation.
 
-## Install and update with SimpoCLI
+## Install and update with SimpoCLI {#install-and-update-with-simpocli}
 
 **SimpoCLI 0.1.8 or later** supports personal-directory Skills for both assistants:
 
@@ -82,11 +128,23 @@ simpo skills install --target claude
 simpo skills update --target claude
 ```
 
-Install selects all four Skills; update selects installed Skills. Add a name,
-such as `simpo-create-project`, to select one workflow. Project automatically
-includes its three dependencies. All four share a bundle version such as
-`0.1.8-skills.1`; Skills-only changes increment the revision. Minimum CLI
-compatibility is declared separately. `--version` selects a published version;
+Install selects the Skills available in the selected bundle; update selects
+installed Skills and their dependencies. The new bundle contains five Skills, while older published
+bundles may contain four. Add a name to select a workflow:
+
+```bash
+simpo skills install calculation-result-analysis --target codex
+simpo skills install calculation-result-analysis --target claude
+```
+
+Result analysis automatically includes its `simpo` dependency. Project selects
+the available bundle workflows, including the BioModel, DataSet, and SimpoCLI
+dependencies. If an update selects an installed Project Skill, the installer
+also includes result analysis when the selected bundle contains it. To add only
+result analysis and its `simpo` dependency, use the explicit install command
+above. All Skills share
+a bundle version, with minimum CLI compatibility declared separately.
+`--version` selects a published version;
 downgrades are refused. Older CLIs must first be upgraded using a downloaded
 installer; subsequent CLI upgrades use `simpo update`.
 
@@ -149,11 +207,13 @@ https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo
 For the BioModel Skill, replace the final path with
 `plugins/simpo/skills/simpo-create-biomodel`; for the DataSet Skill, use
 `plugins/simpo/skills/simpo-create-dataset`; for the paper workflow, use
-`plugins/simpo/skills/simpo-create-project`. Manual installation copies the
+`plugins/simpo/skills/simpo-create-project`. For result analysis, use
+`plugins/simpo/skills/calculation-result-analysis` and also install `simpo`.
+Manual installation copies the
 complete directory, including `SKILL.md` and `references/`, to the matching
 `$CODEX_HOME/skills/<skill-name>` directory. Include `scripts/` when present.
-For the Project workflow, install all four Skills: it reuses the BioModel and
-DataSet workflows and the SimpoCLI command reference. Restart Codex after installation.
+The Project workflow reuses the BioModel and DataSet workflows and the SimpoCLI
+command reference; install those dependencies with it. Restart Codex after installation.
 
 ### Claude Code
 
@@ -177,3 +237,4 @@ matching `~/.claude/skills/<skill-name>` fallback path.
 | SIMPO BioModel | [Install](./biomodel-skill-codex-install) | [Use](./biomodel-skill-codex-usage) | [Install](./biomodel-skill-claude-code-install) | [Use](./biomodel-skill-claude-code-usage) |
 | SIMPO DataSet | [Install](./dataset-skill-codex-install) | [Use](./dataset-skill-codex-usage) | [Install](./dataset-skill-claude-code-install) | [Use](./dataset-skill-claude-code-usage) |
 | SIMPO Project | [Install](./paper-to-project-skill-codex-install) | [Use](./paper-to-project-skill-codex-usage) | [Install](./paper-to-project-skill-claude-code-install) | [Use](./paper-to-project-skill-claude-code-usage) |
+| Calculation result analysis | [Install](#install-and-update-with-simpocli) | [Use](#calculation-result-analysis) | [Install](#install-and-update-with-simpocli) | [Use](#calculation-result-analysis) |

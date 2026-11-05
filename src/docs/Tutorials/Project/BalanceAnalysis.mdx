@@ -1,0 +1,284 @@
+---
+id: BalanceAnalysis
+title: Balance Analysis
+sidebar_label: Balance Analysis
+---
+
+# Balance Analysis
+
+Balance Analysis explains what enters and leaves your simulated system, what
+reactions produce or consume, and whether the recorded contributions account
+for the change in stored material. Use it after a **Simulation** to investigate
+an element such as nitrogen, an individual Component, or a combined Target.
+
+The usual workflow is: **run the simulation → open Balance Analysis → choose
+the accounting item → review its balance and any diagnostics → inspect the
+reaction contributions**.
+
+## Obtain balance results {#getting-results}
+
+1. Open your **Draft Project**. Check the linked BioModel and DataSet, then
+   parse and save any changes to the Project Solution.
+2. Open **Calculation → Console**, choose **Simulation**, and select the
+   execution mode you need.
+3. Run the calculation with a SimpoClient version that supports balance
+   analysis. Wait for the results to finish saving and loading in the Dashboard.
+
+| Simulation mode | Balance results to review |
+| --- | --- |
+| Steady State | Rates at the saved final state, for example `kgN/d`. Confirm that the calculation reached steady state before judging steady-state closure. |
+| Dynamic | Cumulative quantities over the entire saved simulation interval, for example `kgN`, including inventory change. No separate date range is required. |
+| Steady-State Dynamic | Review the steady-state and dynamic stages separately. The dynamic interval excludes the preceding steady-state iterations. |
+
+The analysis is prepared from the calculation results. Opening the dialog does
+not rerun the solver or change the saved concentrations. Editing a model later
+does not update the balance of an earlier run.
+
+For **Composition**, supply the relevant coefficients in the BioModel. For
+**Target**, provide the corresponding Conversion in the Project Solution.
+Missing definitions are not invented or replaced by zeros. Component analysis
+can still be available when no Composition was supplied.
+
+If an older result has no balance data, use an updated calculation client and
+run the simulation again. Enable **Recalculate** when necessary to avoid
+reusing an identical older result. Simply reopening the page or parsing the
+BioModel does not add analysis to an existing result.
+
+## Open the analysis {#open-analysis}
+
+In the Draft Project, go to **Calculation → Simulation**. In the result toolbar,
+next to the steady-state result and result-folder controls, click the icon whose
+tooltip is **Balance Analysis**. It opens a separate dialog.
+
+- If both stages are available, choose **Steady State** or **Dynamic** beside
+  the dialog title. A single-stage result does not need this switch.
+- Use **Mass Balance** to inspect the complete accounting and **Reaction
+  Analysis** to inspect reaction production and consumption.
+- **Diagnostics** appears when there are quantities requiring attention or
+  result-level warnings. Start there when reviewing many quantities.
+- Use the top-right fullscreen icon for a larger diagram.
+
+Each analysis tab remembers its own dimension and selected item while you stay
+on the same Project page, including after closing and reopening the dialog.
+This is not a promise to preserve selections after refreshing the page or
+changing Projects.
+
+The Balance Analysis button is disabled while results are loading or when
+there is no usable saved balance snapshot. An incomplete item or an excessive
+difference can still be opened for diagnosis; those findings do not by
+themselves disable the button.
+
+## Choose what to account for {#dimensions}
+
+Choose the **Accounting dimension**, then the item in the second dropdown.
+The list follows the order **Composition → Component → Target**, retaining the
+original order of items within each group.
+
+| Dimension | What it answers | Example |
+| --- | --- | --- |
+| Composition | What is the combined balance after weighting Components by the BioModel's composition coefficients? | Total nitrogen across dissolved and particulate Components |
+| Component | What happens to one modeled state variable? | Ammonium or dissolved oxygen |
+| Target | What is the balance of a reporting quantity defined by Conversion? | COD or TSS formed from several Components |
+
+Empty Composition rows are omitted. A Target with exactly one nonzero
+Conversion coefficient equal to `1` duplicates its Component, even when its
+name or unit label differs; select that **Component** instead. If no distinct
+Targets remain, Target is absent from the dimension selector. A nonempty
+definition with missing or unsupported coefficients may instead be shown as
+incomplete.
+
+For a combined Target, the external-stream details show the weighted
+contributions of its Components.
+
+Composition is not limited to N, P, or S. Quantities such as ThOD and Charge
+can use negative coefficients. These are signed accounting definitions, not
+negative concentrations, and their balances may include reaction or physical
+contributions. TSS can change during reactions, so influent TSS need not equal
+effluent TSS.
+
+## Read Mass Balance {#mass-balance}
+
+First read the **total inputs/sources**, **total outputs/sinks**, and
+**difference** cards. Then use the diagram and the tables below it to identify
+the contributions.
+
+| Contribution | How to interpret it |
+| --- | --- |
+| Inflow, outflow, and wasted sludge | Material carried across the external system boundary. Internal recycle is not counted again as external inflow or outflow. |
+| Net biological production or consumption | Production minus consumption within each tank. Positive net reaction is a source; negative net reaction is a sink. |
+| Physical contribution | Recorded physical exchange, such as oxygen transfer or gas release. It is separate from biological reaction. |
+| Constraint contribution | Compensation needed to maintain an imposed concentration. It is not necessarily measured oxygen supply, dosing, or removal. Check the Constraints applied in this run and their saved details. |
+| Inventory increase or decrease | The change in material stored in tanks, calculated using saved concentrations and tank volumes. An increase is a sink; a decrease is a source. |
+
+The accounting compares **inputs plus sources** with **outputs plus sinks**.
+It does not require inlet and outlet loads alone to be equal. If a Constraint
+contribution is inferred from the remaining gap, closure after that compensation
+is not independent proof that the modeled supply or removal is physically correct.
+In dynamic accounting, an inferred net compensation does not identify the
+separate gross amounts added and removed throughout the run.
+
+Current simulations apply configured Constraints in both stages. Steady-state
+calculations use constraint values averaged with the selected steady-state
+input averaging method, without flow weighting; dynamic calculations use the
+time-dependent constraint values. Historical results must be interpreted using
+what was applied and saved for that run.
+
+The Sankey diagram flows from left to right. Ribbon width represents the
+quantity in the displayed unit. The left percentages use total inputs/sources;
+the right percentages use total outputs/sinks. Both sides showing `100%` does
+not mean their absolute totals are equal. Check the totals and difference.
+
+Streams and tank reaction contributions are grouped before their details are
+expanded; unnecessary single-stream grouping layers can be omitted. Click an
+expandable summary node to show or hide its details, or use **Expand all** and
+**Collapse all**. Zero flows have no ribbon. Use the signed-contribution table
+to check original signs, particularly for ThOD or Charge. Do not add subtotals
+to their own detail rows a second time.
+
+### A batch without inflow can still be balanced
+
+For a batch, compare initial inventory, reaction changes, and final inventory.
+As an illustration, if nitrate starts at `100 mgN`, reactions consume `70 mgN`,
+and `30 mgN` remains, its inventory decreases by `70 mgN`. That decrease supplies
+the `70 mgN` reaction consumption in the diagram. No fictitious influent is needed.
+Do not add the initial and final inventories again when the diagram already
+uses their difference.
+
+## Read Reaction Analysis {#reaction-analysis}
+
+This tab answers **which tanks and reactions produce or consume the selected
+quantity**. Read total production, total consumption, and net reaction, then
+inspect the tank summary and individual reaction rows.
+
+Production and consumption share one diagram and one ribbon-width scale, so
+their absolute amounts can be compared. Each side's percentages still use
+that side's own total. The central node identifies the selected quantity; it
+does not mean that production equals consumption or show the available inventory.
+If production is zero, that side shows **No producing reactions** and has no
+flow ribbon; consumption can still be nonzero.
+
+For example, an initially present substrate can be consumed without being
+produced by another reaction. Its supply is explained by initial inventory in
+Mass Balance, not by adding a production reaction. Reaction Analysis excludes
+water transport, physical exchange, Constraint compensation, and inventory.
+
+Click tank summary nodes to expand or collapse their reactions. The tank table
+summarizes **reaction contributions**; it is not a complete individual-tank
+balance including transfers between tanks. These diagrams also do not trace
+which particular influent supplied the material found in a final product.
+
+For Composition and Target, Component contributions are combined within each
+tank and reaction before separating production from consumption. A reaction
+that moves nitrogen between Components may change both Components while
+leaving the total N contribution at zero.
+
+## Understand statuses and diagnostics {#diagnostics}
+
+The **Diagnostics** tab brings the quantities requiring attention into one
+table. Each row's **Mass Balance** and **Reaction Analysis** buttons open that
+quantity directly. Result-level sampling notices are listed separately from
+item-level findings. The tab is hidden when there are no findings or warnings;
+unavailable analysis must not be interpreted as a successful check.
+
+| Message or status | What to check |
+| --- | --- |
+| Closed within tolerance | The saved accounting difference is within the stated tolerance. This does not validate every model assumption. |
+| Cumulative balance accounting difference exceeds tolerance | Read the absolute and relative differences together, then check missing contributions, sample resolution, and numerical accuracy. |
+| Incomplete accounting | Read the explanation for missing coefficients, unavailable contributions, unsupported definitions, or invalid concentrations. A missing value is not zero. |
+| Steady state not converged / convergence unknown | The saved state cannot confirm steady-state closure. Review the calculation report. |
+| Closed with inferred Constraint compensation | The gap was used to infer compensation. Review the uncompensated gap and Constraint details before interpreting it as physical supply. |
+
+**Every reaction preserves this quantity** is a separate property of the
+reaction definitions, including reactions that were inactive during this run.
+“Yes” means each reaction individually preserves the
+weighted quantity. “No” means at least one reaction can change it, as with
+ammonium consumption. A complete balance can still close when that reaction
+contribution is included.
+
+For negative or non-finite concentrations, review the affected Component,
+tank, anomaly type, first occurrence, minimum value, and affected sample count
+where saved. Older results may lack these details. A negative concentration
+is different from a negative Composition coefficient or a negative net reaction.
+
+## Understand dynamic accuracy {#dynamic-accuracy}
+
+The dynamic view shows the simulation interval, duration, resolution, and number
+of saved time points. Hover over the **saved time-point count** to see the
+integration method. New results use cubic-spline integration with not-a-knot
+boundary conditions; older results retain their saved method.
+
+The cumulative contributions are integrated from saved output samples, not
+from every internal solver step. **Increasing resolution** usually provides
+more saved points and can improve this integration; solver tolerance controls
+the numerical solution itself. Cubic splines cannot reconstruct an event that
+was not adequately sampled and do not guarantee exact closure.
+
+For total inputs/sources `I` and total outputs/sinks `O`:
+
+```text
+Absolute difference = |I − O|
+Relative difference = |I − O| / (I + O) × 100%
+```
+
+Read the absolute tolerance in the item's unit and the relative tolerance as
+a percentage. A dynamic difference is flagged when **both** tolerances are
+exceeded. When the denominator is zero, use the reported status rather than
+dividing by zero. This percentage is not the relative error of a concentration.
+
+Large production and consumption may nearly cancel. A small integration
+difference can therefore be a large fraction of the remaining net amount.
+**The difference may come from post-processing integration, numerical solution,
+or missing accounting terms; it alone does not establish a simulation error.**
+
+A sampling-coverage notice concerns the whole dynamic run. It appears when
+coverage of input time nodes cannot be confirmed; previous-value inputs may
+also lack samples on both sides of a node. This check does not establish that
+the input value actually changed, so even constant inputs can trigger it.
+Check the actual input curves and the item differences before deciding whether
+to rerun at higher resolution. More samples do not guarantee removal of the notice.
+
+## Download diagrams and tables {#export}
+
+Use **Download image** above a diagram and choose **PNG** for convenient sharing
+or **SVG** for a scalable image. The export includes the whole diagram, including
+areas outside the visible scroll region, in its current expanded or collapsed
+state. Expand the nodes you want before downloading.
+
+For example, a steady-state Component image is named
+`Balance__Component__S_O2.png`; its reaction diagram adds `__Reaction`.
+Dynamic names add `Dynamic__`, such as
+`Balance__Dynamic__Component__S_O2__Reaction.svg`.
+
+For numeric tables, use the simulation result folder: steady-state runs write
+`Result__SIM__SteadyState__.xlsx`; dynamic results use `Result__SIM__.xlsx`.
+
+| Worksheet | Use |
+| --- | --- |
+| `BalanceSummary` | Compare accounting totals and differences across quantities. |
+| `BalanceTerms` | Inspect individual signed boundary, reaction, physical, Constraint, and inventory contributions. |
+| `BalanceReactions` | Inspect production and consumption for individual tank/reaction combinations. |
+| `BalanceTanks` | Inspect those reaction contributions summarized by tank. |
+
+Steady-state metadata is in `Metadata`; dynamic balance metadata is in
+`BalanceMetadata`. Column-header comments explain the fields. Steady-state
+comments use the language recorded for the calculation, defaulting to English;
+dynamic comments currently use English. Switching the Dashboard language later
+does not rewrite an existing workbook. The Sankey diagrams are drawn when viewed
+in the Dashboard and downloaded there; local calculation does not need to
+generate image files in advance.
+
+## Common questions {#faq}
+
+- **Why is Composition missing?** Check that the model used for this run had
+  a nonempty Composition definition. After correcting and saving the model and
+  Project, rerun; an old result does not acquire the new definition automatically.
+- **Why is Target missing?** All Targets may duplicate Components, or no usable
+  Conversion may be available. Check Component and the saved definitions.
+- **Why is there no ribbon?** A zero quantity has no ribbon. Incomplete data
+  can also prevent drawing; read the status and tables to distinguish the cases.
+- **Why do the reactions not balance by themselves?** They can draw on influent
+  or initial inventory, or feed effluent and other processes. Review Mass Balance
+  for the full accounting.
+
+For command-line retrieval of these saved results, see
+[`get-calculation-result`](../SimpoCLI/get-calculation-result).

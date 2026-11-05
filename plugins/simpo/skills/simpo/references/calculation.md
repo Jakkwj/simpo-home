@@ -258,3 +258,40 @@ and `hasNext`) and the current page in `data`. Use `--output` for large pages
 instead of sending them through a terminal or chat. Do not read the Project's
 internal pickle directly; result access is read-only and remains subject to the
 backend's Token ownership and scope checks.
+
+
+### Saved Balance views
+
+Balance uses the same `get-calculation-result` command, with no new retrieval
+command. After locating the SIM sections, select the saved scope and view:
+
+```text
+simpo get-calculation-result PROJECT_ID --engine SIM \
+  --section dynamic_balance --view summary --limit 5
+simpo get-calculation-result PROJECT_ID --engine SIM \
+  --section dynamic_balance --view diagnostics --offset 0 --limit 10
+simpo get-calculation-result PROJECT_ID --engine SIM \
+  --section steady_state_balance --dimension Component --key S_O2 \
+  --view terms --output oxygen-balance.json
+```
+
+Use actual returned keys; these examples do not assume every model contains
+S_O2. Supported views are `summary`, `diagnostics`, `terms`, `tanks`, `reactions`,
+and `concentrations`. The four detail views require both `--dimension` and
+`--key` and optionally accept `--tank`. Dimension is the exact `Composition`,
+`Component`, or `Target`; keys and tanks are exact names. Summary/diagnostics
+may be filtered by dimension and key, but not tank. Without `--view`, generic
+result retrieval is unchanged and Balance filters are not accepted.
+
+Use `calculation-result-analysis` from the same Skills package when explaining
+these results. It contains the shared Balance scientific rules used by SimpoAI.
+The response includes saved `balance` metadata, `selection`, and ordinary
+paginated `data`; an abnormal balance is not a command failure. Missing saved
+Balance is unavailable, not zero or closed. These views are read-only and do
+not recalculate results, modify Fortran, render charts, or trace influent origin.
+
+This option set requires SimpoCLI 0.1.10 and the corresponding backend support.
+If the installed command rejects an option, inspect its help after the error;
+do not bypass it with direct API requests or automatically upgrade the user.
+The saved report's `resolution_rate` is already a percentage, whereas
+`calculate --resolution-rate` takes a ratio (`1` means `100%`).

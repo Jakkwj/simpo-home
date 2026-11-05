@@ -39,6 +39,12 @@ systems. Therefore, it can leverage the power of supercomputers, as their system
        {/* or <a href={config.customFields.urlDownloalNetdiskWindows} target="_self" download>Windows (Netdist)</a>. */}
     </li>
     <li>
+      **Upgrade**: Versions after `1.6.0` support direct upgrade via the command line:
+      - View the current version: `SimpoClient --version`.
+      - Check whether a new version is available: `SimpoClient update --check`.
+      - Update to the latest version: `SimpoClient update`.
+    </li>
+    <li>
       **Uninstall**: click the <code>Uninstall SimpoClient</code> in startup menu, or click <code>C:\Program Files\SimpoClient\unins000.exe</code>.
     </li>
     <li>
@@ -58,21 +64,29 @@ systems. Therefore, it can leverage the power of supercomputers, as their system
 
 ### Ubuntu
 
-<ul>
-  <li>
-    **Download and install**, supports <b>Ubuntu 20</b> and later versions:
-
-    <ul>
-
+  <ul>
+    <li>
+      **Download and install**, supports <b>Ubuntu 20</b> and later versions:
+      <ul>
+        <li>
+          Download: <a href={config.customFields.urlDownloalClientUbuntu} target="_self" download>Ubuntu</a>.
+        {/* or <a href={config.customFields.urlDownloalNetdiskUbuntu} target="_self" download>Ubuntu (Netdist)</a>. */}
+        </li>
+        <li>
+          Run this command to install: <code>sudo dpkg -i SimpoClient_VERSION_amd64.deb</code>, where `VERSION` is the latest version number.
+        </li>
+      </ul>
       <li>
-      Download: <a href={config.customFields.urlDownloalClientUbuntu} target="_self" download>Ubuntu</a>.
-       {/* or <a href={config.customFields.urlDownloalNetdiskUbuntu} target="_self" download>Ubuntu (Netdist)</a>. */}
-
-
+        **Upgrade**: Versions after `1.6.0` support direct upgrade via the command line:
+        - View the current version: `SimpoClient --version`.
+        - Check whether a new version is available: `SimpoClient update --check`.
+        - Update to the latest version: `SimpoClient update`.
       </li>
       <li>
-        Run this command to install: <code>sudo dpkg -i SimpoClient_VERSION_amd64.deb</code>, where `VERSION` is the latest version number.
-
+        **Uninstall**: run <code>sudo dpkg -r simpoclient</code>. The standard
+        uninstall removes the program but keeps <code>~/.SimpoClient</code> and its
+        project data. To delete that data explicitly, run
+        <code>sudo /opt/SimpoClient/uninstall.sh</code> before uninstalling the package.
       </li>
       <li>
         **Directories**:
@@ -84,17 +98,10 @@ systems. Therefore, it can leverage the power of supercomputers, as their system
       </li>
 
 
+
+      </li>
     </ul>
 
-  </li>
-  <li>
-    **Uninstall**: run <code>sudo dpkg -r simpoclient</code>. The standard
-    uninstall removes the program but keeps <code>~/.SimpoClient</code> and its
-    project data. To delete that data explicitly, run
-    <code>sudo /opt/SimpoClient/uninstall.sh</code> before uninstalling the package.
-  </li>
-
-</ul>
 
   </TabItem>
 

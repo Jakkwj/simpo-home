@@ -13,6 +13,11 @@ choose a task, configure its numerical and algorithm settings, start or stop a
 run, and open the calculation log. A released Project is read-only; clone it
 to a Personal Draft before changing settings.
 
+After a Simulation, open **Calculation → Simulation → Balance Analysis** in
+the Draft Project's result toolbar. The [Balance Analysis guide](./BalanceAnalysis)
+explains how to obtain the results, read Mass Balance and Reaction Analysis,
+investigate diagnostics, and download diagrams or tables.
+
 ## Before starting
 
 1. Parse and save the Project after editing its BioModel, DataSet, Solution,
@@ -35,7 +40,7 @@ to a Personal Draft before changing settings.
 | `Thread Number` | Number of calculation threads. The default uses the available logical CPUs. |
 | `Steady State` | Continue the model calculation until the steady-state condition is met. |
 | `Step Tolerance` | Numerical integration tolerance. Smaller values are more accurate but slower. |
-| `Resolution Rate` | Fraction of raw data retained for calculation and plotting. |
+| `Resolution Rate` | Controls the density of saved output time points. Higher resolution can improve dynamic balance integration; it is separate from solver tolerance. |
 | `Recalculate` | Force a new run instead of reusing a result with identical settings. |
 | `Real-Time Plotting` | Plot while calculating. Turning it off can reduce overhead. |
 
@@ -205,7 +210,15 @@ Steady-state runs write `Result__SIM__SteadyState__.xlsx` with these sheets:
 | `Flow` | Averaged flow values actually used by the steady-state run. |
 | `Measured` | Two identical rows containing the valid-observation arithmetic mean at `0` and `10000 day`. |
 | `Retention` | Per-Tank HRT, TSS inventory, external solids loss and SRT contribution, plus the selected system HRT/SRT totals. |
+| `BalanceSummary` | Full-system accounting totals and differences for each Composition, Component, and distinct Target. |
+| `BalanceTerms` | Individual signed boundary, reaction, physical, and Constraint contributions. |
+| `BalanceReactions` | Reaction production and consumption by tank and reaction. |
+| `BalanceTanks` | Reaction contributions summarized by tank, rather than a complete individual-tank balance. |
 | `Metadata` | Execution mode, input averaging method, and `Converged` status. |
+
+For how to interpret these accounting tables and open their diagrams, see
+[Balance Analysis](./BalanceAnalysis). Older results may not contain the balance
+worksheets.
 
 `Target` is not a second average of the original time series. It is calculated from the
 final steady-state component state:
@@ -278,15 +291,17 @@ SIMPO treats `Steady-State` and `Dynamic` as different calculation phases:
 
 | Phase | `Solution.Constraint` | Boundary input | Stop condition |
 | --- | --- | --- | --- |
-| Steady-State | Disabled. Components evolve naturally through BioReaction and Hydraulics. | Compressed constant Inflow/Flow. | Ends after the real-time window test passes. |
+| Steady-State | Enabled when configured, using constraint values averaged with the selected steady-state input method, without flow weighting. | Compressed constant Inflow/Flow. | Ends after the real-time window test passes. |
 | Dynamic | Enabled. Constrained components are written back after every accepted step. | Original time series. | Runs to the final Measured time. |
-| First phase of `steady_state_then_dynamic` | Disabled. | Steady-state averaged inputs. | Saves the state after convergence. |
+| First phase of `steady_state_then_dynamic` | Uses the steady-state averaged constraint values. | Steady-state averaged inputs. | Saves the state after convergence. |
 | Second phase of `steady_state_then_dynamic` | Enabled. | Original dynamic inputs. | Continues from the saved steady state. |
 
-The steady-state result therefore does not replace selected components with
-`Constraint`, and it does not set `BioReaction` to zero after convergence. The
-exported `Component` sheet contains the state accepted after both reactions and
-hydraulic transport.
+The exported `Component` sheet contains the accepted state after reactions,
+hydraulic transport, and any configured Constraints. Reactions are not set to
+zero after convergence. A constrained concentration can require compensation;
+read the saved [balance contributions](./BalanceAnalysis#mass-balance) before
+interpreting this as measured physical supply or removal. Historical results
+must be interpreted using the constraints actually applied in that run.
 
 ### Choosing the window
 
@@ -354,8 +369,8 @@ window for hidden oscillation.
 
 The legacy API parameters `steady_state_truncate` and
 `steady_state_escaped_threshold` remain temporarily accepted for compatibility,
-but they no longer determine convergence. The convergence method and the rule
-that disables `Constraint` during the steady-state phase are documented here
+but they no longer determine convergence. The convergence method and the
+stage-specific treatment of `Constraint` are documented here
 rather than repeated as fixed workbook fields. In the result workbook
 `Metadata`, `Converged` is `true` only when the steady-state arrival marker
 appears in the log. The Dashboard Report reuses the same result.

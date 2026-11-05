@@ -12,6 +12,11 @@
 @tailwind utilities;
 /* @import 'antd/dist/reset.css'; */
 
+/* Wrap display equations at KaTeX's operator boundaries. */
+.markdown .katex-display > .katex {
+  white-space: normal;
+}
+
 /* You can override the default Infima variables here. */
 :root {
   /* --ifm-background-color: #eee; */

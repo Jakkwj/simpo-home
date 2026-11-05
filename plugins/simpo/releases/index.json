@@ -15,6 +15,21 @@
           "sha256": "5fc858b7d2fb5ca92cbfd20b5b876e681914c63e44a9324a71534df4b1709612"
         }
       }
+    },
+    {
+      "version": "0.2.0",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.0_amd64.deb",
+          "size": 28408892,
+          "sha256": "800b9d764496f417601db9bf9610a13f6a7a1e7d15cba69f203cf9263499d701"
+        },
+        "windows-x64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.0_windows_x64.exe",
+          "size": 17792943,
+          "sha256": "6afedd9b8d4fdd99da948c4a9aab5d4499a7d037b07e2516cefdcbbe92b1e45d"
+        }
+      }
     }
   ],
   "skills": [

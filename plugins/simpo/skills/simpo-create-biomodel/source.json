@@ -3,7 +3,7 @@
   "name": "simpo-create-biomodel",
   "target": "cli-public",
   "rules_version": "2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "workflow_sha256": "9046bbabc2413e70a83668981b6d3c3b06dcad4c5306267f843c18e795b87103",
   "adapter_sha256": "6e0e1a91524160e826a8ee13eb29cd71f9e496096fc3cc63018439f8d1a30081",
   "files": {

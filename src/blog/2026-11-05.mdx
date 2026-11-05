@@ -1,0 +1,105 @@
+---
+slug: SIMPO-blog-2026-11-05
+title: "SIMPO 1.6.0 Released: Balance Analysis"
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+import massBalanceImage from '@site/static/img/blog/2026-11-05/mass-balance-en.png'
+import reactionAnalysisImage from '@site/static/img/blog/2026-11-05/reaction-analysis-en.png'
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+  **SIMPO**, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is an intelligent platform for code-free and shareable wastewater treatment process modelling. For details of this release, see the [SIMPO 1.6.0 Changelog](/changelog/SIMPO%20Client/2026#2026-11-05).
+  </div>
+</div>
+
+---
+
+After completing a simulation, you may want to look beyond concentration curves: does the system's mass balance close? In which tanks is a component mainly produced, and which reactions consume it?
+
+**SIMPO 1.6.0** introduces **Balance Analysis**, using Sankey diagrams to display mass balances and reaction contributions, making simulation results easier to check and interpret. SimpoClient also supports updates directly from the command line, alongside improvements to account sign-in and the Dashboard.
+
+## Balance Analysis: From Concentration Curves to Mass Balances
+
+On your project's **Calculation → Simulation** page, click the **Balance Analysis** icon to view mass balance and reaction analysis results for the current calculation.
+
+### Mass Balance: Check the System's Complete Balance
+
+Where does material enter the system? Which processes produce or consume it, and where does it leave? Mass Balance brings these contributions together in a single Sankey diagram to help you check the balance within the system boundary.
+
+- **External inputs and outputs**: examine contributions crossing the system boundary, including influent, effluent, and sludge wasting.
+- **Reactions and physical processes**: distinguish biochemical reactions, physical mass transfer, Constraint compensation, and other balance terms.
+- **Changes in stored mass**: dynamic calculations also account for the change between the initial and final mass stored in the tanks.
+
+Select an accounting item under **Composition, Component, or Target**, such as an elemental composition defined in the model, an individual component, or a combined indicator defined through Conversion. The width of each flow in the Sankey diagram represents its contribution. Use the balance summary and detailed tables below the diagram to check the values further.
+
+<figure>
+  <a href={massBalanceImage} target="_blank" rel="noopener noreferrer">
+    <img src={massBalanceImage} alt="Dynamic nitrogen mass balance for the LieDe2 case, showing cumulative inputs, outputs, and changes in stored mass. Click to view the full image." loading="lazy" style={{display: "block", width: "100%", maxHeight: "560px", objectFit: "contain"}} />
+  </a>
+  <figcaption>Dynamic nitrogen mass balance for the LieDe2 case, showing cumulative inputs, outputs, and changes in stored mass. Click to view the full image.</figcaption>
+</figure>
+
+### Reaction Analysis: Identify Sources of Production and Consumption
+
+A component can be produced and consumed at the same time. Looking only at its final concentration or net change can make it difficult to understand the role of each reaction.
+
+**Reaction Analysis** shows total production, total consumption, and net production separately, preserving the contributions of individual tanks and reactions. Expand tank nodes to inspect reaction details and compare the main sources of production or consumption.
+
+For example, when analysing ammonium nitrogen, you can examine its production and consumption across tanks and reactions, then use the influent, effluent, and stored-mass changes in Mass Balance to help interpret the simulation results.
+
+<figure>
+  <a href={reactionAnalysisImage} target="_blank" rel="noopener noreferrer">
+    <img src={reactionAnalysisImage} alt="Dynamic ammonium nitrogen reaction analysis for the LieDe2 case, showing cumulative production and consumption by tank and reaction. Click to view the full image." loading="lazy" style={{display: "block", width: "100%", maxHeight: "560px", objectFit: "contain"}} />
+  </a>
+  <figcaption>Dynamic ammonium nitrogen reaction analysis for the LieDe2 case, showing cumulative production and consumption by tank and reaction. Click to view the full image.</figcaption>
+</figure>
+
+**Before you start: Balance Analysis requires the relevant balance data to have been saved during the calculation. Older calculations may need to be rerun.** For instructions and guidance on reading the diagrams, see the [Balance Analysis tutorial](/docs/Tutorials/Project/BalanceAnalysis).
+
+---
+
+## Update SimpoClient from the Command Line
+
+Keeping your calculation client up to date is now easier! SimpoClient lets you view the current version, check for a new version, and update directly from your terminal.
+
+View the current version:
+
+```bash
+SimpoClient --version
+```
+
+Check whether a new version is available:
+
+```bash
+SimpoClient update --check
+```
+
+Update to the latest version:
+
+```bash
+SimpoClient update
+```
+
+---
+
+## Account and Interface Improvements
+
+- **GitHub and Google registration and sign-in**: you can now register or sign in to SIMPO using a third-party account.
+- **Account deletion**: account management now includes an option to delete your account.
+- **Column dropdown filters**: Dashboard tables now let you filter data through column dropdown menus, making it easier to find what you need.
+- **Activity calendar chart**: a new Activity calendar chart on the Dashboard home page helps you view activity records.
+- **Layouts for different screen sizes**: page layouts and display have been improved across different screen sizes.
+
+---
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Add us on WeChat with the note "SIMPO" to join the group chat</b></div>
+  <img src={config.customFields.imgUrlSimpoQR}  width="25%"/>
+</div>
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Follow our WeChat official account</b></div>
+  <img src={config.customFields.imgUrlWechatAccount}  width="25%"/>
+</div>

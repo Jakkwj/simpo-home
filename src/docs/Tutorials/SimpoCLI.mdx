@@ -14,7 +14,8 @@ import TabItem from "@theme/TabItem";
 complete Draft, synchronization, and Release lifecycle for BioModels, DataSets,
 and Projects; reads and updates Project Variables; prepares calculations; starts
 the locally installed `SimpoClient`; monitors or stops calculations; and reads
-large stored results in bounded pages.
+large stored results in bounded pages, including saved balance and reaction
+analysis.
 Its terminal command is the short, lowercase `simpo`.
 
 This page is the complete SimpoCLI command index. Each command also has its own
@@ -29,6 +30,7 @@ paths, and detailed guides.
 | Skill | Purpose |
 | --- | --- |
 | [`simpo`](./SimpoCLI/simpo-cli-skill) | Operate the CLI and read its JSON results. |
+| [`calculation-result-analysis`](./SimpoCLI/simpo-skills#calculation-result-analysis) | Interpret saved simulation, balance, reaction, and diagnostic results. |
 | [`simpo-create-biomodel`](./SimpoCLI/biomodel-skill) | Build a model from a paper or explicit user-defined equations. |
 | [`simpo-create-dataset`](./SimpoCLI/dataset-skill) | Build a DataSet from design inputs, source tables, or calibrated figure data. |
 | [`simpo-create-project`](./SimpoCLI/paper-to-project-skill) | Reuse both extraction workflows to create linked resources and test paper reproduction. |
@@ -267,8 +269,27 @@ complete command directory.
 | --- | --- | --- |
 | [`calculate`](./SimpoCLI/calculate) | Prepare a calculation and start SimpoClient | `calculate` |
 | [`get-calculation-status`](./SimpoCLI/get-calculation-status) | Read current calculation status | `calculate` |
-| [`get-calculation-result`](./SimpoCLI/get-calculation-result) | Select and page stored calculation result series without an unbounded response | `read` |
+| [`get-calculation-result`](./SimpoCLI/get-calculation-result) | Select and page saved result series, balance summaries, diagnostics, and details | `read` |
 | [`stop-calculation`](./SimpoCLI/stop-calculation) | Stop a calculation and matching local processes | `calculate` |
+
+### Read balance analysis
+
+Balance queries use the existing `get-calculation-result` command. They require
+CLI **0.1.10 or later**, a compatible backend, and saved balance data for the
+selected run:
+
+```text
+simpo get-calculation-result PROJECT_ID --engine SIM --section steady_state_balance --view summary --limit 10
+simpo get-calculation-result PROJECT_ID --engine SIM --section dynamic_balance --view diagnostics --limit 10
+```
+
+Replace `PROJECT_ID` with your Project ID. Use `summary` to identify accounting
+items, `diagnostics` to find items needing attention, and `terms`, `tanks`,
+`reactions`, or `concentrations` for selected details. The
+[command reference](./SimpoCLI/get-calculation-result) explains filters,
+pagination, units, and unavailable data. Reading these views does not rerun a
+calculation or recompute saved integrals. A successful read can still contain
+scientific warnings or an excessive accounting difference.
 
 ## Output contract
 

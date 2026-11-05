@@ -6,6 +6,10 @@ sidebar_label: get-calculation-result
 
 # `get-calculation-result`
 
+在 Dashboard 中使用平衡分析，请先阅读[平衡分析使用指南](../Project/BalanceAnalysis)，
+了解如何获得结果、在哪里打开，以及如何理解图表和异常提示。本页说明如何通过命令行
+读取已保存的结果。
+
 通过受限大小的 JSON 响应读取已完成的 Project 计算结果：
 
 ```text
@@ -14,7 +18,10 @@ simpo get-calculation-result PROJECT_ID [OPTIONS]
 
 常用选项包括 `--engine ENGINE`、`--section PATH`、`--offset N`、`--limit N`
 和 `--output FILE`；通用请求选项包括 `--timeout SECONDS`（默认 `30.0`）、
-`--api-token TOKEN` 和 `--base-url URL`。
+`--api-token TOKEN` 和 `--base-url URL`。同一命令还支持通过 `--view`、
+`--dimension`、`--key` 和 `--tank` 读取已保存的平衡结果。
+
+## 读取原始结果
 
 大结果按以下顺序逐层读取：
 
@@ -46,7 +53,7 @@ simpo get-calculation-result PROJECT_ID \
 命令只读取已保存的结果 JSON，不会暴露 Project 内部 pickle。后端仍会校验资源
 归属和 Token 的 read scope。
 
-## 返回结果
+## 原始结果响应
 
 第一步只列出已保存的结果引擎，不下载实际结果值：
 
@@ -89,3 +96,191 @@ simpo get-calculation-result PROJECT_ID \
   "data": [1.2, 1.1, 1.0]
 }
 ```
+
+## 读取已保存的平衡结果
+
+平衡视图需要 **SimpoCLI 0.1.10 或更高版本，以及支持此功能的后端**。
+使用 `--engine SIM` 或 `--engine Simulation`，并选择以下某个完整的平衡结果分支名：
+
+| 分支 | 核算范围 |
+| --- | --- |
+| `steady_state_balance` | 已保存稳态快照中的收支速率，单位以各核算项返回值为准 |
+| `dynamic_balance` | 整个已保存动态区间内的累计量，包括库存变化 |
+
+对于 `steady_state_then_dynamic`，动态区间不包含此前的稳态迭代时间。读取平衡
+视图不会启动计算、修改 Fortran 结果、重新积分已保存的序列，也不会根据当前模型
+补建缺失的核算数据。
+
+### 先看汇总，再查异常和明细
+
+```text
+# 1. 读取一页已保存的稳态平衡汇总。
+simpo get-calculation-result PROJECT_ID --engine SIM \
+  --section steady_state_balance --view summary --limit 10
+
+# 2. 如需分析动态范围，读取动态平衡汇总。
+simpo get-calculation-result PROJECT_ID --engine SIM \
+  --section dynamic_balance --view summary --limit 10
+
+# 3. 读取同一动态范围中需要关注的核算项。
+simpo get-calculation-result PROJECT_ID --engine SIM \
+  --section dynamic_balance --view diagnostics --offset 0 --limit 10 \
+  --output balance-diagnostics.json
+```
+
+先检查 `balance.available`、`balance.reason` 和 `balance.warnings`，再使用返回的
+`dimension` 和 `key` 选择核算项。下列 `Component`、`S_NO2` 和 `Tank1` 仅为示例，
+实际查询应使用你的 Project 返回的完整标识。
+
+```text
+# 4. 将汇总筛选到一个核算项。
+simpo get-calculation-result PROJECT_ID --engine SIM \
+  --section dynamic_balance --view summary \
+  --dimension Component --key S_NO2
+
+# 5. 查看进出水、反应、物理交换、约束和库存等收支贡献。
+simpo get-calculation-result PROJECT_ID --engine SIM \
+  --section dynamic_balance --view terms \
+  --dimension Component --key S_NO2 --offset 0 --limit 10
+
+# 6. 先看按池体汇总的反应量，再展开某池体的逐反应明细。
+simpo get-calculation-result PROJECT_ID --engine SIM \
+  --section dynamic_balance --view tanks \
+  --dimension Component --key S_NO2 --offset 0 --limit 10
+
+simpo get-calculation-result PROJECT_ID --engine SIM \
+  --section dynamic_balance --view reactions \
+  --dimension Component --key S_NO2 --tank Tank1 \
+  --offset 0 --limit 10 --output balance-reactions.json
+
+# 7. 若结果报告了浓度异常，定位负值或非有限值的证据。
+simpo get-calculation-result PROJECT_ID --engine SIM \
+  --section dynamic_balance --view concentrations \
+  --dimension Component --key S_NO2 --offset 0 --limit 10
+```
+
+将这些命令中的分支改为 `--section steady_state_balance` 即可查询已保存的稳态
+核算。每条命令只返回一页；若 `hasNext` 为 true，应继续分页读取后，才能声称已
+检查全部核算项或对全部明细完成求和。
+
+### 视图和筛选条件
+
+| `--view` | 返回内容 |
+| --- | --- |
+| `summary` | 各核算项总量、带符号残差、绝对与相对差值、容差、状态及明细可用性 |
+| `diagnostics` | 需要关注的核算项、原因、严重程度和差值；全局提醒仍放在 `balance.warnings` 中 |
+| `terms` | 边界水流、反应、物理交换、Constraint 和库存等收支贡献 |
+| `tanks` | 按池体汇总的反应产生、消耗和净贡献，不代表每个池体的完整收支 |
+| `reactions` | 按池体和 Reaction 展开的反应产生、消耗明细 |
+| `concentrations` | 已保存的负浓度或非有限浓度证据，包括 Component、池体及可用的异常类型、时间和数值 |
+
+| 选项 | 规则 |
+| --- | --- |
+| `--view` | 使用任何平衡筛选条件时必填，取上表中的六个值之一 |
+| `--dimension` | 完整匹配 `Composition`、`Component` 或 `Target` |
+| `--key` | 区分大小写的完整核算项名称，必须同时提供 `--dimension` |
+| `--tank` | 可选的完整池体名称，区分大小写；仅用于 `terms`、`tanks`、`reactions`、`concentrations` |
+| `--offset` | 筛选后视图中从 `0` 开始的行偏移，默认 `0` |
+| `--limit` | 单页最多返回行数，默认 `1000`，允许范围 `1`–`10000` |
+| `--output` | 将当前响应页保存为 JSON 文件，而不是输出到终端 |
+
+`summary` 和 `diagnostics` 可以不筛选、只筛选维度，或同时筛选维度和核算项。
+四种明细视图均要求**同时提供 `--dimension` 和 `--key`**。核算项和池体名称不能
+为空，最多 512 个字符；包含空格时用引号包裹。名称中的点号按普通字符匹配，
+与原始 `--section` 的点号路径不同。平衡视图使用完整的分支名，后面不追加路径。
+
+分页限制的是所选视图中的行数，不是时间点或核算区间。单页响应不能超过 5 MiB。
+建议先使用 `--limit 5` 或 `10`；响应过大时缩小筛选范围或降低单页行数。不使用任何
+平衡选项时，原有的结果逐层读取方式保持可用。
+
+### 理解响应内容
+
+平衡响应保留原有 Project 信息和分页字段，使用 `kind="array"`、`mode="values"`，
+并增加以下内容：
+
+| 字段 | 含义 |
+| --- | --- |
+| `selection` | 后端确认的 `view`、`dimension`、`key` 和 `tank` 筛选条件 |
+| `balance` | 已保存核算的可用性、范围、全局提醒、区间、积分方法、采样点数、容差及可用维度 |
+| `data` | 所选视图当前页的结果行 |
+| `data[].detail_availability` | 汇总或异常行中，各类明细数组是否已保存 |
+| `balance.details_available` | 明细视图中，该数组是否已保存；缺失原因由 `details_reason` 说明 |
+
+显示顺序为 `Composition`、`Component`、`Target`，每类保留原始顺序。空的
+Composition 行隐藏。保存结果中已确认与现有 Component 完全一致的 Target 也会
+隐藏：Conversion 只有一个非零系数且为 `1` 时，即为恒等项，即使名称或单位文本
+不同也不重复展示。`balance.aliases` 记录这些映射；非恒等的 Target 仍然保留。
+
+以下情况需要区分：
+
+- `balance.available=false` 表示平衡快照不可用、不受支持或无效，具体看
+  `balance.reason`。这不代表数值为零或没有异常；旧结果可能根本没有平衡快照。
+- 显式查询被隐藏的核算项时，返回空页，并通过
+  `balance.selection_reason="empty_composition_hidden"` 或
+  `"identity_target_hidden"` 说明原因。后者还返回 `balance.alias`，应改查其对应
+  Component。这些都不是数值为零的结果。
+- `balance.details_available=false` 表示所选明细未保存，原因是
+  `terms_details_not_saved`、`tanks_details_not_saved`、
+  `reactions_details_not_saved` 或 `concentration_details_not_saved`。
+  实际保存的空数组则会返回 `details_available=true`。
+- 不能仅凭异常视图的当前页为空就认定全部正常，还应检查 `balance.available`、
+  分页和 `balance.warnings`。全局采样提醒与具体核算项的收支差异相互独立。
+
+`success=true` 表示读取成功，不代表科学核算已闭合。应保留保存的 `assessment`，
+并结合 `display_assessment`、`severity`、`issues`、收敛和约束信息解释结果。
+
+### 单位、差值与反应分析
+
+使用各汇总行的 `unit`。稳态核算通常表示速率，动态核算表示整个保存区间内的
+累计量。明细行增加 `dimension`、`key` 和 `quantity_unit` 作为核算上下文，但
+明细原有单位仍保持其含义，尤其不能把以 `mg/L` 表示的浓度当作以 `kg` 表示的
+累计质量。
+
+保留带符号的 `residual`。`absolute_difference` 为其绝对值；
+`relative_difference` 保留 `relative_error` 的比例值，只有展示百分比时才乘
+100。分母按保存的 `closure_denominator` 解释，不把收支差值称为浓度误差。
+`absolute_tolerance` 与核算量同单位，`relative_tolerance` 是比例。
+采用总源/总汇核算约定时，闭合判据为：
+
+```text
+abs(residual) <= max(absolute_tolerance,
+                    relative_tolerance * (total_input + total_output))
+```
+
+完整收支包括边界水流、净反应、物理交换、Constraint 和库存。反应分析统计产生
+与消耗，两者不要求相等。完整收支已经计入净反应贡献时，不能再把反应总产生与
+总消耗重复加入。`tanks` 只是这些反应贡献的分池汇总，没有包含单池完整质量平衡
+所需的全部池间传输。批式反应即使没有进水，也可通过初末库存进行核算。这些
+视图不追踪某股进水中物质的最终去向。
+
+`water_input`、`water_output` 是水流穿过系统边界时携带的核算量。
+`physical_input`、`physical_output` 描述气体传质等已记录的物理交换。
+`constraint_input`、`constraint_output` 是满足 Constraint 所需的补偿源/汇；
+`contains_inferred_constraint` 标识其中包含反推的贡献。使用反推补偿得到的闭合，
+不构成独立的守恒验证。
+
+`reaction_invariant` 表示按核算系数投影后，反应化学计量是否保持该核算量不变，
+不表示本次运行是否闭合。ThOD、Charge 等 Composition 中的负系数与负浓度不同，
+不应因此删去负系数。
+
+### 动态积分与兼容性
+
+报告实际保存的 `balance.integration_method`、`balance.sample_count` 和区间。
+`sampled_cubic_spline` 表示使用 not-a-knot 边界条件的三次样条积分，少量采样点
+可采用低阶情形。旧快照可能使用 `sampled_trapezoidal` 或 `sampled_previous`。
+读取时不会将旧方法替换成当前默认方法；缺少的元数据仍应标为未知。
+
+保存报告中的 `balance.resolution_rate` 已经是百分数，`100` 表示 `100%`。
+而计算命令的 `--resolution-rate` 接受比例值，`1` 才表示 `100%`。保存的输出
+时间点不是求解器内部的每一步。提高分辨率通常会提供更多保存时间点供后处理
+积分使用；求解容差控制数值解精度。三次样条积分不能保证收支必然闭合。
+
+动态核算超限时，使用**“累计收支核算差异超限”**，并同时报告绝对差值、相对
+差值、积分方法和采样点数。说明：**“该差异可能来自后处理积分、数值求解或
+收支项缺失，尚不能仅据此判定模拟错误。”** 使用浓度明细定位实际的负值或非有限
+值；旧快照可能没有保存足够的定位证据。
+
+如果 CLI 不识别新增选项，可查看 `simpo get-calculation-result --help` 及已安装
+版本。若后端没有确认请求的视图和筛选条件，也需要更新后端；CLI 不会把原始
+结果冒充成已筛选的平衡视图。更新软件不会自动补齐历史运行缺失的快照。
+CLI 返回数值 JSON 视图，不导出平衡桑基图图片。

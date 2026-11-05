@@ -1,7 +1,7 @@
 {
   "name": "simpo",
   "displayName": "SIMPO",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official SIMPO skills for SimpoCLI operations, reviewed resource creation, and paper-to-Project model reproduction workflows.",
   "author": {
     "name": "SIMPO"

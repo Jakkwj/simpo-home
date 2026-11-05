@@ -50,7 +50,25 @@ class ReleaseBuildTests(unittest.TestCase):
         self.assertEqual(catalog, self.publish())
         self.assertEqual(before, artifact.read_bytes())
         with zipfile.ZipFile(artifact) as archive:
-            self.assertEqual(len(archive.namelist()), 4)
+            self.assertEqual(set(archive.namelist()),
+                             {f"{name}/SKILL.md" for name in release.NAMES})
+            self.assertIn("calculation-result-analysis/SKILL.md", archive.namelist())
+
+    def test_balance_reference_is_bundled_and_required_entrypoint_checked(self):
+        directory = self.plugin / "skills/calculation-result-analysis"
+        (directory / "references").mkdir()
+        (directory / "references/balance-analysis.md").write_text("Shared accounting rules")
+        artifact = self.root / "test-balance.zip"
+        release.build_bundle(artifact, self.plugin / "skills")
+        with zipfile.ZipFile(artifact) as archive:
+            self.assertEqual(archive.read("calculation-result-analysis/references/balance-analysis.md"),
+                             b"Shared accounting rules")
+        (directory / "SKILL.md").unlink()
+        with self.assertRaisesRegex(ValueError, "Missing Skill: calculation-result-analysis"):
+            release.build_bundle(self.root / "missing-balance.zip", self.plugin / "skills")
+
+    def test_bundle_updates_plugin_version(self):
+        self.publish()
         self.assertEqual(
             json.loads((self.plugin / ".claude-plugin/plugin.json").read_text())[
                 "version"
@@ -70,6 +88,13 @@ class ReleaseBuildTests(unittest.TestCase):
             '{"version":"0.1.8-skills.2","cli_min_version":"0.1.7"}'
         )
         self.assertEqual(len(self.publish()["skills"]), 2)
+
+    def test_skills_publishing_preserves_client_release_history(self):
+        catalog = self.publish()
+        clients = [{"version": "1.5.2", "offline": True, "artifacts": {}}]
+        catalog["client"] = clients
+        (self.plugin / "releases/index-v2.json").write_text(json.dumps(catalog))
+        self.assertEqual(self.publish()["client"], clients)
 
     def test_independent_version_migrates_history_and_preserves_old_cli_catalog(self):
         old_catalog = self.publish()
@@ -164,6 +189,49 @@ class ReleaseBuildTests(unittest.TestCase):
         linux.write_bytes(b"different")
         with self.assertRaisesRegex(ValueError, "different bytes"):
             self.publish(cli_versions=["0.1.8"])
+
+    def test_cli_only_does_not_require_or_touch_skills_exports(self):
+        catalog = self.publish()
+        catalog["client"] = [{"version": "1.5.2", "offline": True, "artifacts": {}}]
+        index = self.plugin / "releases/index-v2.json"
+        index.write_text(json.dumps(catalog))
+        # Deliberately corrupt the Skills export. A CLI-only release must remain
+        # independent and must not rewrite ZIPs, generated files or metadata.
+        (self.plugin / "release.json").write_text("not a Skills release")
+        self.generated_manifest()
+        protected = {path: path.read_bytes() for path in self.root.rglob("*") if path.is_file() and path.name not in {"index-v2.json", "index.json"}}
+        directory = self.root / "resource/cli"
+        directory.mkdir(parents=True)
+        (directory / "SimpoCLI_0.1.9_amd64.deb").write_bytes(b"linux")
+        (directory / "SimpoCLI_0.1.9_windows_x64.exe").write_bytes(b"windows")
+        result = release.publish_cli(cli_versions=["0.1.9"], platforms=["linux-amd64"], root=self.root, plugin=self.plugin)
+        self.assertEqual(set(result["cli"][0]["artifacts"]), {"linux-amd64"})
+        result = release.publish_cli(cli_versions=["0.1.9"], platforms=["windows-x64"], root=self.root, plugin=self.plugin)
+        self.assertEqual(set(result["cli"][0]["artifacts"]), {"linux-amd64", "windows-x64"})
+        self.assertEqual(result["skills"], catalog["skills"])
+        self.assertEqual(result["client"], catalog["client"])
+        self.assertEqual(json.loads(index.with_name("index.json").read_text())["cli"], result["cli"])
+        for path, before in protected.items():
+            self.assertEqual(path.read_bytes(), before)
+
+    def test_cli_only_failures_leave_both_catalogs_unchanged(self):
+        self.publish()
+        indexes = [self.plugin / "releases" / name for name in ("index.json", "index-v2.json")]
+        before = [path.read_bytes() for path in indexes]
+        for versions, platforms in (([], []), (["0.1.9"], ["windows-x64"]), (["0.1.9"], ["unknown"])):
+            with self.subTest(versions=versions, platforms=platforms), self.assertRaises(ValueError):
+                release.publish_cli(cli_versions=versions, platforms=platforms, root=self.root, plugin=self.plugin)
+            self.assertEqual([path.read_bytes() for path in indexes], before)
+        directory = self.root / "resource/cli"
+        directory.mkdir(parents=True)
+        installer = directory / "SimpoCLI_0.1.9_amd64.deb"
+        installer.write_bytes(b"first installer")
+        release.publish_cli(cli_versions=["0.1.9"], root=self.root, plugin=self.plugin)
+        before = [path.read_bytes() for path in indexes]
+        installer.write_bytes(b"replacement of same version")
+        with self.assertRaisesRegex(ValueError, "different bytes"):
+            release.publish_cli(cli_versions=["0.1.9"], root=self.root, plugin=self.plugin)
+        self.assertEqual([path.read_bytes() for path in indexes], before)
 
 
 if __name__ == "__main__":

@@ -15,6 +15,52 @@
           "sha256": "5fc858b7d2fb5ca92cbfd20b5b876e681914c63e44a9324a71534df4b1709612"
         }
       }
+    },
+    {
+      "version": "0.2.0",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.0_amd64.deb",
+          "size": 28408892,
+          "sha256": "800b9d764496f417601db9bf9610a13f6a7a1e7d15cba69f203cf9263499d701"
+        },
+        "windows-x64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.0_windows_x64.exe",
+          "size": 17792943,
+          "sha256": "6afedd9b8d4fdd99da948c4a9aab5d4499a7d037b07e2516cefdcbbe92b1e45d"
+        }
+      }
+    }
+  ],
+  "client": [
+    {
+      "version": "1.6.0",
+      "offline": false,
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.6.0_amd64.deb",
+          "size": 41301388,
+          "sha256": "6df8ab760f775ecf8d1cd0ff2d14f9fb74a28929542cd05f8c420b451a94bfb5"
+        },
+        "windows-x64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.6.0.exe",
+          "size": 32464635,
+          "sha256": "82c66d96f8008b274eb125af36e9078e88a9727ea36fbb5a4b57e841da588128"
+        }
+      },
+      "distribution": "split",
+      "packages": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/package.tar.xz",
+          "size": 11248320,
+          "sha256": "56e68ae6b63b302c96e860a125c1cf879793654bf72e87fe2cb27f7d7b5a0adc"
+        },
+        "windows-x64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/package.zip",
+          "size": 38481966,
+          "sha256": "c0c44e2392fdd808bd739f2bdb58c5298f9f42f8eea9117b5b747821f8cfea91"
+        }
+      }
     }
   ],
   "skills": [
@@ -43,6 +89,15 @@
         "url": "https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/SIMPOSkills_1.0.0.zip",
         "size": 85200,
         "sha256": "f08cc93a67a42751537ce1ee04044f82d547090b324ef811a7480f37eabc9f92"
+      }
+    },
+    {
+      "version": "1.0.1",
+      "cli_min_version": "0.1.10",
+      "artifact": {
+        "url": "https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/SIMPOSkills_1.0.1.zip",
+        "size": 100182,
+        "sha256": "014d00edddd88f40a9b60ea0e1d43576d5eb5f99a6db960571f2c54e106bcf37"
       }
     }
   ]

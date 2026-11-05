@@ -71,6 +71,7 @@ const sidebars = {
             'Tutorials/Project/Create',
             'Tutorials/Project/Edit',
             'Tutorials/Project/Calculation',
+            'Tutorials/Project/BalanceAnalysis',
           ],
         },
         // 'Tutorials/BioModel/Create',

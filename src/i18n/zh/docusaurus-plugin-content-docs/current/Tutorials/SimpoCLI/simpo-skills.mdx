@@ -19,6 +19,7 @@ Codex 和 Claude Code 使用相同的 Skill 内容，区别主要在安装方式
 | [SIMPO BioModel](./biomodel-skill) | 从论文或用户明确给出的组分、反应和动力学建立 BioModel，记录有依据的推导并供审核。 | `$simpo-create-biomodel` | `$CODEX_HOME/skills/simpo-create-biomodel`<br />默认：`~/.codex/skills/simpo-create-biomodel` | `/simpo:simpo-create-biomodel` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo-create-biomodel` |
 | [SIMPO DataSet](./dataset-skill) | 根据工程条件设计，或从论文/报告中提取处理流程、运行数据和时间序列；校验 SIMPO 表格并准备经过审核的 DataSet。 | `$simpo-create-dataset` | `$CODEX_HOME/skills/simpo-create-dataset`<br />默认：`~/.codex/skills/simpo-create-dataset` | `/simpo:simpo-create-dataset` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo-create-dataset` |
 | [SIMPO Project](./paper-to-project-skill) | 阅读一篇 SCI 论文，带校准证据识别图片数据点，并准备关联的 BioModel、DataSet 和 Project Draft。 | `$simpo-create-project` | `$CODEX_HOME/skills/simpo-create-project`<br />默认：`~/.codex/skills/simpo-create-project` | `/simpo:simpo-create-project` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/simpo-create-project` |
+| [计算结果分析](#calculation-result-analysis) | 解释已保存的模拟、敏感性、不确定性和参数估计结果，包括质量平衡、反应分析和核算异常。 | `$calculation-result-analysis` | `$CODEX_HOME/skills/calculation-result-analysis`<br />默认：`~/.codex/skills/calculation-result-analysis` | `/simpo:calculation-result-analysis` | 推荐：由 `simpo` 插件管理。<br />备用：`~/.claude/skills/calculation-result-analysis` |
 
 Claude Code 推荐使用 Marketplace 安装，插件由 Claude Code 管理。上表中的备用路径，是
 不支持插件时使用的个人 Skill 目录。
@@ -33,8 +34,41 @@ Claude Code 推荐使用 Marketplace 安装，插件由 Claude Code 管理。上
   证据并经过水力检查的 DataSet 表格。
 - **SIMPO Project**：用于从一篇 SCI 论文同时准备关联的 BioModel、DataSet 和
   Project；图表中的数据点会经过坐标校准并保留数字化证据。
+- **计算结果分析**：用于解释已保存的结果、对比实测，或排查平衡与反应贡献。仅查询
+  状态或下载原始结果时，直接使用 SimpoCLI 即可。
 - 生成的 BioModel 或 DataSet 如需继续查询、更新、发布或用于 Project，可再使用
   **SimpoCLI** 执行日常操作。
+
+## 计算结果分析 {#calculation-result-analysis}
+
+`calculation-result-analysis` 是第 5 个公开 Skill。它与 SimpoAI Web 工作流共用科学
+分析规则：CLI 适配通过 SimpoCLI 读取，Web 适配使用已有的 `get_project_results`
+工具。它同时覆盖常规计算结果和平衡分析。
+
+平衡查询仍并入 [`get-calculation-result`](./get-calculation-result)，使用
+`--engine SIM --section steady_state_balance` 或 `dynamic_balance`。
+支持 `summary`、`diagnostics`、`terms`、`tanks`、`reactions`、`concentrations`
+六种视图。Skill 先读取相关汇总或异常，再按问题分页读取 Composition、Component
+或 Target 明细。`tanks` 按池体汇总反应贡献，不代表每个池体的完整质量收支。
+
+例如，使用实际的 Project ID 调用已安装的 Skill：
+
+```text
+$calculation-result-analysis 解释 Project 514 已保存的动态平衡结果。
+先看异常汇总，再查看需要关注项的反应贡献。保留保存结果的单位，并区分缺失数据与零。
+```
+
+Claude Code 插件中将调用名换成 `/simpo:calculation-result-analysis`；个人目录
+安装使用 `/calculation-result-analysis`。
+
+这是**只读分析**流程：不会修改参数、重跑求解器、重新积分保存结果，也不会推断某股
+进水的最终来源去向。缺少 Balance 结果表示不可用，不表示收支为零。动态差异同时报告
+绝对差值、相对差值、已保存的积分方法和采样点数。差异可能来自后处理积分、数值求解
+或收支项缺失，尚不能仅据此判定模拟错误。
+
+CLI 平衡选项要求 **SimpoCLI 0.1.10 或更高版本**，并需要兼容的后端。计算结果分析
+Skill 已包含在 **1.1.0 包源码**中；仓库导出不等于已经发布该版本。安装前以实际
+发布包内容为准，旧的四项 Skill 包不包含此工作流。
 
 ## Python 和 Poppler 依赖
 
@@ -59,7 +93,7 @@ pdftoppm -v
 未完成的渲染或数字化报告为成功。SimpoCLI 的 `calculate` 命令另有单独要求：安装匹配
 版本的 SimpoClient。
 
-## 使用 SimpoCLI 安装和更新
+## 使用 SimpoCLI 安装和更新 {#install-and-update-with-simpocli}
 
 SimpoCLI **0.1.8 起**支持管理两个助手的个人目录 Skills：
 
@@ -72,10 +106,19 @@ simpo skills install --target claude
 simpo skills update --target claude
 ```
 
-不指定名称时安装全部四项；更新命令选择已安装的 Skills。可以添加
-`simpo-create-project` 等名称选择一个工作流，Project 会自动补齐其余三项依赖。
-四项共用 `1.0.0` 这样的版本号，仅 Skills 更新时递增后缀，最低兼容 CLI
-版本单独声明。`--version` 可指定已发布版本，不支持降级。旧 CLI 需要先下载安装新版，
+不指定名称时安装所选包中可用的 Skills；更新命令选择已安装的 Skills 及其依赖。新包包含
+五项，旧的已发布包可能只有四项。可以添加名称选择一个工作流：
+
+```bash
+simpo skills install calculation-result-analysis --target codex
+simpo skills install calculation-result-analysis --target claude
+```
+
+计算结果分析会自动带上 `simpo` 依赖。Project 会选择包内可用的工作流，其中包括
+BioModel、DataSet 和 SimpoCLI 依赖。更新时若选中了已安装的 Project Skill，且所选包
+包含计算结果分析，安装器也会将它一起安装。若只需添加计算结果分析及其 `simpo`
+依赖，使用上面的显式安装命令。所有 Skills 共用一个包版本，最低兼容 CLI 版本单独
+声明。`--version` 可指定已发布版本，不支持降级。旧 CLI 需要先下载安装新版，
 后续程序升级使用 `simpo update`。
 
 Codex 遵循 `CODEX_HOME`，Claude 遵循 `CLAUDE_CONFIG_DIR`，默认目录分别是
@@ -133,14 +176,16 @@ https://github.com/Jakkwj/simpo-home/tree/master/plugins/simpo/skills/simpo
 安装 BioModel Skill 时，将最后的路径改为
 `plugins/simpo/skills/simpo-create-biomodel`；安装 DataSet Skill 时改为
 `plugins/simpo/skills/simpo-create-dataset`；安装 SIMPO Project Skill 时改为
-`plugins/simpo/skills/simpo-create-project`。手工安装时，必须把包含 `SKILL.md` 和
+`plugins/simpo/skills/simpo-create-project`；安装计算结果分析时改为
+`plugins/simpo/skills/calculation-result-analysis`，并同时安装 `simpo`。
+手工安装时，必须把包含 `SKILL.md` 和
 `references/` 的完整目录复制到对应的 `$CODEX_HOME/skills/<skill-name>`；完成后重启
-Codex 会话。有 `scripts/` 的目录也须完整保留。Project 工作流需要安装全部四项
-Skill，因为它复用 BioModel、DataSet 流程和 SimpoCLI 命令参考。
+Codex 会话。有 `scripts/` 的目录也须完整保留。Project 工作流复用 BioModel、DataSet
+流程和 SimpoCLI 命令参考，安装时须同时保留这些依赖。
 
 ### Claude Code
 
-推荐安装包含全部四项 Skill 的 `simpo` 插件：
+推荐安装包含当前包中全部 Skill 的 `simpo` 插件：
 
 ```text
 /plugin marketplace add Jakkwj/simpo-home
@@ -158,3 +203,4 @@ Skill，因为它复用 BioModel、DataSet 流程和 SimpoCLI 命令参考。
 | SIMPO BioModel | [安装](./biomodel-skill-codex-install) | [使用](./biomodel-skill-codex-usage) | [安装](./biomodel-skill-claude-code-install) | [使用](./biomodel-skill-claude-code-usage) |
 | SIMPO DataSet | [安装](./dataset-skill-codex-install) | [使用](./dataset-skill-codex-usage) | [安装](./dataset-skill-claude-code-install) | [使用](./dataset-skill-claude-code-usage) |
 | SIMPO Project | [安装](./paper-to-project-skill-codex-install) | [使用](./paper-to-project-skill-codex-usage) | [安装](./paper-to-project-skill-claude-code-install) | [使用](./paper-to-project-skill-claude-code-usage) |
+| 计算结果分析 | [安装](#install-and-update-with-simpocli) | [使用](#calculation-result-analysis) | [安装](#install-and-update-with-simpocli) | [使用](#calculation-result-analysis) |

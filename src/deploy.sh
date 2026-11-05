@@ -12,7 +12,8 @@ fi
 git add -A && git commit -m "1.5.1 released" && git push -u origin master
 # git push -u origin master
 
-USE_SSH=true yarn deploy  # 自动部署到 github page
+# 2026.11.05 这个 github page 的部署 应该可以取消了
+# USE_SSH=true yarn deploy  # 自动部署到 github page
 
 if [ "$1" == "proxy" ]; then
     git config --global --unset http.proxy  # 取消 git 代理

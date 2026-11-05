@@ -1,5 +1,24 @@
 # CLI and Skills releases
 
+For daily releases, the sibling `SimpoClient/build.py` is the unified entrypoint:
+
+```bash
+python ../SimpoClient/build.py --app client --version 1.5.3 --dry-run
+python ../SimpoClient/build.py --app cli --version 0.1.10
+python ../SimpoClient/build.py --app skills --version 1.0.1
+```
+
+It synchronizes source version fields, runs the existing native builders or
+Skills export checks, then prepares the corresponding local catalog entries.
+Client includes backend compatibility and website versions; CLI includes both
+builder configs and website links. Installers still need uploading and validation
+before pushing this repository's catalog. The sections below describe the lower
+level entrypoints. CLI-only registration is independent of Skills exports:
+
+```bash
+python3 plugins/simpo/tools/build_release.py --cli-only --cli-version 0.1.10
+```
+
 CLI releases use `X.Y.Z`. All four public Skills share an independent `X.Y.Z`
 bundle version, starting at `1.0.0`. The private Web package also starts at
 `1.0.0` and advances separately when only Web content changes. A Skills-only

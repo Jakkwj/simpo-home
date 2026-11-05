@@ -33,6 +33,10 @@ safety guidance, then read only the reference for the requested command group.
 - For calculation preparation, engine selection, status polling, bounded result
   retrieval, or stopping,
   read [Calculation commands](references/calculation.md).
+- For interpreting saved results, Mass Balance, Reaction Analysis, or balance
+  diagnostics, use `calculation-result-analysis` from the same Skills package.
+  It uses the existing `get-calculation-result` command; a simple result read
+  does not require the full analysis workflow.
 - For a long-running BioModel/DataSet/Project mutation or asynchronous
   calculation preparation, read [Operation commands](references/operations.md).
 

@@ -1,9 +1,9 @@
 """Build immutable Skills bundles and the public CLI/Skills release catalog.
 
-Run after uploading production CLI installers to the existing Gitee package release.
-The catalog and Skills ZIPs themselves are committed to this GitHub repository.
-Only explicitly selected CLI versions are announced; building a package alone never
-announces it. No credentials or upload operations are performed by this script.
+Prepare the local catalog after building production installers. Upload and verify
+the installer bytes before pushing the catalog to GitHub. The catalog and Skills
+ZIPs themselves are committed to this repository. --cli-only registers CLI builds
+without requiring a Skills export. No credentials or upload operations are used.
 """
 
 from __future__ import annotations
@@ -28,6 +28,7 @@ NAMES = (
     "simpo-create-biomodel",
     "simpo-create-dataset",
     "simpo-create-project",
+    "calculation-result-analysis",
 )
 RAW_BASE = (
     "https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/"
@@ -175,6 +176,60 @@ def verify_generated(plugin: Path):
             raise ValueError(f"Generated file changed: {name}; edit the SimpoSkills source and export again.")
 
 
+def cli_entries(catalog, cli_versions, *, cli_directory=None, root=ROOT, platforms=()):
+    """Validate selected immutable production artifacts before any catalog write."""
+    entries = []
+    available = (("linux-amd64", "amd64.deb"), ("windows-x64", "windows_x64.exe"))
+    if set(platforms) - {name for name, _ in available}:
+        raise ValueError("Unknown CLI platform.")
+    for cli_version in cli_versions:
+        version_key(cli_version)
+        installers = {}
+        for target, suffix in available:
+            if platforms and target not in platforms:
+                continue
+            path = (cli_directory or root / "resource/cli") / f"SimpoCLI_{cli_version}_{suffix}"
+            if path.is_file():
+                details = artifact(path, CLI_BASE)
+                if details["size"] > 512 * 1024 * 1024:
+                    raise ValueError("CLI installer exceeds the updater's 512 MiB limit.")
+                installers[target] = details
+        if not installers or (platforms and set(platforms) - set(installers)):
+            raise ValueError(f"No production installers found for CLI {cli_version} on the requested platforms.")
+        previous = next((entry for entry in catalog["cli"] if entry["version"] == cli_version), None)
+        combined = dict(previous["artifacts"]) if previous else {}
+        for target, details in installers.items():
+            if target in combined and combined[target] != details:
+                raise ValueError(f"CLI {cli_version}/{target} already published with different bytes.")
+            combined[target] = details
+        entries.append({"version": cli_version, "artifacts": combined})
+    return entries
+
+
+def write_catalogs(catalog, output):
+    legacy = {
+        "schema_version": 1,
+        "cli": catalog["cli"],
+        "skills": [entry for entry in catalog["skills"] if LEGACY_VERSION.fullmatch(entry["version"])],
+    }
+    write_atomic(output / "index-v2.json", encode(catalog))
+    write_atomic(output / "index.json", encode(legacy))
+
+
+def publish_cli(*, cli_versions, cli_directory=None, platforms=(), plugin=PLUGIN, root=ROOT):
+    """Register CLI independently of Skills source/export/package availability."""
+    if not cli_versions:
+        raise ValueError("Select at least one CLI version explicitly.")
+    output = plugin / "releases"
+    catalog = merge_catalogs(read_catalog(output / "index-v2.json", 2), read_catalog(output / "index.json", 1))
+    entries = cli_entries(catalog, cli_versions, cli_directory=cli_directory, root=root, platforms=platforms)
+    for entry in entries:
+        catalog["cli"] = [old for old in catalog["cli"] if old["version"] != entry["version"]] + [entry]
+    catalog["cli"].sort(key=lambda entry: version_key(entry["version"]))
+    write_catalogs(catalog, output)
+    return catalog
+
+
 def publish(
     *,
     cli_versions=(),
@@ -216,51 +271,18 @@ def publish(
                 "Existing release metadata differs; increment the Skill package version."
             )
         # Validate every requested installer before changing the catalog or plugin metadata.
-        cli_entries = []
-        for cli_version in cli_versions:
-            version_key(cli_version)
-            installers = {}
-            for platform, suffix in (
-                ("linux-amd64", "amd64.deb"),
-                ("windows-x64", "windows_x64.exe"),
-            ):
-                path = (
-                    cli_directory or root / "resource/cli"
-                ) / f"SimpoCLI_{cli_version}_{suffix}"
-                if path.is_file():
-                    installers[platform] = artifact(path, CLI_BASE)
-            if not installers:
-                raise ValueError(
-                    f"No production installers found for CLI {cli_version}."
-                )
-            previous = next(
-                (entry for entry in catalog["cli"] if entry["version"] == cli_version),
-                None,
-            )
-            combined = dict(previous["artifacts"]) if previous else {}
-            for platform, details in installers.items():
-                if platform in combined and combined[platform] != details:
-                    raise ValueError(
-                        f"CLI {cli_version}/{platform} already published with different bytes."
-                    )
-                combined[platform] = details
-            cli_entries.append({"version": cli_version, "artifacts": combined})
+        installers = cli_entries(catalog, cli_versions, cli_directory=cli_directory, root=root)
         if not destination.exists():
             write_atomic(destination, built.read_bytes())
     catalog["skills"] = [
         entry for entry in catalog["skills"] if entry["version"] != version
     ] + [release]
-    for entry in cli_entries:
+    for entry in installers:
         catalog["cli"] = [
             old for old in catalog["cli"] if old["version"] != entry["version"]
         ] + [entry]
     catalog["cli"].sort(key=lambda entry: version_key(entry["version"]))
     catalog["skills"].sort(key=lambda entry: version_key(entry["version"], skills=True))
-    legacy = {
-        "schema_version": 1,
-        "cli": catalog["cli"],
-        "skills": [entry for entry in catalog["skills"] if LEGACY_VERSION.fullmatch(entry["version"])],
-    }
     metadata_path = plugin / ".claude-plugin/plugin.json"
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     metadata["version"] = version
@@ -271,8 +293,7 @@ def publish(
             entry["version"] = version
     write_atomic(metadata_path, encode(metadata))
     write_atomic(marketplace_path, encode(marketplace))
-    write_atomic(index_path, encode(catalog))
-    write_atomic(legacy_path, encode(legacy))
+    write_catalogs(catalog, output)
     return catalog
 
 
@@ -282,23 +303,31 @@ def main():
         "--cli-version",
         action="append",
         default=[],
-        help="Announce a CLI version whose installers have already been uploaded. Repeatable.",
+        help="Prepare a selected CLI release locally; upload installers before pushing the catalog. Repeatable.",
     )
     parser.add_argument(
         "--cli-directory",
         type=Path,
-        help="Directory containing uploaded production installers; defaults to resource/cli.",
+        help="Directory containing built production installers; defaults to resource/cli.",
     )
+    parser.add_argument("--cli-only", action="store_true", help="Register CLI installers without packaging Skills.")
+    parser.add_argument("--platform", action="append", choices=("linux-amd64", "windows-x64"), default=[], help="CLI-only: register only the selected built platforms; repeatable.")
     args = parser.parse_args()
+    if args.platform and not args.cli_only:
+        parser.error("--platform requires --cli-only")
     try:
-        catalog = publish(
-            cli_versions=args.cli_version, cli_directory=args.cli_directory
-        )
+        if args.cli_only:
+            catalog = publish_cli(cli_versions=args.cli_version, cli_directory=args.cli_directory, platforms=args.platform)
+        else:
+            catalog = publish(cli_versions=args.cli_version, cli_directory=args.cli_directory)
     except (OSError, ValueError, KeyError) as error:
         parser.exit(1, f"Release build failed: {error}\n")
-    print(
-        f"Built {len(catalog['skills'])} Skills release(s), {len(catalog['cli'])} CLI release(s). Commit plugins/simpo/releases and both plugin metadata files after uploading the announced CLI installers."
-    )
+    if args.cli_only:
+        print(f"Updated local CLI catalog ({len(catalog['cli'])} release(s)); Skills and Client history preserved. Upload installers before pushing the catalog.")
+    else:
+        print(
+            f"Built {len(catalog['skills'])} Skills release(s), {len(catalog['cli'])} CLI release(s). Commit plugins/simpo/releases and both plugin metadata files after uploading the announced CLI installers."
+        )
 
 
 if __name__ == "__main__":

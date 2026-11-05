@@ -13,7 +13,7 @@ import TabItem from "@theme/TabItem";
 `SimpoCLI` 是 SIMPO OpenAPI 的命令行客户端，完整支持 BioModel、DataSet 和
 Project 的 Draft 新建、更新、同步与发布流程，也可以读取和修改 Project
 Variable、准备计算、启动本机安装的 `SimpoClient`、查询或停止计算，并分块读取
-可能很大的已保存计算结果。
+可能很大的已保存计算结果，包括平衡与反应分析。
 安装后的终端命令统一为简短的小写 `simpo`。
 
 本页是 SimpoCLI 的完整命令总目录。每个命令也都拆分为独立页面，位于左侧
@@ -27,6 +27,7 @@ Variable、准备计算、启动本机安装的 `SimpoClient`、查询或停止�
 | Skill | 用途 |
 | --- | --- |
 | [`simpo`](./SimpoCLI/simpo-cli-skill) | 操作 CLI 并读取 JSON 结果。 |
+| [`calculation-result-analysis`](./SimpoCLI/simpo-skills#calculation-result-analysis) | 解读已保存的模拟、平衡、反应和异常诊断结果。 |
 | [`simpo-create-biomodel`](./SimpoCLI/biomodel-skill) | 根据论文或用户明确给出的方程建立模型。 |
 | [`simpo-create-dataset`](./SimpoCLI/dataset-skill) | 根据设计条件、来源表格或经过校准的图片数据建立 DataSet。 |
 | [`simpo-create-project`](./SimpoCLI/paper-to-project-skill) | 复用两项提取流程，创建关联资源并检验论文复现结果。 |
@@ -254,8 +255,24 @@ Linux 保存路径为 `~/.SimpoCLI/SIMPO_API_TOKEN.json`，Windows 保存路径
 | --- | --- | --- |
 | [`calculate`](./SimpoCLI/calculate) | 准备计算并启动 SimpoClient | `calculate` |
 | [`get-calculation-status`](./SimpoCLI/get-calculation-status) | 查询当前计算状态 | `calculate` |
-| [`get-calculation-result`](./SimpoCLI/get-calculation-result) | 选择并分页读取已保存的具体计算结果序列，避免响应过大 | `read` |
+| [`get-calculation-result`](./SimpoCLI/get-calculation-result) | 选择并分页读取已保存的结果序列、平衡汇总、异常及明细 | `read` |
 | [`stop-calculation`](./SimpoCLI/stop-calculation) | 停止计算和匹配的本地进程 | `calculate` |
+
+### 读取平衡分析
+
+平衡查询使用现有的 `get-calculation-result` 命令，需要 CLI **0.1.10 或更高版本**、
+兼容的后端，以及所选运行已经保存的平衡数据：
+
+```text
+simpo get-calculation-result PROJECT_ID --engine SIM --section steady_state_balance --view summary --limit 10
+simpo get-calculation-result PROJECT_ID --engine SIM --section dynamic_balance --view diagnostics --limit 10
+```
+
+将 `PROJECT_ID` 替换为实际项目 ID。用 `summary` 确定核算项，
+`diagnostics` 查找需关注项，再用 `terms`、`tanks`、`reactions` 或
+`concentrations` 读取相关明细。[命令参考](./SimpoCLI/get-calculation-result)
+说明了筛选、分页、单位和数据不可用时的含义。读取这些视图不会重新计算模拟或积分；
+查询成功的结果仍可能包含科学核算提醒或收支核算差异超限。
 
 ## 输出约定
 

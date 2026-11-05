@@ -12,6 +12,10 @@ import config from '@generated/docusaurus.config'
 数值参数和算法参数、开始或停止计算，并查看计算日志。已发布的 Project 为只读；
 需要修改设置时，请先克隆为 Personal Draft。
 
+模拟完成后，在项目草稿的 **Calculation → Simulation** 结果工具栏中打开
+**平衡分析（Balance Analysis）**。[平衡分析使用指南](./BalanceAnalysis)
+说明了如何获得结果、理解质量平衡和反应分析、排查异常，以及下载图表和表格。
+
 ## 计算前检查
 
 1. 修改 BioModel、DataSet、Solution、Conversions、Weights 或 Activator 后，
@@ -33,7 +37,7 @@ import config from '@generated/docusaurus.config'
 | `Thread Number` | 计算线程数，默认使用可用的逻辑 CPU 数量。 |
 | `Steady State` | 满足稳态条件后才结束模型计算。 |
 | `Step Tolerance` | 数值积分步长容差，越小通常越精确但越慢。 |
-| `Resolution Rate` | 计算和绘图时保留的原始数据比例。 |
+| `Resolution Rate` | 控制保存输出时间点的密度；提高分辨率可改善动态平衡的后处理积分精度，与求解容差不同。 |
 | `Recalculate` | 强制新建一次计算，不复用设置完全相同的旧结果。 |
 | `Real-Time Plotting` | 计算时实时绘图，关闭后通常可以减少额外开销。 |
 
@@ -187,7 +191,14 @@ Flow 权重而为 `(50+70+90)/3 = 70 mg/L`。如果原始输入是 COD，最终�
 | `Flow` | 实际用于稳态计算的、已平均后的流量值。 |
 | `Measured` | 两行相同的有效观测算术平均值，时间为 `0` 和 `10000 day`。 |
 | `Retention` | 每个 Tank 的 HRT、TSS 库存、外排固体量和 SRT 贡献，以及按选择项汇总的系统 HRT/SRT。 |
+| `BalanceSummary` | 各 Composition、Component 和非重复 Target 的全厂收支汇总及差值。 |
+| `BalanceTerms` | 进出水、反应、物理过程和 Constraint 的有符号收支明细。 |
+| `BalanceReactions` | 按池体、反应展开的产生与消耗。 |
+| `BalanceTanks` | 反应贡献按池体汇总，不代表完整的单池收支。 |
 | `Metadata` | 执行模式、输入平均方法和 `Converged` 状态。 |
+
+如何理解这些核算表并打开对应图表，见[平衡分析](./BalanceAnalysis)。旧结果可能没有
+这些平衡工作表。
 
 `Target` 不是重新对原始时间序列求平均，而是对稳态结束时的组分状态进行转换：
 
@@ -248,14 +259,15 @@ SIMPO 将 `Steady-State` 和 `Dynamic` 视为两种不同的计算阶段：
 
 | 阶段 | `Solution.Constraint` | 输入边界 | 结束方式 |
 | --- | --- | --- | --- |
-| Steady-State | 不应用。组分由 BioReaction 和 Hydraulics 自然变化。 | 使用压缩后的恒定 Inflow/Flow。 | 通过真实时间窗口判据后结束。 |
+| Steady-State | 配置后应用。约束值按所选稳态输入方法平均，不做流量加权。 | 使用压缩后的恒定 Inflow/Flow。 | 通过真实时间窗口判据后结束。 |
 | Dynamic | 应用。每个接受的计算步将约束组分写回指定值。 | 使用原始时间序列。 | 运行到 Measured 的最后时间。 |
-| `steady_state_then_dynamic` 的第一段 | 不应用。 | 使用稳态平均输入。 | 通过稳态判据后保存状态。 |
+| `steady_state_then_dynamic` 的第一段 | 使用稳态平均后的约束值。 | 使用稳态平均输入。 | 通过稳态判据后保存状态。 |
 | `steady_state_then_dynamic` 的第二段 | 应用。 | 恢复原始动态输入。 | 从保存的稳态状态继续运行。 |
 
-这意味着 Steady-State 结果不是把某些组分强制替换成 `Constraint`，也不会在
-达到判据后把 `BioReaction` 置零。保存的 `Component` 是反应和水力输运共同作用
-后实际接受的状态。
+保存的 `Component` 是反应、水力输运及已配置 Constraint 共同作用后实际接受的
+状态；达到判据后不会把 `BioReaction` 置零。维持约束浓度可能需要补偿，应结合
+[平衡收支明细](./BalanceAnalysis#mass-balance)阅读，不能直接将其解释为实测供给或
+移除。历史结果应按当次运行实际应用的约束解释。
 
 ### 窗口如何确定
 
@@ -313,8 +325,8 @@ $$
 ### 兼容参数与结果标记
 
 旧 API 中的 `steady_state_truncate` 和 `steady_state_escaped_threshold` 暂时保留，
-以避免外部调用报错，但它们不再决定稳态。稳态收敛方法以及稳态阶段禁用
-`Constraint` 的规则统一在本文档说明，不再作为固定字段重复写入结果工作簿。
+以避免外部调用报错，但它们不再决定稳态。稳态收敛方法以及各阶段的
+`Constraint` 处理规则统一在本文档说明，不再作为固定字段重复写入结果工作簿。
 结果 Excel 的 `Metadata` 中，`Converged` 只有在日志出现稳态到达标记时才为
 `true`；Dashboard Report 复用同一个判定结果。
 
