@@ -154,8 +154,11 @@ def verify_generated(plugin: Path):
             raise ValueError(f"Generated file changed: {name}; edit the SimpoSkills source and export again.")
 
 
-def cli_entries(catalog, cli_versions, *, cli_directory=None, root=ROOT, platforms=()):
-    """Validate selected immutable production artifacts before any catalog write."""
+def cli_entries(
+    catalog, cli_versions, *, cli_directory=None, root=ROOT, platforms=(),
+    replace_existing=False,
+):
+    """Validate installers before writing, requiring opt-in to replace local records."""
     entries = []
     available = (("linux-amd64", "amd64.deb"), ("windows-x64", "windows_x64.exe"))
     if set(platforms) - {name for name, _ in available}:
@@ -177,10 +180,13 @@ def cli_entries(catalog, cli_versions, *, cli_directory=None, root=ROOT, platfor
         previous = next((entry for entry in catalog["cli"] if entry["version"] == cli_version), None)
         combined = dict(previous["artifacts"]) if previous else {}
         for target, details in installers.items():
-            if target in combined and combined[target] != details:
-                raise ValueError(f"CLI {cli_version}/{target} already published with different bytes.")
+            if target in combined and combined[target] != details and not replace_existing:
+                raise ValueError(
+                    f"CLI {cli_version}/{target} already registered in the local catalog with different bytes. "
+                    "For a release still in preparation, use --cli-only --replace-existing to update it."
+                )
             combined[target] = details
-        entries.append({"version": cli_version, "artifacts": combined})
+        entries.append({**(previous or {}), "version": cli_version, "artifacts": combined})
     return entries
 
 
@@ -188,13 +194,19 @@ def write_catalog(catalog, output):
     write_atomic(output / "index-v2.json", encode(catalog))
 
 
-def publish_cli(*, cli_versions, cli_directory=None, platforms=(), plugin=PLUGIN, root=ROOT):
+def publish_cli(
+    *, cli_versions, cli_directory=None, platforms=(), plugin=PLUGIN, root=ROOT,
+    replace_existing=False,
+):
     """Register CLI independently of Skills source/export/package availability."""
     if not cli_versions:
         raise ValueError("Select at least one CLI version explicitly.")
     output = plugin / "releases"
     catalog = read_catalog(output / "index-v2.json")
-    entries = cli_entries(catalog, cli_versions, cli_directory=cli_directory, root=root, platforms=platforms)
+    entries = cli_entries(
+        catalog, cli_versions, cli_directory=cli_directory, root=root,
+        platforms=platforms, replace_existing=replace_existing,
+    )
     for entry in entries:
         catalog["cli"] = [old for old in catalog["cli"] if old["version"] != entry["version"]] + [entry]
     catalog["cli"].sort(key=lambda entry: version_key(entry["version"]))
@@ -281,12 +293,21 @@ def main():
     )
     parser.add_argument("--cli-only", action="store_true", help="Register CLI installers without packaging Skills.")
     parser.add_argument("--platform", action="append", choices=("linux-amd64", "windows-x64"), default=[], help="CLI-only: register only the selected built platforms; repeatable.")
+    parser.add_argument(
+        "--replace-existing", action="store_true",
+        help="CLI-only: replace selected same-version local catalog records during release preparation.",
+    )
     args = parser.parse_args()
     if args.platform and not args.cli_only:
         parser.error("--platform requires --cli-only")
+    if args.replace_existing and not args.cli_only:
+        parser.error("--replace-existing requires --cli-only")
     try:
         if args.cli_only:
-            catalog = publish_cli(cli_versions=args.cli_version, cli_directory=args.cli_directory, platforms=args.platform)
+            catalog = publish_cli(
+                cli_versions=args.cli_version, cli_directory=args.cli_directory,
+                platforms=args.platform, replace_existing=args.replace_existing,
+            )
         else:
             catalog = publish(cli_versions=args.cli_version, cli_directory=args.cli_directory)
     except (OSError, ValueError, KeyError) as error:

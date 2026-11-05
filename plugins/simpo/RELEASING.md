@@ -32,7 +32,8 @@ single catalog write; other platforms, versions, CLI and Skills are preserved.
 Without the flag, different content for an existing version/platform is rejected.
 This changes local metadata only. Upload the matching files before pushing the
 catalog; after a public release, increment the version so installed users can
-detect the update. The flag applies only to full Client builds.
+detect the update. For Client, the flag requires a full build. CLI also supports
+it; Skills releases remain immutable.
 
 CLI releases use `X.Y.Z`. All four public Skills share an independent `X.Y.Z`
 bundle version, starting at `1.0.0`. The private Web package also starts at
@@ -144,6 +145,26 @@ public artifacts and requires a private SimpoSkills checkout.
 4. Update website download links when ready; commit and push the generated
    catalog after upload. A platform keeps its last published version until its
    own newer artifact is announced.
+
+During release preparation, explicitly allow a same-version CLI rebuild to update
+the current platform's local catalog entry:
+
+```bash
+python ../SimpoClient/build.py --app cli --version 0.2.0 --replace-existing
+```
+
+To register existing final installers without rebuilding:
+
+```bash
+python3 plugins/simpo/tools/build_release.py --cli-only --cli-version 0.2.0 --replace-existing
+```
+
+Add `--platform linux-amd64` or `--platform windows-x64` to select one platform.
+The publisher requires `--cli-only` for this flag; Skills cannot be replaced.
+Other versions, platforms, Client and Skills are preserved. Without the flag,
+different bytes for an existing version/platform cause registration to fail,
+even when the installer build already succeeded. Use the unified entrypoint's
+final `Build complete` message to confirm both building and registration succeeded.
 
 ## Client behavior
 

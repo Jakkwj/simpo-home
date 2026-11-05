@@ -6,13 +6,13 @@
       "artifacts": {
         "linux-amd64": {
           "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.0_amd64.deb",
-          "size": 28408892,
-          "sha256": "800b9d764496f417601db9bf9610a13f6a7a1e7d15cba69f203cf9263499d701"
+          "size": 27437552,
+          "sha256": "f9344766448802156d706819118245d933be5b4b28073592137a15b218696c4d"
         },
         "windows-x64": {
           "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.0_windows_x64.exe",
-          "size": 17792943,
-          "sha256": "6afedd9b8d4fdd99da948c4a9aab5d4499a7d037b07e2516cefdcbbe92b1e45d"
+          "size": 16132604,
+          "sha256": "7a47463b672820af4b1664b0b338cc12c1a6b362176d935c1a3c2752f9414e48"
         }
       }
     }

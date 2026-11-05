@@ -2,11 +2,14 @@
 
 import importlib.util
 import hashlib
+import io
 import json
+import sys
 import tempfile
 import unittest
 import zipfile
 from pathlib import Path
+from unittest import mock
 
 spec = importlib.util.spec_from_file_location(
     "simpo_build_release", Path(__file__).with_name("build_release.py")
@@ -304,6 +307,97 @@ class ReleaseBuildTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "different bytes"):
             release.publish_cli(cli_versions=["0.1.9"], root=self.root, plugin=self.plugin)
         self.assertEqual([path.read_bytes() for path in indexes], before)
+
+    def test_cli_replacement_updates_only_selected_version_and_platform(self):
+        catalog = self.publish()
+        catalog["client"] = [{"version": "1.6.0", "offline": True, "artifacts": {}}]
+        index = self.plugin / "releases/index-v2.json"
+        index.write_text(json.dumps(catalog))
+        directory = self.root / "resource/cli"
+        directory.mkdir(parents=True)
+        for version in ("0.1.9", "0.2.0"):
+            for suffix in ("amd64.deb", "windows_x64.exe"):
+                (directory / f"SimpoCLI_{version}_{suffix}").write_bytes(f"{version}/{suffix}".encode())
+        before = release.publish_cli(
+            cli_versions=["0.1.9", "0.2.0"], root=self.root, plugin=self.plugin,
+        )
+        before["cli"][1]["offline"] = False
+        index.write_text(json.dumps(before))
+        linux = directory / "SimpoCLI_0.2.0_amd64.deb"
+        linux.write_bytes(b"rebuilt Linux installer")
+        # Another platform on disk may also have changed, but it is not selected.
+        (directory / "SimpoCLI_0.2.0_windows_x64.exe").write_bytes(b"unselected Windows installer")
+        saved = index.read_bytes()
+        with self.assertRaisesRegex(ValueError, "local catalog.*--replace-existing"):
+            release.publish_cli(
+                cli_versions=["0.2.0"], platforms=["linux-amd64"],
+                root=self.root, plugin=self.plugin,
+            )
+        self.assertEqual(index.read_bytes(), saved)
+        result = release.publish_cli(
+            cli_versions=["0.2.0"], platforms=["linux-amd64"],
+            root=self.root, plugin=self.plugin, replace_existing=True,
+        )
+        expected = json.loads(json.dumps(before))
+        expected["cli"][1]["artifacts"]["linux-amd64"] = release.artifact(linux, release.CLI_BASE)
+        self.assertEqual(result, expected)
+        self.assertEqual(json.loads(index.read_text()), expected)
+        self.assertFalse(index.with_name("index.json").exists())
+
+    def test_cli_replacement_validates_all_versions_before_catalog_write(self):
+        self.publish()
+        directory = self.root / "resource/cli"
+        directory.mkdir(parents=True)
+        installer = directory / "SimpoCLI_0.2.0_amd64.deb"
+        installer.write_bytes(b"first installer")
+        release.publish_cli(cli_versions=["0.2.0"], root=self.root, plugin=self.plugin)
+        index = self.plugin / "releases/index-v2.json"
+        before = index.read_bytes()
+        installer.write_bytes(b"replacement installer")
+        for invalid_version, contents, message in (
+            ("0.2.1", None, "No production installers"),
+            ("0.2.1", b"", "Empty artifact"),
+            ("invalid-version", None, "Invalid CLI version"),
+        ):
+            with self.subTest(version=invalid_version, contents=contents):
+                if contents is not None:
+                    (directory / f"SimpoCLI_{invalid_version}_amd64.deb").write_bytes(contents)
+                with self.assertRaisesRegex(ValueError, message):
+                    release.publish_cli(
+                        cli_versions=["0.2.0", invalid_version],
+                        platforms=["linux-amd64"], root=self.root, plugin=self.plugin,
+                        replace_existing=True,
+                    )
+                self.assertEqual(index.read_bytes(), before)
+
+    def test_cli_parser_forwards_replacement_and_rejects_it_for_skills(self):
+        with (
+            mock.patch.object(sys, "argv", [
+                "build_release.py", "--cli-only", "--cli-version", "0.2.0",
+                "--platform", "windows-x64", "--replace-existing",
+            ]),
+            mock.patch.object(release, "publish_cli", return_value={"cli": []}) as cli,
+            mock.patch.object(release, "publish") as skills,
+            mock.patch("sys.stdout", new_callable=io.StringIO),
+        ):
+            release.main()
+            cli.assert_called_once_with(
+                cli_versions=["0.2.0"], cli_directory=None,
+                platforms=["windows-x64"], replace_existing=True,
+            )
+            skills.assert_not_called()
+        with (
+            mock.patch.object(sys, "argv", ["build_release.py", "--replace-existing"]),
+            mock.patch.object(release, "publish_cli") as cli,
+            mock.patch.object(release, "publish") as skills,
+            mock.patch("sys.stderr", new_callable=io.StringIO) as errors,
+        ):
+            with self.assertRaises(SystemExit) as error:
+                release.main()
+            self.assertEqual(error.exception.code, 2)
+            self.assertIn("--replace-existing requires --cli-only", errors.getvalue())
+            cli.assert_not_called()
+            skills.assert_not_called()
 
 
 if __name__ == "__main__":

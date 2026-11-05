@@ -3,7 +3,7 @@
   "target": "cli-public",
   "version": "1.0.1",
   "files": {
-    "release.json": "8d4b96362f7de609a09892709afb5e9fc4c0324d66268ee01180c22275f01196",
+    "release.json": "8740c58901db04d4a777dbc3ed4737f6705062187b3aacf15cd7c68fbccb1505",
     "skills/calculation-result-analysis/SKILL.md": "08b5c22792ba050a2e84b2e70e0c6e6801a73571ee2b5fe73e09c4fcd7ba723a",
     "skills/calculation-result-analysis/references/balance-analysis.md": "135a123da7010d2bcf7b8b1a672c64319d933c2fd2ff209c9b6d3ad16d4f060c",
     "skills/calculation-result-analysis/source.json": "2ee00efa6a8ae31e6ef8b64e795485feda20eb0151106c7a4c017ad7e4bcccf7",
