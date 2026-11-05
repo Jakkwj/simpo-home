@@ -3,7 +3,7 @@
   "name": "calculation-result-analysis",
   "target": "cli-public",
   "rules_version": "4",
-  "version": "1.1.0",
+  "version": "1.0.2",
   "workflow_sha256": "f2f684172cb0c4bd7be2d6d06704ab65b6c72a1e415a70a2da8a8b9790e758c5",
   "adapter_sha256": "ca324ef1fefc9cf6a1c0f8d66d8bd1e7ad8c23881082cc838b914c9377bc3497",
   "files": {

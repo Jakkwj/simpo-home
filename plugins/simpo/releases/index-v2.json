@@ -23,6 +23,11 @@
           "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.1_amd64.deb",
           "size": 27437216,
           "sha256": "3f8ebdd5377a816f35d8286a8eb98d1dd054bd8f636452010e1f3f46061150c1"
+        },
+        "windows-x64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.1_windows_x64.exe",
+          "size": 16133967,
+          "sha256": "b8c9a247bd263613b58582eef6a168df7f91e4a46c9b0d2c000f23374bac0b11"
         }
       }
     }
@@ -56,6 +61,25 @@
           "sha256": "e917484613f0926058f414b037b5df8a070dc2c04cb5e8d34ccc6cb76b4a8f73"
         }
       }
+    },
+    {
+      "version": "1.6.1",
+      "offline": false,
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.6.1_amd64.deb",
+          "size": 41287472,
+          "sha256": "d4740725e7df822697c43f62993fb1177827d5507b78ab3b3bf86e8a25e02b1f"
+        }
+      },
+      "distribution": "split",
+      "packages": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/package.tar.xz",
+          "size": 11374220,
+          "sha256": "98dcedbada0ac841378b83caa08ec97371b2b5767992339f23a0a6ecb7d41832"
+        }
+      }
     }
   ],
   "skills": [
@@ -66,6 +90,15 @@
         "url": "https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/SIMPOSkills_1.0.1.zip",
         "size": 100182,
         "sha256": "014d00edddd88f40a9b60ea0e1d43576d5eb5f99a6db960571f2c54e106bcf37"
+      }
+    },
+    {
+      "version": "1.0.2",
+      "cli_min_version": "0.2.0",
+      "artifact": {
+        "url": "https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/SIMPOSkills_1.0.2.zip",
+        "size": 101375,
+        "sha256": "6904eb5f1597b13e0a83a9341dc2730f527033edbfd08f0193caf176d281ae9b"
       }
     }
   ]
