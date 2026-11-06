@@ -1,8 +1,8 @@
 """Build immutable Skills bundles and the public CLI/Skills release catalog.
 
 Prepare the local catalog after building production installers. Upload and verify
-the installer bytes before pushing the catalog to GitHub. The catalog and Skills
-ZIPs themselves are committed to this repository. --cli-only registers CLI builds
+the installer bytes before uploading the catalog to Gitee. The catalog and Skills
+ZIPs are published as Gitee Release attachments. --cli-only registers CLI builds
 without requiring a Skills export. No credentials or upload operations are used.
 Only index-v2.json is read and updated; legacy index.json files are left untouched.
 """
@@ -31,10 +31,11 @@ NAMES = (
     "simpo-create-project",
     "calculation-result-analysis",
 )
-RAW_BASE = (
+LEGACY_RAW_BASE = (
     "https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/"
 )
 CLI_BASE = "https://gitee.com/Jakkwj/simpo-home/releases/download/package/"
+SKILLS_BASE = CLI_BASE
 
 
 def version_key(value, *, skills=False):
@@ -70,6 +71,13 @@ def read_catalog(path):
             seen.add(version)
             if kind == "skills":
                 version_key(entry.get("cli_min_version"))
+    # Only the former official Skills location is migrated; package bytes and
+    # checksums remain immutable, while existing drafts can be republished.
+    for entry in catalog["skills"]:
+        details = entry.get("artifact", {})
+        url = details.get("url", "")
+        if url.startswith(LEGACY_RAW_BASE):
+            details["url"] = SKILLS_BASE + url[len(LEGACY_RAW_BASE):]
     return catalog
 
 
@@ -242,7 +250,7 @@ def publish(
         release = {
             "version": version,
             "cli_min_version": minimum,
-            "artifact": artifact(built, RAW_BASE),
+            "artifact": artifact(built, SKILLS_BASE),
         }
         old = next(
             (entry for entry in catalog["skills"] if entry["version"] == version), None

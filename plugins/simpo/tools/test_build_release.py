@@ -45,6 +45,17 @@ class ReleaseBuildTests(unittest.TestCase):
     def publish(self, **kwargs):
         return release.publish(plugin=self.plugin, root=self.root, **kwargs)
 
+    def test_existing_skills_url_migrates_without_changing_bundle_bytes(self):
+        catalog = self.publish()
+        entry = catalog["skills"][0]
+        artifact = self.plugin / "releases" / f"SIMPOSkills_{entry['version']}.zip"
+        before = artifact.read_bytes()
+        entry["artifact"]["url"] = release.LEGACY_RAW_BASE + artifact.name
+        (self.plugin / "releases/index-v2.json").write_text(json.dumps(catalog))
+        migrated = self.publish()
+        self.assertEqual(migrated["skills"][0]["artifact"]["url"], release.SKILLS_BASE + artifact.name)
+        self.assertEqual(artifact.read_bytes(), before)
+
     def test_bundle_repeatable_excludes_caches_and_syncs_metadata(self):
         catalog = self.publish()
         artifact = self.plugin / "releases/SIMPOSkills_0.1.8-skills.1.zip"

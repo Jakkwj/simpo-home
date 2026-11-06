@@ -30,6 +30,16 @@
           "sha256": "b8c9a247bd263613b58582eef6a168df7f91e4a46c9b0d2c000f23374bac0b11"
         }
       }
+    },
+    {
+      "version": "0.2.2",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.2_amd64.deb",
+          "size": 27437208,
+          "sha256": "90132ea4c7838de4253a6a8a66292c11c7fd8b1639d8f0c790433ac66ad557c1"
+        }
+      }
     }
   ],
   "client": [
@@ -119,6 +129,25 @@
           "sha256": "9a93a54c1f91aa964641d48a3d29c2a0b4572c15182e93577bb0d0811b3de610"
         }
       }
+    },
+    {
+      "version": "1.6.3",
+      "offline": false,
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.6.3_amd64.deb",
+          "size": 41297004,
+          "sha256": "fb1ae9851c856316e6721061b4c774654d11f7b4998e0d95bc2e1884c2d63469"
+        }
+      },
+      "distribution": "split",
+      "packages": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/package.tar.xz",
+          "size": 11387120,
+          "sha256": "67449ec077928a3f69c42cd7f6415c8fa9b6080c47faf088fd18fb65dfdafa7e"
+        }
+      }
     }
   ],
   "skills": [
@@ -126,7 +155,7 @@
       "version": "1.0.1",
       "cli_min_version": "0.2.0",
       "artifact": {
-        "url": "https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/SIMPOSkills_1.0.1.zip",
+        "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SIMPOSkills_1.0.1.zip",
         "size": 100182,
         "sha256": "014d00edddd88f40a9b60ea0e1d43576d5eb5f99a6db960571f2c54e106bcf37"
       }
@@ -135,7 +164,7 @@
       "version": "1.0.2",
       "cli_min_version": "0.2.0",
       "artifact": {
-        "url": "https://raw.githubusercontent.com/Jakkwj/simpo-home/master/plugins/simpo/releases/SIMPOSkills_1.0.2.zip",
+        "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SIMPOSkills_1.0.2.zip",
         "size": 101375,
         "sha256": "6904eb5f1597b13e0a83a9341dc2730f527033edbfd08f0193caf176d281ae9b"
       }
