@@ -90,6 +90,25 @@
           "sha256": "ec0cce97fa7a1da5a6c8839473b7b21743d2060cc65944c6508cfb0bba5f0ddc"
         }
       }
+    },
+    {
+      "version": "1.6.2",
+      "offline": false,
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.6.2_amd64.deb",
+          "size": 41306996,
+          "sha256": "b271a72972bbd831c37e5499ac5cd6df1bc918d6d4b214e8e686677d5fff1800"
+        }
+      },
+      "distribution": "split",
+      "packages": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/package.tar.xz",
+          "size": 11375116,
+          "sha256": "b627b056d079d5867149f19c5f94ac049992b78b363838241a2d8397a8918352"
+        }
+      }
     }
   ],
   "skills": [

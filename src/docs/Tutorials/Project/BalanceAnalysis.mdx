@@ -55,8 +55,11 @@ confirming its best-solution source, the analysis is unavailable in the dashboar
 
 For **Composition**, supply the relevant coefficients in the BioModel. For
 **Target**, provide the corresponding Conversion in the Project Solution.
-Missing definitions are not invented or replaced by zeros. Component analysis
-can still be available when no Composition was supplied.
+Within a supplied Composition row, blank cells in existing Component columns
+mean zero, following the BioModel convention. Entirely blank rows are omitted.
+Missing Component columns and nonempty expressions that cannot be resolved
+remain accounting issues. Component analysis can still be available when no
+Composition was supplied.
 
 If an older result has no balance data, use an updated calculation client and
 run the simulation again. Enable **Recalculate** when necessary to avoid
@@ -82,6 +85,12 @@ opening it.
 - **Diagnostics** appears when there are quantities requiring attention or
   result-level warnings. Start there when reviewing many quantities.
 - Use the top-right fullscreen icon for a larger diagram.
+
+Drag a node's colored rectangle to adjust its position; connected branches
+follow without changing their values or proportions. A click on an expandable
+summary node still expands or collapses its details. Image downloads retain
+the current layout. Manual positions are not saved across page refreshes or
+changes to the selected quantity or expanded details.
 
 Each analysis tab remembers its own dimension and selected item while you stay
 on the same Project page, including after closing and reopening the dialog.
