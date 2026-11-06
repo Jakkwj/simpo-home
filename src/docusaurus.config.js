@@ -12,6 +12,7 @@ const darkTheme = themes.dracula;
 const title = "SIMPO";
 // const urlConsole = 'https://dashboard.simpowater.org/dashboard/home'
 
+const isChinese = process.env.DOCUSAURUS_CURRENT_LOCALE === "zh";
 const urlHome = process.env.SIMPO_HOME_ORIGIN || "https://www.simpowater.com";
 const dashOrigin =
   process.env.SIMPO_DASH_ORIGIN || "https://dash.simpowater.com";
@@ -419,7 +420,11 @@ const config = {
       announcementBar: {
         id: "announcementBar",
         content:
-          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="http://www.simpowater.org/changelog/SIMPO%20Client/2026">SimpoClient v1.6.3</a> has been released!</strong>',
+          '<strong>🎉 <a target="_blank" rel="noopener noreferrer" href="' +
+          (isChinese ? "/zh" : "") +
+          '/changelog/SIMPO%20Client/2026">SimpoClient v1.6.3</a> ' +
+          (isChinese ? "已发布！" : "has been released!") +
+          "</strong>",
         isCloseable: true,
         // backgroundColor: '#5e72e4',
         // textColor: '#ffffff',
