@@ -295,12 +295,36 @@ These fractions are conversion rules, not blanket replacements for every coeffic
   - `If`: Excel-style `If(condition, value_if_true, value_if_false)`, returning different values based on a condition.
 - Exponentiation is represented by `**`; for example, `x**2` is the square of x and `x**0.5` is the square root of x.
 
+Outside the editor, the Rate table displays powers as superscripts; editing still uses `**`. Copying, saving, and exporting preserve the original expression, so this display change does not affect calculations.
+
 #### <a id="5.2"></a>5.2 pH
 - pH is a special component. It does not need to be defined in Components and can be used directly in the Rate column of the matrix.
 
 #### <a id="5.3"></a>5.3 Negative-Value Errors
 - In the matrix, a negative coefficient for a Component means that the Component is consumed by that Process.
 - In this case, add a switch term for that Component to the Rate expression (`S_S/(K_S+S_S)`). This makes the Process rate zero when the Component is zero and prevents negative-value errors.
+
+#### 5.4 Water Temperature T {#rate-temperature}
+
+Use the built-in symbol `T` directly in `Matrix.Rate` to read the current Tank's water temperature in °C. It comes from [DataSet.Environment](../DataSet/Edit.mdx#environment), independently for each Tank and time. Do not add `T` to Parameters or Components.
+
+For example, a temperature-dependent growth rate can be written as:
+
+```text
+mu_H20 * theta_H**(T - 20) * S_S/(K_S + S_S) * X_H
+```
+
+Here, `mu_H20`, `theta_H`, and `K_S` are ordinary Parameters, and `S_S` and `X_H` are Components. The kinetic temperature factor `theta_H` is independent of the Pump's oxygen-transfer factor θ. Temperature corrections apply only where they are written in the Rate; SIMPO does not add them automatically to other parameters.
+
+The Rate editor displays `T` in a distinct badge color to distinguish it from pH and ordinary Parameters. Saving or exporting to XLSX keeps the plain expression above. The built-in temperature symbol is uppercase `T`. General reserved-word checks are case-insensitive, so neither `T` nor `t` may be used as a Parameter/Component symbol or a user-defined name such as a Tank name. Names such as `T_ref` and `k_T` remain available. Rename existing entries named `T` or `t` before saving.
+
+`T` is supported only in `Matrix.Rate`, not in stoichiometric coefficients, Parameter values, Composition, Formula, or Ionization expressions. Fixed parameter factors may still be extracted into the internal static matrix, while temperature-dependent factors remain in the Rate and are evaluated at runtime.
+
+Temperature sampling follows the Environment rules: dynamic calculations use the selected stepwise or linear interpolation, and temperature input events are preserved even with sparse result output. A Tank or zone without an applicable temperature series uses **20°C**. Point-settler zones first use their own temperature series, then fall back to their parent Tank. The supported input range is **0–40°C**.
+
+Steady-state calculations evaluate the Rate at each Tank's average temperature, using `steady_state_input_average_method`. For a nonlinear correction, evaluating at the average temperature is not equivalent to averaging the corrected rate. The dynamic phase of a steady-state-then-dynamic calculation restores the original temperature series.
+
+Rates containing `T` currently require **Forward Euler**. Selecting Improved Euler produces an explicit unsupported-solver error.
 
 
 ### <a id="OtherActions"></a>6. Other Actions

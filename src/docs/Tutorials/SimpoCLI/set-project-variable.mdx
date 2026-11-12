@@ -9,6 +9,11 @@ sidebar_label: set-project-variable
 Update one field in a version `0` Draft Project. The default field is `Value`,
 so existing commands that set a numeric value remain valid.
 
+Water temperature `T` is not a Solution Variable. Edit the linked DataSet
+`Environment` table with [`update-dataset`](./update-dataset) instead. Ordinary
+kinetic coefficients, such as `theta_H` used in a Rate expression, can still be
+updated with this command.
+
 ## Requirements and validation
 
 - Token scope: `write`

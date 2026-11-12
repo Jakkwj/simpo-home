@@ -90,7 +90,7 @@ The generic `OAT` code is not a public CLI choice.
 | `--auto-plot / --no-auto-plot` | disabled | Enable or disable real-time local plotting |
 | `--force-recalculate / --no-force-recalculate` | disabled | Force a new calculation instead of allowing result reuse |
 | `--execution-mode TEXT` | `dynamic` | `dynamic`, `steady_state`, or `steady_state_then_dynamic` |
-| `--input-interpolation TEXT` | `previous` | Dynamic Flow/Inflow interpolation: `previous` or `linear`; alias: `--dynamic-input-interpolation-method` |
+| `--input-interpolation TEXT` | `previous` | Dynamic Flow/Inflow/Environment interpolation: `previous` or `linear`; alias: `--dynamic-input-interpolation-method` |
 | `--steady-state-input-average-method TEXT` | `previous` | Steady-state input reduction: `previous`, `linear`, or `arithmetic` |
 | `--platform TEXT` | package platform | `linux`, `windows`, or `mac`; normally omit |
 
@@ -99,10 +99,10 @@ The generic `OAT` code is not a public CLI choice.
 | Mode | Behavior |
 | --- | --- |
 | `dynamic` | Run the original time series only. |
-| `steady_state` | Reduce Flow and Inflow series to constants and solve only the steady state. |
+| `steady_state` | Reduce Flow, Inflow, and Environment series to constants and solve only the steady state. |
 | `steady_state_then_dynamic` | Solve the steady state first, use it as the initial state, then continue with the original dynamic time series. |
 
-`--input-interpolation` controls how dynamic `Flow` and `Inflow` values are
+`--input-interpolation` controls how dynamic `Flow`, `Inflow`, and `Environment` values are
 evaluated between recorded time points. `previous` is a zero-order hold;
 `linear` interpolates between adjacent samples and holds the final value after
 the last sample. It is ignored by a steady-state-only run.
@@ -114,6 +114,29 @@ signal, `linear` integrates a linearly interpolated signal, and `arithmetic`
 averages valid rows without time-spacing or Flow weighting. For Inflow
 concentrations, `previous` and `linear` use the matching Flow as a hydraulic
 weight. This option is ignored by a dynamic-only run.
+
+### Temperature input {#temperature-input}
+
+Temperature comes from the linked [DataSet.Environment](./create-dataset#temperature-input);
+no temperature flag or Solution Variable is needed. Each Tank uses its own
+`T` in Celsius, defaulting to 20°C without an applicable series. The supported
+range is 0–40°C. Temperature-dependent Rate and aeration calculations use
+`Forward_Euler`.
+
+For dynamic runs, `previous` switches temperature at each input timestamp and
+`linear` interpolates between that column's valid samples. Integration steps
+stop at input events before recalculating Rate and oxygen transfer with the new
+values. Flow, Inflow, and temperature input events remain protected when
+`--resolution-rate` reduces output resolution.
+
+For steady state, the selected averaging method is applied to each temperature
+series without Flow weighting. The Rate and saturated oxygen are then calculated
+at the average temperature; this is not the average of a nonlinear corrected
+rate. Time averages span the first-to-last valid sample; repeat the final
+temperature at the desired endpoint to include that holding period.
+`steady_state_then_dynamic` restores the original temperature series for its
+dynamic phase. Full sampling and zone-fallback rules are in the
+[Environment guide](../DataSet/Edit.mdx#environment).
 
 ## Analysis-specific options
 

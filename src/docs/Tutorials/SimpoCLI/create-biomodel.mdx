@@ -88,6 +88,21 @@ The same BioModel parser validates headers, formulas, symbols, and matrix
 consistency as the Excel import path. The JSON import returns
 `creationMode: "json"`.
 
+### Temperature in Rate {#temperature-in-rate}
+
+Write uppercase `T` directly in `Matrix.Rate`, for example
+`mu_H20 * theta_H**(T - 20) * S_S/(K_S + S_S) * X_H`. The JSON string keeps
+`**` for powers. Register the kinetic coefficients as ordinary Parameters, but
+do not define `T` as a Parameter or Component: it comes from the linked
+DataSet.Environment for each Tank and time. `T` and lowercase `t` are reserved
+names; only uppercase `T` is the built-in temperature symbol.
+
+`T` is allowed only in Rate, not in Parameter values, stoichiometric cells,
+Formula, Composition, or Ionization. Rates containing `T` require
+`Forward_Euler`. Kinetic factors such as `theta_H` are separate from Pump `θ`;
+see [Water Temperature T](../BioModel/Edit.mdx#rate-temperature) for defaults,
+range, and sampling behavior.
+
 The uploaded file is deleted from the backend temporary directory after parsing;
 the database stores the parsed model rather than the original Excel file. The
 backend verifies that the upload is a valid, unencrypted `.xlsx` workbook and

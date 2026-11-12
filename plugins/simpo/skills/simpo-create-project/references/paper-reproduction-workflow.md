@@ -96,7 +96,13 @@ or delete resources automatically.
    runtime uses `Variable.Value * coefficient - DataSet first value` for an
    Inflow and `Variable.Value - DataSet first value` for a Flow, adds the offset
    to the full series, clips negative values, and converts Flow to `m3/s`.
-   `Measured` is not shifted and must remain the original observation series.
+   `Measured` and `Environment` are not shifted. Audit water-temperature
+   provenance and each Tank/zone's Environment series or 20°C fallback before
+   fitting kinetics. Record the sampling/steady-state averaging method,
+   reference temperatures, Pump θ, and explicit Rate T factors according to
+   the BioModel/DataSet references. Use Forward Euler for Rate T. Averaging a
+   nonlinear Rate is not equivalent to evaluating it at the average T; the
+   combined mode restores the original Environment series for dynamic time.
 2. Run `LHS` for uncertain states and influential parameters when requested.
    LHS explores uncertainty but does not prove identifiability.
 3. Estimate only a small justified set with `GA` or `RFGA`. Each estimated
@@ -131,10 +137,11 @@ washout from a low end value alone. Check these three common causes:
 2. **Insufficient particulate separation in `Point Settling`.** Read the
    effective `SettlingFactor`, outlet/blanket flow split, and effluent TSS.
    The factor directs a fraction of particulates to the blanket; too small a
-   value can lose bacteria with the effluent. Its usual sludge-retaining
-   reference magnitude is `0.999` to `1`, with a case-specific value reviewed
-   against effluent TSS. This is not a hard validation range or evidence to
-   overwrite a reported value. Assess effluent and wasting losses together.
+   value can lose bacteria with the effluent. When unspecified, its usual
+   sludge-retaining value is around `0.9999`; reported effluent TSS of `0`
+   allows setting it directly to `1`. Preserve a supplied factor and document
+   an adopted value and its basis as an assumption. This is not a hard
+   validation range. Assess effluent and wasting losses together.
 3. **Too little initial bacterial seed.** Read each relevant bacterial
    Component/tank row in `Solution.Variable`, specifically the `Value` column.
    Check actual Inflow/Conversion as well: influent usually does not supply
@@ -148,8 +155,12 @@ washout from a low end value alone. Check these three common causes:
 In `dynamic`, the component initial states come from Variable.Value. In
 `steady_state_then_dynamic`, the dynamic phase starts from the computed steady
 state; raising Value alone does not guarantee a larger dynamic seed. Inspect
-the steady-state biomass and actual oxygen supply first. DO Constraint is
-disabled during any steady-state phase, even when measured DO is available.
+the steady-state biomass, physical oxygen supply, and configured DO Constraint
+first. Constraints apply in both phases: steady state uses original observation
+averages selected by `steadyStateInputAverageMethod` without flow weighting;
+dynamic simulation uses the configured interpolation of the time series.
+Measured DO alone does not impose a Constraint, and constraint compensation
+does not represent measured aeration.
 
 Retention HRT/SRT selects statistical volumes and solids inventories, not
 physical separation or growth. Correct its accounting boundary when needed,

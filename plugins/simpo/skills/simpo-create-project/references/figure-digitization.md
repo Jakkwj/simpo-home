@@ -44,7 +44,8 @@ For each imported series, record:
 - digitizer name and version or URL, extraction mode, and export filename;
 - number of points, any removed points, interpolation or sorting rule, and the
   estimated reading uncertainty;
-- whether the values map to `Measured`, `Inflow`, or `Flow`, and the SIMPO
+- whether the values map to `Measured`, `Inflow`, `Flow`, or water-temperature
+  `Environment`, and the SIMPO
   symbol/name chosen.
 
 Do not interpolate between points unless the user explicitly requests it. Do

@@ -35,6 +35,10 @@ The JSON format is the same as [`create-biomodel`](./create-biomodel). A model
 returned by `get-biomodel` can be edited and submitted after removing its
 read-only `Balance` sheet.
 
+Temperature expressions follow the same [Rate rules](./create-biomodel#temperature-in-rate)
+as creation. Keep `T` in Rate and supply its time series through the linked
+DataSet; do not replace it with a fixed Parameter or a stoichiometric factor.
+
 ## Options
 
 | Option | Default | Meaning |

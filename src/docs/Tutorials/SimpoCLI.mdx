@@ -204,6 +204,39 @@ it contains the complete secret Token.
 
 For the complete configuration procedure, see [`configure`](./SimpoCLI/configure).
 
+## Water temperature in a Project {#temperature}
+
+Temperature uses the existing DataSet, BioModel, and calculation commands; there
+is no separate temperature flag. Store each Tank's `T` time series in
+`DataSet.Environment`, with fixed Celsius units in `Unit.T`. Set Pump `θ` when
+oxygen-transfer correction is needed, and use uppercase `T` directly in
+`BioModel.Matrix.Rate` for kinetic corrections.
+
+For an existing Draft, read the full DataSet before editing:
+
+```text
+simpo get-dataset 456 > dataset-response.json
+```
+
+Extract the response's `detail` object into `DataSet.json`, edit its `Environment`
+table, and retain the other tables. Then submit the complete detail:
+
+```text
+simpo update-dataset 456 --json ./DataSet.json
+simpo calculate 706 --engine SIM --ode-solver Forward_Euler --input-interpolation previous
+```
+
+Replace the example IDs with the linked DataSet and Project IDs. Updating the
+DataSet rebuilds dependent Draft Projects and marks their saved results for
+recalculation. Do not submit only the temperature fragment. Temperature is an
+environmental input, so it is not set with `set-project-variable`.
+
+See the [temperature JSON format](./SimpoCLI/create-dataset#temperature-input),
+[Rate expression rules](./BioModel/Edit.mdx#rate-temperature), and
+[dynamic/steady-state sampling rules](./SimpoCLI/calculate#temperature-input).
+The [DataSet guide](./DataSet/Edit.mdx#do-temperature) contains the saturation
+and oxygen-transfer equations.
+
 ## Command reference
 
 Each resource follows the same basic rule: edit a version `0` Draft, use a

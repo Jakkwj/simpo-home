@@ -45,6 +45,21 @@
           "sha256": "8466a274edd11600bf82bb987475c85bc8bc927676b65468285cda448eff0fe4"
         }
       }
+    },
+    {
+      "version": "0.2.3",
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.3_amd64.deb",
+          "size": 27444180,
+          "sha256": "ae5f80d4604018a1c27078e1b934ef2acdf8f98664283a32c607c719dd9366df"
+        },
+        "windows-x64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.3_windows_x64.exe",
+          "size": 16143642,
+          "sha256": "ec14788e24b51aefb3d9b095b1afc128d14a41081f8739847c86cedb857dbb52"
+        }
+      }
     }
   ],
   "client": [
@@ -161,6 +176,35 @@
           "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/package.zip",
           "size": 39221487,
           "sha256": "09d2c10fa959d393bc729b576ec2bd10e53e3d94e72033f611892a5ce5f89145"
+        }
+      }
+    },
+    {
+      "version": "1.7.0",
+      "offline": false,
+      "artifacts": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.7.0_amd64.deb",
+          "size": 41290404,
+          "sha256": "c7c60401a9d36eb5977b49624f433b934c9e03949b256aefce37dab21639b594"
+        },
+        "windows-x64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoClient_1.7.0.exe",
+          "size": 29861648,
+          "sha256": "d8043020b81a23e6e944e740eecd6d178f5eec0d9543015c13f6cfa7f3901383"
+        }
+      },
+      "distribution": "split",
+      "packages": {
+        "linux-amd64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/package.tar.xz",
+          "size": 11745160,
+          "sha256": "a534219592d93ef4399c2ef80b36c1a567c3f490e4c0bb24477b17decd1465fb"
+        },
+        "windows-x64": {
+          "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/package.zip",
+          "size": 40539548,
+          "sha256": "d7df790883c54e3b8c63db0a15f3cf8b558bce86176fae0436ec8a58f581186e"
         }
       }
     }

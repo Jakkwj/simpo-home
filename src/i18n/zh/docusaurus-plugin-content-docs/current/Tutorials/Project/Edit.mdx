@@ -29,6 +29,11 @@ Detail 页面左侧包含三个菜单：`Solution`、`BioModel` 和 `DataSet`。
 
 `Value`、边界值等可编辑单元通过表格弹窗修改，数值必须符合显示的单位和边界。计算时，`Project.Solution` 中保存的值优先于 BioModel 的默认值。
 
+水温 `T` 属于环境输入，不是 Solution Variable。请在关联的
+[DataSet.Environment](../DataSet/Edit.mdx#environment) 中编辑；
+[Rate](../BioModel/Edit.mdx#rate-temperature) 按 Tank 和时间读取它。
+`theta_H` 等动力学修正系数仍是普通 Parameter，可以在 Solution 中设置。
+
 工具栏还可以打开五个辅助表：
 
 - `Conversions`：将 BioModel Components 转换为预测的 Additional Targets。例如 `TN = S_NH4 + S_NO3 + 0.1 * X_H` 时，对应行的系数应分别为 `1`、`1` 和 `0.1`。DataSet Targets 与 Additional Targets 分开显示。

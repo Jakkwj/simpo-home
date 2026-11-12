@@ -9,6 +9,10 @@ sidebar_label: set-project-variable
 修改 version 为 `0` 的 Draft Project 中一个 Variable 字段。默认字段仍是
 `Value`，因此原有修改数值的命令无需改变。
 
+水温 `T` 不是 Solution Variable。请用 [`update-dataset`](./update-dataset)
+修改关联 DataSet 的 `Environment` 表。Rate 中的 `theta_H` 等普通动力学系数
+仍可通过本命令修改。
+
 ## 使用条件和校验规则
 
 - Token scope：`write`

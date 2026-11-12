@@ -295,12 +295,36 @@ Processes 和 Compositions 中的系数如果来自氧化还原或元素质量�
   - `If`：Excel 风格 `If(condition, value_if_true, value_if_false)`: 根据条件返回不同的值。
 - 乘方用 `**` 表示，如 `x**2` 表示 x 的平方，`x**0.5` 表示 x 的平方根。
 
+关闭编辑器后，Rate 表格中的乘方以上标显示；编辑时仍使用 `**`。复制、保存和导出均使用原表达式，这项显示调整不改变计算。
+
 #### <a id="5.2"></a>5.2 pH
 - pH 作为一个特殊的组分，不需要在 Components 中进行定义，在矩阵的 Rate 列可以直接使用 pH 进行计算。
 
 #### <a id="5.3"></a>5.3 负数错误
 - 在矩阵中，某些 Component 的系数为负数时，表示该组分在该 Process 中被消耗。
 - 此时，需要注意在 Rate 中补充该 Component 的开关项（$\frac{S_S}{K_S+S_S}$），表示该组分为0时，该 Process 的速率为0，避免出现负数错误。
+
+#### 5.4 水温 T {#rate-temperature}
+
+在 `Matrix.Rate` 中直接使用内置符号 `T`，即可读取当前 Tank 在当前时刻的水温，单位固定为 ℃。它来自 [DataSet.Environment](../DataSet/Edit.mdx#environment)，各 Tank 独立取值，不需要在 Parameters 或 Components 中定义。
+
+例如，带温度修正的生长速率可以写为：
+
+```text
+mu_H20 * theta_H**(T - 20) * S_S/(K_S + S_S) * X_H
+```
+
+其中 `mu_H20`、`theta_H` 和 `K_S` 是普通 Parameters，`S_S` 和 `X_H` 是 Components。动力学温度系数 `theta_H` 与 Pump 的传氧温度系数 θ 各自独立。温度修正只作用于 Rate 中明确写出的部分，SIMPO 不会自动为其他参数添加温度修正。
+
+Rate 编辑器用独立颜色标记包裹 `T`，与 pH 和普通 Parameters 区分；保存和导出 XLSX 时仍是上述普通公式文本。内置温度符号使用大写 `T`。通用保留字检查不区分大小写，因此 `T` 和 `t` 都不能用作 Parameter/Component 符号或 Tank 等用户自定义名称；`T_ref` 和 `k_T` 等名称仍可使用。已有名称为 `T` 或 `t` 的条目需先改名再保存。
+
+`T` 目前仅支持用于 `Matrix.Rate`，不能写入计量系数、Parameter 数值、Composition、Formula 或 Ionization 表达式。固定参数因子仍可提取到内部静态矩阵中，含温度的因子则保留在 Rate 中，在运行时计算。
+
+温度取值沿用 Environment 的规则：动态计算使用所选的阶梯或线性插值，稀疏输出和降采样不会移除温度输入事件；没有可用温度序列的 Tank 或分区默认使用 **20 ℃**。点沉淀池的分区优先使用自己的序列，其次使用物理 Tank 的序列。当前温度输入范围为 **0–40 ℃**。
+
+稳态计算按 `steady_state_input_average_method` 求各 Tank 的平均温度，然后用该温度计算 Rate。对于非线性温度修正，“平均温度下的速率”不等于“变温速率的平均值”。先稳态后动态计算会在动态阶段恢复原始温度序列。
+
+包含 `T` 的 Rate 当前要求使用 **Forward Euler**；选择 Improved Euler 时会明确提示不支持。
 
 
 ### <a id="OtherActions"></a>6. 其它操作

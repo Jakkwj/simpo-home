@@ -85,7 +85,12 @@ other material oxygen terms. Record the assumed alpha, beta, transfer
 efficiency, diffuser depth, and safety/design factors used to convert oxygen
 demand to air flow. The DataSet Pump row stores the SOTE correlation
 coefficients; a default such as `SOTEa=0.3`, `SOTEb=0`, `SOTEc=0` is an explicit
-design assumption, not manufacturer data.
+design assumption, not manufacturer data. Record the receiving Tank's water
+temperature in `Environment`, the Pump's θ, and their evidence/defaults using
+the `dataset-json-format` reference. Water-temperature correction of saturation
+and transfer does not convert actual air-meter volumes to a standard gas-flow
+basis; record the Qair measurement basis separately. Do not confuse Pump θ with
+a BioModel kinetic coefficient or apply it again to direct KLa inputs.
 
 ### Settling
 
@@ -94,14 +99,16 @@ For `Point Settling`, store the two compartment volumes as
 the assumed split and factor. Do not claim a detailed clarifier design from this
 simplified representation.
 
-For ordinary sludge-retaining operation, the usual `SettlingFactor` reference
-magnitude is `0.999` to `1`; it is the particulate fraction directed to the
-blanket. A factor that is too small can cause particulate/biomass loss through
-the outlet. Review it against actual effluent TSS and the flow split, preserving
-reported case values unless an explicitly reviewed correction is justified.
-This range is an operating guideline, not a parser limit or a guarantee of
-zero effluent TSS. Record an adopted value as an assumption when evidence is
-missing; do not silently set every settler to `1`.
+For ordinary sludge-retaining operation, use a `SettlingFactor` around `0.9999`
+when the source does not specify one. If the reported effluent TSS is `0`, the
+factor may be set directly to `1`; missing TSS is not a reported zero. Preserve
+an explicitly supplied factor and record any adopted value and its basis as an
+assumption in the DataSet audit and Project description.
+
+The factor is the particulate fraction directed to the blanket. A factor that
+is too small can cause particulate/biomass loss through the outlet. Review it
+against actual effluent TSS and the flow split. These are operating guidelines;
+the legal field range remains `0` to `1`.
 
 ## 4. Hydraulic topology
 

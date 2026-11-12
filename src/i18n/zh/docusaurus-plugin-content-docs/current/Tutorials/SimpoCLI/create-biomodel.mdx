@@ -90,6 +90,19 @@ Component、Parameter、数值、括号和 `+ - * /` 定义代数值。Formula C
 使用与 Excel 导入相同的 BioModel 解析器校验表头、公式、符号和矩阵一致性，成功时返回
 `creationMode: "json"`。
 
+### Rate 中的温度 {#temperature-in-rate}
+
+在 `Matrix.Rate` 中直接写大写 `T`，例如
+`mu_H20 * theta_H**(T - 20) * S_S/(K_S + S_S) * X_H`；JSON 字符串仍用 `**`
+表示乘方。动力学系数照常定义为 Parameters，但不要把 `T` 定义为 Parameter 或
+Component：它从关联的 DataSet.Environment 按 Tank 和时间读取。`T` 和小写 `t`
+都是保留名称，内置温度符号只使用大写 `T`。
+
+`T` 只允许用于 Rate，不能用于 Parameter 数值、计量系数、Formula、Composition
+或 Ionization。含 `T` 的 Rate 要求使用 `Forward_Euler`。`theta_H` 等动力学系数
+与 Pump 的 `θ` 各自独立；默认值、范围和取值规则见
+[水温 T](../BioModel/Edit.mdx#rate-temperature)。
+
 后端解析完成后会删除临时上传文件，数据库保存解析后的模型而不是原始 Excel。
 解析前会确认上传内容是未加密的有效 `.xlsx` 工作簿，并将解压后总大小限制为
 100 MiB。

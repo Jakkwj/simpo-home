@@ -89,9 +89,14 @@ the missing evidence.
    scenario. Use separate DataSets for different initial conditions, source
    studies, calibration/validation roles, or incompatible time bases. Use
    multiple Tanks only for genuinely parallel/topologically linked reactors.
-   Map reviewed series to `Measured`, `Inflow`, or `Flow`, validate each JSON,
+   Map reviewed series to `Measured`, `Inflow`, `Flow`, or water-temperature
+   `Environment` according to the DataSet reference, validate each JSON,
    audit hydraulic balance, and put the figure/evidence audit in each DataSet
    Description.
+   Keep environmental T out of Component/Parameter and Solution.Variable/
+   Conversion/Constraint. Temperature correction belongs in BioModel Rate;
+   document source reference temperatures, Tank/zone mapping, and any 20°C
+   fallback. Use the BioModel analysis rules for the runtime/static boundary.
 7. **Create one or more Projects.** After the required Drafts are successful,
    verify every ID, name, ownership, state, privacy, and version. Create a
    Project for each BioModel/DataSet pairing or model variant needed for a
@@ -162,11 +167,15 @@ the missing evidence.
    If only a measured scalar is supplied, document the applicable time interval
    and any constant-series assumption; do not invent its temporal coverage.
    Disclose that constrained Measured series are excluded from the weighted
-   fitting objective. Constraint is active in `dynamic`, disabled in
-   `steady_state`, and enabled only in the dynamic phase of
-   `steady_state_then_dynamic`. Missing physical oxygen supply therefore still
-   matters during steady-state initialization; a DO Constraint does not supply
-   it there.
+   fitting objective. Configured Constraints, including DO, are active in
+   `dynamic`, `steady_state`, and both phases of `steady_state_then_dynamic`.
+   The steady-state phase uses averages of the original constraint observations
+   according to `steadyStateInputAverageMethod`, without flow weighting; the
+   dynamic phase uses the time series and each Constraint's interpolation.
+   Use Forward Euler for configured Constraints; Improved Euler does not
+   currently support them.
+   Measured DO alone does not create a Constraint, and its compensating
+   source/sink must not be reported as a measured physical oxygen supply.
    Add a `Retention` record for every DataSet Tank when the Project will use
    steady-state HRT/SRT results. Each named record contains `Tank`, boolean
    `HRT`, and boolean `SRT`; Tank names must match exactly and may not be omitted

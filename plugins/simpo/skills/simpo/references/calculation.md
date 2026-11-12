@@ -41,9 +41,10 @@ every row:
 - For `Flow`, the offset is `Variable.Value - DataSet Flow value at `time=0`;
   add it to every row, clamp negative results to zero, and then convert the
   resulting flow from `m3/d` to `m3/s` for the calculation.
-- Do not apply either offset rule to `Measured`. Measured values remain the
+- Do not apply either offset rule to `Measured` or `Environment`. Measured values remain the
   original observations used for comparison with model outputs; they are not
-  shifted to match a Solution Variable value.
+  shifted to match a Solution Variable value. Environment temperatures are
+  external inputs, not Solution Variables.
 
 Before interpreting a result, record the DataSet first value, the matching
 Solution value, the original Inflow Conversion expression, its resolved value,
@@ -55,18 +56,23 @@ this runtime behavior.
 Use `--execution-mode` with one of three canonical values:
 
 - `dynamic`: run the original time series;
-- `steady_state`: reduce Flow and Inflow to constant inputs and solve only the
+- `steady_state`: reduce Flow, Inflow, and Environment to constant inputs and solve only the
   steady state;
 - `steady_state_then_dynamic`: solve the steady state first, use that state as
   the dynamic initial condition, and then run the original time series.
 
 Component initial states in `dynamic` come from `Solution.Variable.Value`.
-Solution.Constraint is enabled for dynamic phases and disabled for steady-state
-phases. A measured DO Constraint therefore cannot compensate for missing
-physical oxygen supply during steady-state initialization.
+Configured Solution.Constraint boundaries, including DO, are enabled in both
+steady-state and dynamic phases. Steady state uses the original constraint
+observations averaged with the selected steady-state input averaging method,
+without Flow weighting; dynamic phases use the time series with each
+Constraint's interpolation. Measured DO alone does not create a Constraint,
+and constraint compensation is not a measured physical oxygen supply.
+Use Forward Euler with configured Constraints; Improved Euler does not
+currently support them.
 
 Use `--input-interpolation previous|linear` (also accepted as
-`--dynamic-input-interpolation-method`) for dynamic Flow/Inflow values between
+`--dynamic-input-interpolation-method`) for dynamic Flow/Inflow/Environment values between
 samples. `previous` is zero-order hold; `linear` interpolates adjacent samples
 and holds the final value after the last sample.
 
@@ -77,6 +83,30 @@ without time-spacing or Flow weighting. For Inflow concentrations, `previous`
 and `linear` use the matching Flow as a hydraulic weight. State all three
 settings before starting a calculation; do not use the old Boolean
 `--steady-state` interface for new requests.
+
+### Environmental temperature at runtime
+
+Environment's `T` follows `--input-interpolation`: `previous` switches at each
+valid sample, `linear` interpolates that Tank's valid samples, and both hold the
+final value. Other Tanks' sample times do not change its interpolation.
+Temperature event times are preserved under `--resolution-rate` downsampling;
+Forward Euler steps stop at the next input event instead of skipping it.
+
+The steady-state method averages each series' temperature, without Flow
+weighting: previous/linear use the first-to-last valid sample interval and
+arithmetic uses valid samples. A single sample is used directly. Repeat the
+final temperature at an endpoint if the held period should contribute to a time
+average. Saturation and Rate expressions are evaluated at that average, which
+does not generally equal averaging their nonlinear dynamic values. Combined
+mode restores the original temperature series during the dynamic phase.
+
+A missing Tank/zone series uses 20°C, after checking a point settler's parent
+series. Environment is not adjusted by Project Variable offsets or estimation.
+Record temperature provenance, defaults, interpolation/average method, Pump θ,
+and any Rate temperature factors when comparing runs. Temperature-dependent
+aeration and Rates using T require Forward Euler; Improved Euler does not
+support Rate T. No extra temperature CLI flag is needed; update the DataSet or
+BioModel JSON through the normal commands. See their references for schemas.
 
 For a steady-state result, inspect the `Retention` rows as well as Component
 and Target. Per-Tank HRT uses each Tank's through-flow. System HRT divides the
@@ -98,10 +128,11 @@ measurement. Check these common causes using the actual configuration:
    preserve hydraulic balance; internal recycles are not external sludge loss.
 2. **Point Settling factor too small:** inspect the effective SettlingFactor,
    outlet/blanket split, and effluent TSS. The factor directs particulates to
-   the blanket; too small a value can wash them out. `0.999` to `1` is the usual
-   sludge-retaining reference magnitude, with the actual value reviewed against
-   effluent TSS. It is not a mandatory parser range or permission to replace
-   source data silently.
+   the blanket; too small a value can wash them out. When unspecified, the usual
+   sludge-retaining value is around `0.9999`; reported effluent TSS of `0`
+   allows setting it directly to `1`. Preserve a supplied factor and document
+   an adopted value and its basis as an assumption. This is not a mandatory
+   parser range or permission to replace source data silently.
 3. **Bacterial initial Value too low:** read the exact bacterial Component/tank
    rows in `Solution.Variable.Value`. Inflow usually carries no seed bacteria;
    verify its actual Conversion rather than assuming this. Propose increasing

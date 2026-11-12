@@ -35,9 +35,13 @@ or another trusted API response.
 | `--base-url URL` | packaged environment URL | Backend override for this request |
 
 The response includes `detail`, which can contain the DataSet tables such as
-`Unit`, `Target`, `Tank`, `Pump`, `Measured`, `Inflow`, `Flow`, `Connection`,
+`Unit`, `Target`, `Tank`, `Pump`, `Measured`, `Environment`, `Inflow`, `Flow`, `Connection`,
 and `JointGraphJson` when present. It also includes the saved name lists,
 units, parsed-state flag, counts, and version metadata.
+
+`Environment` contains the saved temperature samples, not a resampled series.
+To edit temperature, extract `detail` from this response, retain all tables, and
+follow [the complete DataSet update format](./create-dataset#temperature-input).
 
 The response deliberately excludes the internal `pickle`, `share_url`,
 `shareable`, and `cloneable` fields. These are implementation or sharing
@@ -75,6 +79,7 @@ credentials, not part of the OpenAPI DataSet read contract.
     "Tank": [],
     "Pump": [],
     "Measured": [],
+    "Environment": [],
     "Inflow": [],
     "Flow": [],
     "Connection": []

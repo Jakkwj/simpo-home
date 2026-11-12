@@ -1,0 +1,66 @@
+---
+slug: SIMPO-blog-2026-11-12
+title: "SIMPO 1.7.0 Released: Temperature"
+# authors: [Jun]
+tags: [SIMPO]
+---
+import config from '@generated/docusaurus.config'
+
+<div class="theme-admonition theme-admonition-info admonition_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module alert alert--info">
+  <div class="admonitionContent_node_modules-@docusaurus-theme-classic-lib-theme-Admonition-Layout-styles-module">
+  **SIMPO**, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is an intelligent platform for code-free and shareable wastewater treatment process modelling. For details of this release, see the [SIMPO 1.7.0 Changelog](/changelog/SIMPO%20Client/2026#2026-11-12).
+  </div>
+</div>
+
+---
+
+In wastewater treatment simulations, water temperature affects biochemical reactions and aeration calculations. When temperature changes during operation, how can you bring those changes into your model?
+
+**SIMPO 1.7.0** introduces support for **temperature time series**. Enter water temperature in `DataSet.Environment` to use temperature-dependent dissolved oxygen saturation concentrations in aeration calculations. You can also reference temperature `T` directly in `BioModel.Matrix.Rate` to write the temperature correction expressions your model requires.
+
+## Enter Temperature Time Series in Environment
+
+You can now enter a temperature time series for each tank through `DataSet.Environment`, allowing calculations to account for changes in water temperature over time.
+
+For example, when analysing operating records from a period of gradually declining water temperature, you can use the corresponding temperature data alongside influent, flow, and other inputs, then examine how the model responds to those operating conditions.
+
+**If no temperature is provided, calculations default to 20 °C.** For constant-temperature scenarios, you can also enter a fixed temperature. For instructions, see the [Environment temperature input tutorial](/docs/Tutorials/DataSet/Edit#environment).
+
+---
+
+## Aeration Calculations: Temperature-Dependent Dissolved Oxygen Saturation
+
+When using **Pump** for aeration calculations, the system automatically calculates the dissolved oxygen saturation concentration based on the water temperature in the tank. With a temperature time series, this value updates as the temperature changes.
+
+The dissolved oxygen saturation concentration also replaces the previous fixed value of **9.02 mg/L**. If temperature is left blank and defaults to **20 °C**, the corresponding saturation concentration is **9.092426042885567 mg/L**, or approximately **9.09 mg/L**.
+
+This means that the saturation concentration at the default temperature has changed even if you do not add temperature data. When comparing aeration simulation results before and after the upgrade, account for this change when checking dissolved oxygen results. For the calculation method, see [Temperature Correction for Dissolved Oxygen Saturation](/docs/Tutorials/DataSet/Edit#do-temperature).
+
+---
+
+## Use Temperature T Directly in Rate
+
+In addition to aeration calculations, biochemical reaction rates can now reference water temperature. Enter the built-in symbol **`T`** directly in `BioModel.Matrix.Rate` to read the current tank's temperature in degrees Celsius at the current time, without defining a parameter or component with that name.
+
+For example, for a kinetic parameter with a reference temperature of 20 °C, you can include a temperature correction factor such as `theta_H**(T-20)` in the rate expression, where `theta_H` is a temperature coefficient defined in the model. Choose the expression and coefficient values according to the model you use.
+
+**Kinetic temperature corrections must be written explicitly in Rate.** The system evaluates expressions containing `T`; it does not automatically add temperature corrections to other parameters. For syntax and examples, see [Water Temperature T in Rate](/docs/Tutorials/BioModel/Edit#rate-temperature).
+
+---
+
+## Calculation and Editing Improvements
+
+- **Backend memory optimisation**: optimised memory usage in Granian/consumer processes for smoother operation with large datasets.
+- **Improved exponentiation display**: improved the display of exponentiation in `BioModel.Matrix.Rate`, making rate expressions easier to read and check.
+
+---
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Add us on WeChat with the note "SIMPO" to join the group chat</b></div>
+  <img src={config.customFields.imgUrlSimpoQR} width="25%"/>
+</div>
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+<div><b>Follow our WeChat official account</b></div>
+  <img src={config.customFields.imgUrlWechatAccount} width="25%"/>
+</div>

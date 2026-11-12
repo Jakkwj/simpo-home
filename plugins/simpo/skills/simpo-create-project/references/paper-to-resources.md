@@ -46,6 +46,12 @@ DataSet contains the documented process train, tanks, streams, operating
 conditions, influent/measurement time series, and figure-derived observations
 for one compatible scenario or explicitly linked reactor group. Do not combine
 unrelated figures merely because they use the same symbols.
+Water-temperature observations go to `Environment` by Tank/zone using `T` and
+fixed-Celsius `Unit.T`; kinetic temperature equations use built-in T in
+BioModel.Matrix.Rate. Reference kinetic constants remain Parameters. Follow
+the BioModel analysis and DataSet JSON references, including Pump θ's separate
+oxygen-transfer role. Do not create a temperature Target, Component, Parameter,
+Solution.Variable, Conversion, or Constraint merely to supply T.
 Do not copy kinetic equations into DataSet tables. Do not map aggregate water
 quality to model components without a characterization basis or explicit user
 approval.

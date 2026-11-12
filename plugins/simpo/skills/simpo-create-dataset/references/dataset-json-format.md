@@ -1,11 +1,11 @@
 # DataSet JSON Format
 
-Generate a UTF-8 JSON object containing these eight required tables and only the
-optional graph object:
+Generate a UTF-8 JSON object containing these eight required tables, the optional
+Environment table, and the optional graph object:
 
 ```text
 Unit, Target, Tank, Pump, Measured, Inflow, Flow, Connection
-optional: jointGraphJson
+optional: Environment, jointGraphJson
 ```
 
 Every table is an array of row objects. Column keys are consecutive decimal
@@ -18,8 +18,8 @@ lexicographic order such as `"0"`, `"1"`, `"10"`, `"2"`.
 
 ```json
 [
-  {"0":"Time","1":"Volume","2":"Flow","3":"Area","4":"Height"},
-  {"0":"day","1":"m3","2":"m3/d","3":"m2","4":"m"}
+  {"0":"Time","1":"Volume","2":"Flow","3":"Area","4":"Height","5":"T"},
+  {"0":"day","1":"m3","2":"m3/d","3":"m2","4":"m","5":"℃"}
 ]
 ```
 
@@ -31,6 +31,9 @@ template.
 The current parser fixes Volume to `m3`, Flow to `m3/d`, Area to `m2`, and Height
 to `m`; convert source values to these units and record the conversion. Do not
 change the Flow unit to `m3/h` merely because the time-series axis uses hours.
+`T` is the sixth column, after `Height`, and is fixed to Celsius. Write `℃`;
+the parser also accepts `°C` and `degC`. Older files without this column use
+Celsius. Convert Kelvin/Fahrenheit measurements explicitly before submission.
 
 ### Target
 
@@ -40,7 +43,9 @@ Use the model-target reference and this header:
 {"0":"Symbol","1":"Unit","2":"StandardTarget","3":"Name","4":"Description"}
 ```
 
-Symbols must be unique and must not use reserved node words. `StandardTarget`
+Symbols must be unique and must not use reserved node words. `T` and `t` are
+reserved, including as Target, Tank, Pump, Inflow, and Flow names. Store water
+temperature in `Environment`, not as a Target. `StandardTarget`
 is `""`, `"Dissolved Oxygen"`, or `"Total Suspended Solids"`. At most one Target
 may use each nonempty value; use `""` when neither role applies. Historical
 Oxygen/TSS boolean columns are accepted only while reading old data and must not
@@ -75,11 +80,25 @@ Document any case-specific exception rather than inferring one from the name.
 Use an empty array when no pump exists. Otherwise start with:
 
 ```json
-{"0":"Name","1":"Type","2":"SOTEa","3":"SOTEb","4":"SOTEc"}
+{"0":"Name","1":"Type","2":"SOTEa","3":"SOTEb","4":"SOTEc","5":"θ"}
 ```
 
 An aeration device uses `Type: "Air"`. Its name is used as `From` in an
 aeration Connection row.
+
+The public JSON/XLSX header is `θ`, after `SOTEc`; the internal field is
+`ThetaFactor`. The legacy `ThetaFactor` header is readable, but new output uses
+`θ`. It must be finite and positive, with a finite positive multiplier across
+0–40°C. Missing columns or blank cells default to **1**, preserving the old
+transfer coefficient. The web editor starts new Pumps at **1.024**; this is an
+empirical starting assumption, not an inferred equipment measurement.
+
+Pump aeration multiplies its transfer coefficient by `θ**(T - 20)` using the
+receiving Tank's water temperature. This multiplier applies to the complete
+oxygen driving force, not only its saturation term. Set θ to 1 to disable this
+coefficient correction. Direct Tank `KLa` inputs are not multiplied by Pump θ.
+Kinetic factors such as `theta_H` in BioModel Rate are separate parameters;
+never substitute the Pump coefficient for a biological temperature factor.
 
 ### Connection
 
@@ -93,6 +112,62 @@ expressions use defined Flow names with `+` and `-`. Pump connections describe
 aeration and are excluded from liquid-flow balance.
 
 ## Time-series tables
+
+### Environment
+
+`Environment` is optional and may be `[]`. Currently only the uppercase
+identifier `T` is supported; do not write the old table/header `Property` or
+the identifier `Temperature`. Each block starts with a time column headed
+`Tank` / `Environment`; the other columns contain the Tank name / `T`:
+
+```json
+[
+  {"0":"Tank","1":"AerationTank","2":"Tank","3":"Settler_Blanket"},
+  {"0":"Environment","1":"T","2":"Environment","3":"T"},
+  {"0":0,"1":20,"2":0,"3":18},
+  {"0":1,"1":21,"2":0.5,"3":19}
+]
+```
+
+- Times use `Unit.Time`; values use `Unit.T` and must be finite, non-Boolean
+  numbers from **0 to 40°C**. Every populated series starts with a valid value
+  at time 0. A single value at 0 represents a constant temperature.
+- Every `(Tank, Environment)` pair is unique across all blocks. A subset of
+  Tanks is allowed; each Tank must exist. For a point settler use the physical
+  Tank name or `TankName_Outlet` / `TankName_Blanket`. Each zone first uses its
+  own series, then its parent's, then the **20°C** fallback.
+- Times within each block are finite, nonnegative, strictly increasing and
+  unique. Different blocks may have different times. Blank values are missing
+  samples, not zeros; preserve them and never align by row number alone.
+- Dynamic `previous` switches at each sample; `linear` interpolates each
+  column's valid samples. Both hold the final valid value. Input events are
+  protected from `resolution_rate` downsampling, and Forward Euler steps stop
+  at the next input event instead of skipping it.
+- Steady state uses each series' average temperature with
+  `steady_state_input_average_method`: `previous` time-weights the step signal,
+  `linear` integrates the piecewise-linear signal, and `arithmetic` averages
+  valid samples. There is no Flow weighting. Time averages cover the first-to-last
+  valid sample interval; repeat the last temperature at the desired endpoint
+  if its held duration should count. Combined steady/dynamic mode restores
+  the original series for its dynamic phase.
+
+Temperature is used without a `Solution.Variable.Value` offset. Do not add
+a temperature Variable, Conversion, or measured-state Constraint. A missing
+applicable series uses 20°C, which must be disclosed as a default, not a
+measurement. Saturation and nonlinear Rate factors are evaluated at the sampled
+or averaged temperature; averaging temperatures is not averaging reaction rates.
+
+With Forward Euler, Pump and direct-KLa aeration use the Benson–Krause
+freshwater saturation relation at 1 atm. The fixed 20°C reference and missing-T
+value are **9.092426042885567 mg O₂/L**. Pump aeration also uses its Tank's β.
+The stored 0–40°C saturation table has 4,001 values at 0.01°C spacing: exact
+grid matches use stored values; other temperatures use the equation without
+rounding or table interpolation. Do not substitute a BSM calibration or infer
+air temperature, pressure, salinity, or ORP support from this water-temperature
+input. The equation is documented in the
+[DataSet editing guide](https://www.simpowater.com/docs/Tutorials/DataSet/Edit#do-temperature).
+For biological corrections, use `T` directly in `BioModel.Matrix.Rate` under
+the BioModel analysis rules; these Rates currently require Forward Euler.
 
 ### Measured
 

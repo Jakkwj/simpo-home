@@ -4,10 +4,10 @@
   "target": "cli-public",
   "rules_version": "4",
   "version": "1.0.2",
-  "workflow_sha256": "f2f684172cb0c4bd7be2d6d06704ab65b6c72a1e415a70a2da8a8b9790e758c5",
+  "workflow_sha256": "c657aafc8a7857accd73787b567708cbc2c9b63cff5170914231e0cdb660db99",
   "adapter_sha256": "ca324ef1fefc9cf6a1c0f8d66d8bd1e7ad8c23881082cc838b914c9377bc3497",
   "files": {
-    "SKILL.md": "696a48131178cd04c104756c66ca5e0b613dcb30c7d4c01994b51e7a577d1821",
+    "SKILL.md": "8dcb9456cd759ad30a0de27dc1d748c168fbc28949183df47b425502e229c132",
     "references/balance-analysis.md": "529e95f84230e77dc8f569828cca7b76c9762436b52c9aa66eb6895a58a847fb"
   }
 }

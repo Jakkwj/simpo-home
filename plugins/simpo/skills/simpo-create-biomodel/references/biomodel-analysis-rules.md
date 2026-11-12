@@ -105,6 +105,10 @@ Use this exact header row:
 
 - Parameter symbols start with an ASCII letter and contain only ASCII letters,
   digits, and underscores. Keep them unique and preserve capitalization.
+- `T` and `t` are reserved names, not Parameters or Components. Extract water
+  temperature into DataSet `Environment`, and use the built-in uppercase `T`
+  directly in Rate as described below. Reference temperatures such as `T_ref`
+  remain ordinary Parameters when supported by the source.
 - Use the value reported by the paper for `DefaultValue` when available. A
   missing lower or upper bound may be null. Do not infer bounds without an
   explicit derivation.
@@ -134,8 +138,9 @@ in the same order, followed by `Rate`:
   declared Parameter symbols, numeric literals, and `. + - * / ( )` operators.
   Do not place Component symbols in these cells. Make multiplication explicit
   with `*` and preserve symbol capitalization.
-- `Rate` formulas may use declared Component and Parameter symbols, numeric
-  literals, and `. + - * / ( )` operators. Do not invent identifiers. If a
+- `Rate` formulas may use declared Component and Parameter symbols, built-in
+  water temperature `T`, numeric literals, and `. + - * / ** ( )` operators.
+  `**` is exponentiation, not a display-only superscript. Do not invent identifiers. If a
   rate cannot be recovered, use `-10000` only as an explicitly disclosed
   placeholder and require user approval.
 - Convert stoichiometric decimals to simple exact fractions when the paper's
@@ -153,6 +158,46 @@ in the same order, followed by `Rate`:
   approximation), and never convert fitted estimates or empirical coefficients
   without an independent exact derivation. When the option is off, preserve the
   source notation.
+
+## Environmental temperature in Rate
+
+The built-in uppercase `T` is water temperature in °C for the reaction's Tank
+and current time. It comes from `DataSet.Environment`; it is neither an
+estimated `Solution.Variable` nor a Component with a mass balance. A missing
+Tank series uses **20°C**. Point-settler zones use their own series first,
+then their parent's. The supported input range is **0–40°C**. Follow the
+DataSet Skill's `dataset-json-format` reference for series shape, input event
+protection, interpolation, and averaging.
+
+For a source-supported temperature correction, keep the reference rate constant
+and temperature coefficient as Parameters, and put the temperature-dependent
+factor in `Matrix.Rate`, for example:
+
+```text
+mu_H20 * theta_H**(T - 20) * S_S/(K_S + S_S) * X_H
+```
+
+Here `mu_H20`, `theta_H`, and `K_S` must be declared Parameters, and `S_S` and
+`X_H` declared Components. `theta_H` is independent of the Pump's oxygen-transfer
+`θ`. Do not manufacture a temperature coefficient merely because T is now
+supported. If the source uses Kelvin, translate explicitly as `T + 273.15` in
+the Rate and preserve the source equation and unit conversion in the audit.
+
+Never define a Parameter such as `mu_H = mu_H20 * theta_H**(T - 20)` or move
+that factor to a stoichiometric cell: these fields are static. `T` is allowed
+only in `Matrix.Rate`, not in Parameter values/bounds, stoichiometric
+coefficients, Composition, Formula, or Ionization. Fixed parameter factors may
+be extracted internally; T-dependent factors must remain evaluated at runtime.
+Do not rename a source quantity unrelated to water temperature to T. If an old
+model has a Parameter/Component named `T` or `t`, resolve its meaning and rename
+that symbol and its references before saving; never silently discard its value.
+
+For steady state, SIMPO evaluates the Rate at the Tank's average temperature
+according to `steady_state_input_average_method`; this differs from averaging
+a nonlinear corrected Rate. The dynamic phase restores the original series.
+Rates with T currently require **Forward Euler**; Improved Euler rejects them.
+Keep plain `T` and `**` expressions in JSON/XLSX. The frontend's colored badge
+and closed-cell exponent superscript are presentation only.
 
 ## Substrate depletion and nonnegativity
 

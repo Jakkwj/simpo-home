@@ -45,6 +45,14 @@ The successful response keeps the same DataSet `id` and includes
 Stored Simulation, Sensitivity, Uncertainty, and Estimation results in those
 Projects are marked as requiring recalculation.
 
+## Updating temperature
+
+Add or edit `Environment` in the complete `detail`, using the
+[temperature JSON format](./create-dataset#temperature-input). Preserve `Unit.T`
+and any Pump `θ` values. This operation replaces the DataSet; it does not merge
+a temperature-only fragment. Omitting `Environment` or submitting `[]` removes
+its temperature series, so affected Tanks fall back to 20°C.
+
 ## Identifier renames
 
 No extra mapping file is needed. The update endpoint compares the current Draft

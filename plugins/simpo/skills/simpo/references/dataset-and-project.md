@@ -26,6 +26,54 @@ and only the tables relevant to the user's request. A JSON DataSet contains the
 complete editable detail object returned by `get-dataset`; updates are parsed
 before saving and rebuild Projects that use the Draft.
 
+### Water temperature and Environment
+
+The detail object keeps the eight required tables (`Unit`, `Target`, `Tank`,
+`Pump`, `Measured`, `Inflow`, `Flow`, `Connection`), with optional `Environment`
+and `jointGraphJson`. Use the existing `--json` create/update commands; there is
+no separate temperature command or `--temperature` option. Preserve Environment
+when replacing the full detail, including when editing an unrelated table.
+
+Add the sixth Unit column after Height as `"5":"T"` in the header and
+`"5":"℃"` in its value row. Temperature is fixed to Celsius (`°C` and `degC`
+are also accepted); legacy files without this column default to Celsius.
+Use this as the `Environment` value inside a complete DataSet detail:
+
+```json
+[
+  {"0":"Tank","1":"Tank1","2":"Tank","3":"Clarifier_Blanket"},
+  {"0":"Environment","1":"T","2":"Environment","3":"T"},
+  {"0":0,"1":20,"2":0,"3":18},
+  {"0":1,"1":22,"2":0.5,"3":19}
+]
+```
+
+Tank names must exist; settler zone names are `Name_Outlet` / `Name_Blanket`.
+Each `(Tank, Environment)` pair is unique. Each series' first valid value is at
+time 0, times increase strictly within its block in `Unit.Time`, and values are
+finite numbers from 0 to 40°C. Different blocks may have independent times;
+null values mean no sample. Only uppercase `T` is supported, not `Temperature`
+or the old `Property` table/header. `T` and `t` are reserved user-defined names,
+including Tank names. Omitted or empty Environment uses 20°C; an unspecified
+settler zone first falls back to its parent Tank series.
+
+Pump's public sixth column is `"5":"θ"`, after SOTEc. It maps to internal
+`ThetaFactor` (also accepted as a legacy header). Missing or blank θ defaults
+to **1**; the web editor's new-Pump starting value is **1.024**, not an automatic
+parser default. Use source/test evidence to set it. θ must be finite and
+positive and keep `θ**(T-20)` finite and positive over 0–40°C.
+It corrects Pump transfer using the receiving Tank's water temperature; direct
+KLa inputs do not use Pump θ. Both aeration paths use temperature-dependent
+freshwater saturation at 1 atm, with a 20°C reference of
+9.092426042885567 mg O₂/L. This water-temperature input does not correct the
+air-meter gas-volume basis or implement pressure/ORP inputs.
+
+For the complete schema and scientific rules, use `simpo-create-dataset`'s
+`dataset-json-format` reference when available. See
+[Calculation input methods](calculation.md#environmental-temperature-at-runtime)
+for switching/averaging, and [BioModel Rate T](biomodel.md#water-temperature-in-rate)
+for biological corrections. Do not add T to Project Variables or Conversion.
+
 When Target, Tank, Inflow, or Flow identifiers change, the backend compares the
 stored Draft with the submitted JSON and automatically creates the same
 `changeValueDataSet` dictionary used by the web editor. Tank, Inflow, and Flow
@@ -53,6 +101,7 @@ Draft ID. For release, require `sourceId` to equal the input Draft ID, treat
 | Read all Solution Variable fields | `get-project-variables PROJECT_ID` | `read` |
 | Update one Variable field | `set-project-variable PROJECT_ID VARIABLE VALUE` | `write` |
 | Update a Draft Project | `update-project PROJECT_ID --json DETAIL.json [--async]` | `write` |
+| Update only the description | `update-project-description PROJECT_ID --description-file REPORT.md` | `write` |
 | Copy a published Project to its Draft | `sync-project PROJECT_ID` | `write` |
 | Release a Draft Project | `release-project PROJECT_ID [--privacy Private|Public]` | `write` |
 
@@ -71,6 +120,23 @@ Activator will be generated when needed. Use `update-project` to replace the det
 Updating Project detail rebuilds the Solution cache and removes results that no
 longer match it.
 
+To write an analysis report without invalidating results, use
+`update-project-description PROJECT_ID --description-file REPORT.md`, with a
+UTF-8 file, or `--description TEXT` for short text. Exactly one input option is
+required. The target must be an owned version 0 Draft. This replaces the entire
+description; read and merge existing user content before submitting, and use
+empty text only to clear it intentionally. The command sends only `description` to the Project metadata endpoint;
+it preserves Solution detail, calculation settings, and saved results. Verify
+the returned success, ID, `resultsPreserved: true`, and exact description, then
+read `get-project PROJECT_ID` to confirm the saved description. When reporting
+completed calculations, also verify that their result directory remains
+available. After a timeout, read before retrying.
+
+This command needs a supporting CLI and backend. If either is too old, keep the
+report locally and identify the required update. Never fall back to a complete
+`update-project` request solely to save the description, because that operation
+rebuilds the Solution and invalidates results.
+
 `Constraint` is an optional list of named records with exactly `Tank`,
 `Component`, `Target`, and `Interpolation`. It forces the selected Component in
 the Tank to follow the matching DataSet Measured Target. References must exist,
@@ -83,9 +149,12 @@ map the actual DO Target and Component, propose the Constraint, and document
 the imposed-DO assumption instead of inventing aeration data. A measured scalar
 needs a justified time interval/constant-series assumption. Do not constrain
 all observations by default; other uses need a source/user-defined reason.
-Constraint is enabled in `dynamic`, disabled in `steady_state`, and enabled
-only after the steady-state phase in `steady_state_then_dynamic`; it cannot
-replace missing physical oxygen supply during steady-state initialization.
+Configured Constraints are enabled in `dynamic`, `steady_state`, and both
+phases of `steady_state_then_dynamic`. Steady state uses the original
+observations averaged with `steadyStateInputAverageMethod`, without Flow
+weighting; dynamic simulation uses the time series and the selected
+Constraint interpolation. Measured DO alone does not create a Constraint,
+and its compensating source/sink is not measured aeration.
 
 `Retention` is a named-record list with exactly one row per DataSet Tank and
 fields `Tank`, `HRT`, and `SRT`. HRT/SRT are booleans. HRT selects Tank volumes

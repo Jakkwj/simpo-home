@@ -84,7 +84,12 @@ import config from '@generated/docusaurus.config'
 
 
 在原案例中，曝气计算的方式：
-- 在 `BioModel` 中添加了一行`曝气反应`：$k_{L}a·(S_{O2,sat} - S_{O2})$，其中 $k_{L}a$ 为 $100 h^{-1}$
+- 在 `BioModel` 中添加了一行`曝气反应`：
+    $$
+    k_{L}a·(S_{O2,sat} - S_{O2})
+    $$
+  - $k_{L}a$：$100 h^{-1}$
+  - $S_{O2,sat}：0.28125 mmolO^{2}/l$
 - 在 `Project.Activator` 中的曝气池中激活这个反应，从而达到给系统持续供氧的目的
 
 具体内容：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Chemostat/id/414/did/409">BWTEE 2.3.4 Chemostat</a>。
@@ -120,9 +125,8 @@ import config from '@generated/docusaurus.config'
   style={{ border: 'none', marginBottom: '0.8rem' }}
 ></iframe>
 
-从计算结果中可见，``Weighted NSE``为``0.99994``，轻微的差异来自于：
-- ``S_O2``（``NSE`` 为 `0.99922`，`0.28` vs `0.27995`）
-- ``X_NO2``（``NSE`` 为 `0.99998`，`0.05415` vs `0.05415`）
+从计算结果中可见，``Weighted NSE``为``0.99999``，轻微的差异来自于：
+- ``S_O2``（``NSE`` 为 `0.99987`，`0.28` vs `0.27997`）
 - ``X_DHO``（``NSE`` 为 `0.99999`，`1.232` vs `1.23248`）
 - 其他所有的 ``NSE`` 均为 `1.0`
 
@@ -141,89 +145,111 @@ import config from '@generated/docusaurus.config'
 
 
 
-- 在标准条件下，即 20℃，1 个 atm 下空气的密度约为 1.204 kg/m³，质量占比约23.15%，即 `1 m³` 空气中大约含有 $1.204 * 23.15 = 0.279 kgO_2$。
-- 暂不考虑温度和气压变化的影响，则标准传氧速率（Standard Oxygen Transfer Rate，SOTR）：
-
+- 在标准条件下，即 20℃，1 个 atm 下空气的密度约为 1.204 kg/m³，质量占比约23.15%，即 1 m³ 空气中大约含有 $1.204 * 0.2315 ≈ 0.279 kgO_2$。
+{/* - 暂不考虑温度和气压变化的影响，则标准传氧速率（Standard Oxygen Transfer Rate，SOTR）： */}
+- 则标准传氧速率（Standard Oxygen Transfer Rate，SOTR）：
   $$
-    SOTR (mgO2/d) = 0.279 (kgO_2/m³) * Qair (m³/d) * STOE (\%) * 10^{6}
+    SOTR (mgO2/d) = 0.279 (kgO_2/m³) * Qair (m³/d) * SOTE * 10^{6}
   $$
 - 其中：
-  - $Qair$为空气流量，m³/d
-  - SOTE为标准传氧效率（Standard Oxygen Transfer Efficiency，SOTE），%
+  - $Qair$为折算到20℃、1 atm 的干空气流量，m³/d
+  - SOTE 为标准传氧效率，公式中使用无量纲比值，例如 0.141 表示 14.1%；`Fit SOTE Curve` 的 `SOTE (%)` 输入格则填写 14.1
 
 ##### FOTR
 
 - 实际反应器中通常是非标准温度的污水，所以要对 $SOTR$ 进行修正得到实际传氧速率（Field Oxygen Transfer Rate，FOTR）：
 
   $$
-    FOTR = dS_{O2}/dt = SOTR * θ^{(T - 20)} * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std} / V
+    FOTR = dS_{O2}/dt * 1000 * V = SOTR * θ^{(T - 20)} * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std}
   $$
 - 其中：
-  - θ 为温度影响因子
-  - T 为温度，℃
-  - $S_{O2,sat,std}$ 为标准条件下的清水中饱和溶解氧浓度，约 9.08~9.17 mg/L，工程上常取 9.08 mg/L
-  - $S_{O2,sat}$ 为饱和溶解氧浓度，目前（2026.10.04）固定取 9.02 mg/L
+  - θ 为水温影响因子常取 1.024，实际应与曝气设备和试验数据一致；
+  - T 为水温，℃
+  - $S_{O2,sat,std}$ 为标准条件（淡水、20 ℃、1 atm）下的清水饱和溶解氧浓度，**SIMPO** 固定采用数值表中 20 ℃对应的值，约 9.09 mg/L，完整精度及公式见 [DataSet 编辑](../../Tutorials/DataSet/Edit.mdx#do-temperature)
+  - $S_{O2,sat}$ 为各 Tank 水温下的清水饱和溶解氧浓度；未提供温度序列时默认 20 ℃，使用与标准参考浓度相同的值，温度修正乘数为 1
   - α 氧传递修正系数（Oxygen Transfer Ratio）：$k_{L}a(Wastewater)/k_{L}a(Clean Water)$
   - β 氧溶解修正系数（Oxygen Solubility Ratio）：$S_{O2,sat}(Wastewater)/S_{O2,sat}(Clean Water)$
   - V 为反应器体积，m³
 
-##### FOTE
+##### SOTE 曲线拟合
 
-- 风机厂家会提供 `SOTE-流量` 标准条件曲线，同样需要修正为实际传氧效率（Field Oxygen Transfer Efficiency，FOTE）。在 **SIMPO**中，可以根据 `SOTE-流量` 标准条件曲线拟合下式，求解 a，b，c（这个公式保证了进气流量与 SOTE 是非线性衰减递增）。
+- 风机厂家会提供 `SOTE-流量` 标准条件曲线，同样需要修正为实际传氧效率（Field Oxygen Transfer Efficiency，FOTE）。在 **SIMPO**中，可以根据 `SOTE-流量` 标准条件曲线拟合下式，求解 a，b，c（这个公式保证了当 b>0 时，SOTE 随单头通气量增加而下降；当 0\<b\<1 时，在其他条件固定下，总传氧量仍随通气量增加，但增幅逐渐减小）。
   $$
-    FOTE = a * (Q_d)^{-b} * H^c = a * (Qair / d / 24)^{-b} * H^c
+    SOTE = a * (Q_d)^{-b} * H^c = a * (Qair / 24 / N)^{-b} * H^c
   $$
 - 其中：
-  - $Q_d$ 为单头通气量，m³/h/个曝气头
-  - d 为曝气头数量
+  - $Q_d$ 为单头通气量，m³/h/个曝气头（注意此处的时间单位为**小时**。$Qair$ 使用 m³/d，因此 $Q_d=Qair/24/N$。计算端内部 Flow 使用 m³/s，等价换算为 $Q_d=3600Qair_{s}/N$）
+  - N 为曝气头数量（`Diffuser Number`）
   - H 为曝气头安装深度，m
 
+##### 饱和溶解氧的水温修正 {#do-temperature}
+
+水温修正公式、温度输入及取值规则见 [DataSet 编辑：饱和溶解氧的水温修正](../../Tutorials/DataSet/Edit.mdx#do-temperature)。
+
 ##### 求解方程
-- 在暂不考虑温度和气压变化的影响时，合并上述3式可得:
+{/* - 在暂不考虑温度和气压变化的影响时，合并上述3式可得: */}
+- 合并上述3式可得（$279/S_{O2,sat,std}\approx30.68488$，计算使用完整精度）:
+
     $$
-      dS_{O2}/dt = k_{L}a * (S_{O2,sat} - S_{O2}) = 279 * Qair * a * (Qair / d / 24)^{-b} * H^c * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std} / V
+      dS_{O2}/dt = 30.68488 * Qair * a * (Qair / 24 / N)^{-b} * H^c * θ^{(T - 20)} * α * (β * S_{O2,sat} - S_{O2}) / V
     $$
-- 如果 β 为 1，则：
+- 如果曝气方程按 $k_{L}a * (S_{O2,sat} - S_{O2})$ 算（本案例，BSM1，BSM2都是按这个方式），这代表 β 为 1，则：
     $$
-      k_{L}a = 279 * Qair * a * (Qair / d / 24)^{-b} * H^c * α / S_{O2,sat,std} / V
+      k_{L}a = 30.68488 * Qair * a * (Qair / 24 / N)^{-b} * H^c * θ^{(T - 20)} * α / V
     $$
-- 注意，$dS_{O2}/dt$ 的单位为 **$mgO_2/L/d$**，计算时 $S_{O2,sat}$ 固定取 9.02 mg/L（2026.10.04）。
+- 如果 β 为 1， 且 α 为 1，a 为 1，b 为 0，c 为 0，则可进一步化简得到 <b>$k_{L}a$ 和 $Qair$ 的换算关系</b>：
+    $$
+      k_{L}a = θ^{(T - 20)} * 30.68488 / V * Qair
+    $$
+- 上式 $dS_{O2}/dt$ 的单位为 **$mgO_2/L/d$**，$k_{L}a$ 的单位为 $d^{-1}$；换为 $h^{-1}$ 只需除以 24。
 :::
 
-在这个案例中，为了保持 $k_{L}a$ 为 $100 h^{-1}$，我们选取了以下这组参数（FOTE为14.1%）：
+本案例以实际水温下、包含 α 和 θ 修正的 $k_{L}a=100 h^{-1}=2400 d^{-1}$ 为目标，采用当前参数反推所需风量：
 
+ - N（`Tank` 参数 `Diffuser Number`）：1
+ - H（`Tank` 参数 `Diffuser Depth`）：0.5 m
+ - α（`Tank` 参数 `Alpha Factor`）：0.55
+ - β（`Tank` 参数 `Beta Factor`）：1
+ - a（`Pump` 参数 `SOTEa`）：0.3259
+ - b（`Pump` 参数 `SOTEb`）：0.3142
+ - c（`Pump` 参数 `SOTEc`）：0.2567
+ - θ（`Pump` 温度校准系数）：1.024
+ - V：0.1 m³
+ - $S_{O2,sat,std}$：9.092426042885567 mg/L
+ - T（`Environment` 中该 Tank 的温度）：20.51 ℃，$\theta^{T-20}=1.024^{0.51}\approx1.01216887$
 
+按 [DataSet 编辑中的风量反推式](../../Tutorials/DataSet/Edit.mdx#airflow-from-kla) 代入：
+$$
+Qair=\left[\frac{2400\times9.092426042885567\times0.1}
+{279\times0.55\times0.3259\times0.5^{0.2567}\times1.024^{20.51-20}\times(24\times1)^{0.3142}}\right]^{1/(1-0.3142)}
+\approx73.08141768\;m^3/d
+$$
+
+因此，`DataSet.Flow` 中的进气风量设为 **73.0814 m³/d**（折算到 20 ℃、1 atm 的干空气流量）。
+
+此时单头通气量 $Q_d=Qair/(24N)\approx3.04506$ m³/h/个曝气头，SOTE 约为 0.192249（19.2249%）。将风量代回曝气公式：
+$$
+ k_{L}a = \frac{279\times73.0814\times0.3259\times(73.0814/24/1)^{-0.3142}\times0.5^{0.2567}\times1.024^{20.51-20}\times0.55}{9.092426042885567\times0.1}
+ \approx2400\;d^{-1}=100\;h^{-1}
+$$
+
+该风量按给定的 SOTE 拟合曲线反推，实际使用时应确认其位于曲线的有效流量范围内。这里由 `DataSet.Pump` 提供曝气，`BioModel` 中的曝气反应应在该 Tank 中关闭，避免重复计入。
+
+本案例用 mmol O₂/L 表示浓度。浓度由 mg O₂/L 除以 32 转换，$k_{L}a$ 不除以 32：
+$$
+\frac{dC_{mmol}}{dt}=k_{L}a\left(\frac{S_{O2,sat}}{32}-C_{mmol}\right)
+$$
+按 [饱和溶解氧的水温修正](../../Tutorials/DataSet/Edit.mdx#do-temperature)，20.51 ℃时 $S_{O2,sat}\approx9.00115704$ mg O₂/L，即约 0.28128616 mmol O₂/L。浓度与浓度变化率同步换算，因此不会改变只有时间倒数单位的 $k_{L}a$。
+
+下方为原案例的配置截图；参数以本文上述数值为准。在线案例及保存结果尚未按当前参数和修正后的计算重新运行。
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src="https://i.postimg.cc/qqL72VGG/tank-para.png" width="100%"/>
   </div>
 
-
   <div align="center" style={{marginTop: "0vh"}}>
     <img src="https://i.postimg.cc/jdw9WQdw/pump-para.png" width="100%"/>
   </div>
-
-
- - Qair：3215 m³/d
- - d（`Tank` 参数 `Diffuser Number`）：1
- - H（`Tank` 参数 `Diffuser Depth`）：0.5 m
- - α（`Tank` 参数 `Alpha Factor`）：0.55
- - β（`Tank` 参数 `Beta Factor`）：1
- - a（`Pump` 参数 `SOTEa`）：0.3259
- - b（`Pump` 参数 `SOTEb`）：0.1342
- - c（`Pump` 参数 `SOTEc`）：0.2567
- - V：0.1 m³
- - $S_{O2,sat,std}$：9.08 mg/L
-
-则：
-$$
- k_{L}a = 279 * 3215 * 0.3259 * (3215 / 1 / 24) ^ {-0.1342} * 0.5 ^ {0.2567} * 0.55 / 9.08 / 0.1 = 76812.63 d^{-1}
-$$
-
-注意到案例中的氧气的单位为 mmol/L，则:
-$$
- k_{L}a = 76812.63 / 32 / 24 ≈ 100 h^{-1}
-$$
 
 
 具体内容：<a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Chemostat/id/983/did/409">BWTEE 2.3.4 Chemostat</a>。
@@ -244,13 +270,21 @@ $$
   style={{ border: 'none', marginBottom: '0.8rem' }}
 ></iframe>
 
-从计算结果中可见，``Weighted NSE``为``0.99232``，轻微的差异来自于：
+{/* 以下仅列出原案例保存的历史结果，尚未按本次单位修正重新运行，不能用作修正后算法的验证。原 ``Weighted NSE`` 为 ``0.99232``：
 - ``S_O2``（``NSE`` 为 `0.90021`，`0.28` vs `0.27877`）
 - ``X_NO2``（``NSE`` 为 `0.99999`，`0.05415` vs `0.05416`）
 - ``X_DHO``（``NSE`` 为 `0.99999`，`1.232` vs `1.23246`）
 - 其他所有的 ``NSE`` 均为 `1.0`
 
-这意味着，这种方式的模拟结果也与在 AQUASIM 中的结果几乎相同。
+修正后的曝气计算与 AQUASIM 的一致性需要重新运行后比较。 */}
+
+
+从计算结果中可见，``Weighted NSE``为``1``，轻微的差异来自于：
+- ``S_O2``（``NSE`` 为 `0.99999`，`0.28` vs `0.27997`）
+- ``X_DHO``（``NSE`` 为 `0.99999`，`1.232` vs `1.23248`）
+- 其他所有的 ``NSE`` 均为 `1.0`
+
+这意味着 **SIMPO** 的模拟结果与 AQUASIM 中的结果几乎相同。
 
 
 ### 总结
@@ -259,7 +293,7 @@ $$
 
 **1. 在实验室中进行简单模拟：**
 
-    - `DataSet.Tank` 使用默认参数（即 d 为 0，H 为 0，α 为 1，β 为 1）即可；
+    - `DataSet.Tank` 使用默认参数（即 N 为 0，H 为 0，α 为 1，β 为 1）即可；
     - 在 `BioModel` 中添加了一行`曝气反应`：$k_{L}a·(S_{O2,sat} - S_{O2})$；
     - 在 `Project.Activator` 中的曝气池中激活这个反应。
 
@@ -268,7 +302,7 @@ $$
 
     - 根据厂家提供的 `SOTE-流量` 标准条件曲线，在 **SIMPO** 直接拟合求解参数 a，b，c；
     - 将 `DataSet.Pump` 连接到 `DataSet.Tank`，设置进气风量 Qair；
-    - 根据实际情况设置 `DataSet.Tank` 的参数：d，H，α，β。
+    - 根据实际情况设置 `DataSet.Tank` 的参数：N，H，α，β，以及 `DataSet.Pump` 的 θ 和 `DataSet.Environment` 的 T。
 
 
 
@@ -279,7 +313,7 @@ $$
 
 #### ``S_O2``
 - **SIMPO** 会动态调整时间间隔，以提高计算速度并确保准确性。如果模拟变得越来越稳定，时间间隔将变得越来越大。
-本例中 ``S_O2`` 的体积质量传递系数（``k_L_a``）为 ``100 mmolO2/h``，反应速率表达式为 ``k_L_a*(S_O2_sat-S_O2)``，这使得曝气过程的速率不会降低，并且如果时间间隔变大，速率可能会非常大，这就是造成差异的原因。
+本例中 ``S_O2`` 的体积质量传递系数（``k_L_a``）为 ``100 h^-1``，反应速率表达式为 ``k_L_a*(S_O2_sat-S_O2)``，这使得曝气过程的速率不会降低，并且如果时间间隔变大，速率可能会非常大，这就是造成差异的原因。
 - 为了获得稳定的 ``S_O2`` 结果，我们应该将放大速率降低到``1.0001``，并将步长容差降低到``0.0001``。
 - AQUASIM 的稳定值（最后几个点）为``0.28``，而 **SIMPO** 的值约为``0.2799``。
 

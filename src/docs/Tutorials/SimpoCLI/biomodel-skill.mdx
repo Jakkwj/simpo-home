@@ -53,6 +53,16 @@ Both modes record sources, supported derivations, units, assumptions, unresolved
 items, and Formula/Composition/Ionization decisions in the BioModel Description. This
 is an auditable summary, not a transcript of the AI conversation.
 
+## Temperature-dependent kinetics
+
+The Skill keeps temperature-dependent factors in `Matrix.Rate`, using built-in
+uppercase `T` from the linked DataSet.Environment. It does not define a fixed
+Parameter or Component named `T` or move a temperature-dependent factor into
+the stoichiometric matrix. Coefficients such as `theta_H` remain ordinary
+Parameters, with their source and reference temperature recorded. They are
+independent of Pump `θ`. See [Rate temperature support](../BioModel/Edit.mdx#rate-temperature),
+including the Forward Euler requirement and missing-temperature default.
+
 ## Default analysis rules
 
 Composition is handled cell by cell. Every coefficient supported by the paper or

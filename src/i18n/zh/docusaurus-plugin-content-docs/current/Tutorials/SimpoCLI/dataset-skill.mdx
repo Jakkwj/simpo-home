@@ -20,7 +20,7 @@ SIMPO DataSet Skill 既可以根据工程条件设计污水处理 DataSet，也�
 - 从论文、PDF、报告或补充材料中提取已有处理流程、运行条件、进水数据、监测值和
   时间序列，同时保留证据位置和未解决缺口；
 - 把已有工艺说明或设计计算转换为 SIMPO 的 `Unit`、`Target`、`Tank`、`Pump`、
-  `Measured`、`Inflow`、`Flow` 和 `Connection` 表；
+  `Measured`、可选的 `Environment`、`Inflow`、`Flow` 和 `Connection` 表；
 - 创建 DataSet 前，检查流量守恒和跨表名称引用。
 
 对于已经准备好 JSON 的普通 DataSet create/read/update/sync/release 操作，请使用通用
@@ -56,6 +56,14 @@ Skill 会先判断采用设计路径、资料提取路径，还是两者结合�
 创建前，Skill 会在当前会话中检查 DataSet 的结构、名称、单位、跨表引用、证据映射和水力平衡。执行 `simpo create-dataset --json` 时，由与当前后端版本匹配的 SIMPO 解析器做最终校验；不需要额外安装 Python 校验器。只有 PDF 页面仍需要渲染时才需要 Poppler。随论文流程提供的渲染器需要 Python 3 和 `pdftoppm`，但用户也可以直接提供图片，或使用等效的渲染工具。
 
 进入 PDF 渲染步骤前，会检查 `python3 --version` 和 `pdftoppm -v`。缺少工具只会暂停图片渲染路径，不会阻止工程输入、文字/表格、用户提供的图片或已经导出的数字化 CSV/JSON。提供明确页码范围时不需要 `pdfinfo`。
+
+## 温度数据
+
+资料中的 Tank 水温写入 `Environment`，标识为 `T`，`Unit.T` 固定使用摄氏度；
+不要为水温新建 Measured Target 或名为 `T` 的 Tank。Skill 会检查来源单位、
+Tank/分区映射、时间零点的有效采样及 0–40 ℃ 范围，并记录未提供序列时采用的
+20 ℃ 默认值。Pump 的 `θ` 控制传氧，动力学温度因子则写入 BioModel Rate。
+具体见 [JSON 格式和默认规则](./create-dataset#temperature-input)。
 
 ## 图片数据与 Description
 

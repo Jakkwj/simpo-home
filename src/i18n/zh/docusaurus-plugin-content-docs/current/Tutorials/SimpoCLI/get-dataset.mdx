@@ -33,9 +33,12 @@ simpo get-dataset DATASET_ID [OPTIONS]
 | `--api-token TOKEN` | 已配置 Token | 临时覆盖完整 Token |
 | `--base-url URL` | 安装包环境对应的地址 | 仅覆盖本次请求的后端地址 |
 
-响应中的 `detail` 可以包含 `Unit`、`Target`、`Tank`、`Pump`、`Measured`、
+响应中的 `detail` 可以包含 `Unit`、`Target`、`Tank`、`Pump`、`Measured`、`Environment`、
 `Inflow`、`Flow`、`Connection` 以及可选的 `JointGraphJson` 等 DataSet 表格。
 同时返回已保存的名称列表、单位、解析状态、数量和版本元数据。
+
+`Environment` 返回保存的温度采样值，不是重新插值后的序列。修改温度时，应从响应
+提取 `detail`、保留所有表格，并按[完整 DataSet 格式](./create-dataset#temperature-input)提交。
 
 响应明确排除内部 `pickle`、`share_url`、`shareable` 和 `cloneable` 字段。这些
 字段属于实现细节或分享凭据，不属于 OpenAPI DataSet 读取契约。
@@ -72,6 +75,7 @@ simpo get-dataset DATASET_ID [OPTIONS]
     "Tank": [],
     "Pump": [],
     "Measured": [],
+    "Environment": [],
     "Inflow": [],
     "Flow": [],
     "Connection": []

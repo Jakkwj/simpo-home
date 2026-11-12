@@ -88,7 +88,7 @@ simpo calculate 706 --no-launch
 | `--auto-plot / --no-auto-plot` | 关闭 | 是否实时绘制本地图表 |
 | `--force-recalculate / --no-force-recalculate` | 关闭 | 强制重新计算，不允许复用相同设置的结果 |
 | `--execution-mode TEXT` | `dynamic` | `dynamic`、`steady_state` 或 `steady_state_then_dynamic` |
-| `--input-interpolation TEXT` | `previous` | 动态 Flow/Inflow 插值：`previous` 或 `linear`；别名为 `--dynamic-input-interpolation-method` |
+| `--input-interpolation TEXT` | `previous` | 动态 Flow/Inflow/Environment 插值：`previous` 或 `linear`；别名为 `--dynamic-input-interpolation-method` |
 | `--steady-state-input-average-method TEXT` | `previous` | 稳态输入归并：`previous`、`linear` 或 `arithmetic` |
 | `--platform TEXT` | 安装包对应平台 | `linux`、`windows` 或 `mac`；通常不传 |
 
@@ -97,11 +97,11 @@ simpo calculate 706 --no-launch
 | 模式 | 行为 |
 | --- | --- |
 | `dynamic` | 只运行原始动态时间序列。 |
-| `steady_state` | 将 Flow 和 Inflow 时间序列归并为常数，只求稳态。 |
+| `steady_state` | 将 Flow、Inflow 和 Environment 时间序列归并为常数，只求稳态。 |
 | `steady_state_then_dynamic` | 先求稳态并把结果作为初始状态，再继续运行原始动态时间序列。 |
 
 `--input-interpolation` 控制动态计算中求解器时间点位于两个采样点之间时如何取得
-`Flow` 和 `Inflow`。`previous` 为零阶保持；`linear` 在相邻采样点之间线性插值，
+`Flow`、`Inflow` 和 `Environment`。`previous` 为零阶保持；`linear` 在相邻采样点之间线性插值，
 最后一个采样点之后保持末值。纯稳态计算会忽略这个选项。
 
 `--steady-state-input-average-method` 控制 `steady_state` 以及
@@ -109,6 +109,22 @@ simpo calculate 706 --no-launch
 信号计算时长加权平均，`linear` 对线性插值信号积分，`arithmetic` 不考虑时间间距或
 Flow 权重，直接对有效行求算术平均。对于 Inflow 浓度，`previous` 和 `linear` 会以
 匹配的 Flow 做水力加权。纯动态计算会忽略这个选项。
+
+### 温度输入 {#temperature-input}
+
+温度来自关联的 [DataSet.Environment](./create-dataset#temperature-input)，无需温度
+flag 或 Solution Variable。各 Tank 使用自己的摄氏水温 `T`；没有可用序列时默认
+20 ℃，支持范围为 0–40 ℃。含温度的 Rate 和曝气计算使用 `Forward_Euler`。
+
+动态阶段，`previous` 在每个输入时间点切换温度，`linear` 在该列有效采样点之间
+插值。积分步会在输入事件处停下，再按新值计算 Rate 和传氧项；
+`--resolution-rate` 降低输出分辨率时，Flow、Inflow 和温度输入事件仍受到保护。
+
+稳态阶段按所选方法对各温度序列求平均，不做 Flow 加权，再用平均温度计算 Rate
+和饱和溶解氧；这不等于非线性修正后的速率平均值。时间平均覆盖首个至末个有效
+采样点；若要计入末值保持阶段，应在所需终点重复填写相同温度。
+`steady_state_then_dynamic` 会在动态阶段恢复原始温度序列。完整取值及分区回退规则
+见 [Environment 文档](../DataSet/Edit.mdx#environment)。
 
 ## 分析专用参数
 

@@ -40,6 +40,13 @@ DataSet ID 保持不变；返回的 `affectedProjectCount` 是本次重建的关
 `--api-token TOKEN` 和 `--base-url URL`。异步路径与同步路径使用同一个后端解析、
 自动 `changeValueDataSet` 映射和关联 Project 重建逻辑。
 
+## 更新温度
+
+在完整 `detail` 中添加或修改 `Environment`，使用
+[温度 JSON 格式](./create-dataset#temperature-input)，并保留 `Unit.T` 和已有 Pump `θ`。
+该命令替换整个 DataSet，不会把只含温度的片段合并进旧表。省略 `Environment` 或提交
+`[]` 会移除其温度序列，相应 Tank 将回退到 20 ℃。
+
 ## 标识改名
 
 不需要额外提供映射文件。后端会自动生成 `changeValueDataSet`（`最终名称 -> 原始名称`），

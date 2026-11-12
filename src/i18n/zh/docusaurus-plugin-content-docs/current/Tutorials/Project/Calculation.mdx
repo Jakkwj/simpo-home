@@ -100,6 +100,19 @@ DataSet 的公开 Flow 单位是 `m³/d`。SIMPO 在内部先把 Flow 转成 `m�
 时再转回 `m³/d`。因此 `Flow` sheet 应与 DataSet 的单位一致，而不是显示内部的
 `m³/s` 值。
 
+### Environment 温度
+
+`steady_state_input_average_method` 也用于求各 Tank 的 `Environment.T` 平均温度，
+不做 Flow 加权，也不进行 Solution Variable 初值偏移。`previous` 和 `linear`
+按该列首个至末个有效采样点求时间平均，`arithmetic` 对有效采样值求算术平均。
+若要计入末值保持阶段，应在所需终点重复填写相同温度。
+
+求解器再用平均温度计算饱和溶解氧、Pump 温度修正和含 `T` 的 Rate。对于非线性
+表达式，这不等于动态速率的平均值。没有可用序列时使用 20 ℃；
+`steady_state_then_dynamic` 会在动态阶段恢复原始温度序列。分区回退及支持范围见
+[Environment](../DataSet/Edit.mdx#environment)，Rate 语法见
+[水温 T](../BioModel/Edit.mdx#rate-temperature)。
+
 ### Measured 的稳态表示
 
 `Measured` 是出水观测样本，不是进水边界条件，因此始终使用有效观测值的
@@ -333,7 +346,7 @@ $$
 ## 动态输入插值方法
 
 `dynamic_input_interpolation_method` 用于决定动态计算中，两个输入事件时间点
-之间如何计算 `Flow` 和 `Inflow` 边界值。它不会把整段时间序列压缩成稳态输入值：
+之间如何计算 `Flow`、`Inflow` 和 `Environment` 输入值。它不会把整段时间序列压缩成稳态输入值：
 
 | 方法 | 动态边界信号 |
 | --- | --- |
@@ -342,8 +355,13 @@ $$
 
 例如，某进水浓度在 `0 h` 时为 `10 mg/L`，在 `2 h` 时为 `20 mg/L`：选择
 `previous` 时，整个区间使用 `10 mg/L`；选择 `linear` 时，`1 h` 时使用
-`15 mg/L`。动态 `Flow` 也使用相同的插值方法。若数据表示阶梯式/事件式输入，通常
+`15 mg/L`。动态 `Flow` 和各 Tank 的温度也使用相同的插值方法。若数据表示阶梯式/事件式输入，通常
 选择 `previous`；若测量值代表连续变化的信号，可选择 `linear`。
+
+温度按各列自己的有效采样点插值，其他 Tank 的时间点不会改变该列趋势。积分步会
+在 Flow、Inflow 和温度输入事件处停下，再按更新值继续计算；即使结果输出较稀疏，
+这些输入事件也受到 `resolution_rate` 降采样保护。含温度的 Rate 和曝气计算当前
+使用 Forward Euler。
 
 Dashboard 将此参数与 `steady_state_input_average_method` 分开设置：
 

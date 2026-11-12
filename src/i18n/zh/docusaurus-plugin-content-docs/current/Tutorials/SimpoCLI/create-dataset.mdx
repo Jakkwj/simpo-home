@@ -16,6 +16,7 @@ sidebar_label: create-dataset
 - JSON 必须包含 `Unit`、`Target`、`Tank`、`Pump`、`Measured`、`Inflow`、
   `Flow` 和 `Connection` 数组。
 - `Unit`、`Target`、`Tank`、`Connection` 必须包含表头；其余四张表可以是空数组。
+- `Environment` 可选；没有温度采样时可省略或写为 `[]`。
 
 ## 命令格式
 
@@ -36,6 +37,59 @@ simpo create-dataset InfluentData --json ./DataSet.json --async
 `--idempotency-key` 进入持久化 Operation 流程。通用请求选项包括 `--api-token TOKEN`
 和 `--base-url URL`。不等待时 stdout 返回 `operationId`，使用
 [`wait-operation`](./wait-operation) 查询最终 DataSet。
+
+## 水温输入 {#temperature-input}
+
+在 `Environment` 中填写各 Tank 的水温时间序列。JSON 表格与
+[Environment XLSX 工作表](../DataSet/Edit.mdx#environment)使用相同的双行表头：
+第一行是 Tank 名称，第二行是 `T`，之后为时间与温度。例如：
+
+```json
+{
+  "Environment": [
+    {"0": "Tank", "1": "Tank1", "2": "Tank", "3": "Tank2"},
+    {"0": "Environment", "1": "T", "2": "Environment", "3": "T"},
+    {"0": 0, "1": 20, "2": 0, "3": 18},
+    {"0": 1, "1": 25, "2": 0.5, "3": 19}
+  ]
+}
+```
+
+这只是片段：应合并到完整的 DataSet `detail` 对象中，保留八张必填表。
+`Tank1` 和 `Tank2` 必须已在 `Tank` 中定义。时间使用 `Unit.Time`；各序列从时间 `0`
+开始，时间须为有限、非负数且严格递增，温度须为 **0–40 ℃** 的有限数值。
+只有一个时间 `0` 的值表示恒温；每个 `(Tank, Environment)` 组合必须唯一。
+点沉淀池分区使用 `Clarifier_Outlet` 和 `Clarifier_Blanket`，优先读取分区序列，
+其次回退到物理 Tank 的序列；都没有时使用 **20 ℃**。
+表名只使用 `Environment`，温度标识只使用 `T`。
+
+`Unit` 第六列填写固定温度单位：
+
+```json
+{
+  "Unit": [
+    {"0": "Time", "1": "Volume", "2": "Flow", "3": "Area", "4": "Height", "5": "T"},
+    {"0": "day", "1": "m3", "2": "m3/d", "3": "m2", "4": "m", "5": "℃"}
+  ]
+}
+```
+
+省略 `Unit.T` 时默认使用摄氏度。Pump 曝气的第六列为传氧温度系数 `θ`：
+
+```json
+{
+  "Pump": [
+    {"0": "Name", "1": "Type", "2": "SOTEa", "3": "SOTEb", "4": "SOTEc", "5": "θ"},
+    {"0": "Pump1", "1": "Air", "2": 0.3259, "3": 0.3142, "4": 0.2567, "5": 1.024}
+  ]
+}
+```
+
+请填写适用于实际 Pump 的系数；上述数值仅用于说明格式。Dashboard 新建 Pump 默认
+填写 `1.024`；`θ` 缺失或留空时使用 `1`，保持未修正的传氧系数，但不会关闭饱和溶解氧的温度修正；
+直接填写的 Tank `KLa` 不使用 Pump 的 `θ`。公式见
+[DataSet 温度校准](../DataSet/Edit.mdx#do-temperature)，计算取值规则见
+[`calculate` 的温度输入说明](./calculate#temperature-input)。
 
 ## 返回结果
 
@@ -58,13 +112,14 @@ DataSet 示例；使用 JSON 新建时，会返回提交并规范化后的实际
   "flowUnit": "m3/d",
   "detail": {
     "Unit": [
-      {"0": "Time", "1": "Volume", "2": "Flow", "3": "Area", "4": "Height"},
-      {"0": "day", "1": "m3", "2": "m3/d", "3": "m2", "4": "m"}
+      {"0": "Time", "1": "Volume", "2": "Flow", "3": "Area", "4": "Height", "5": "T"},
+      {"0": "day", "1": "m3", "2": "m3/d", "3": "m2", "4": "m", "5": "℃"}
     ],
     "Target": [{"0": "Symbol", "1": "Unit", "2": "StandardTarget", "3": "Name", "4": "Description"}],
     "Tank": [{"0": "Name", "1": "Type", "2": "BioCalculated", "3": "Volume", "4": "ConstantVolume", "5": "SettlingFactor", "6": "DiffuserNumber", "7": "DiffuserDepth", "8": "AlphaFactor", "9": "BetaFactor"}],
     "Pump": [],
     "Measured": [],
+    "Environment": [],
     "Inflow": [],
     "Flow": [],
     "Connection": [{"0": "From", "1": "Flow", "2": "Into"}]

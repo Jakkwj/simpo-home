@@ -109,6 +109,22 @@ that internal series. Before writing the steady-state result workbook, Flow is
 converted back to `m³/d`. The `Flow` sheet therefore uses the same unit as the
 DataSet rather than exposing the internal `m³/s` value.
 
+### Environment temperature
+
+`steady_state_input_average_method` also reduces each Tank's `Environment.T`
+series to an average temperature, without Flow weighting or a Solution Variable
+offset. `previous` and `linear` average over that column's first-to-last valid
+sample interval; `arithmetic` averages its valid samples. To include a final
+holding period, repeat the temperature at the desired endpoint.
+
+The solver then evaluates saturated oxygen, Pump temperature correction, and
+Rates containing `T` at this average temperature. For nonlinear expressions,
+this differs from averaging the resulting dynamic rates. A missing series uses
+20°C, and `steady_state_then_dynamic` restores the original temperature series
+for the dynamic phase. See [Environment](../DataSet/Edit.mdx#environment) for
+zone fallback and the supported range, and
+[Water Temperature T](../BioModel/Edit.mdx#rate-temperature) for Rate syntax.
+
 ### Steady-State Representation of Measured
 
 `Measured` contains outlet observations rather than influent boundary
@@ -377,8 +393,8 @@ appears in the log. The Dashboard Report reuses the same result.
 
 ## Dynamic Input Interpolation
 
-`dynamic_input_interpolation_method` controls how dynamic `Flow` and `Inflow`
-boundary values are evaluated between recorded input times. It does not
+`dynamic_input_interpolation_method` controls how dynamic `Flow`, `Inflow`, and
+`Environment` inputs are evaluated between recorded input times. It does not
 compress a time series into a steady-state value:
 
 | Method | Dynamic boundary signal |
@@ -389,8 +405,15 @@ compress a time series into a steady-state value:
 For example, if an input concentration is `10 mg/L` at `0 h` and `20 mg/L` at
 `2 h`, `previous` supplies `10 mg/L` during the interval, while `linear`
 supplies `15 mg/L` at `1 h`. The same interpolation choice is applied to
-dynamic `Flow` values. Choose `previous` for stepwise/event inputs and `linear`
+dynamic `Flow` values and each Tank's temperature. Choose `previous` for stepwise/event inputs and `linear`
 when the measurements represent a continuously varying signal.
+
+Temperature interpolation uses each column's own valid samples; another Tank's
+timestamps do not change its trend. Integration steps stop at Flow, Inflow, and
+temperature input events before continuing with the updated values. These input
+events remain protected from `resolution_rate` downsampling even when result
+output is sparse. Temperature-dependent Rate and aeration calculations currently
+use Forward Euler.
 
 The Dashboard exposes this setting separately from
 `steady_state_input_average_method`:

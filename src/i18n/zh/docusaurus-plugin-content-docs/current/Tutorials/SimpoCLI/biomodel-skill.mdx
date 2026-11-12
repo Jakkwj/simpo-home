@@ -40,6 +40,14 @@ Claude Code 插件命令为 `/simpo:simpo-create-biomodel`。
 两种模式都会将来源、推导依据、单位、假设、未解决项以及 Formula/Composition/Ionization
 的处理决定写入 BioModel 的 Description。这是可审核的依据摘要，不是 AI 对话记录。
 
+## 随温度变化的动力学
+
+Skill 将温度相关因子保留在 `Matrix.Rate` 中，使用来自关联 DataSet.Environment
+的内置大写 `T`，不会新建名为 `T` 的固定 Parameter/Component，也不会把变温因子
+移入计量矩阵。`theta_H` 等系数仍是普通 Parameters，并记录其来源和参考温度；
+它们与 Pump 的 `θ` 独立。具体见 [Rate 温度支持](../BioModel/Edit.mdx#rate-temperature)，
+包括 Forward Euler 要求和缺少温度时的默认规则。
+
 ## 默认分析规则
 
 Composition 按单元格处理：论文或可追溯推导支持的系数都应填写，即使计算结果不平衡。

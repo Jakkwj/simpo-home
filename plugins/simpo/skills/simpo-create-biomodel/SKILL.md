@@ -71,6 +71,11 @@ summary before submitting the model.
 
 Always audit substrate depletion using the analysis rules, even with
 `source_correction` off. This check does not authorize kinetic changes.
+Apply the analysis rules' environmental-temperature boundary when extracting
+kinetics: water temperature is built-in `T` in Rate, not a declared Parameter;
+its observations belong in DataSet.Environment. Preserve the source's reference
+temperature and supported correction coefficients, and disclose the 20°C
+fallback if an eventual DataSet has no applicable series.
 
 ## Input modes and model boundary
 

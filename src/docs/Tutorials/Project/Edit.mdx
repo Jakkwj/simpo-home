@@ -38,6 +38,12 @@ editor. Values must satisfy their displayed units and bounds. During a
 calculation, the value stored in `Project.Solution` takes precedence over the
 BioModel default value.
 
+Water temperature `T` is an environmental input rather than a Solution Variable.
+Edit it in the linked [DataSet.Environment](../DataSet/Edit.mdx#environment);
+[Rate](../BioModel/Edit.mdx#rate-temperature) reads it for each Tank and time.
+Kinetic correction coefficients such as `theta_H` remain ordinary Parameters
+and can be configured in Solution.
+
 The toolbar also opens five auxiliary tables:
 
 - `Conversions`: maps BioModel Components to predicted additional Targets. For

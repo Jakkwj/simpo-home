@@ -1,6 +1,6 @@
 ---
 name: simpo-create-dataset
-description: "Design or extract a wastewater-treatment DataSet and create a reviewed SIMPO DataSet Draft in SIMPO. Use when asked to turn influent flow and water-quality data, discharge targets, process constraints, a design brief, an existing treatment scheme, a research paper, a PDF, a report, tables, figures, or supplementary material into SIMPO Unit, Target, Tank, Pump, Measured, Inflow, Flow, and Connection JSON; trace source evidence and time series; select an ASM2D- or ASM3-compatible target set; calculate preliminary tank volumes, recycles, wasting, and aeration when design completion is requested; audit hydraulic balance; or submit an approved DataSet."
+description: "Design or extract a wastewater-treatment DataSet and create a reviewed SIMPO DataSet Draft in SIMPO. Use when asked to turn influent flow and water-quality data, discharge targets, process constraints, a design brief, an existing treatment scheme, a research paper, a PDF, a report, tables, figures, or supplementary material into SIMPO Unit, Target, Tank, Pump, Environment, Measured, Inflow, Flow, and Connection JSON; map Tank water-temperature series to T; trace source evidence and time series; select an ASM2D- or ASM3-compatible target set; calculate preliminary tank volumes, recycles, wasting, and aeration when design completion is requested; audit hydraulic balance; or submit an approved DataSet."
 ---
 
 <!-- BEGIN SHARED WORKFLOW -->
@@ -134,9 +134,17 @@ SIMPO-safe name is introduced.
    compatibility. Use `Dissolved Oxygen` or `Total Suspended Solids` only when
    that quantity exists (zero or one Target for each standard role), and never
    add a fictional target just to satisfy a template. Keep every name and target
-   symbol consistent across Tank, Pump, Measured, Inflow, Flow, and Connection.
+   symbol consistent across Tank, Pump, Environment, Measured, Inflow, Flow, and Connection.
+   Put documented water temperatures in optional `Environment` using identifier
+   `T` and `Unit.T=℃`; do not make T a Target or BioModel Parameter. Follow
+   the JSON reference for independent Tank/settler-zone series, defaults, and
+   Pump θ. Preserve existing Environment data in an update, and disclose
+   absent-temperature 20°C defaults and any assumed transfer coefficient.
    Use only `CSTR` and `Point Settling` tank types in this workflow unless the
    user provides a separately validated current SIMPO format for another type.
+   For `Point Settling`, preserve a supplied `SettlingFactor`; otherwise normally
+   use approximately `0.9999`, or directly use `1` when reported effluent TSS is
+   `0`. Record the adopted value and basis as described in the process design rules.
 6. Check each constant-volume tank symbolically and numerically for hydraulic
    balance. Aeration connections from a Pump are not liquid-flow terms. Explain
    every split, recycle, return, wasting, and boundary outflow.

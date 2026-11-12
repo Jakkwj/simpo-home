@@ -13,15 +13,20 @@ Detail 页面包含 Flowchart、Targets、Tanks 和 Links，以下操作均适�
 
 ### Unit
 
-在 Flowchart 的 `List` 菜单中打开 `Unit`：
+在网页 Flowchart 的 `List` 菜单中打开 `Unit`：
 
 - `Time`：`day`、`hour`、`minute` 或 `second`，只有它可以修改。
 - `Flow`：固定为 `m3/d`。
 - `Volume`：固定为 `m3`。
 - `Area`：固定为 `m2`。
 - `Height`：固定为 `m`。
+- `T`：固定为 `℃`。
 
-修改 Time 后，Tank 测量数据、Inflows 和 Flows 的时间索引标签会同步更新。
+修改 Time 后，Tank 测量数据、Environment、Inflows 和 Flows 的时间索引标签会同步更新。
+
+本地 XLSX 的 `Unit` 工作表还支持 `T` 列，位于 `Height` 之后，
+即第六列。第一行填写 `T`，第二行填写 `℃`；也接受 `°C`、`degC`。
+缺少该列时默认使用摄氏度。此单位用于下文的 [Environment](#environment) 温度输入。
 
 ### Targets
 
@@ -49,23 +54,150 @@ Tank 列表包含 `Name`、`Type`、`BioCalculated`、`Volume` 和 `Constant Vol
 
 ### Pumps
 
-Pump 用于曝气计算，列表包含 `Name`、`Type`、`SOTEa`、`SOTEb` 和 `SOTEc`。
+Pump 用于曝气计算，列表包含 `Name`、`Type`、`SOTEa`、`SOTEb`、`SOTEc` 和
+`θ`。XLSX 中 `θ` 位于 `SOTEc` 后，为第六列。前端和 XLSX 使用 `θ`，
+读取时映射到内部的 `ThetaFactor` 字段；仍兼容旧表头 `ThetaFactor`。
+θ 是曝气系统的气液传质温度系数，使用接收 Tank 的池内水温；
+新建 Pump 预填 1.024，可根据设备试验数据调整。旧数据缺少该列或留空时按 1 处理。
+详细公式见[传氧系数的水温修正](#oxygen-transfer-temperature)。
+
 `Fit SOTE Curve` 使用以下数据：
 
 - `Qd (m3/h/Diffuser)`
 - `Diffuser Depth (m)`
 - `SOTE (%)`
 
-曲线数据支持 CSV 导入/导出。输入有效数据后，可以拟合得到系数：
+曲线数据支持 CSV 导入/导出。`SOTE (%)` 输入百分数，例如 14.1；拟合公式使用比值 0.141。输入有效数据后，可以拟合得到系数：
 
 ```text
-SOTEa * (Qair / DiffuserNumber)^(-SOTEb) * DiffuserDepth^(SOTEc)
+SOTE = SOTEa * (Qair / 24 / DiffuserNumber)^(-SOTEb) * DiffuserDepth^(SOTEc)
 ```
+
+此处 `Qair` 为 DataSet 输入的 m³/d，单头小时风量为 `Qair / 24 / DiffuserNumber`；计算端 Flow 转为 m³/s 后，对应使用 `Flow * 3600 / DiffuserNumber`。
 
 ### Inflows 和测量数据
 
 Inflow 时间序列第一列为 `Time`，后续列为 Target 数值。Time 不能为空、不能
 为负数或重复。支持添加、复制、删除、排序、Step Add，以及 CSV 导入/导出。
+
+### Environment {#environment}
+
+`Environment` 用于保存各 Tank 以及点沉淀池 Outlet、Blanket 分区独立的环境时间序列，当前环境指标仅支持水温 `T`。
+也可在 Tank 详情弹窗中，通过 `Measured` / `Environment` 下拉框选择 `Environment`，打开水温时间序列。
+
+在 Flowchart 的 `List` 菜单中，`Environment` 位于 `Unit` 上方。
+打开后按 TankList 的顺序显示全部 Tank，包括尚未填写温度的 Tank；
+支持查看、搜索、列筛选和全屏。Tank 的新增、改名、排序和删除统一在 TankList 中操作，Environment 列表不提供这些操作。
+仅打开列表不会创建温度数据。
+点击 Tank 进入详情，Tank 名称只读，下方直接编辑水温时间序列。
+点沉淀池可通过 `Outlet` / `Blanket` 切换，分别设置两个分区的温度时间序列；
+Tank 弹窗的 `Environment` 视图也提供相同的分区切换。
+点击时间或温度单元格，通过单元格弹窗中的确定或取消完成编辑。
+详情支持按步长添加时间点、批量删除时间点，以及导入或导出 CSV。
+关闭详情或列表会保留已提交的修改，最后统一保存 DataSet 或 Project。
+只读版本可查看列表和详情、导出 CSV。Project 内嵌的 DataSet 编辑器也提供这些入口。
+Tank 改名时，其温度序列及分区温度序列随之改名；删除 Tank 时同步移除这些序列。
+温度在 Forward Euler 求解器的 Pump 和直接 KLa 曝气中用于修正饱和溶解氧浓度，
+Pump 还使用 `θ` 修正传氧系数。`BioModel.Matrix.Rate` 也可直接引用内置符号 `T`，
+按当前 Tank 和当前时刻的水温计算动力学修正，见 [BioModel 编辑：水温 T](../BioModel/Edit.mdx#rate-temperature)。
+
+本地 `DataSet.xlsx` 中可添加同名可选工作表。第一行填写 Tank 名称，第二行填写环境指标标识 `T`，第三行开始填写时间和温度。
+每组时间列的两行表头分别为 `Tank` 和 `Environment`。不同 Tank 可以使用不同的时间点：
+
+| Tank | Tank1 | Tank | Tank2 |
+|---|---:|---|---:|
+| Environment | T | Environment | T |
+| 0 | 20 | 0 | 18 |
+| 1 | 25 | 0.5 | 19 |
+
+对于名为 `Clarifier` 的点沉淀池，使用 `Clarifier_Outlet` 和 `Clarifier_Blanket` 分别填写两个分区的温度：
+
+| Tank | Clarifier_Outlet | Tank | Clarifier_Blanket |
+|---|---:|---|---:|
+| Environment | T | Environment | T |
+| 0 | 20 | 0 | 18 |
+| 1 | 21 | 0.5 | 19 |
+
+每个分区优先使用自己的 `T` 序列；未提供分区序列时，使用物理 Tank 的序列（此例为 `Clarifier`）；
+两者都未提供时使用 20 ℃。分区序列与物理 Tank 序列同时存在时，分区序列优先。
+
+时间使用 `Unit.Time` 指定的单位，温度使用 `Unit.T`，详见上文的 Unit 设置。
+输入需满足以下规则：
+
+- Tank 名称必须对应 DataSet 中定义的物理 Tank，或使用点沉淀池的 `TankName_Outlet` / `TankName_Blanket` 分区名称；可以只填写部分 Tank 或分区。
+- 每个 `(Tank, Environment)` 组合在整张表中只能有一条序列，包括使用不同时间列的情况。
+- 每列首个有效温度值必须在 t=0；每组时间必须为有限、非负数，严格递增且不能重复。
+- 温度必须为有限数值，范围为 0–40 ℃。只有一个 t=0 值时，表示全程恒温。
+- 空白温度单元格表示没有新采样；各列末个有效值之后保持该温度。
+
+动态计算由 Project 的 `dynamic_input_interpolation_method` 统一选择取值方式：
+`previous` 在采样时刻切换到新值，`linear` 按每列真实有效采样点进行线性插值，
+然后根据所得温度计算饱和浓度，以及包含 `T` 的 Rate。其他 Tank 的采样点不会改变该列的插值趋势。
+温度输入事件与 Flow/Inflow 一样限制积分步长，不允许跨过下一个更新时间点；
+到点后，求解器先刷新温度，再重新计算 Rate 和传氧项。有效温度输入时间点受到
+`resolution_rate` 降采样保护，不受结果输出稀疏程度影响。CLI 的 JSON 输入见
+[Environment 表格格式](../SimpoCLI/create-dataset#temperature-input)。
+
+稳态计算先按 `steady_state_input_average_method` 求各 Tank 的平均温度，再计算对应的
+饱和浓度和包含 `T` 的 Rate。对于非线性表达式，平均温度下的计算值不等于动态计算值的平均。
+`previous` 使用阶梯时间加权平均，`linear` 使用梯形积分平均，
+`arithmetic` 使用有效采样值的算术平均；单个有效值直接作为平均温度。这些均值均不进行流量加权。
+时间平均的区间是各列首个至末个有效采样点，不自动计入末次采样到模拟终点的尾值保持时段。
+若需把这段持续时间计入均值，应在所需终点明确填写相同温度。
+先稳态后动态计算在动态阶段恢复原始温度序列。
+
+某个 Tank 或分区没有可用的 `T` 序列时（包括上述回退规则），曝气计算和 Rate 中的 `T` 默认水温为 20 ℃，与填写恒定 20 ℃的结果一致。
+Pump 和直接 KLa 曝气均使用该温度的清水饱和浓度（约 9.09 mg/L）；
+Pump 另乘 Tank 的 β，传氧系数的温度修正乘数为 1。
+
+#### 饱和溶解氧的水温修正 {#do-temperature}
+
+**SIMPO** 根据各 Tank 的池内水温 $T$（未提供时为 20 ℃），使用 [USGS WQ.2011.03 方程 7](https://water.usgs.gov/water-resources/memos/documents/WQ.2011.03.pdf) 中的 Benson–Krause 公式计算清水饱和溶解氧浓度。当前采用淡水、1 atm 条件，支持的水温范围为 0–40 ℃。令绝对温度 $T_K = T + 273.15$，则：
+
+$$
+S_{O2,sat}(T) = \exp\left(
+-139.34411
++ \frac{1.575701\times10^5}{T_K}
+- \frac{6.642308\times10^7}{T_K^2}
++ \frac{1.243800\times10^{10}}{T_K^3}
+- \frac{8.621949\times10^{11}}{T_K^4}
+\right)
+$$
+
+公式结果的单位为 mg O₂/L；20 ℃时约为 9.09 mg O₂/L，30 ℃时约为 7.558796 mg O₂/L。标准参考浓度 $S_{O2,sat,std}$ 固定使用数值表中 20 ℃对应的完整值 **9.092426042885567 mg O₂/L**，不随 Tank 水温变化。未提供温度时的清水饱和浓度也使用同一数值。
+
+Pump 曝气使用 $\beta S_{O2,sat}(T)-S_{O2}$ 作为传质推动力，直接 KLa 曝气使用 $S_{O2,sat}(T)-S_{O2}$。空气含氧量参考值保持为 0.279 kg O₂/m³，因此 Pump 计算中的换算系数统一为 $279/S_{O2,sat,std}\approx30.68488$；计算使用完整精度。
+
+为减少重复计算，SIMPO 将 0–40 ℃范围内、每隔 0.01 ℃的 4001 个饱和浓度值离线计算后固化为随软件分发的数值表。启动时直接加载已有数值，生成 Fortran 计算代码时嵌入相同常量，不在启动时重新计算这张表。当前水温正好对应这些温度点时，直接使用表内结果；其他温度（如 20.123 ℃）仍按上述公式计算，不取整，也不在饱和浓度表中插值。此规则同样适用于动态插值得到的水温和稳态平均水温。
+
+#### 传氧系数的水温修正 {#oxygen-transfer-temperature}
+
+Pump 的 `θ` 用于将 20℃参考传氧系数修正到接收 Tank 的水温：
+
+$$
+K_La(T) = K_La(20)\,\theta^{T-20}
+$$
+
+计算中将 $\theta^{T-20}$ 乘在 Pump 的传氧速率上，位于整个浓度差 $\beta S_{O2,sat}(T)-S_{O2}$ 外侧。
+同一 Pump 连接多个 Tank 时，各 Tank 分别取自己的温度。稳态使用各 Tank 的平均温度，动态使用当前采样或插值温度。
+1.024 是常用经验起始值，应结合曝气设备和试验数据校准，参见 [EPA 传氧设备评估资料](https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=20007I08.TXT)。
+
+`θ` 必须为有限正数，且在支持温度范围内的修正乘数也须为有限正数。
+设为 1 可关闭这项修正；旧表缺列、空白值或 Tank 未提供 `T` 时，修正乘数均为 1。
+直接填写的 Tank `KLa` 保持原值，不套用 Pump 的 θ。BioModel 的动力学温度修正由 [Rate 中的 T 表达式](../BioModel/Edit.mdx#rate-temperature)定义，不使用 Pump 的 θ。
+
+#### 由传氧系数反推风量 {#airflow-from-kla}
+
+$k_La$ 的单位只有时间倒数。将 O₂ 浓度由 mg/L 转为 mmol/L 时，饱和浓度和当前浓度都除以 32，$k_La$ 保持不变；模型的浓度 `Conversion` 同样只转换浓度及其变化率。
+
+令 $N$ 为曝气头数量，$a,b,c$ 为 SOTE 拟合系数，$H$ 为曝气深度（m），$V$ 为池容（m³）。当 $0\le b<1$，且 $a,\alpha,H,N,V,\theta$ 为正数时，可由目标传氧系数反推日风量：
+
+$$
+Qair=\left[\frac{k_La^{(d)}\,S_{O2,sat,std}\,V}
+{279\,\alpha\,a\,H^c\,\theta^{T-20}\,(24N)^b}\right]^{1/(1-b)}
+$$
+
+这里 $Qair$ 的单位为 m³/d，$k_La^{(d)}$ 的单位为 $d^{-1}$，$S_{O2,sat,std}$ 固定使用上述 mg O₂/L 参考值。若目标给定为 $h^{-1}$，先乘以 24 再代入。SOTE 随风量变化，因此不能简单按 $k_La$ 的比例缩放风量；还应检查反推值是否落在厂家曲线的有效范围内。
 
 ### Flows
 

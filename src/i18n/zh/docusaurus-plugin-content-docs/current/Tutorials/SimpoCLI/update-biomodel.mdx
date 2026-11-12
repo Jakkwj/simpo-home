@@ -24,6 +24,10 @@ sidebar_label: update-biomodel
   `create-biomodel` 中相同的代数组分规则。
 - `Balance` 是只读派生表，禁止提交。
 
+温度表达式沿用创建时的 [Rate 规则](./create-biomodel#temperature-in-rate)：
+将 `T` 保留在 Rate 中，通过关联 DataSet 提供时间序列，不要改成固定 Parameter
+或移到计量系数中。
+
 ## 命令格式
 
 ```text

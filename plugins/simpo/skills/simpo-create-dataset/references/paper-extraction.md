@@ -50,7 +50,7 @@ already provides page images or digitizer exports, no Poppler or Python is
 needed. If pages must be rendered locally, use any suitable renderer; the
 bundled paper workflow uses Python 3 with Poppler's `pdftoppm`.
 
-Every digitized series used in `Measured`, `Inflow`, or `Flow` must retain these
+Every digitized series used in `Measured`, `Inflow`, `Flow`, or `Environment` must retain these
 audit fields: paper file, page, figure/panel, series label and legend evidence,
 x/y names and units, calibration points, tool/version, export filename, point
 count, uncertainty, classification `digitized`, and SIMPO symbol. Do not use a
@@ -88,7 +88,8 @@ make a familiar flowsheet.
 
 ## Map evidence to SIMPO tables
 
-- `Unit`: use the source's consistent time, volume, flow, area, and height units.
+- `Unit`: use the supported time, volume, flow, area, and height units; add the
+  fixed Celsius `T` column as defined in `dataset-json-format`.
   Convert only when necessary, show the conversion, and retain the original unit
   in the audit.
 - `Target`: use symbols compatible with the intended BioModel. Map aggregate
@@ -98,7 +99,13 @@ make a familiar flowsheet.
   `Point Settling` only when that abstraction is scientifically acceptable.
   Report source equipment that the current format cannot represent faithfully.
 - `Pump`: represent documented air devices using the current `Air` pump form.
-  Do not invent transfer coefficients or diffuser data.
+  Preserve documented oxygen-transfer θ separately from biological kinetic
+  temperature factors. Do not invent transfer coefficients or diffuser data.
+- `Environment`: map water temperature to the Tank or settler zone and `T`,
+  preserving its own sampling times and missing values. A documented constant
+  can be one value at time 0. Follow `dataset-json-format` for bounds and
+  defaults; do not present the 20°C fallback as a reported value. Air temperature
+  and pressure are not interchangeable with water T or supported input fields.
 - `Measured`: preserve monitoring location, target, time order, missing values,
   and numeric precision. Do not interpolate gaps unless the user requests a
   separately documented transformation.

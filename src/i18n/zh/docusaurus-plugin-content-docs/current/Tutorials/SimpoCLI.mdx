@@ -192,6 +192,36 @@ Linux 保存路径为 `~/.SimpoCLI/SIMPO_API_TOKEN.json`，Windows 保存路径
 
 完整配置过程请查看 [`configure`](./SimpoCLI/configure)。
 
+## Project 中的水温 {#temperature}
+
+温度沿用现有 DataSet、BioModel 和计算命令，不需要单独的温度 flag。
+各 Tank 的 `T` 时间序列写入 `DataSet.Environment`，`Unit.T` 固定使用摄氏度。
+需要传氧系数温度修正时填写 Pump 的 `θ`；动力学修正则在 `BioModel.Matrix.Rate`
+中直接使用大写 `T`。
+
+修改已有 Draft 时，先读取完整 DataSet：
+
+```text
+simpo get-dataset 456 > dataset-response.json
+```
+
+将响应中的 `detail` 对象单独保存为 `DataSet.json`，修改其中的 `Environment`，
+同时保留其余表格，再提交完整 detail：
+
+```text
+simpo update-dataset 456 --json ./DataSet.json
+simpo calculate 706 --engine SIM --ode-solver Forward_Euler --input-interpolation previous
+```
+
+将示例 ID 替换为实际关联的 DataSet 和 Project ID。更新 DataSet 会重建引用它的
+Draft Project，并将已有结果标记为需要重算。不要只提交温度片段。
+温度属于环境输入，不能通过 `set-project-variable` 设置。
+
+具体见[温度 JSON 格式](./SimpoCLI/create-dataset#temperature-input)、
+[Rate 表达式规则](./BioModel/Edit.mdx#rate-temperature)和
+[动态/稳态取值规则](./SimpoCLI/calculate#temperature-input)；
+饱和溶解氧与传氧系数公式统一见 [DataSet 文档](./DataSet/Edit.mdx#do-temperature)。
+
 ## 命令索引
 
 所有资源遵循同一基本规则：编辑 version `0` Draft，将已发布的 Release

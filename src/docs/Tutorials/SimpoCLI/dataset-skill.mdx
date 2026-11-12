@@ -25,8 +25,8 @@ This Skill is intended for requests such as:
   measurements, and time series from a paper, PDF, report, or supplementary
   material while retaining source locations and unresolved gaps;
 - convert an existing process description or design calculation into SIMPO
-  `Unit`, `Target`, `Tank`, `Pump`, `Measured`, `Inflow`, `Flow`, and
-  `Connection` tables;
+  `Unit`, `Target`, `Tank`, `Pump`, `Measured`, optional `Environment`, `Inflow`,
+  `Flow`, and `Connection` tables;
 - review flow conservation and cross-table names before creating a DataSet.
 
 For ordinary DataSet create/read/update/sync/release operations on already
@@ -80,6 +80,15 @@ Before the PDF-rendering step, check `python3 --version` and `pdftoppm -v`.
 Missing tools pause only the figure-rendering path; they do not block design
 inputs, text/tables, supplied images, or supplied digitizer exports. `pdfinfo`
 is optional when an explicit page range is supplied.
+
+## Temperature data
+
+Reported Tank water temperatures belong in `Environment`, using identifier `T`
+and fixed Celsius units in `Unit.T`; do not create a measured Target or a Tank
+named `T`. The Skill checks the source units, Tank/zone mapping, valid time-zero
+samples, and the 0–40°C range, and records when the missing-series default of
+20°C is used. Pump `θ` controls oxygen transfer; kinetic temperature factors
+belong in BioModel Rate. See [the JSON format and defaults](./create-dataset#temperature-input).
 
 ## Figure data and Description
 

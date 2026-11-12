@@ -2,7 +2,7 @@ import config from '@generated/docusaurus.config'
 
 # BWTEE 2.3.4
 
-This example comes from [Biological Wastewater Treatment: Examples and Exercises](https://iwaponline.com/ebooks/book/871/Biological-Wastewater-TreatmentExamples-and) page 36 Example 2.3.4.
+This example comes from Example 2.3.4 on page 35 of [Biological Wastewater Treatment: Examples and Exercises](https://iwaponline.com/ebooks/book/871/Biological-Wastewater-TreatmentExamples-and).
 
 
 :::danger supplementary materials
@@ -85,7 +85,12 @@ The measured data come from the AQUASIM calculation results.
 ### Aeration Calculation Method: BioModel
 
 In the original case, the aeration calculation method was as follows:
-*   An 'aeration reaction' line was added in `BioModel`: $k_{L}a·(S_{O2,sat} - S_{O2})$, where $k_{L}a$ was $100 h^{-1}$.
+*   An 'aeration reaction' line was added in `BioModel`:
+    $$
+    k_{L}a·(S_{O2,sat} - S_{O2})
+    $$
+  - $k_{L}a$: $100 h^{-1}$
+  - $S_{O2,sat}: 0.28125 mmolO^{2}/l$
 *   This reaction was then activated in the aeration tank within `Project.Activator`, thereby achieving the objective of continuously supplying oxygen to the system.
 
 Specifics details: <a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Chemostat/id/414/did/409">BWTEE 2.3.4 Chemostat</a>.
@@ -116,13 +121,8 @@ Specifics details: <a href="https://dash.simpowater.org/dashboard/projects/publi
 
 
 
-The ``Weighted NSE`` is ``0.99994``, the slight difference mainly comes from ``S_O2`` (``NSE`` is 0.99922), ``X_NO2`` (``NSE`` is 0.99998) and ``X_DHO`` (``NSE`` is ``0.99999``), and all of the ``NSE`` of the others are ``1.0``.
-
-
-
-From the calculation results, it is evident that the `Weighted NSE` is `0.99994`, with minor discrepancies stemming from:
-*   `S_O2` (with an `NSE` of `0.99922`, `0.28` vs `0.27995`)
-*   `X_NO2` (with an `NSE` of `0.99998`, `0.05415` vs `0.05415`)
+From the calculation results, it is evident that the `Weighted NSE` is `0.99999`, with minor discrepancies stemming from:
+*   `S_O2` (with an `NSE` of `0.99922`, `0.28` vs `0.27997`)
 *   `X_DHO` (with an `NSE` of `0.99999`, `1.232` vs `1.23248`)
 *    All other `NSE` values are `1.0`.
 
@@ -140,95 +140,116 @@ The aforementioned calculation method is more suitable for simple laboratory sim
 
 ##### SOTR
 
-*   Under standard conditions (i.e., 20°C and 1 atm), the density of air is approximately 1.204 kg/m³, with an oxygen mass fraction of about 23.15%. This means that `1 m³` of air contains approximately $1.204 * 23.15\% = 0.279 kgO_2$.
-*   Neglecting the influence of temperature and pressure changes for now, the Standard Oxygen Transfer Rate (SOTR) is:
+*   Under standard conditions (i.e., 20°C and 1 atm), the density of air is approximately 1.204 kg/m³, with an oxygen mass fraction of about 23.15%. This means that 1 m³ of air contains approximately $1.204 * 0.2315 ≈ 0.279 kgO_2$.
+*   The Standard Oxygen Transfer Rate (SOTR) is:
 
   $$
-    SOTR (mgO_2/d) = 0.279 (kgO_2/m³) * Q_{air} (m³/d) * SOTE (\%) * 10^{6}
+    SOTR (mgO2/d) = 0.279 (kgO_2/m³) * Qair (m³/d) * SOTE * 10^{6}
   $$
 *   Where:
-    *   $Q_{air}$ is the air flow rate, m³/d
-    *   SOTE is the Standard Oxygen Transfer Efficiency, %
+    *   $Qair$ is the dry-air flow rate referenced to 20°C and 1 atm, in m³/d
+    *   SOTE is the Standard Oxygen Transfer Efficiency, used as a dimensionless fraction in the equations: 0.141 means 14.1%. Enter 14.1 in the `SOTE (%)` field of `Fit SOTE Curve`.
 
 ##### FOTR
 
 *   Actual reactors typically contain wastewater at non-standard temperatures. Therefore, SOTR must be corrected to obtain the Field Oxygen Transfer Rate (FOTR):
 
   $$
-    FOTR = dS_{O2}/dt = SOTR * θ^{(T - 20)} * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std} / V
+    FOTR = dS_{O2}/dt * 1000 * V = SOTR * θ^{(T - 20)} * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std}
   $$
 *   Where:
-    *   θ is the temperature correction factor
-    *   T is the temperature, ℃
-    *   $S_{O2,sat,std}$ is the saturated dissolved oxygen concentration in clean water under standard conditions,approximately 9.08~9.17 mg/L, often taken as 9.08 mg/L in engineering practice.
-    *   $S_{O2,sat}$ is the saturated dissolved oxygen concentration, currently fixed at 9.02 mg/L (as of 2026.10.04).
+    *   θ is the water-temperature correction factor, commonly taken as 1.024; its value should be consistent with the aeration equipment and test data.
+    *   T is the water temperature, ℃
+    *   $S_{O2,sat,std}$ is the saturated dissolved oxygen concentration under standard conditions (freshwater, 20°C, 1 atm). **SIMPO** uses the fixed table's 20°C value, approximately 9.09 mg/L; see [Edit a DataSet](../../Tutorials/DataSet/Edit.mdx#do-temperature) for the full precision and equation.
+    *   $S_{O2,sat}$ is the saturated dissolved oxygen concentration in clean water at each Tank's water temperature. A Tank without a temperature series defaults to 20°C, using the same concentration as the standard reference and a temperature correction multiplier of 1.
     *   α is the Oxygen Transfer Ratio: $k_{L}a(Wastewater)/k_{L}a(Clean Water)$
     *   β is the Oxygen Solubility Ratio: $S_{O2,sat}(Wastewater)/S_{O2,sat}(Clean Water)$
     *   V is the reactor volume, m³
 
-##### FOTE
+##### SOTE Curve Fitting
 
-*   Blower manufacturers provide `SOTE-flow` curves under standard conditions, which also need to be corrected to the Field Oxygen Transfer Efficiency (FOTE). In **SIMPO**, the following formula can be fitted based on the `SOTE-flow` standard condition curve to solve for a, b, and c (this formula ensures a non-linear relationship between air inflow and SOTE, with a decaying-increasing characteristic).
+*   Blower manufacturers provide `SOTE-flow` curves under standard conditions, which also need to be corrected to obtain the Field Oxygen Transfer Efficiency (FOTE). In **SIMPO**, the following formula can be fitted to the standard `SOTE-flow` curve to determine a, b, and c. When b > 0, SOTE decreases as the air flow per diffuser increases. When 0\<b\<1 and other conditions remain fixed, the total oxygen transfer rate still increases with air flow, but at a diminishing rate.
   $$
-    FOTE = a * (Q_d)^{-b} * H^c = a * (Q_{air} / d / 24)^{-b} * H^c
+    SOTE = a * (Q_d)^{-b} * H^c = a * (Qair / 24 / N)^{-b} * H^c
   $$
 *   Where:
-    *   $Q_d$ is the air flow rate per diffuser, m³/h/diffuser
-    *   d is the number of diffusers
+    *   $Q_d$ is the air flow rate per diffuser, m³/h/diffuser (please note that the time unit here is in **hours**. $Qair$ is in m³/d, so $Q_d=Qair/24/N$. Internally, Flow is in m³/s, giving the equivalent conversion $Q_d=3600Qair_s/N$)
+    *   N is the number of diffusers (`Diffuser Number`)
     *   H is the diffuser installation depth, m
+
+##### Water-Temperature Correction of Saturated Dissolved Oxygen {#do-temperature}
+
+For the water-temperature correction formula, temperature input, and sampling rules, see [Edit a DataSet: Water-Temperature Correction of Saturated Dissolved Oxygen](../../Tutorials/DataSet/Edit.mdx#do-temperature).
 
 ##### Solving the Equation
 
-*   Neglecting the influence of temperature and pressure changes for now, combining the above three equations yields:
+*   Combining the above three equations yields the following, with $279/S_{O2,sat,std}\approx30.68488$ and full precision used in calculations:
     $$
-      dS_{O2}/dt = 279 * Q_{air} * a * (Q_{air} / d / 24)^{-b} * H^c * α * (β * S_{O2,sat} - S_{O2}) / S_{O2,sat,std} / V
+      dS_{O2}/dt = 30.68488 * Qair * a * (Qair / 24 / N)^{-b} * H^c * θ^{(T - 20)} * α * (β * S_{O2,sat} - S_{O2}) / V
     $$
-*   If β is 1, then:
+*   If the aeration equation uses $k_{L}a * (S_{O2,sat} - S_{O2})$, as in this case, BSM1, and BSM2, this corresponds to β = 1. Then:
     $$
-      k_{L}a = 279 * Qair * a * (Qair / d / 24)^{-b} * H^c * α / S_{O2,sat,std} / V
+      k_{L}a = 30.68488 * Qair * a * (Qair / 24 / N)^{-b} * H^c * θ^{(T - 20)} * α / V
     $$
-*    Note that, the unit of $dS_{O2}/dt$ is **$mgO_2/L/d$**, when calculating, $S_{O2,sat}$ is fixed at 9.02 mg/L (as of 2026.10.04).
+*   If β = 1, α = 1, a = 1, b = 0, and c = 0, this simplifies further to the <b>conversion relationship between $k_{L}a$ and $Qair$</b>:
+    $$
+      k_{L}a = θ^{(T - 20)} * 30.68488 / V * Qair
+    $$
+*   In these equations, $dS_{O2}/dt$ is in **$mgO_2/L/d$** and $k_{L}a$ is in $d^{-1}$. Divide $k_{L}a$ by 24 to express it in $h^{-1}$.
 
 
 
 :::
 
 
-In this case, to maintain a $k_{L}a$ of $100 h^{-1}$, we selected the following set of parameters (with an FOTE of 14.1%):
+This case targets $k_{L}a=100 h^{-1}=2400 d^{-1}$ at the actual water temperature, including the α and θ corrections. The required air flow is calculated using the current parameters:
+
+*   N (`Tank` parameter `Diffuser Number`): 1
+*   H (`Tank` parameter `Diffuser Depth`): 0.5 m
+*   α (`Tank` parameter `Alpha Factor`): 0.55
+*   β (`Tank` parameter `Beta Factor`): 1
+*   a (`Pump` parameter `SOTEa`): 0.3259
+*   b (`Pump` parameter `SOTEb`): 0.3142
+*   c (`Pump` parameter `SOTEc`): 0.2567
+*   θ (`Pump` temperature correction factor): 1.024
+*   V: 0.1 m³
+*   $S_{O2,sat,std}$: 9.092426042885567 mg/L
+*   T (the Tank's temperature in `Environment`): 20.51°C, giving $\theta^{T-20}=1.024^{0.51}\approx1.01216887$
+
+Substituting into the [air-flow inversion equation in Edit a DataSet](../../Tutorials/DataSet/Edit.mdx#airflow-from-kla) gives:
+$$
+Qair=\left[\frac{2400\times9.092426042885567\times0.1}
+{279\times0.55\times0.3259\times0.5^{0.2567}\times1.024^{20.51-20}\times(24\times1)^{0.3142}}\right]^{1/(1-0.3142)}
+\approx73.08141768\;m^3/d
+$$
+
+Set the air flow in `DataSet.Flow` to **73.0814 m³/d**, referenced to dry air at 20°C and 1 atm.
+
+The corresponding air flow per diffuser is $Q_d=Qair/(24N)\approx3.04506$ m³/h/diffuser, with an SOTE of approximately 0.192249 (19.2249%). Substituting the air flow back into the aeration equation:
+$$
+ k_{L}a = \frac{279\times73.0814\times0.3259\times(73.0814/24/1)^{-0.3142}\times0.5^{0.2567}\times1.024^{20.51-20}\times0.55}{9.092426042885567\times0.1}
+ \approx2400\;d^{-1}=100\;h^{-1}
+$$
+
+This air flow follows the stated SOTE curve; confirm that it falls within the curve's validated flow range before applying it. Aeration is supplied by `DataSet.Pump` here, so disable the `BioModel` aeration reaction in this Tank to avoid counting it twice.
+
+This case expresses oxygen concentration in mmol O₂/L. Divide concentrations in mg O₂/L by 32; do not divide $k_{L}a$ by 32:
+$$
+\frac{dC_{mmol}}{dt}=k_{L}a\left(\frac{S_{O2,sat}}{32}-C_{mmol}\right)
+$$
+Using the [water-temperature correction of saturated dissolved oxygen](../../Tutorials/DataSet/Edit.mdx#do-temperature), $S_{O2,sat}\approx9.00115704$ mg O₂/L at 20.51°C, or approximately 0.28128616 mmol O₂/L. Concentration and its rate of change are converted together, leaving $k_{L}a$, whose unit is inverse time, unchanged.
+
+The screenshots below show the original configuration; use the parameter values listed above. The linked online case and saved results have not been rerun with the current parameters and corrected calculation.
 
   <div align="center" style={{marginTop: "0vh"}}>
     <img src="https://i.postimg.cc/qqL72VGG/tank-para.png" width="100%"/>
   </div>
 
-
   <div align="center" style={{marginTop: "0vh"}}>
     <img src="https://i.postimg.cc/jdw9WQdw/pump-para.png" width="100%"/>
   </div>
 
-
-
-*   Qair: 3215 m³/d
-*   d (`Tank` parameter `Diffuser Number`): 1
-*   H (`Tank` parameter `Diffuser Depth`): 0.5 m
-*   α (`Tank` parameter `Alpha Factor`): 0.55
-*   β (`Tank` parameter `Beta Factor`): 1
-*   a (`Pump` parameter `SOTEa`): 0.3259
-*   b (`Pump` parameter `SOTEb`): 0.1342
-*   c (`Pump` parameter `SOTEc`): 0.2567
-*   V: 0.1 m³
-*   $S_{O2,sat,std}$: 9.08 mg/L
-
-Then:
-$$
- k_{L}a = 279 * 3215 * 0.3259 * (3215 / 1 / 24) ^ {-0.1342} * 0.5 ^ {0.2567} * 0.55 / 9.08 / 0.1 = 76812.63 d^{-1}
-$$
-
-Note that the oxygen unit in the case is mmol/L, thus:
-$$
- k_{L}a = 76812.63 / 32 / 24 ≈ 100 h^{-1}
-$$
-
-Specifics details: <a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Chemostat/id/414/did/409">BWTEE 2.3.4 Chemostat</a>.
+Details: <a href="https://dash.simpowater.org/dashboard/projects/public/name/BWTEE%202.3.4%20Chemostat/id/983/did/409">BWTEE 2.3.4 Chemostat</a>.
 
 
 <iframe
@@ -247,13 +268,23 @@ Specifics details: <a href="https://dash.simpowater.org/dashboard/projects/publi
 ></iframe>
 
 
-From the calculation results, it is evident that the `Weighted NSE` is `0.99232`, with minor discrepancies stemming from:
+{/* The following are historical results from the original case. They have not been rerun after this unit correction and do not validate the corrected algorithm. The original `Weighted NSE` was `0.99232`:
 *   `S_O2` (with an `NSE` of `0.90021`, `0.28` vs `0.27877`)
 *   `X_NO2` (with an `NSE` of `0.99999`, `0.05415` vs `0.05416`)
 *   `X_DHO` (with an `NSE` of `0.99999`, `1.232` vs `1.23246`)
 *   All other `NSE` values are `1.0`.
 
-This indicates that the simulation results obtained using this method are also almost identical to those from AQUASIM.
+Agreement between the corrected aeration calculation and AQUASIM requires a new run and comparison. */}
+
+
+From the calculation results, it is evident that the `Weighted NSE` is `1`, with minor discrepancies stemming from:
+*   `S_O2` (with an `NSE` of `0.99999`, `0.28` vs `0.27997`)
+*   `X_DHO` (with an `NSE` of `0.99999`, `1.232` vs `1.23248`)
+*    All other `NSE` values are `1.0`.
+
+This indicates that the simulation results from **SIMPO** are almost identical to those obtained in AQUASIM.
+
+
 
 ### Summary
 
@@ -261,7 +292,7 @@ In practical use, different methods for aeration calculation can be selected bas
 
 **1. For simple laboratory simulations:**
 
-*   Use default parameters for `DataSet.Tank` (i.e., d=0, H=0, α=1, β=1).
+*   Use default parameters for `DataSet.Tank` (i.e., N=0, H=0, α=1, β=1).
 *   Add an 'aeration reaction' line in `BioModel`: $k_{L}a·(S_{O2,sat} - S_{O2})$.
 *   Activate this reaction in the aeration tank within `Project.Activator`.
 
@@ -269,13 +300,13 @@ In practical use, different methods for aeration calculation can be selected bas
 
 *   Directly fit the parameters a, b, and c in **SIMPO** based on the manufacturer's `SOTE-flow` standard condition curve.
 *   Connect `DataSet.Pump` to `DataSet.Tank` and set the air inflow rate `Qair`.
-*   Set the `DataSet.Tank` parameters (d, H, α, β) according to actual conditions.
+*   Set the `DataSet.Tank` parameters (N, H, α, β), θ in `DataSet.Pump`, and T in `DataSet.Environment` according to actual conditions.
 
 
 {/*
 #### ``S_O2``
 - **SIMPO** will dynamically adjust the time interval to improve calculation speed and ensure accuracy in the mean time, if the simulation become more and more stable, the time interval will become larger.
-- The volumetric mass transfer coefficient (``k_L_a``) of ``S_O2`` in this example is ``100 mmolO2/h`` and the rate expression is ``k_L_a*(S_O2_sat-S_O2)``, which makes the rate of Aeration process won't decrease and could be very large if the time interval become large, and this is the reason that cause the difference.
+- The volumetric mass transfer coefficient (``k_L_a``) of ``S_O2`` in this example is ``100 h^-1`` and the rate expression is ``k_L_a*(S_O2_sat-S_O2)``, which makes the rate of Aeration process won't decrease and could be very large if the time interval become large, and this is the reason that cause the difference.
 - To get stable result of ``S_O2``, we should lower the Amplified Rate (to ``1.0001``) and Step Tolerance (to ``0.0001``).
 - The stable value (last few points) of AQUASIM is ``0.28`` and **SIMPO** is around ``0.2799``.
 

@@ -15,16 +15,22 @@ editing operations apply to a Draft.
 
 ### Unit
 
-Open `Unit` from the Flowchart `List` menu:
+In the web editor, open `Unit` from the Flowchart `List` menu:
 
 - `Time`: `day`, `hour`, `minute`, or `second`; this is the only editable unit.
 - `Flow`: fixed to `m3/d`.
 - `Volume`: fixed to `m3`.
 - `Area`: fixed to `m2`.
 - `Height`: fixed to `m`.
+- `T`: fixed to `℃`.
 
-Changing the Time unit updates time-index labels in tank measurements, inflows,
-and flows.
+Changing the Time unit updates time-index labels in tank measurements, Environment,
+inflows, and flows.
+
+The `Unit` sheet in a local XLSX file also supports a `T` column after
+`Height`, as the sixth column. Enter `T` in the first row and `℃` in
+the second row; `°C` and `degC` are also accepted. Celsius is assumed if this
+column is absent. This unit applies to the [Environment](#environment) temperature inputs below.
 
 ### Targets
 
@@ -57,24 +63,188 @@ The tank list contains `Name`, `Type`, `BioCalculated`, `Volume`, and
 ### Pumps
 
 Pumps are used for aeration calculations. The pump list contains `Name`,
-`Type`, `SOTEa`, `SOTEb`, and `SOTEc`. `Fit SOTE Curve` uses:
+`Type`, `SOTEa`, `SOTEb`, `SOTEc`, and `θ`. In XLSX files,
+`θ` is the sixth column, after `SOTEc`. The UI and XLSX use `θ`, which maps
+to the internal `ThetaFactor` field. Older `ThetaFactor` headers are still accepted.
+θ is the aeration system's gas–liquid mass-transfer temperature coefficient,
+using the receiving Tank's water temperature. New Pumps start at 1.024;
+adjust it using equipment test data. Missing columns or blank values in older data default to 1.
+See [Water-Temperature Correction of the Oxygen-Transfer Coefficient](#oxygen-transfer-temperature) for the equation.
+
+`Fit SOTE Curve` uses:
 
 - `Qd (m3/h/Diffuser)`
 - `Diffuser Depth (m)`
 - `SOTE (%)`
 
-Curve data supports CSV import/export. After valid rows are entered, fit the
-curve to calculate its coefficients:
+Curve data supports CSV import/export. Enter percentages such as 14.1 in
+`SOTE (%)`; the fitted equation uses the fraction 0.141. After valid rows are
+entered, fit the curve to calculate its coefficients:
 
 ```text
-SOTEa * (Qair / DiffuserNumber)^(-SOTEb) * DiffuserDepth^(SOTEc)
+SOTE = SOTEa * (Qair / 24 / DiffuserNumber)^(-SOTEb) * DiffuserDepth^(SOTEc)
 ```
+
+Here, `Qair` is the DataSet input in m³/d, so hourly air flow per diffuser is `Qair / 24 / DiffuserNumber`. Once Flow is converted internally to m³/s, the equivalent expression is `Flow * 3600 / DiffuserNumber`.
 
 ### Inflows and measured data
 
 An inflow time series starts with `Time`; subsequent columns contain target
 values. Time indices must be present, non-negative, and unique. Rows can be
 added, copied, deleted, reordered, step-added, imported, or exported as CSV.
+
+### Environment {#environment}
+
+`Environment` stores independent environmental time series for Tanks and the
+Outlet and Blanket zones of point settling Tanks. Currently, the only supported
+environmental measurement is the water temperature, `T`.
+In a Tank's detail dialog, select `Environment` from the `Measured` / `Environment`
+dropdown to open its temperature time series.
+
+Open `Environment` from the Flowchart `List` menu, above `Unit`. The list shows
+all Tanks in TankList order, including Tanks without temperature samples.
+It supports viewing, search, column filters, and full screen. Add, rename, reorder,
+or delete Tanks in TankList; these operations are not available in Environment.
+Opening the list does not create temperature samples.
+Click a Tank to open its details. The Tank name is read-only, with the water-temperature
+series below. For a point settling Tank, switch between `Outlet` and `Blanket` to set their temperature series independently.
+This zone switch is also available in the Tank dialog's `Environment` view.
+Click a time or temperature cell and use Set or Cancel in its popup editor.
+The details also support adding time points at regular intervals, deleting selected
+points, and importing or exporting CSV. Closing either dialog preserves submitted
+edits; save all changes with the DataSet or Project. Read-only versions allow viewing
+the list and details and exporting CSV. The DataSet editor embedded in a Project
+provides the same entries.
+Renaming a Tank also renames its temperature series and any zone series;
+deleting a Tank removes all of these series.
+Temperature corrects saturated dissolved oxygen concentration in Pump and direct KLa
+aeration with the Forward Euler solver. Pump aeration also uses `θ` to
+correct the oxygen-transfer coefficient. `BioModel.Matrix.Rate` can also reference
+the built-in symbol `T` for kinetic corrections using the current Tank's water
+temperature at the current time; see [Edit a BioModel: Water Temperature T](../BioModel/Edit.mdx#rate-temperature).
+
+In a local `DataSet.xlsx`, add the optional `Environment` sheet.
+Enter Tank names in the first row, the environment identifier `T` in the second row,
+and times and temperatures from the third row onward. The two header cells of each
+time column are `Tank` and `Environment`, respectively. Different Tanks can use
+different timestamps:
+
+| Tank | Tank1 | Tank | Tank2 |
+|---|---:|---|---:|
+| Environment | T | Environment | T |
+| 0 | 20 | 0 | 18 |
+| 1 | 25 | 0.5 | 19 |
+
+For a point settling Tank named `Clarifier`, use `Clarifier_Outlet` and
+`Clarifier_Blanket` to specify separate zone temperatures:
+
+| Tank | Clarifier_Outlet | Tank | Clarifier_Blanket |
+|---|---:|---|---:|
+| Environment | T | Environment | T |
+| 0 | 20 | 0 | 18 |
+| 1 | 21 | 0.5 | 19 |
+
+Each zone uses its own `T` series when supplied. Otherwise, it uses the physical
+Tank's series (`Clarifier` in this example); if neither series is supplied, it uses
+20°C. A zone-specific series takes precedence over the physical Tank's series.
+
+Time uses the unit specified by `Unit.Time`, and temperature uses `Unit.T`,
+as described in the Unit settings above. Input must satisfy these rules:
+
+- Tank names must identify physical Tanks defined in the DataSet, or use `TankName_Outlet` / `TankName_Blanket` for a point settling Tank. A subset of Tanks or zones is allowed.
+- Each `(Tank, Environment)` pair may appear only once across the sheet, including groups with separate time columns.
+- Each column's first valid temperature must be at t=0. Times within each group must be finite, non-negative, strictly increasing, and unique.
+- Temperatures must be finite numbers from 0 to 40°C. A single value at t=0 represents a constant temperature throughout the calculation.
+- Blank temperature cells indicate that no new sample is available. Each column's last valid temperature is held afterward.
+
+For dynamic calculations, the Project's `dynamic_input_interpolation_method`
+selects the sampling method for all series. `previous` switches to each new value
+at its timestamp; `linear` interpolates between each column's actual valid samples.
+Saturated concentration and Rates containing `T` are then calculated from the resulting temperature.
+Other Tanks' sampling times do not alter that column's interpolation trend.
+Like Flow/Inflow events, temperature input events limit the integration step so
+it cannot cross the next update time. At that time, the solver refreshes
+temperature before recalculating Rate and oxygen transfer. Valid temperature
+input timestamps are protected from `resolution_rate` downsampling, independently
+of how sparsely results are written.
+For CLI JSON input, see [the Environment table format](../SimpoCLI/create-dataset#temperature-input).
+
+Steady-state calculations first determine each Tank's average temperature using
+`steady_state_input_average_method`, then calculate the corresponding saturated
+concentration and Rates containing `T`. For nonlinear expressions, the value at the
+average temperature differs from the average of the dynamic values.
+`previous` uses a time-weighted average of the stepwise series,
+`linear` uses a trapezoidal time average, and `arithmetic` uses the arithmetic mean
+of valid samples. A single valid value is used directly as the average temperature;
+no flow weighting is applied. Time averages cover each column's first-to-last valid
+sample interval; the period of holding the final value through the simulation end
+is not included automatically. To include that duration, explicitly repeat the
+temperature at the desired endpoint. A steady-state calculation followed by a
+dynamic calculation restores the original temperature series for the dynamic phase.
+
+For a Tank or zone without an applicable `T` series, including the fallback above,
+aeration calculations and `T` in Rates assume a water temperature of 20°C,
+giving the same result as a constant 20°C input. Pump and direct KLa aeration both
+use the clean-water saturated concentration at this temperature (approximately
+9.09 mg/L). Pump aeration additionally applies the Tank's β, and the temperature
+multiplier for the oxygen-transfer coefficient is 1.
+
+#### Water-Temperature Correction of Saturated Dissolved Oxygen {#do-temperature}
+
+**SIMPO** uses each Tank's water temperature $T$ (20°C when omitted) and the Benson–Krause equation in [USGS WQ.2011.03, Equation 7](https://water.usgs.gov/water-resources/memos/documents/WQ.2011.03.pdf) to calculate the saturated dissolved oxygen concentration in clean water. The current calculation assumes freshwater at 1 atm and supports water temperatures from 0 to 40°C. With absolute temperature $T_K = T + 273.15$:
+
+$$
+S_{O2,sat}(T) = \exp\left(
+-139.34411
++ \frac{1.575701\times10^5}{T_K}
+- \frac{6.642308\times10^7}{T_K^2}
++ \frac{1.243800\times10^{10}}{T_K^3}
+- \frac{8.621949\times10^{11}}{T_K^4}
+\right)
+$$
+
+The result is in mg O₂/L: approximately 9.09 mg O₂/L at 20°C and 7.558796 mg O₂/L at 30°C. The standard reference concentration $S_{O2,sat,std}$ uses the full stored value at 20°C, **9.092426042885567 mg O₂/L**, regardless of the Tank's water temperature. The clean-water saturated concentration also uses this value when temperature is omitted.
+
+Pump aeration uses $\beta S_{O2,sat}(T)-S_{O2}$ as the mass-transfer driving force, while direct KLa aeration uses $S_{O2,sat}(T)-S_{O2}$. The reference oxygen content of air remains 0.279 kg O₂/m³, so the conversion coefficient in the Pump calculation is consistently $279/S_{O2,sat,std}\approx30.68488$; calculations use full precision.
+
+To reduce repeated calculations, SIMPO ships a fixed table of 4,001 saturated concentrations calculated offline from 0 to 40°C at intervals of 0.01°C. Startup loads the stored values, and generated Fortran calculation code embeds the same constants; the table is not recalculated at startup. When the current water temperature exactly matches one of these temperature points, it uses the stored result. Other temperatures, such as 20.123°C, are evaluated using the equation above, without rounding the temperature or interpolating in the saturation table. The same rule applies to water temperatures obtained by dynamic interpolation and steady-state averaging.
+
+#### Water-Temperature Correction of the Oxygen-Transfer Coefficient {#oxygen-transfer-temperature}
+
+The Pump's `θ` corrects the oxygen-transfer coefficient
+at the 20°C reference temperature to the receiving Tank's water temperature:
+
+$$
+K_La(T) = K_La(20)\,\theta^{T-20}
+$$
+
+The calculation multiplies the Pump's oxygen-transfer rate by $\theta^{T-20}$,
+outside the complete concentration difference $\beta S_{O2,sat}(T)-S_{O2}$.
+When a Pump connects to multiple Tanks, each Tank uses its own temperature.
+Steady-state calculations use each Tank's average temperature; dynamic calculations
+use its current sampled or interpolated temperature.
+1.024 is a common empirical starting value and should be calibrated using equipment
+and test data; see the [EPA oxygen-transfer device evaluation report](https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=20007I08.TXT).
+
+`θ` must be finite and positive, and its correction multiplier must also
+remain finite and positive throughout the supported temperature range.
+Set it to 1 to disable this correction. A missing column, a blank value, or a Tank
+without `T` gives a multiplier of 1.
+Directly supplied Tank `KLa` values remain unchanged and do not use the Pump's θ.
+BioModel kinetic temperature corrections are defined by [expressions using T in Rate](../BioModel/Edit.mdx#rate-temperature), independently of the Pump's θ.
+
+#### Deriving Air Flow from the Oxygen-Transfer Coefficient {#airflow-from-kla}
+
+$k_La$ has units of inverse time only. When converting O₂ concentrations from mg/L to mmol/L, divide both the saturated and current concentrations by 32, leaving $k_La$ unchanged. A model's concentration `Conversion` likewise transforms concentrations and their rates of change only.
+
+Let $N$ be the diffuser count, $a,b,c$ the fitted SOTE coefficients, $H$ the diffuser depth (m), and $V$ the Tank volume (m³). For $0\le b<1$ and positive $a,\alpha,H,N,V,\theta$, the daily air flow required for a target transfer coefficient is:
+
+$$
+Qair=\left[\frac{k_La^{(d)}\,S_{O2,sat,std}\,V}
+{279\,\alpha\,a\,H^c\,\theta^{T-20}\,(24N)^b}\right]^{1/(1-b)}
+$$
+
+Here, $Qair$ is in m³/d, $k_La^{(d)}$ is in $d^{-1}$, and $S_{O2,sat,std}$ uses the fixed mg O₂/L reference value above. Multiply a target given in $h^{-1}$ by 24 before substitution. Because SOTE varies with flow, air flow cannot generally be scaled in direct proportion to $k_La$; also check that the derived flow lies within the manufacturer's validated curve range.
 
 ### Flows
 
