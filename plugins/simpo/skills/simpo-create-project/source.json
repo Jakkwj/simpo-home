@@ -3,7 +3,7 @@
   "name": "simpo-create-project",
   "target": "cli-public",
   "rules_version": "2",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "workflow_sha256": "42f9c25f955417a97e937d3969dab6c8735b6b3f31ae8c082dcaba7a8343c971",
   "adapter_sha256": "f8612a28ae778b1a8217c5d445682eff31c9fd46e90dfd993b7637dd6df5c08d",
   "files": {

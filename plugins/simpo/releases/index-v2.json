@@ -227,6 +227,15 @@
         "size": 101375,
         "sha256": "6904eb5f1597b13e0a83a9341dc2730f527033edbfd08f0193caf176d281ae9b"
       }
+    },
+    {
+      "version": "1.0.3",
+      "cli_min_version": "0.2.0",
+      "artifact": {
+        "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SIMPOSkills_1.0.3.zip",
+        "size": 110271,
+        "sha256": "35fc59b5c2ef1f2663759bf9116dd574c8ff832764feb88b52285047bacd451d"
+      }
     }
   ]
 }

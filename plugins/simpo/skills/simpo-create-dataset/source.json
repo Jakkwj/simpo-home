@@ -3,7 +3,7 @@
   "name": "simpo-create-dataset",
   "target": "cli-public",
   "rules_version": "2",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "workflow_sha256": "e5f01dd3dc17285fcf1fb82068d7f99901bed24bd7a3513f20f671f6694a5adf",
   "adapter_sha256": "421530128a668e7cc572020a4fde2baa1b163e6ae6c66aa30370b3f090846f59",
   "files": {
