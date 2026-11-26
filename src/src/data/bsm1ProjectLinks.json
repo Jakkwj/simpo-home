@@ -1,10 +1,10 @@
 {
-  "01": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_01_OpenLoop_Steady/id/548/did/530",
-  "02": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_02_ClosedLoop_Steady/id/549/did/531",
-  "03": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_03_OpenLoop_Dry/id/546/did/532",
-  "04": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_04_ClosedLoop_Dry/id/547/did/533",
-  "05": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_05_OpenLoop_Rain/id/550/did/534",
-  "06": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_06_ClosedLoop_Rain/id/551/did/535",
-  "07": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_07_OpenLoop_Storm/id/552/did/536",
-  "08": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_08_ClosedLoop_Storm/id/553/did/537"
+  "01": "https://dash.simpowater.com/dashboard/projects/public/name/BSM1_01_OpenLoop_Steady/id/4292/did/4286",
+  "02": "https://dash.simpowater.com/dashboard/projects/public/name/BSM1_02_ClosedLoop_Steady/id/4293/did/4289",
+  "03": "https://dash.simpowater.com/dashboard/projects/public/name/BSM1_03_OpenLoop_Dry/id/4294/did/4284",
+  "04": "https://dash.simpowater.com/dashboard/projects/public/name/BSM1_04_ClosedLoop_Dry/id/4295/did/4285",
+  "05": "https://dash.simpowater.com/dashboard/projects/public/name/BSM1_05_OpenLoop_Rain/id/4296/did/4287",
+  "06": "https://dash.simpowater.com/dashboard/projects/public/name/BSM1_06_ClosedLoop_Rain/id/4297/did/4288",
+  "07": "https://dash.simpowater.com/dashboard/projects/public/name/BSM1_07_OpenLoop_Storm/id/4298/did/4290",
+  "08": "https://dash.simpowater.com/dashboard/projects/public/name/BSM1_08_ClosedLoop_Storm/id/4299/did/4291"
 }

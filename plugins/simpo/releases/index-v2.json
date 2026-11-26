@@ -71,8 +71,8 @@
         },
         "windows-x64": {
           "url": "https://gitee.com/Jakkwj/simpo-home/releases/download/package/SimpoCLI_0.2.4_windows_x64.exe",
-          "size": 16216511,
-          "sha256": "549d5bf5adc2e626be9bcf761b296b417b9cccbe607ce6ffce1b71e12edb47a7"
+          "size": 16217599,
+          "sha256": "fd2fadf2d9c1a9ee41bbf7a000835f619351507bf285fb2b28d02f3bcf91a27a"
         }
       }
     }
