@@ -13,7 +13,7 @@ import Case04Comparison from '@site/src/components/BSM1/Case04Comparison';
 
 # BSM1 reproduction results
 
-Two comparisons answer different questions. **How closely does SIMPO reproduce BSM1?** Compare SIMPO and MATLAB values for the same tank, substance and sample time within one case. **What does feedback control change?** Compare two SIMPO cases that receive the same weather inputs. Start with one dissolved oxygen reading in Tank5, then extend the comparison to the full time series and the whole plant.
+Two comparisons answer different questions. **How closely does SIMPO reproduce BSM1?** Compare SIMPO and MATLAB values for the same tank, substance and sample time within one case. **What does feedback control change?** Compare the two SIMPO cases that receive the same influent. Start with the dry-weather Tank5 reading below or go straight to the [four open- and closed-loop comparisons](#control-pairs).
 
 The BSM1 report gives effluent and operating indices such as EQ and OCI. The NSE scores below were calculated for this SIMPO reproduction against trajectories from the supplied BSM1 Simulink models run in MATLAB R2024b. The MATLAB runs used `ode15s` for the two 500-day simulations and `ode45` for the six weather runs, with relative tolerance $10^{-5}$ and absolute tolerance $10^{-8}$. The separate Assessment comparison gives the published benchmark values. [BSM1 report, appendices 4–5](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=40) · [Assessment results and formulas](./Assessment.mdx)
 
@@ -103,6 +103,54 @@ Open the <a href={projectLinks['06'] + '?result=simulation&tank=Tank6_10&target=
 ![Case 06 in Dash, rain with feedback. The Report displays a rounded weighted NSE of 1.0. The Tank6_10 All chart shows SIMPO effluent concentrations and MATLAB reference samples.](/img/bsm1/rain-closed-effluent-all-en.png)
 
 The public case 06 report displays a WNSE of **{publicWnse['06']}**. Hiding `S_I` in the legend changes only the plot. The public dry closed-loop report for case 04 displays **{publicWnse['04']}**. [Scores for all eight public projects](#wnse)
+
+## What do the open and closed loops control in each pair? {#control-pairs}
+
+All four **open-loop** cases fix the Tank5 aeration coefficient at `KLa_5 = 84 d⁻¹` and the internal recycle from Tank5 to Tank1 at `Q_a = 55,338 m³/d`. Tank5 dissolved oxygen and Tank2 nitrate respond to influent and biological activity. All four **closed-loop** cases track the same two water-quality targets. One PI loop adjusts `KLa_5` to hold Tank5 dissolved oxygen (`S_O2`) at **2 g O₂/m³**. The other adjusts `Q_a` to hold Tank2 nitrate and nitrite nitrogen (`S_NO`) at **1 g N/m³**. [Sensor locations, setpoints and control handles](./Setup.mdx#controller)
+
+Read the four panels in pairs. Tank5 DO sits above the aeration applied to that tank. Tank2 nitrate sits above the internal recycle flow. Concentrations are SIMPO **Predicted** values from the eight public v1 Projects at 5% step tolerance. The two handles show the values actually delivered to the plant. The concentration reference lines mark the closed-loop setpoints. Both cases in each pair receive the same influent. The constant-influent closed loop uses ideal sensors. The three closed-loop weather cases include sensor response and noise, and each weather case starts from its own open- or closed-loop dry-weather pre-run.
+
+<Tabs>
+<TabItem value="constant" label="Constant · 01/02">
+
+![Days 493–500 of constant influent. With fixed handles Tank5 DO settles at 0.49 and Tank2 nitrate at 3.66. With higher aeration and lower recycle both concentrations settle on their setpoint lines.](/img/bsm1/control-constant-en.png)
+
+By days 493–500, open-loop DO has settled at **0.491 g O₂/m³** and nitrate at **3.662 g N/m³**. The closed loop holds the two concentrations at **2.000** and **1.000**, respectively, with **131.65 d⁻¹** of aeration and about **16,486 m³/d** of internal recycle throughout the week. <a href={projectLinks['01'] + '?result=simulation'}>01 open loop</a> · <a href={projectLinks['02'] + '?result=simulation'}>02 closed loop</a>
+
+</TabItem>
+<TabItem value="dry" label="Dry · 03/04">
+
+![Dry weather, days 7–14. With fixed aeration, Tank5 DO swings with the daily load. Feedback keeps DO close to 2. The closed-loop internal recycle varies below the fixed open-loop flow all week.](/img/bsm1/control-dry-en.png)
+
+Daily variation in the dry influent gives a Tank5 DO range of **0.28–3.58 g O₂/m³** at fixed aeration. Modulating aeration narrows that range to **1.62–2.40 g O₂/m³**. Closed-loop recycle peaks at about **41,355 m³/d**, below the fixed open-loop flow of 55,338 m³/d throughout the week. <a href={projectLinks['03'] + '?result=simulation'}>03 open loop</a> · <a href={projectLinks['04'] + '?result=simulation'}>04 closed loop</a>
+
+</TabItem>
+<TabItem value="rain" label="Rain · 05/06">
+
+![Rain, days 7–14. Closed-loop DO fluctuates around 2. Between days 9 and 10 the closed-loop internal recycle rises above the open-loop line and reaches about 81,700 m³/d.](/img/bsm1/control-rain-en.png)
+
+During the rain, the nitrate loop raises the recycle above the fixed open-loop flow. It reaches **81,661 m³/d** near **day 9.64**, although its weekly mean is only **29,610 m³/d**. <a href={projectLinks['05'] + '?result=simulation'}>05 open loop</a> · <a href={projectLinks['06'] + '?result=simulation'}>06 closed loop</a>
+
+</TabItem>
+<TabItem value="storm" label="Storm · 07/08">
+
+![Storms, days 7–14. Closed-loop aeration reaches about 261 d⁻¹ on day 9. Tank2 nitrate briefly exceeds 2 g N/m³ before returning towards its setpoint.](/img/bsm1/control-storm-en.png)
+
+On **day 9**, closed-loop Tank5 aeration reaches its weekly peak of **260.84 d⁻¹**. Around **day 9.17**, closed-loop Tank2 nitrate briefly reaches **2.20 g N/m³**, above its 1 g N/m³ target. Over the full week, feedback reduces the mean absolute nitrate deviation from **1.912** to **0.240 g N/m³**. <a href={projectLinks['07'] + '?result=simulation'}>07 open loop</a> · <a href={projectLinks['08'] + '?result=simulation'}>08 closed loop</a>
+
+</TabItem>
+</Tabs>
+
+**How far from target over a week?** The arrows run from open to closed loop. Each concentration column gives the time average of the absolute difference between the predicted concentration and the closed-loop setpoint at each sample. The last two columns give the mean applied handles in closed loop for comparison with the fixed open-loop settings.
+
+| Influent (open / closed) | DO mean absolute deviation (g O₂/m³) | Nitrate mean absolute deviation (g N/m³) | Closed-loop mean `KLa_5` (d⁻¹) | Closed-loop mean `Q_a` (m³/d) |
+| --- | ---: | ---: | ---: | ---: |
+| Constant 01/02 | 1.509 → 0.000 | 2.662 → 0.000 | 131.7 | 16,486 |
+| Dry 03/04 | 1.412 → 0.084 | 2.158 → 0.205 | 144.3 | 18,552 |
+| Rain 05/06 | 1.342 → 0.080 | 1.974 → 0.248 | 139.7 | 29,610 |
+| Storm 07/08 | 1.404 → 0.081 | 1.912 → 0.240 | 148.1 | 24,594 |
+
+The table and figures cover the same seven-day windows. Constant influent uses days 493–500, with 43 samples four hours apart. The weather pairs use days 7–14, with 673 samples 15 minutes apart. Each mean is the trapezoidal integral over the saved samples divided by seven days. Compare aeration and pumping energy for the same windows in the [Assessment results](./Assessment.mdx).
 
 ## WNSE for the eight cases {#wnse}
 
