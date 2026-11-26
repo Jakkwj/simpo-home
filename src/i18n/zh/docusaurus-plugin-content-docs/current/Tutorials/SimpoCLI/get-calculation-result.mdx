@@ -21,6 +21,20 @@ simpo get-calculation-result PROJECT_ID [OPTIONS]
 `--api-token TOKEN` 和 `--base-url URL`。同一命令还支持通过 `--view`、
 `--dimension`、`--key` 和 `--tank` 读取已保存的平衡结果。
 
+## 读取 Assessment 和加权 NSE {#report}
+
+`--report` 读取已保存的计算报告。先列出该引擎已有的报告项，再查询指标。
+
+```bash
+simpo get-calculation-result PROJECT_ID --engine SIM --report
+simpo get-calculation-result PROJECT_ID --engine SIM --report --section performance_metrics
+simpo get-calculation-result PROJECT_ID --engine SIM --report --section NSE.Weighted
+```
+
+`performance_metrics` 包含各项指标的公式、单位、评估时段、数值或计算错误。响应的 `source` 为 `report`，同样支持 `--offset` 和 `--limit` 分页。`NSE.Weighted` 是项目保存的加权 NSE。BSM1 案例研究另行计算了有实际波动的曲线的平均 NSE。[BSM1 复现结果](../../CaseStudy/BSM1/Results.mdx)
+
+要检查具体采样值，省略 `--report`，选择原始结果中的 `Tank5.Predicted.S_O2` 等曲线。有控制器轨迹时，可分页查阅 `controllers.controllers.BSM1_KLa5.records`，比较 `MeasuredValue`、`Output` 和 `ActuatorOutput`。先用 `--engine SIM` 查看该次计算实际保存的结果项。
+
 ## 读取原始结果
 
 大结果按以下顺序逐层读取：
@@ -50,8 +64,7 @@ simpo get-calculation-result PROJECT_ID \
 减小 `--limit`，或选择更深的 `--section` 路径。使用 `--output` 可避免终端或对话
 承载整页结果。
 
-命令只读取已保存的结果 JSON，不会暴露 Project 内部 pickle。后端仍会校验资源
-归属和 Token 的 read scope。
+读取结果或报告要求 Project 属于当前用户，Token 具备 read scope。
 
 ## 原始结果响应
 

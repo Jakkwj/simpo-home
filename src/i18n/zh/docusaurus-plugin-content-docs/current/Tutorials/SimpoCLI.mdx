@@ -284,6 +284,9 @@ Draft Project，并将已有结果标记为需要重算。不要只提交温度�
 | 命令 | 功能 | 所需 scope |
 | --- | --- | --- |
 | [`calculate`](./SimpoCLI/calculate) | 准备计算并启动 SimpoClient | `calculate` |
+| [`trial-controller`](./SimpoCLI/trial-controller) | 在已保存的 Project 中测试或估算 PI 参数 | `calculate`（使用 `--wait` 还需要 `read`） |
+| [`get-controller-trial`](./SimpoCLI/trial-controller) | 读取试调阶段、进度及结果 | `read` |
+| [`stop-controller-trial`](./SimpoCLI/trial-controller) | 按试调 ID 取消 Controller 试调 | `calculate` |
 | [`get-calculation-status`](./SimpoCLI/get-calculation-status) | 查询当前计算状态 | `calculate` |
 | [`get-calculation-result`](./SimpoCLI/get-calculation-result) | 选择并分页读取已保存的结果序列、平衡汇总、异常及明细 | `read` |
 | [`stop-calculation`](./SimpoCLI/stop-calculation) | 停止计算和匹配的本地进程 | `calculate` |

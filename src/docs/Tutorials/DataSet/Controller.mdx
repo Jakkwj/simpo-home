@@ -1,0 +1,73 @@
+---
+title: Edit a Controller
+sidebar_label: Controller
+description: Connect a sensor to a PI controller and a flow or KLa in the DataSet editor, choose ranges and noise, and test tuning in a Project.
+---
+
+# Edit a Controller
+
+A Controller keeps a process variable near a setpoint by adjusting one named input. For example, a dissolved oxygen sensor in Tank5 can ask an aeration pump for more oxygen transfer when its reading falls below 2 g O₂/m³. The DataSet defines the measurement, the PI settings and the input to adjust. The Project supplies the process model and operating conditions for a trial.
+
+## Create and connect the controller {#connect}
+
+1. Open the editable DataSet and its flowsheet. Create the measuring location (Tank or Inflow), the water-quality **Target**, and the **Flow** to adjust. Enter at least one numeric value at time zero for the named Flow. For direct oxygen transfer, connect the named Flow from a KLaPump to the receiving CSTR.
+2. Choose **New Controller**. Hover over the PI card to reveal its four ports. Connect the measuring location to a port, then drag from a port to the label of the Flow or KLa to adjust. Either connection can be made first. The side you choose sets the line layout. A card has one measurement input and one control output.
+3. Open **List → Controllers** and select the controller name to edit. You can also select **Measurement Location**, **Measured Target** and **Control Handle** inside the editor. Give **Controller Name** a unique, recognizable name, such as `Tank5_DO_PI`. Renaming keeps the existing connections. If you change the measurement or handle of a saved reference controller, review the replacement prompt and its new initial settings.
+4. Complete the three tabs below and select **Apply**. Use **Parse** on the DataSet to validate and save it. With missing PI values, a new controller can be saved as an **untuned draft**. Complete it and apply it to activate feedback during simulation.
+
+Each handle can be assigned to one controller. A label such as `Q_a` represents an independently adjustable Flow. A label such as `Q_0+Q_r` shows a calculated sum. To adjust the recycle contribution to that sum, connect to `Q_r`. **Tools → Signals** toggles the green signal lines on the flowsheet.
+
+## Sensor {#sensor}
+
+| Field | How to fill it |
+| --- | --- |
+| **Measurement Location** | Select the Tank or Inflow that supplies the reading. For a settler, select the intended outlet, blanket or numbered Takacs layer. Layer 1 is at the bottom. |
+| **Measured Target** | Select a DataSet Target available at that location, for example `S_O2` in Tank5. The Project uses the simulated process value as the sensor input. **Measured** observations are used for comparing results. |
+| **Range Lower Limit**, **Range Upper Limit** | Enter the instrument’s lowest and highest reportable readings in Target units. The upper limit must exceed the lower limit. Readings outside the range are clipped. The lower limit defaults to 0 and can be changed, for example to 5 for a pH sensor with a 5–9 range. |
+| **Sensor Preset** | Choose the response and sampling behaviour in the table below. Set the instrument’s range and noise separately. |
+| **Noise Source** | Choose **Off** for a noise-free reading, **Random** for a repeatable generated series, or **BSM1** to replay the reference noise at one-minute intervals on days 0–14. Use Off or Random for longer runs. |
+| **Noise Standard Deviation**, **Noise Update Interval**, **Random Seed** | These fields appear with **Random**. The standard deviation is positive, in Target units, and defaults to 2.5% of the range width (0.25 g O₂/m³ for 0–10). The interval defaults to 1 min and must be positive. Keep the generated integer seed to repeat the same noise, or change it to obtain another sequence. |
+
+| Preset in Dash | Response to a sudden change | When the PI receives a new reading |
+| --- | --- | --- |
+| BSM Class A | Two lag stages, 90% response in 1 min | Continuously |
+| BSM Class B0 / B1 | Eight stages, 90% response in 10 min | B0 continuously. B1 every 5 min, holding the last reading between samples. |
+| BSM Class C0 / C1 | Eight stages, 90% response in 20 min | C0 continuously. C1 every 5 min, holding the last reading between samples. |
+| BSM Class D | Sample every 30 min, deliver one sample later | Every 30 min. The sample taken at minute 0 becomes available at minute 30. |
+
+For a noise-free Class A sensor initially reading 2 g O₂/m³, a sustained step to 4 gives a reading of about 3.8 after one minute. The reading also changes **during** that minute. **Fixed Settings** displays the response, sampling and initialization actually applied, including any ideal sensor state stored with an existing benchmark. [Sensor equations and worked example](./Edit.mdx#sensor)
+
+## PI Controller {#pi}
+
+| Field | How to fill it |
+| --- | --- |
+| **Setpoint** | Enter the desired measurement in Target units, within the inclusive sensor range. For the BSM1 oxygen loop, enter 2 g O₂/m³. |
+| **Proportional Gain** | Enter the signed change in the proportional command for one unit of error. Its unit is the handle unit divided by the Target unit. Check the sentence below Controller Name to see the direction and size of the response for this loop. |
+| **Integral Time** | Enter a positive time in **days**, even when the DataSet clock uses hours. A shorter time makes the controller correct a persistent error faster. In the BSM1 oxygen loop, 0.002 d is 2.88 min. |
+| **Tracking Time** | Enter a positive time in **days**. It sets how rapidly anti-windup corrects the internal PI command after a limit is reached. The oxygen example uses 0.001 d, or 1.44 min. |
+
+Dash prefills a new PI with gain 1, integral time 1 d and tracking time 0.5 d. These are starting values for a trial. The first available measurement and the observed peaks help initialize the setpoint and upper limits. Check them against the intended operating point and equipment capacity. **Fixed Settings** shows the bias, initial integral and anti-windup states, and whether anti-windup is enabled.
+
+## Control Handle {#handle}
+
+BSM1 Table 15 groups the 28 handles into three whole-plant flows, five reactor KLa values, five external carbon feeds and fifteen distribution fractions. For each of the three distributed streams, the fractions sent to reactors 1–5 sum to one. The default strategy uses the two handles shown below. [Handle limits, units and a split-flow example](../../CaseStudy/BSM1/Setup.mdx#control-handles)
+
+![Case 04 controller list showing the nitrate-to-recycle and oxygen-to-aeration loops.](/img/bsm1/dry-closed-controllers-en.png)
+
+| Field | How to fill it |
+| --- | --- |
+| **Control Handle** | Select the independent Flow to adjust. Liquid flow and AirPump airflow use **m³/d**. A KLaPump handle such as `KLa_5` uses **d⁻¹**. The same units apply to the command limits. |
+| **Lower Limit**, **Upper Limit** | Enter the smallest and largest commands the equipment can accept. The lower limit is nonnegative. Use an upper limit above it to allow movement during a trial. Equal limits hold the command fixed. |
+
+Expand **Fixed Actuator Settings** to see how the command reaches the process. An ideal actuator applies it immediately. An actuator with lag follows it over time. The panel shows its response time, lag order, initial value and input gain. During a closed-loop calculation, SIMPO applies the actuator output to the plant. Keep the underlying Flow and its numeric starting value in the DataSet.
+
+**Worked example.** For the BSM1 dynamic oxygen loop select Tank5, `S_O2`, **BSM Class A**, range 0–10 g O₂/m³ and **BSM1** noise. Set the setpoint to 2, the gain to 25, integral time to 0.002 d and tracking time to 0.001 d. Select `KLa_5` and set its limits to 0–360 d⁻¹. At a sensor reading of 1.8, the error is 0.2 g O₂/m³. The proportional contribution is **25 × 0.2 = +5 d⁻¹**. The total command also includes the bias and controller states. The saved benchmark includes its own actuator dynamics and initialization. To reproduce its full trajectory, start from the supplied closed-loop Project. [BSM1 controllers and reference settings](../../CaseStudy/BSM1/Setup.mdx#controller)
+
+## Try the settings in a Project {#trial}
+
+Open an **editable Project** using the DataSet. Trial calculations require dynamic execution from time zero, the **Forward Euler** solver and constant-volume hydraulics. Save the process inputs, open the controller’s **PI Controller** tab and choose a **Trial Window** of 6, 24 or 72 hours within the available input period.
+
+- **Run trial** tests the PI values you entered. If you leave individual PI fields blank, SIMPO estimates those fields.
+- **Estimate all PI values** requests a new estimate for all three PI fields. For an estimate, SIMPO settles the plant at fixed inputs, applies a test step and fits its response. Skogestad’s SIMC rule gives gain and integral time. SIMPO derives tracking time separately and checks the candidate on the original dynamic inputs. An insufficient response can leave the trial without a candidate. [SIMC equations, source and an example](../../CaseStudy/BSM1/Setup.mdx#controller-trial)
+
+**Saved PI** uses the saved tuning and **Trial** uses the entered or estimated tuning with the same current setpoint and inputs. A new controller’s baseline holds the handle at its initial operating value. Read the upper chart for the process value and setpoint, and the lower chart for the actual handle. **Mean absolute process error** gives the time-weighted distance from the setpoint, **Total handle movement** adds the sizes of changes in actual output, and **Time at limit** gives the percentage of the trial spent at a command or output limit. To keep a candidate, select **Use estimated values**, **Apply**, and save the Project.

@@ -1,0 +1,44 @@
+---
+id: trial-controller
+title: Try PI settings on a saved Project
+sidebar_label: trial-controller
+---
+
+Run a Controller trial on a Project Draft that you own. Select a saved Controller by its name or stable ID. The CLI uses the saved setpoint, sensor, handle, BioModel, DataSet and Solution. It uses the dynamic input interpolation from the last saved Simulation report, with `previous` as the default. In Dash, **Run trial** also includes the settings currently open in the Controller editor.
+
+## Choose which PI values to test
+
+In a Draft cloned from the BSM1 dry-weather closed-loop case, `BSM1_KLa5` controls Tank5 dissolved oxygen. These commands run three separate six-hour trials. Substitute your Draft ID for `PROJECT_ID`.
+
+```bash
+simpo trial-controller PROJECT_ID BSM1_KLa5 --gain 20 --window-hours 6 --wait
+simpo trial-controller PROJECT_ID BSM1_KLa5 --integral-time auto --wait
+simpo trial-controller PROJECT_ID BSM1_KLa5 --estimate-all --wait
+```
+
+| Option | What it does in this example |
+| --- | --- |
+| `--gain 20` | Compares gain 20 with the saved gain of 25, retaining both saved time settings. |
+| `--integral-time auto` | Estimates integral time and keeps the saved gain and tracking time. This corresponds to clearing just the integral-time field in Dash and selecting **Run trial**. |
+| `--estimate-all` | Requests a new candidate for all three PI settings, as in **Estimate all PI values**. Use this option on its own, without individual PI overrides. |
+
+`--gain`, `--integral-time` and `--tracking-time` each accept a number or `auto`. Omitting one retains its saved value. Enter integral and tracking time in **days**. Set `--window-hours` to 6, 24 or 72 hours (default 6).
+
+For an estimate, SIMPO first settles the process at fixed inputs. It uses the step response and Skogestad’s SIMC rule for gain and integral time, derives tracking time separately, and checks the candidate on the original dynamic inputs. [BSM1 worked example and SIMC equations](../../CaseStudy/BSM1/Setup.mdx#controller-trial)
+
+## Follow progress and read the result
+
+Start and stop require the `calculate` token scope. Polling, including `--wait`, requires `read`. In a development deployment, the backend starts the worker directly from source on the development computer. In production, the CLI starts the installed SimpoClient on the computer running the command. Trial kernels are available for Linux and Windows.
+
+Use `--wait` to see stage and progress on standard error and receive the final JSON on standard output. To work in another terminal, start without `--wait` and retain the returned `trialId`. A wait timeout leaves the job running.
+
+To reserve a trial for later launch, use `--prepare-only` and omit `--wait`. Within 120 seconds, repeat the same trial settings without `--prepare-only` to start it. You can add `--wait` on launch.
+
+```bash
+simpo get-controller-trial PROJECT_ID TRIAL_ID
+simpo stop-controller-trial PROJECT_ID TRIAL_ID
+```
+
+Read `result.status` after the job completes. If it is `inconclusive`, `result.reason` explains why a candidate could not be recommended. For example, a handle step may produce too little change in the measured variable. When a candidate is available, compare its process error, handle movement and time at a limit with the baseline. Trial results are temporary. Review the values before applying them to the Controller and saving the Project. A trial leaves the saved simulation results intact.
+
+For example, on the dry-weather closed-loop case above, the six-hour `--estimate-all` trial returned `worse_tracking`. The mean absolute dissolved oxygen error rose from 0.0983 to 0.2456 g O₂/m³. With `--window-hours 24 --estimate-all`, the trial returned a candidate with gain 81.34, integral time 0.00744 d and tracking time 0.00372 d. Over those same 24 hours, the saved controller still had a smaller error (0.0917 versus 0.1043 g O₂/m³). Compare both controllers over the same window when choosing which settings to keep.

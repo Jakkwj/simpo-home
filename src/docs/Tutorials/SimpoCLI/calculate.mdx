@@ -60,6 +60,16 @@ Only prepare the files without launching SimpoClient:
 simpo calculate 706 --no-launch
 ```
 
+## Reproduce a BSM1 run
+
+Use a personal Draft Project ID. All eight cases use dynamic mode, including the two constant-influent cases that retain 500 days of startup trajectories.
+
+```bash
+simpo calculate PROJECT_ID --engine SIM --execution-mode dynamic --input-interpolation linear --step-tolerance 0.05 --resolution-rate 1 --wait
+```
+
+The CLI fraction `0.05` corresponds to **5%** in Dash. For a finer internal step, enter `0.001` for **0.1%** or `0.0001` for **0.01%**. Keep resolution at `1` (100%) to compare the original timestamps with MATLAB. After completion, read the seven Assessment metrics or the Project’s weighted NSE from its saved report. [Read a BSM1 report](./get-calculation-result#report)
+
 ## Calculation engines
 
 `--engine` is case-sensitive and defaults to `SIM`.

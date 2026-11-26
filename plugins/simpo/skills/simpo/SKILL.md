@@ -1,6 +1,6 @@
 ---
 name: simpo
-description: "Operate SIMPO through the installed SimpoCLI safely and efficiently. Use when asked to install or configure SimpoCLI, inspect the current SIMPO identity or scopes, create/read/update/sync/release BioModels, DataSets, or Projects, read or change Project Variables, start/monitor/stop calculations, retrieve paginated calculation results, troubleshoot a simpo command, or generate a script that consumes SimpoCLI JSON output."
+description: "Operate SIMPO through the installed SimpoCLI safely and efficiently. Use for CLI configuration, identity or scopes, BioModel/DataSet/Project lifecycle, Project Variables, starting or monitoring calculations and Controller PI trials, SIMC tuning estimates, paginated result retrieval, troubleshooting, or scripts that consume CLI JSON output."
 ---
 
 # SimpoCLI
@@ -33,6 +33,13 @@ safety guidance, then read only the reference for the requested command group.
 - For calculation preparation, engine selection, status polling, bounded result
   retrieval, or stopping,
   read [Calculation commands](references/calculation.md).
+- For a BSM1 Project, read [reproducing a saved BSM1 case](references/calculation.md#reproduce-a-bsm1-project).
+  For KLaPump, mixed inlet response, Controller or Assessment definitions, see
+  [DataSet and Project commands](references/dataset-and-project.md#datasets).
+  To read a saved WNSE, Assessment or controller trace, use
+  [read a BSM1 comparison](references/calculation.md#read-a-bsm1-comparison).
+- For PI tuning on a saved Project, use `trial-controller` and its trial-specific
+  status and stop commands. See [Controller trials](references/calculation.md#controller-trials).
 - For interpreting saved results, Mass Balance, Reaction Analysis, or balance
   diagnostics, use `calculation-result-analysis` from the same Skills package.
   It uses the existing `get-calculation-result` command; a simple result read

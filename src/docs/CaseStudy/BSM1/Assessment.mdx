@@ -1,0 +1,195 @@
+---
+title: BSM1 plant performance assessment
+sidebar_label: Assessment
+description: Reproduce seven BSM1 performance indices and compare eight SIMPO cases with the original report and MATLAB reference results.
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import DynamicAssessmentComparison from '@site/src/components/BSM1/DynamicAssessmentComparison';
+import Case04Comparison from '@site/src/components/BSM1/Case04Comparison';
+
+import projectLinks from '@site/src/data/bsm1ProjectLinks.json';
+
+# BSM1 plant performance assessment
+
+The Tank5 controller keeps dissolved oxygen near 2 g O₂/m³. Does the river downstream receive less pollution? How much electricity does the plant use to achieve that change? Open <a href={projectLinks['03'] + '?result=simulation'}>03 · Dry, open loop</a> and <a href={projectLinks['04'] + '?result=simulation'}>04 · Dry, closed loop</a> side by side. Answer both questions for the same assessment week before comparing one case with its published reference. If you have just rerun both cases, you can follow the exercise in your own Draft reports.
+
+## Inspect the assessment in a Project {#run}
+
+1. Open **Calculation → Simulation**. At the bottom of the report, hover over the **Assessment** icon to see its label. Select it to view the seven saved results. Select **EQ** to expand its formula. In the six weather cases, it uses `Branch("Tank6_10", "Outflow")` for the flow leaving the top of the settler. In the two constant-influent cases, it uses `Q_0 - Q_w`.
+2. Check the evaluation window shown with each metric. The six weather cases cover days **7–14** and the constant-influent cases cover days **493–500**. These fields use days even when the Project displays the time axis in hours. In the other formulas, `Q_w` is the waste flow, `Tank6_1.TSS` is the bottom layer’s solids concentration, and `SP` refers to the sludge metric in the same window.
+3. To test a different formula or evaluation window, clone the Project, open **Detail → DataSet**, and wait for the flowsheet to appear. Choose **List → Assessment**, edit the formula or its **Start Day** and **End Day**, save the change and run the simulation again. [DataSet Assessment editor](../../Tutorials/DataSet/Edit.mdx#custom-performance-metrics)
+
+`Mean(x)` weights each saved output by the time until the next sample and divides by the window length in days. `Integral(x)` returns the weighted sum. `Change(x)` is the closing value minus the opening value. The SP formula in all eight BSM1 cases uses `Change(x, -1)` to move the closing inventory back one saved record. A dynamic evaluation week spans 672 fifteen-minute intervals between 673 timestamps. **Linear** controls how the simulation reads inputs between timestamps. Assessment applies the rules above to its outputs.
+
+![Assessment in public case 04. SP is 2440.609 kg SS/d and the expanded inventory formula shows the −1 offset.](/img/bsm1/dry-closed-assessment-en.png)
+
+Open the <a href={projectLinks['04'] + '?result=simulation'}>case 04 simulation report</a> and select **Assessment**. In this screenshot of the 5% rerun, all seven rows cover days 7–14. The displayed EQ is **6123.105 kg pollution units/d**, SP is **2440.609 kg SS/d** and OCI is **16382.42**. Select SP to see the `-1` at the end of the inventory expression.
+
+## Work through the two dry-weather reports {#first-assessment}
+
+Check that both reports show **days 7–14**. Subtract case 03 from 04 to see what changed when both default control loops were enabled. These runs used **5% step tolerance**, the corrected input timestamps and the one-sample closing inventory offset. The last column uses the values before rounding.
+
+| What the metric measures | Unit | 03 open | 04 closed | Closed minus open |
+| --- | --- | ---: | ---: | ---: |
+| EQ · Weighted pollution load discharged | kg pollution units/d | 6690.33 | 6123.11 | −567.23 |
+| SP · Sludge produced for disposal | kg SS/d | 2435.70 | 2440.61 | +4.91 |
+| AE · Electricity for aeration | kWh/d | 3341.39 | 3698.35 | +356.96 |
+| PE · Electricity for the three pumped streams | kWh/d | 388.17 | 241.03 | −147.14 |
+| EC · External carbon added | kg COD/d | 0 | 0 | 0 |
+| ME · Electricity for mechanical mixing | kWh/d | 240 | 240 | 0 |
+| OCI · Operating cost index using the BSM1 weights | index | 16148.04 | 16382.42 | +234.38 |
+
+1. **Read the discharge result.** Divide 567.23 by 6690.33. The daily average weighted effluent load fell by **8.48%** in the second week of dry weather. To check a discharge limit, examine the pollutant’s own concentration and limit.
+2. **Account for the cost.** Expand `5 * SP + AE + PE + 3 * EC + ME`. Sludge adds about 24.56 index points, aeration adds 356.96 and pumping saves 147.14. External carbon and mixing stay level. With the unrounded values, OCI increases by **234.38 (1.45%)**. Multiplying the daily pump-energy saving by seven gives about **1030 kWh** over the week.
+3. **Check reproduction accuracy.** Compare the SIMPO EQ for dry open loop (**6690.3306**) with the 2008 report’s **6690.1066**. The difference is **+0.2240 kg pollution units/d (+0.00335%)**. This compares two implementations of the same case. The 8.48% in the first step measures the effect of changing the control strategy. [BSM1 report, appendix 4](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=45)
+
+To read a formula, identify the stream and measurement location first. In EQ, `Branch("Tank6_10", "Outflow")` gives the effluent flow and `Tank6_10.TSS` gives its suspended solids concentration. For example, a flow of 1000 m³/d carrying 10 g TSS/m³ gives a solids load of 10 kg/d. Applying the EQ weight of two gives a contribution of 20 kg pollution units/d from TSS at that instant. The full formula adds the other pollutants at every sample, then uses `Mean` to average the combined load over the week.
+
+## EQ · How much pollution leaves in the effluent? {#eq}
+
+Table 10 weights five effluent concentrations. For each sample, multiply the effluent flow by **2 × TSS + 1 × total COD + 30 × total Kjeldahl nitrogen (TKN) + 10 × nitrate and nitrite nitrogen (S_NO) + 2 × effluent BOD₅** at the top of the settler. Average the resulting load over the second week. The six dynamic cases read this flow from the physical outlet of the settler because the upstream mixed-inlet lag delays changes in flow. The two constant-influent cases use `Q_0 - Q_w`, which gives the same effluent flow at steady state. Flow in m³/d times concentration in g/m³ gives grams per day. Dividing by 1000 gives **kg pollution units/d**. [Report, p. 18 and table 10](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=19)
+
+If a DataSet defines `COD`, `TKN` and effluent `BOD5e` as Targets using the report’s definitions, the corresponding Assessment formula follows table 10 directly.
+
+```text
+Mean(Branch("Tank6_10", "Outflow") * (2*Tank6_10.TSS + Tank6_10.COD + 30*Tank6_10.TKN + 10*Tank6_10.S_NO + 2*Tank6_10.BOD5e) / 1000)
+```
+
+The supplied case formula expands those three quantities using the ASM1 concentrations available in the standard DataSet. The expressions are equivalent with the default ASM1 nitrogen contents of biomass (`i_XB = 0.08`) and particulate products (`i_XP = 0.06`), and the fraction of decayed biomass left as particulate products (`f_P = 0.08`).
+
+```text
+Mean(Branch("Tank6_10", "Outflow") * (2*Tank6_10.TSS + Tank6_10.S_I + 1.5*(Tank6_10.S_S + Tank6_10.X_S) + 2.8*(Tank6_10.X_I + Tank6_10.X_P) + 3.86*(Tank6_10.X_BH + Tank6_10.X_BA) + 30*(Tank6_10.S_NH + Tank6_10.S_ND + Tank6_10.X_ND) + 10*Tank6_10.S_NO) / 1000)
+```
+
+| Term in the preset | Where the coefficient comes from |
+| --- | --- |
+| `S_S + X_S` | COD and effluent BOD₅ contribute 1 + 2 × 0.25 = **1.5**. |
+| `X_I + X_P` | COD and organic nitrogen in TKN contribute 1 + 30 × 0.06 = **2.8**. |
+| `X_BH + X_BA` | Biomass contributes to COD, TKN and effluent BOD₅, giving 1 + 30 × 0.08 + 2 × 0.25 × (1 − 0.08) = **3.86**. |
+
+**Check against the published loads.** The report gives the five dry-weather open-loop effluent loads in kg/d. Applying the weights directly gives 2 × 234.6482 + 872.2873 + 30 × 121.8198 + 10 × 159.3704 + 2 × 50.1124 = **6690.1065**. The report gives **6690.1066** using unrounded inputs. [Appendix 4, pp. 43–44](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=44)
+
+## SP · How much sludge does the plant produce for disposal? {#sp}
+
+The waste line measures the solids that have already left the plant. Sludge that accumulates in a reactor or in the settler during the second week also counts towards that week’s production. The report defines SP as **average solids wasted per day + change in plant solids inventory ÷ evaluation days**, in **kg SS/d**. It reports solids lost with the treated effluent separately when calculating total sludge production. OCI uses the sludge-for-disposal figure. [Report, pp. 18–19](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=19)
+
+```text
+Mean(Q_w * Tank6_1.TSS / 1000) + Change(Tank1.Volume * Tank1.TSS + Tank2.Volume * Tank2.TSS + Tank3.Volume * Tank3.TSS + Tank4.Volume * Tank4.TSS + Tank5.Volume * Tank5.TSS + Tank6_1.Volume * Tank6_1.TSS + Tank6_2.Volume * Tank6_2.TSS + Tank6_3.Volume * Tank6_3.TSS + Tank6_4.Volume * Tank6_4.TSS + Tank6_5.Volume * Tank6_5.TSS + Tank6_6.Volume * Tank6_6.TSS + Tank6_7.Volume * Tank6_7.TSS + Tank6_8.Volume * Tank6_8.TSS + Tank6_9.Volume * Tank6_9.TSS + Tank6_10.Volume * Tank6_10.TSS, -1) / (1000 * Integral(Tank1.Volume / Tank1.Volume))
+```
+
+The first term averages the product of waste flow and bottom-layer TSS over the full seven days. The second sums `Volume × TSS` in the five reactors and ten settler layers to obtain the plant inventory in grams. `Change(inventory, -1)` takes the closing stock one saved record earlier and subtracts the opening stock. For the weather cases this means day 13 at 23:45 minus day 7 at 00:00, matching the working group’s MATLAB script. Each layer supplies its own volume, so changing a tank size updates the calculation. `Integral(Tank1.Volume / Tank1.Volume)` gives the length of the full window in days.
+
+For example, suppose the plant wastes 2400 kg SS/d on average and accumulates 350 kg SS in seven days. SP is 2400 + 350 ÷ 7 = **2450 kg SS/d**. If the inventory falls by 350 kg SS at the same wastage rate, SP is **2350 kg SS/d**.
+
+## AE · How much electricity does aeration require per day? {#ae}
+
+The report estimates aeration energy from the volume and effective oxygen transfer coefficient (KLa) of each aerated reactor. BSM1 uses an oxygen saturation concentration of **8 g O₂/m³** and an oxygen transfer efficiency of **1.8 kg O₂/kWh**. Multiply the sum of `Volume × KLa` by 8 to get the standard oxygen transfer rate in g O₂/d, then divide by 1800 g O₂/kWh to get **kWh/d**. [Report, p. 19](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=20)
+
+```text
+Mean(8 * (Tank3.Volume * Tank3.KLa + Tank4.Volume * Tank4.KLa + Tank5.Volume * Tank5.KLa) / 1800)
+```
+
+`Tank3.KLa` reads the combined transfer coefficient acting on Tank3 in d⁻¹. Even when Tank3 and Tank4 share a pump input, each reactor contributes its own volume and effective KLa to AE.
+
+## PE · How much energy do the three pumped streams use? {#pe}
+
+The benchmark assigns a specific energy to each stream. Internal recycle `Q_a` from Tank5 to Tank1 uses **0.004 kWh/m³**, return sludge `Q_r` from the bottom of the settler to Tank1 uses **0.008 kWh/m³**, and waste sludge `Q_w` uses **0.05 kWh/m³**. Multiply each flow by its coefficient and average the sum to obtain **kWh/d**. [Report, p. 19](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=20)
+
+```text
+Mean(0.004 * Q_a + 0.008 * Q_r + 0.05 * Q_w)
+```
+
+For example, the three open-loop flows are 55338, 18446 and 385 m³/d, respectively. Their contributions add up to 221.352 + 147.568 + 19.25 = **388.17 kWh/d**.
+
+## EC · How much external carbon does the plant dose each day? {#ec}
+
+EC measures the added carbon as **kg COD/d**. The benchmark carbon source contains 400000 g COD/m³, so each cubic metre dosed adds 400 kg COD. For a plant with dosing, multiply the flow at each dosing point by the carbon source’s COD concentration, then sum the loads and take their time average. All eight cases use zero external carbon, so the formula is a constant zero. [Report, p. 19](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=20)
+
+```text
+0
+```
+
+## ME · Which reactors require mechanical mixing, and when? {#me}
+
+BSM1 assigns **0.005 kW/m³** of mixing power to a biological reactor whenever its KLa is **below 20 d⁻¹**. The two anoxic tanks always meet this condition. The preset checks the three aerated tanks at each sample. Multiply the volume requiring mixing by the specific power and 24 hours per day, then take the time average to obtain **kWh/d**. [Report, p. 19](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=20)
+
+```text
+Mean(24 * 0.005 * (Tank1.Volume + Tank2.Volume + Tank3.Volume * If(Tank3.KLa < 20, 1, 0) + Tank4.Volume * If(Tank4.KLa < 20, 1, 0) + Tank5.Volume * If(Tank5.KLa < 20, 1, 0)))
+```
+
+At exactly 20 d⁻¹ the reactor’s `If` returns 0. In the standard open-loop case only Tank1 and Tank2 require mechanical mixing. At 1000 m³ each they give 24 × 0.005 × (1000 + 1000) = **240 kWh/d**.
+
+## OCI · What does better effluent quality cost to achieve? {#oci}
+
+The report weights sludge for disposal by **5**, external carbon by **3** and each energy term by **1**. OCI uses the five results calculated for the same evaluation window. SIMPO labels its unit `-` because this is an index for comparing strategies under the benchmark weights. Reading it alongside EQ shows the operating cost associated with the change in effluent load. [Report, p. 20](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=21)
+
+```text
+5 * SP + AE + PE + 3 * EC + ME
+```
+
+## Six dynamic cases, days 7–14 {#dynamic}
+
+Read across each row to compare one metric under the same weather and control strategy. **MATLAB R2024b** uses the working group’s model and assessment script. The **SIMPO** columns use the same input times and SP formula at two step tolerances. For example, the MATLAB EQ for case 04 is **6123.0182**. Tightening the SIMPO tolerance from 5% to 0.01% changes it from **6123.1051** to **6123.0277 kg pollution units/d**.
+
+**Difference and explanation** uses the unrounded SIMPO (0.01%) result minus MATLAB R2024b. A positive value means SIMPO is higher. Rows that round to zero show only the difference. [How the causes were checked](#diagnosis)
+
+<DynamicAssessmentComparison />
+
+EQ is measured in kg pollution units/d, SP in kg SS/d, EC in kg COD/d, and AE, PE and ME in kWh/d. OCI is an index.
+
+The **2008 report** column gives the printed MATLAB/Simulink results. Appendix 4 covers open loop (dry p. 44, rain pp. 45–46, storm pp. 47–48). Appendix 5 covers closed loop (dry p. 54, rain pp. 56–57, storm pp. 59–60). [Appendix 4](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=44) · [Appendix 5](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=54) · <a href={useBaseUrl('/files/bsm1/Assessment.csv')}>Download all 42 comparisons (CSV)</a>
+
+**What does closing the loops change?** In the SIMPO 0.01% column, compare the open and closed loops under the same weather. In rain (05 → 06), EQ falls by **8.40%** and OCI rises by **1.61%**. During the storm (07 → 08), EQ falls by **9.99%** and OCI rises by **1.69%**. Both weather pairs use more energy for aeration and less for pumping when the controllers are active.
+
+### How were the causes checked? {#diagnosis}
+
+**What contributes to the EQ difference?** At each quarter hour, multiply the concentration difference by the average of the two effluent flows, and multiply the flow difference by the average of the two concentrations. Apply the table 10 weights over all 672 intervals in week two. In case 03, concentrations contribute **+0.03882** and flow contributes **−0.00029**, giving **+0.03852 kg pollution units/d** before rounding. The weights of 30 for ammonium and 10 for nitrate explain why their small concentration differences have different effects on EQ. [BSM1 EQ definition and table 10](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=19)
+
+**Why did the old run use 899 seconds for the first 15 minutes?** The MATLAB CSV records time in days. Its first 15-minute sample is written as `0.010416666666666666` days. The old case importer lost the last few digits when it read that number. After conversion, it stored `0.2499999999999984` hours. The solver input writer then converted that value to `899.9999999999942` seconds and truncated it to `899`. The updated importer reads the same sample as `0.25` hours. When SIMPO prepares a new run from an older DataSet, it also writes this sample at `900` seconds.
+
+The original flow and influent time axes each contained 1,345 timestamps, of which 85 were one second early. Linear interpolation uses the times of both neighboring inputs, so the shifted times changed the flows and concentrations supplied to the solver. The reruns use the corrected input timestamps. At the same 0.01% step tolerance all six dynamic EQ results moved closer to MATLAB.
+
+Case 03 had one more controlled run. With the corrected input times, tightening only the forward Euler step tolerance from 0.01% to 0.0025% cut the EQ gap from +0.03852 to +0.00929. This second test was run only for case 03.
+
+**Which record supplies the closing stock?** The working group’s script uses the start of each interval to accumulate sludge wasting and reads the closing inventory from that same set of records. The SP definition in each of the eight SIMPO cases explicitly uses `Change(inventory, -1)` to select that record. You can measure the effect by varying just the endpoint on a single MATLAB trajectory. [Inventory calculation](#inventory)
+
+**How can the closed-loop energy results be checked?** Dissolved oxygen controls aeration in tank 5 and nitrate controls the internal recycle. The table converts the observed differences in mean applied KLa and recycle flow during week two into AE and PE. The averages quantify the resulting energy difference. Identifying when the sensor, controller and reactor first diverged requires their trajectories.
+
+### Case 04 controller performance, days 0–14 {#dynamic-controllers}
+
+The seven plant indices above describe the second week. The controller metrics in the Dash Report cover the **full 14 days** (1,345 samples). Each loop has three rows. They show how closely the process followed its setpoint, how far the applied handle moved in total, and what fraction of the run it spent at a limit. Both columns use the same sample times. SIMPO uses **0.01%** step tolerance.
+
+<Case04Comparison controllersOnly />
+
+Read the mean absolute process error for the oxygen loop alongside the time spent at its actuator limits to see how closely it tracked the setpoint and how much of its operating range it used. [Controller charts and steps to reproduce this comparison](./Results.mdx#closed-loop-comparison)
+
+### Which reference explains the difference? {#reference}
+
+The working group’s release includes `Results/openloop_dyn.pdf` and `Results/closedloop_dyn.pdf`, computed in MATLAB R2008b in May 2009. The local reference trajectories were generated by rerunning the distributed Simulink models in MATLAB R2024b. Both the 2008 report and software results use a 14-day dry-weather warm-up before the weather-specific run. The report documents 150 days of prior constant influent, while the software results document 500. The available records do not establish how much of each change in results is attributable to this difference. [2008 open-loop procedure](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=44) · [2008 closed-loop procedure](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=54) · [Working group’s BSM1 release](https://github.com/wwtmodels/Benchmark-Simulation-Models/releases/tag/BSM1_vR2019b)
+
+In the release’s `perf_plant.m` output, use the **updated** EQ, AE, PE and OCI values to compare with the equations in section 6 of the report. For example, the older EQ equation uses nitrogen weights of 20 and 20. Table 10 specifies 30 for TKN and 10 for nitrate nitrogen. On the same dry open-loop run, the release lists **7065.6121** with the older coefficients and **6690.1049** with the updated ones. [Section 6 and table 10](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=19) · [Software and reference results](https://github.com/wwtmodels/Benchmark-Simulation-Models/releases/tag/BSM1_vR2019b)
+
+**How much did accuracy improve?** At 0.01% tolerance the absolute EQ, SP and OCI errors decreased in all six weather cases relative to R2024b. Across the 36 nonzero references the largest relative error fell from **0.00895%** (case 06 SP) to **0.000655%** (case 05 SP). At 5%, SP and OCI also improved in all six cases. EQ improved in four, while the absolute EQ errors in cases 05 and 07 rose by about 0.0149 and 0.0121 kg pollution units/d. For storm open loop, the 2008 report gives an EQ of **8197.7197**, R2024b gives **8021.7327** and SIMPO at 0.01% gives **8021.7848**. The two MATLAB reference values differ as well.
+
+### Why the sludge inventory endpoint matters {#inventory}
+
+In all six weather cases, `perf_plant.m` and SIMPO accumulate wasted sludge through 00:00 on day 14. Both use the inventory at 00:00 on day 7 as the opening stock and the stock at 23:45 on day 13 as the closing stock. To use the inventory at 00:00 on day 14 as in the report equation, change `Change(inventory, -1)` to `Change(inventory)` in your DataSet. Wasting and the denominator still cover seven days.
+
+On the dry open-loop MATLAB trajectory, total plant solids fell from 24,167.611 kg at 23:45 on day 13 to 24,166.703 kg at 00:00 on day 14. Using midnight lowers the closing stock by 0.908 kg and the seven-day SP by about 0.12972 kg SS/d. Using 23:45 increases OCI by about 5 × 0.12972 = 0.64862. [MATLAB performance script in the release](https://github.com/wwtmodels/Benchmark-Simulation-Models/releases/tag/BSM1_vR2019b)
+
+## Two constant-influent cases, days 493–500 {#steady}
+
+The published steady-state appendices give the final plant state. This additional check compares all seven metrics over the final week at the Project step tolerance of 5% with an independent calculation from the R2024b trajectories. Each window has **43 timestamps and 42 four-hour intervals**, so the closing inventory for `Change(inventory, -1)` is at 20:00 on day 499 and the opening inventory is at 00:00 on day 493. [Source model and steady-state reference files](https://github.com/wwtmodels/Benchmark-Simulation-Models/releases/tag/BSM1_vR2019b)
+
+| Metric | Unit | 01 Open, SIMPO | 01 Open, MATLAB | 02 Closed, SIMPO | 02 Closed, MATLAB |
+| --- | --- | ---: | ---: | ---: | ---: |
+| EQ | kg pollution units/d | 5254.282266 | 5254.282355 | 5226.470849 | 5226.470849 |
+| SP | kg SS/d | 2461.684002 | 2461.683996 | 2463.729816 | 2463.729816 |
+| AE | kWh/d | 3341.386667 | 3341.386667 | 3623.694714 | 3623.694714 |
+| PE | kWh/d | 388.170000 | 388.170000 | 232.760430 | 232.760430 |
+| EC | kg COD/d | 0.000000 | 0.000000 | 0.000000 | 0.000000 |
+| ME | kWh/d | 240.000000 | 240.000000 | 240.000000 | 240.000000 |
+| OCI | - | 16277.976676 | 16277.976649 | 16415.104227 | 16415.104227 |
+
+EQ and OCI assess plant performance over a chosen period. NSE measures the match between individual time series in this reproduction. A short-lived concentration error in one layer can substantially change its NSE while leaving the weekly effluent and energy totals close to their reference values. [NSE by case and source of the storm discrepancy](./Results.mdx)

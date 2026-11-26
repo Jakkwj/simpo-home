@@ -1,6 +1,6 @@
 ---
 name: simpo-create-dataset
-description: "Design or extract a wastewater-treatment DataSet and create a reviewed SIMPO DataSet Draft in SIMPO. Use when asked to turn influent flow and water-quality data, discharge targets, process constraints, a design brief, an existing treatment scheme, a research paper, a PDF, a report, tables, figures, or supplementary material into SIMPO Unit, Target, Tank, Pump, Environment, Measured, Inflow, Flow, and Connection JSON; map Tank water-temperature series to T; trace source evidence and time series; select an ASM2D- or ASM3-compatible target set; calculate preliminary tank volumes, recycles, wasting, and aeration when design completion is requested; audit hydraulic balance; or submit an approved DataSet."
+description: "Design or extract a wastewater-treatment DataSet and create a reviewed SIMPO DataSet Draft in SIMPO. Use when asked to turn influent flow and water-quality data, discharge targets, process constraints, a design brief, an existing treatment scheme, a research paper, a PDF, a report, tables, figures, or supplementary material into SIMPO DataSet JSON, including BSM1 equipment, mixed-inlet response, PI controllers and Assessment formulas; map water-temperature and input series; trace source evidence and time series; select an ASM2D- or ASM3-compatible target set; calculate preliminary tank volumes, recycles, wasting, and aeration when design completion is requested; audit hydraulic balance; or submit an approved DataSet."
 ---
 
 <!-- BEGIN SHARED WORKFLOW -->
@@ -82,6 +82,11 @@ version, export file, removed points, reading uncertainty, and the chosen SIMPO
 symbol. Do not interpolate or turn censored values into zero without an explicit
 reviewed rule. Read the paper-extraction reference for the complete audit fields.
 
+For a benchmark explicitly comparing two simulators, the reference trajectory
+can populate `Measured` at matched times. Label it as simulated benchmark
+output, record its simulator and conditioning run, and keep it separate from
+plant observations and the PI feedback signal.
+
 If several figures describe different experiments, initial conditions, sources,
 or validation roles, create separate DataSets. Use one DataSet with multiple
 Tanks only when the figures represent genuinely parallel reactors or one
@@ -125,6 +130,7 @@ SIMPO-safe name is introduced.
    verification.
 4. Select ASM2D when phosphorus removal or PAO chemistry is material and ASM3
    when it is not, unless the user or source identifies a compatible BioModel.
+   BSM1 uses its source ASM1 model and Target units.
    This is a compatibility recommendation in the audit note; the DataSet is not
    linked to a BioModel during DataSet creation.
 5. Build the complete DataSet detail object. Preserve the source time unit when
@@ -138,10 +144,22 @@ SIMPO-safe name is introduced.
    Put documented water temperatures in optional `Environment` using identifier
    `T` and `Unit.T=℃`; do not make T a Target or BioModel Parameter. Follow
    the JSON reference for independent Tank/settler-zone series, defaults, and
-   Pump θ. Preserve existing Environment data in an update, and disclose
+   Pump temperature references and Tank saturation models. Preserve existing Environment data in an update, and disclose
    absent-temperature 20°C defaults and any assumed transfer coefficient.
-   Use only `CSTR` and `Point Settling` tank types in this workflow unless the
-   user provides a separately validated current SIMPO format for another type.
+   Use the supported CSTRTank, PointSettlingTank and TakacsSettlerTank tables
+   according to the JSON reference, retaining legacy Tank input when needed.
+   New pumps use AirPump or KLaPump; KLa signals remain /d in Flow and must not
+   enter hydraulic balance. Classic BSM1 uses fixed kinetics, Constant saturation
+   8 mg O₂/L and θ=1 without adding a temperature series. To reproduce the
+   Simulink cases, start from the matching saved case and set the mixed-inlet
+   time constant on Tank1 to 8.64 seconds. Linear interpolation is a separate
+   Project calculation setting.
+   Use the compact `Controller` table and its saved `ControllerConfig` for
+   closed loops. The optional `PerformanceMetric` JSON table supplies the
+   Assessment definitions and evaluation windows. See the [schema and examples](references/dataset-json-format.md)
+   for the benchmark PI rows, sensor noise and the SP inventory's closing-sample
+   offset. Other tank types require a
+   separately validated current SIMPO format.
    For `Point Settling`, preserve a supplied `SettlingFactor`; otherwise normally
    use approximately `0.9999`, or directly use `1` when reported effluent TSS is
    `0`. Record the adopted value and basis as described in the process design rules.
@@ -246,3 +264,17 @@ Create the reviewed Draft:
 
 Parse stdout as JSON and verify the shared success conditions. On ambiguous
 responses, use `simpo get-datasets` with pagination before retrying creation.
+
+For an update, read the specified owned Draft using `simpo get-dataset ID`.
+Use its complete `detail` object as the starting file, edit the relevant
+tables, and pass that object to `simpo update-dataset ID --json PATH`.
+Retain the other equipment tables, companion `ControllerConfig`, assessment
+definitions and diagram layout. The CLI accepts the table object itself.
+The outer response also contains metadata and is unsuitable as input.
+
+When the user requests PI tuning and the DataSet is already linked to a saved
+Project Draft, use `simpo trial-controller PROJECT_ID CONTROLLER --integral-time auto --wait`
+to estimate just the integral time, or `--estimate-all` to estimate all PI
+parameters. The trial returns a candidate for review. Read the available
+Assessment results from a completed simulation with
+`simpo get-calculation-result PROJECT_ID --engine SIM --report --section performance_metrics`.

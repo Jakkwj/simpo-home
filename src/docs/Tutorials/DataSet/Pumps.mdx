@@ -1,0 +1,67 @@
+---
+title: Set up aeration pumps
+sidebar_label: AirPump and KLaPump
+description: Connect an airflow or oxygen-transfer coefficient to a CSTR, enter the pump parameters and check what the reactor receives.
+---
+
+# Set up AirPump and KLaPump
+
+Choose the pump from the data you have. If you know **the volume of air supplied to a tank**, use an **AirPump**. SIMPO calculates oxygen transfer from airflow and diffuser performance. If you already know **the tank's volumetric oxygen-transfer coefficient**, use a **KLaPump** and supply the reference KLa directly. The BSM1 public cases use this second option. Both pumps connect to a CSTR through a named Flow on the diagram. These connections supply oxygen. The water balance uses the liquid connections.
+
+| Where to enter it | AirPump example | KLaPump example |
+| --- | --- | --- |
+| Pump details | Diffuser efficiency curve coefficients and temperature factor | Temperature factor and reference temperature |
+| Flow time series | `Qair`, 9,600 m³/d | `KLa_5`, 84 d⁻¹ |
+| Receiving CSTR | Diffuser count, depth, α, β and oxygen saturation model | Oxygen saturation model. Direct KLa bypasses the diffuser settings and the α and β corrections. |
+
+## Create and connect a pump {#connect}
+
+1. Open **Detail → Flowchart** in a DataSet draft. Choose **Add → New Pump**, then **AirPump** or **KLaPump**. The new pump appears on the diagram. Open **List → Pumps** and click its name to edit the details.
+2. Enter a unique **Name**, such as `Air_1` or `KLaPump5`. Start with a letter and use letters, digits or single underscores. Complete the fields for the chosen type below and select **Apply**.
+3. Use **New Flow** to create a named input series. Enter times in **Unit → Time**. Enter AirPump **values** in m³/d and KLaPump values in d⁻¹ (/d), even when the time axis uses hours. Enter 0 for periods with aeration off.
+4. In **Connections**, add a row and select `From` (the pump), `Flow` (the series) and `Into` (the receiving CSTR). You can also drag from the pump port to the tank and assign the Flow to the connection. A KLaPump connection takes a single named series such as `KLa_5`. Use separate series for air or water flows.
+5. In **Targets**, set **StandardTarget** to **Dissolved Oxygen** for the oxygen target, such as `S_O2`. Select **Parse** to validate and save the DataSet. In the Project, map this Target to the BioModel oxygen component. Select **Forward Euler** when using a KLaPump.
+
+## AirPump fields and the SOTE curve {#airpump}
+
+Standard oxygen transfer efficiency (SOTE) is the fraction of oxygen in the supplied air that transfers to clean water under standard conditions. It depends on **airflow through one diffuser** and **diffuser submergence**. Enter the manufacturer's fitted coefficients if supplied. If you have efficiency measurements at different operating points, fit the curve in Dash.
+
+| Field | Meaning and entry |
+| --- | --- |
+| `SOTEa` | Efficiency coefficient a. At an airflow of 1 m³/h per diffuser and a depth of 1 m, a equals the efficiency as a fraction. Enter `0.05` for 5%. |
+| `SOTEb` | Airflow exponent b. At a fixed depth, doubling the flow per diffuser multiplies efficiency by $2^{-b}$. |
+| `SOTEc` | Depth exponent c. At a fixed flow per diffuser, doubling the depth multiplies efficiency by $2^c$. |
+| `θ` | Positive, dimensionless temperature factor. A new AirPump starts at `1.024` and uses a fixed reference temperature of 20 °C. Each 1 °C increase in tank temperature multiplies KLa by θ. Enter `1` to disable this correction. |
+
+A new AirPump starts with a, b and c set to `1, 0, 0`, giving 100% SOTE at every operating point. For a plant model, enter the coefficients for the installed diffusers. In the **receiving CSTR**, enter the number of operating diffusers $N$ and the submergence $H$ in metres. Both must be positive for the air to transfer oxygen. The α factor adjusts the clean-water transfer coefficient for process water. The β factor adjusts oxygen saturation for the Freshwater model. Set the tank water temperature as `T` in **Environment**. A tank without a temperature series uses 20 °C. [Water temperature and oxygen saturation](./Edit.mdx#environment)
+
+**Try fitting a curve.** Open **Fit SOTE curve** in the AirPump details. Enter one test point per row, with positive values in all three columns and at least three complete rows. The data below are for practice. For a plant model, enter or import the device's test data from CSV. Vary the airflow and the depth independently so the data distinguish the two exponents.
+
+| Qd, airflow per diffuser (m³/h) | Diffuser Depth (m) | SOTE (%) |
+| ---: | ---: | ---: |
+| 1 | 2 | 10 |
+| 4 | 2 | 5 |
+| 4 | 4 | 10 |
+
+Run the fit using the button at the upper right of the curve dialog. It fills the three fields in the pump details. Select **Apply**. These example points give approximately `0.05, 0.5, 1`. **Enter 10 for 10% in the fitting table**. SIMPO converts it to 0.10 internally. Suppose the Flow supplies 9,600 m³/d to 100 diffusers sharing the air equally. Each receives $Q_d=9600/(24\times100)=4$ m³/h. At a depth of 4 m, $\mathrm{SOTE}=aQ_d^{-b}H^c=0.05\times4^{-0.5}\times4=0.10$, matching the final test point.
+
+## KLaPump fields and shared inputs {#klapump}
+
+| Field or location | Meaning and entry |
+| --- | --- |
+| `θ` in pump details | Positive, dimensionless factor, initially `1`. Keep 1 to apply the supplied KLa directly. If the series was established at a reference temperature and needs adjustment, enter its temperature factor. |
+| `TRef` in pump details | Reference water temperature for the input KLa, initially `20` °C. Enter `15` for coefficients established at 15 °C. |
+| Flow on the connection | Enter finite, nonnegative reference KLa values in d⁻¹. SIMPO uses the water temperature of each receiving CSTR to calculate $KLa_{tank}=KLa_{ref}\,\theta^{T-T_{ref}}$. |
+| Saturation model in the receiving CSTR | Determines the oxygen concentration approached by aeration. For BSM1 select **Constant** and enter **8 mg O₂/L**. |
+
+A KLaPump can connect the same series to several reactors. Each receives the full reference coefficient and applies its own temperature correction. For example, supply **100 d⁻¹** to two tanks with `TRef = 15` and `θ = 1.024`. The tank at 15 °C receives 100 d⁻¹ and the tank at 20 °C receives about 112.59 d⁻¹. If several KLaPumps use the same series, they must agree on TRef. A CSTR accepts at most one direct KLa connection. A CSTR using direct KLa uses that as its sole aeration method. Other tanks in the same model can use AirPump.
+
+### Enter the BSM1 dry-weather open loop {#bsm1}
+
+| From | Flow | Into | Series value |
+| --- | --- | --- | ---: |
+| `KLaPump34` | `KLa_34` | `Tank3` | 240 d⁻¹ |
+| `KLaPump34` | `KLa_34` | `Tank4` | 240 d⁻¹ |
+| `KLaPump5` | `KLa_5` | `Tank5` | 84 d⁻¹ |
+
+Set both pumps to `θ = 1` and `TRef = 20`. At an instant when Tank5 has 2 mg/L of dissolved oxygen, the contribution of aeration to the concentration change is $84\times(8-2)=504$ mg O₂/(L·d). In the closed-loop case, the Controller adjusts `KLa_5`. In an Assessment formula, `KLa_5` reads the effective input signal, while `Tank5.KLa` reads the transfer coefficient actually applied to the tank, including its temperature correction. [Inspect these connections and values in the BSM1 cases](../../CaseStudy/BSM1/Setup.mdx#aeration)

@@ -23,6 +23,75 @@ command reports a usage error.
    launch is not a completed calculation.
 6. Use `stop-calculation` only when the user asks to stop the exact Project.
 
+## Reproduce a BSM1 Project
+
+Open the Public Project for the requested influent and control strategy in
+SimpoDash. Its release ID identifies the saved benchmark on that server. For
+another run, choose **Clone** in Dash and use the resulting personal Draft ID
+on the same server. Numeric IDs are specific to each installation. The paired
+cases are 01/02 constant influent, 03/04 dry, 05/06 rain and 07/08 storm,
+with open loop first and closed loop second in each pair.
+
+```text
+simpo calculate DRAFT_ID --engine SIM --execution-mode dynamic \
+  --input-interpolation linear --ode-solver Forward_Euler \
+  --step-tolerance 0.05 --resolution-rate 1 --wait
+```
+
+The saved baseline uses a **5%** step tolerance and **100%** output
+resolution. Both CLI arguments take ratios. To repeat the tighter tolerance
+comparisons, Dash entries of `0.1`, `0.02` and `0.01` percent correspond to
+CLI values of `0.001`, `0.0002` and `0.0001`. Keep the sampling grid fixed.
+Add `--force-recalculate` for a fresh comparison after a solver update. An
+identical request can reuse an older saved result, including its original input
+timing. For example, keep the options above and use
+`--step-tolerance 0.0001 --resolution-rate 1 --force-recalculate --wait`
+to repeat the run at 0.01%.
+Cases 01/02 use Dynamic execution to retain all 3,001 four-hour samples of
+the 500-day startup. Cases 03–08 preserve 1,345 quarter-hour samples over
+14 days. Start from the cloned Project with its saved Solution, DataSet and
+Controller configuration to reproduce its initial operating conditions.
+
+Use the saved PI parameters to reproduce a benchmark. Use a controller trial to
+explore tuning independently.
+
+## Controller trials
+
+Select a saved Controller by name or stable ID in the user's version 0 Draft
+Project. A trial uses its linked saved BioModel, DataSet and Solution. Dynamic
+interpolation comes from the last saved Simulation report and defaults to
+`previous`. Dash can also include edits currently open in the Controller form.
+
+```text
+simpo trial-controller DRAFT_ID BSM1_KLa5 --gain 20 --window-hours 6 --wait
+simpo trial-controller DRAFT_ID BSM1_KLa5 --integral-time auto --wait
+simpo trial-controller DRAFT_ID BSM1_KLa5 --estimate-all --wait
+simpo get-controller-trial DRAFT_ID TRIAL_ID
+simpo stop-controller-trial DRAFT_ID TRIAL_ID
+```
+
+Each of `--gain`, `--integral-time` and `--tracking-time` accepts a number
+or `auto`. A number tests that value, `auto` estimates the field, and omission
+retains the saved value. Both time parameters use days. This corresponds to
+**Run trial** in Dash, where a blank requests an estimate. Use
+`--estimate-all` without individual tuning options to match **Estimate all PI
+values**. SIMPO settles the plant at fixed inputs, then runs it twice from
+that state, with and without a small change in the handle. The difference
+provides the step response for SIMC gain and integral-time estimation. SIMPO
+derives tracking time separately, then tests the candidate with the original
+dynamic inputs. The trial window is 6, 24 or 72 hours. Estimation warm-up runs
+separately. [Skogestad (2003)](https://doi.org/10.1016/S0959-1524(02)00062-8)
+
+Start and stop need `calculate`. Reading status needs `read`. In development
+the backend starts the source worker locally. In installed deployments the CLI
+launches SimpoClient on the user's computer. Retain `trialId` for progress,
+the result and cancellation. `--wait` displays progress on stderr. A wait
+timeout leaves the trial running. Read the solver's `result.status` and
+`result.reason` even after a successfully completed job. A weak step response
+can give `inconclusive`. The temporary trial leaves saved Project settings and
+simulation results intact. Read estimated values from `result.parameters` and
+apply accepted tuning separately on request.
+
 ## Initial DataSet value semantics
 
 For calculation, `Solution.Variable.Value` is the baseline for `Inflow` and
@@ -40,7 +109,10 @@ every row:
   every later point is increased by `900`.
 - For `Flow`, the offset is `Variable.Value - DataSet Flow value at `time=0`;
   add it to every row, clamp negative results to zero, and then convert the
-  resulting flow from `m3/d` to `m3/s` for the calculation.
+  resulting volume flow from `m3/d` to `m3/s`, or KLaPump signal from `/d` to
+  `/s`, for the calculation. KLa units do not follow Unit.Time. Controllers
+  subsequently override the current effective signal without changing the
+  original samples; a fully controlled Flow cannot also be estimated as an input.
 - Do not apply either offset rule to `Measured` or `Environment`. Measured values remain the
   original observations used for comparison with model outputs; they are not
   shifted to match a Solution Variable value. Environment temperatures are
@@ -103,10 +175,21 @@ mode restores the original temperature series during the dynamic phase.
 A missing Tank/zone series uses 20°C, after checking a point settler's parent
 series. Environment is not adjusted by Project Variable offsets or estimation.
 Record temperature provenance, defaults, interpolation/average method, Pump θ,
-and any Rate temperature factors when comparing runs. Temperature-dependent
+KLaPump TRef, Tank SaturationModel and any Rate temperature factors when
+comparing runs. AirPump uses a fixed 20°C reference; KLaPump uses its TRef and
+still corrects from 20°C when T is missing. Classic BSM1 instead uses θ=1,
+Constant saturation 8 mg O₂/L and fixed kinetics, without dynamic temperature.
+Temperature-dependent
 aeration and Rates using T require Forward Euler; Improved Euler does not
 support Rate T. No extra temperature CLI flag is needed; update the DataSet or
 BioModel JSON through the normal commands. See their references for schemas.
+KLaPump and closed-loop calculations also require Forward Euler.
+
+Inspect `runtime_inputs` for original versus effective signals and per-Tank
+aeration, respecting its status, units and sampling metadata. KLa is /d,
+saturation mg O₂/L and modeled oxygen transfer kg O₂/d. A missing runtime
+trace does not justify treating the original Flow as the actual closed-loop
+signal; KLa is neither air volume nor a direct blower-power measurement.
 
 For a steady-state result, inspect the `Retention` rows as well as Component
 and Target. Per-Tank HRT uses each Tank's through-flow. System HRT divides the
@@ -268,7 +351,7 @@ blindly launch a duplicate calculation or repeat a stop request.
 After the calculation has completed, use the bounded result reader:
 
 ```text
-simpo get-calculation-result PROJECT_ID [--engine ENGINE] [--section NAME] \
+simpo get-calculation-result PROJECT_ID [--engine ENGINE] [--report] [--section NAME] \
   [--offset N] [--limit N] [--output result.json]
 ```
 
@@ -290,6 +373,43 @@ instead of sending them through a terminal or chat. Do not read the Project's
 internal pickle directly; result access is read-only and remains subject to the
 backend's Token ownership and scope checks.
 
+### Read a BSM1 comparison
+
+```text
+simpo get-calculation-result PROJECT_ID --engine SIM --report --section performance_metrics --limit 7
+simpo get-calculation-result PROJECT_ID --engine SIM --report --section NSE.Weighted
+simpo get-calculation-result PROJECT_ID --engine SIM --section Tank5.Measured.S_O2 --limit 20
+simpo get-calculation-result PROJECT_ID --engine SIM --section Tank5.Predicted.S_O2 --limit 20
+simpo get-calculation-result PROJECT_ID --engine SIM --section runtime_inputs.tank_aeration --limit 5
+simpo get-calculation-result PROJECT_ID --engine SIM --section controllers.controllers.BSM1_KLa5.records --limit 5
+simpo get-calculation-result PROJECT_ID --engine SIM --section controllers.metrics.BSM1_KLa5
+```
+
+The first two examples read the saved report and require the `read` scope.
+Reading a report does not run the simulation. Omit `--section` and keep
+`--engine SIM --report` to list available report keys. Assessment rows give
+`Name`, `Value`, `Unit`, `Formula`, `StartDay`, `EndDay` and any `Error`.
+Use the saved formula and window to compare EQ, SP, AE, PE, EC, ME and OCI.
+For these cases the assessment week is days 493–500 (constant influent) or
+7–14 (weather). `NSE.Weighted` is the Project's saved weighted score. In
+these eight BSM1 Projects it covers 210 equally weighted water-quality
+series. Each of the five reactors and ten settler layers contributes 13
+ASM1 components plus TSS. Hiding a curve in Dash leaves its weight in the
+saved score. The SP stock offset affects Assessment only.
+
+The remaining examples read simulation series. `Measured` contains MATLAB
+model output in these benchmark Projects. `runtime_inputs.signals` has
+`RawValue` and `EffectiveValue`, and `runtime_inputs.connection_flows` has
+recorded branch flows when the mixed-inlet lag is enabled. With a saved
+controller trace, compare `TrueValue`, `MeasuredValue`, limited command
+`Output` and applied `ActuatorOutput` at the same time. Use the actual
+controller name. Open-loop runs and older uploads can have no controller
+records. In a closed-loop BSM1 run with benchmark statistics,
+`controllers.metrics.<name>` gives tracking and handle metrics such as IAE
+and MVMean over days 7–14. Trial metrics use the selected trial window.
+For a Takács settler, `takacs_settlers.settlers.Tank6.layers` gives
+the saved layer order and geometry. `Tank6_1` is the bottom and `Tank6_10`
+the top in these cases.
 
 ### Saved Balance views
 
@@ -339,3 +459,9 @@ If the installed command rejects an option, inspect its help after the error;
 do not bypass it with direct API requests or automatically upgrade the user.
 The saved report's `resolution_rate` is already a percentage, whereas
 `calculate --resolution-rate` takes a ratio (`1` means `100%`).
+
+Control result schema 2.0 keeps single-actuator fields for ordinary PI loops.
+For fanout, use config.outputs entries (actuator, target, gain) and named
+ActuatorCommand[NAME]/ActuatorOutput[NAME] fields. The ambiguous single
+ActuatorOutput and config actuator/manipulated_variable are null for fanout;
+do not interpret null as zero or reuse the first branch for all targets.

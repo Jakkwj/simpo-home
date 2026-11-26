@@ -1,0 +1,97 @@
+---
+slug: SIMPO-blog-2026-11-25
+title: SIMPO 1.8.0 发布：支持 BSM1 仿真
+tags: [SIMPO]
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import config from '@generated/docusaurus.config'
+import Case04Comparison from '@site/src/components/BSM1/Case04Comparison';
+import DynamicAssessmentComparison from '@site/src/components/BSM1/DynamicAssessmentComparison';
+
+:::info
+**SIMPO** 由中山大学环境科学与工程学院江峰教授团队发起，是一个面向污水处理数学模拟的无代码智能建模与共享平台。本次更新的具体内容请查看 [SIMPO 1.8.0 更新日志](/zh/changelog/SIMPO%20Client/2026#2026-11-25)。
+:::
+
+---
+
+当进水流量和水质发生变化时，固定曝气和按溶解氧反馈调节曝气，出水水质和能耗会有什么差别？
+
+**SIMPO 1.8.0** 新增对 **BSM1（Benchmark Simulation Model No. 1，基准仿真模型一号）** 的支持。BSM1 为活性污泥工艺规定了统一的厂型、进水工况和评价方法。您可以在 SimpoDash 中用相同的进水比较开环和闭环，观察内回流与曝气调节怎样影响运行结果。
+
+![SimpoDash 中的 BSM1 闭环流程图，展示五座反应池、二沉池、回流管线和两条 PI 控制回路。](/img/bsm1/flowsheet.png)
+
+## 在 DataSet 中搭建 BSM1 流程
+
+- **Takacs Settling Tank** 支持 3 到 10 层沉淀池。BSM1 用 10 层二沉池模拟污泥沉降，可查看顶层出水与底层回流污泥的浓度。
+- **KLa Pump** 直接用体积氧传质系数 **KLa**（d⁻¹）计算曝气传氧。已有 KLa 数据时，您可以将系数时间序列接到对应的曝气池。[查看 BSM1 流程配置](/zh/docs/CaseStudy/BSM1/Setup#aeration)
+
+---
+
+## 用 Controller 比较开环与闭环
+
+闭环控制按 **Sensor → PI Controller → Control Handle** 连接。传感器读取池内水质，PI 控制器比较读数与设定值，再通过 Control Handle 调节内回流或曝气。
+
+以晴天案例为例，开环采用固定的内回流流量和曝气系数。闭环用 Tank2 的硝态氮读数调节内回流，用 Tank5 的溶解氧读数调节曝气系数。打开两个案例的模拟结果，可以对照同一段进水下的溶解氧曲线和曝气变化。[查看两条控制回路](/zh/docs/CaseStudy/BSM1/Setup#controller)
+
+下方标签显示案例 04 公开项目以 5% 步长容差重新计算后的两个视图，时间范围为 **168–192 小时**。在第 180 小时，Tank5 传感器读到 **1.66 g O₂/m³**，低于设定值 **2 g O₂/m³**。切换到**操纵量**，可见同一时刻的 PI 指令为 **226.44 d⁻¹**，实际作用于 Tank5 的氧传质系数为 **217.17 d⁻¹**。[查看两个回路的结果与复现步骤](/zh/docs/CaseStudy/BSM1/Results#controller-results)
+
+<Tabs>
+<TabItem value="response" label="工艺响应">
+
+![案例 04 第 168–192 小时的Tank5 溶解氧、传感器读数和设定值。](/img/bsm1/dry-closed-controller-oxygen-zh.png)
+
+</TabItem>
+<TabItem value="handle" label="操纵量">
+
+![同一时段 PI 发出的Tank5 曝气系数指令与实际施加值。](/img/bsm1/dry-closed-controller-oxygen-handle-zh.png)
+
+</TabItem>
+</Tabs>
+
+## 用 Assessment 对照出水与能耗
+
+下图来自**案例 06 雨天闭环**本次 5% 容差复算，展示二沉池顶层 `Tank6_10` 的出水。**全部（All）**图叠加了 14 天的 SIMPO 预测曲线与 MATLAB 参考点。图中隐藏了 `S_I` 和图例，项目评分仍使用全部 210 条水质曲线。这次复算的**加权 NSE 为 0.99999746**，左侧报告舍入显示为 **1.0**。[打开雨天案例并查看读图步骤](/zh/docs/CaseStudy/BSM1/Results#effluent-all)
+
+![案例 06 雨天闭环的 Dash 结果页。左侧报告将加权 NSE 显示为 1.0，右侧 Tank6_10 图叠加了出水预测曲线和 MATLAB 参考点。](/img/bsm1/rain-closed-effluent-all-zh.png)
+
+**Assessment** 支持 BSM1 的出水污染负荷（EQ）、运行成本指数（OCI）等指标，也支持自定义评估指标。比较晴天开环与闭环时，可以在两份报告中选取相同的第 7 到第 14 天，再对照出水污染负荷、曝气耗电和泵送耗电。[查看 BSM1 评估示例](/zh/docs/CaseStudy/BSM1/Assessment#first-assessment)
+
+[BSM1 案例教程](/zh/docs/CaseStudy/BSM1#projects) 提供恒定进水、晴天、持续降雨和暴雨四类工况的开环与闭环项目。您可以先查看已保存的结果，登录后也可以克隆项目复算。
+
+---
+
+## SIMPO 与 MATLAB 的结果有多接近？ {#closed-loop-comparison}
+
+我们将**案例 04 晴天闭环**的步长容差从 **5% 降至 0.01%**，用相同工况重新运行 SIMPO，并与 MATLAB R2024b 逐项比较。上面的溶解氧控制器图取自案例 04 本次 5% 复算。下表中，两个控制回路取完整 **14 天**的记录，每 15 分钟一个采样点。全厂七项 Assessment 取**第 7–14 天**。
+
+<Case04Comparison />
+
+在 0.01% 步长容差下，控制器指标中相对差最大的是溶解氧回路的平均绝对工艺偏差，约为 **0.02281%**。SP 现在用 `Change(库存, -1)`，与 MATLAB 共同取第 13 天 23:45 的期末库存。修正输入时间并对齐取样后，SP 与 MATLAB 的差值由 **−0.03284** 变为 **+0.00129 kg SS/d**。整周排泥量仍累计到第 14 天。[查看复算方法与八个案例的 WNSE](/zh/docs/CaseStudy/BSM1/Results#wnse)
+
+### 六个动态案例的全厂 Assessment，第 7–14 天 {#dynamic-assessment}
+
+每一行比较同一工况的同一项指标。**MATLAB R2024b** 和 **SIMPO（0.01%）** 是两边的复算结果。**2008 年原报告**列是当年发布的数值，**SIMPO（5%）** 列是 Dash 已保存的结果。EQ 的单位为 kg 污染当量/d，SP 为 kg SS/d，AE、PE、ME 为 kWh/d，EC 为 kg COD/d，OCI 为成本指数。
+
+**差值与原因**列用 SIMPO（0.01%）减去 MATLAB R2024b 的未舍入值。正号表示 SIMPO 较高。按该行精度显示为零时只列数值。 [出水、污泥与控制器的核对方法](/zh/docs/CaseStudy/BSM1/Assessment#diagnosis)
+
+<DynamicAssessmentComparison />
+
+以 07 暴雨开环的 EQ 为例，原报告给出 **8197.7197**，MATLAB R2024b 复算为 **8021.7327**，SIMPO 在 0.01% 容差下为 **8021.7848**，两边复算相差 **+0.0521 kg 污染当量/d**。[参考版本和指标定义](/zh/docs/CaseStudy/BSM1/Assessment#reference)
+
+## 编辑与结果查看体验优化
+
+- **流程图支持撤销和重做**。编辑 DataSet 时，可以撤回上一步操作，也可以重新应用已撤回的操作。
+- **大数据量结果图显示更快**。本次修复了逐个散点创建 SVG 节点以及对整份数据做深度监听的问题。
+
+---
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+  <div><b>添加好友，备注 SIMPO 加入交流群</b></div>
+  <img src={config.customFields.imgUrlSimpoQR} alt="SIMPO 交流群二维码" width="25%"/>
+</div>
+
+<div align="center" style={{marginTop: "2vh", marginBottom: "2vh"}}>
+  <div><b>欢迎关注微信公众号</b></div>
+  <img src={config.customFields.imgUrlWechatAccount} alt="SIMPO 微信公众号二维码" width="25%"/>
+</div>

@@ -95,7 +95,8 @@ or delete resources automatically.
    `i_N_S_U` instead of replacing it with a rounded constant. The
    runtime uses `Variable.Value * coefficient - DataSet first value` for an
    Inflow and `Variable.Value - DataSet first value` for a Flow, adds the offset
-   to the full series, clips negative values, and converts Flow to `m3/s`.
+   to the full series and clips negative values. Volumetric flows convert from
+   m³/d to m³/s, and a KLaPump's named coefficient converts from d⁻¹ to s⁻¹.
    `Measured` and `Environment` are not shifted. Audit water-temperature
    provenance and each Tank/zone's Environment series or 20°C fallback before
    fitting kinetics. Record the sampling/steady-state averaging method,
@@ -117,6 +118,42 @@ or delete resources automatically.
 
 Do not tune against validation data unless the run is explicitly reclassified as
 exploratory. Do not fit many correlated parameters merely to improve an overlay.
+
+### Reproduce a BSM1 reference implementation
+
+Identify the Project version, weather and control strategy before comparing.
+Keep the chosen Project's saved initial conditions. The weather runs start
+from the end of the corresponding 14-day dry-weather open- or closed-loop
+conditioning run.
+
+| Project pair (open / closed) | Dynamic run | Saved grid including both endpoints | Assessment window | Closing inventory for SP |
+| --- | --- | --- | --- | --- |
+| 01 / 02, constant influent | 500-day startup | 4 h, 3,001 records per series | Days 493–500 | Day 499 at 20:00 |
+| 03 / 04 dry, 05 / 06 rain, 07 / 08 storm | 14 days | 15 min, 1,345 records per series | Days 7–14 | Day 13 at 23:45 |
+
+Use the baseline's Linear input interpolation, 8.64 s mixed-inlet response
+on Tank1, constant oxygen saturation of 8 g O₂/m³ and 10-layer Takács settler
+with feed at layer 6 from the bottom. Both closed-loop controllers use their
+saved PI settings: `Tank2.S_NO` controls internal recycle `Q_a`, and
+`Tank5.S_O2` controls `KLa_5`. Case 02 uses ideal, noise-free measurements.
+Cases 04, 06 and 08 use the BSM1 reference noise. A PI tuning trial is a
+separate control-strategy experiment on a Draft.
+
+The saved runs use Forward Euler, 5% step tolerance and 100% output
+resolution. For a tolerance study, keep the input and output times fixed,
+save the baseline and request a fresh calculation for each tolerance. Read
+the Project's weighted NSE (WNSE) across its 210 equally weighted
+water-quality curves. To explain a low score, compare absolute concentration
+errors as well as the reference variance for the same layer, Target and times.
+Report any subset score separately with the selection used.
+
+Compare EQ, SP, AE, PE, EC, ME and OCI over the Assessment window. In SP,
+`Change(x, -1)` selects the preceding saved sample for the closing value of
+`x`, the sum of volume times TSS over all reactors and settler layers. The
+opening value and the seven-day average wasting term still use the original
+window. This sampling convention affects SP and hence OCI. It leaves the
+concentration trajectories used for WNSE intact. Identify the original report
+and the MATLAB rerun separately when both serve as comparison columns.
 
 ## 6. Diagnose failure to accumulate biomass
 

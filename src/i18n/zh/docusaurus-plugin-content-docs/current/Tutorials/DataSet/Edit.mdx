@@ -11,12 +11,21 @@ DataSet 可编辑的部分包括 Detail、Version 和 Profile。已发布版本�
 
 Detail 页面包含 Flowchart、Targets、Tanks 和 Links，以下操作均适用于 Draft。
 
+| 想在流程图中完成什么？ | 对应指南 |
+| --- | --- |
+| 设置完全混合池的池容、生化反应、曝气或进水响应 | [CSTR 字段与填写示例](./Tanks.mdx#cstr) |
+| 设置沉淀池几何尺寸、层数、进水层及沉降参数 | [Takacs Settling 字段与分层接线](./Tanks.mdx#takacs) |
+| 从空气流量估算传氧，或直接输入参考 KLa | [AirPump 与 SOTE 拟合](./Pumps.mdx#airpump) · [KLaPump 与温度修正](./Pumps.mdx#klapump) |
+| 根据传感器读数自动调节流量或曝气 | [连接和填写 PI 控制器](./Controller.mdx) |
+| 计算出水负荷、能耗或自定义绩效指标 | [填写并核对评估指标](./Assessment.mdx) |
+
 ### Unit
 
 在网页 Flowchart 的 `List` 菜单中打开 `Unit`：
 
 - `Time`：`day`、`hour`、`minute` 或 `second`，只有它可以修改。
-- `Flow`：固定为 `m3/d`。
+- 体积流量用 **m³/d**，适用于水流和 AirPump 的进气量。
+- `KLa` 用 **d⁻¹**（`/d`）。此项在 Unit 弹窗只读。求解器根据该命名 Flow 是否由 KLaPump 接出识别单位，工作簿的 `Unit` 表无需增加一列。
 - `Volume`：固定为 `m3`。
 - `Area`：固定为 `m2`。
 - `Height`：固定为 `m`。
@@ -35,14 +44,12 @@ Targets 是测量变量，也是 DataSet 与 BioModel Components 的连接对象
 
 - `Symbol` 和 `Unit` 必填。
 - Symbol 以字母开头，只能使用字母、数字和下划线，不能连续使用下划线。
-- Symbol 必须唯一，不能与保留字或其他 DataSet 名称冲突。
-- 普通 Target 的 `StandardTarget` 留空；曝气目标选择 `Dissolved Oxygen`；
-  稳态 SRT 使用的 TSS 目标选择 `Total Suspended Solids`。每个标准值最多只能分配给一个 Target。
+- Symbol 必须唯一，不能与 DataSet 中的其他名称或保留字冲突。`Volume` 和 `KLa` 是保留字，匹配时不区分大小写。`KLa_34` 是合法的信号名。
+- 普通 Target 的 `StandardTarget` 留空。曝气目标选择 `Dissolved Oxygen`。Takacs 分层沉淀及稳态 SRT 计算使用的 TSS 目标选择 `Total Suspended Solids`。每个标准值最多只能分配给一个 Target。
 
 ### Tanks
 
-Tank 列表包含 `Name`、`Type`、`BioCalculated`、`Volume` 和 `Constant Volume`，
-类型为 `CSTR` 或 `Point Settling`。
+Tank 列表包含 `Name`、`Type`、`BioCalculated`、`Volume` 和 `Constant Volume`。点击池名可编辑详情。[CSTR 指南](./Tanks.mdx#cstr)讲解混合、反应和曝气。[Takacs 沉淀池指南](./Tanks.mdx#takacs)讲解几何尺寸、沉降参数和各层观测。
 
 - CSTR 可以设置是否进行生化计算以及是否保持恒定体积。
 - Point Settling 包含 `Outlet` 和 `Blanket`，Settling Factor 为 0 到 1，
@@ -52,28 +59,29 @@ Tank 列表包含 `Name`、`Type`、`BioCalculated`、`Volume` 和 `Constant Vol
 - CSTR 曝气字段包括 `Diffuser Number`、`Diffuser Depth (m)`、`Alpha Factor`
   和 `Beta Factor`。前两者不能为负，后两者范围为 0 到 1。
 
+在 CSTR 弹窗中，「混合进水响应」为「即时混合」时，「时间常数」显示 0 秒且禁用。切换为「一阶滞后」即可编辑。如果工作簿包含参考初值，点击时间常数框内的设置按钮可选择初始状态。滤波作用于进入该池的总液体流量和各组分负荷。BSM1 MATLAB 在第一个反应池使用 8.64 秒。「即时混合」对应工作簿中 `InletLagSeconds` 留空或为 0。
+
+此设置适用于恒容工艺和前向欧拉求解器。遇到分流时，需要明确哪一支承接扣除指定支路后的余量。BSM1 MATLAB 参考模板已保存滤波器的初始流量和组分负荷。普通新建项目从模拟起点的混合进水初始化。
+
+#### 选择 Takacs 沉淀池层数
+
+在流程图选择 **New Tank → Takacs Settling**，再选 3–10 层。也可以在 **Tanks** 列表中点击 **+**，选择相同的菜单项。层数在新建时确定，重新打开时只读。BSM1 使用 10 层，从第 6 层进水。其他层数默认将层数的 60% 四舍五入作为进水层，之后可改到任一中间层。3 层池的进水层只能为第 2 层。
+
+在池的详情中，**Measured** 后面的下拉按钮用来切换各层的初值和观测数据。层号自底向上编号，例如 8 层池 `Tank6` 的顶层在工作簿和出口连接中写作 `Tank6_8`。如果原文件包含整池观测，菜单中也可查看这组独立数据。
+
+#### 高流速时如何确定内部时间步 {#takacs-step}
+
+池表面积和总高均须为有限正数。总高除以层数得到等层厚度，面积乘层厚得到每层体积，两者也须为有限正数。模型没有另设以米表示的固定最薄或最厚层。给定池体尺寸，层越多，单层越薄。
+
+前向欧拉求解器在每次推进前应用 **CFL 稳定性约束**。对每层，把该层水力速度与沉降通量的特征速度相加，取所有层中的最大值 $u$（m/d）。层厚为 $h$（m）时，沉淀池允许的步长上限为 $0.8h/u$ 天。0.8 是 SIMPO 内置的安全系数。进水层的水力速度取总进池流量除以面积，进水层上方用上清液出流，下方用底流。沉降通量的特征速度还取决于污泥浓度和沉降曲线的斜率。
+
+例如，层厚 0.4 m，假设某时刻 $u=300$ m/d，则该池允许的步长最多为 $0.8\times 0.4/300\times 86{,}400=92.16$ 秒。若 $u$ 增至 600 m/d，上限就降至 46.08 秒。求解器仍会按生化反应、进水滞后及下一采样时刻等条件进一步缩短实际步长。暴雨案例中的输出仍可每 15 分钟保存一次。[BSM1 的分层与暴雨试验](../../CaseStudy/BSM1/Results.mdx)
+
+沉降模型也在**层间通量**计算中取较小值。进水层以下的每个内部界面，向下的沉降通量取上下两层各自可传递通量中的较小者。进水层上方的界面还检查接收层 TSS。当浓度不高于阈值 `Xt` 时，采用上层通量。超过阈值时，也取两层中的较小者。
+
 ### Pumps
 
-Pump 用于曝气计算，列表包含 `Name`、`Type`、`SOTEa`、`SOTEb`、`SOTEc` 和
-`θ`。XLSX 中 `θ` 位于 `SOTEc` 后，为第六列。前端和 XLSX 使用 `θ`，
-读取时映射到内部的 `ThetaFactor` 字段；仍兼容旧表头 `ThetaFactor`。
-θ 是曝气系统的气液传质温度系数，使用接收 Tank 的池内水温；
-新建 Pump 预填 1.024，可根据设备试验数据调整。旧数据缺少该列或留空时按 1 处理。
-详细公式见[传氧系数的水温修正](#oxygen-transfer-temperature)。
-
-`Fit SOTE Curve` 使用以下数据：
-
-- `Qd (m3/h/Diffuser)`
-- `Diffuser Depth (m)`
-- `SOTE (%)`
-
-曲线数据支持 CSV 导入/导出。`SOTE (%)` 输入百分数，例如 14.1；拟合公式使用比值 0.141。输入有效数据后，可以拟合得到系数：
-
-```text
-SOTE = SOTEa * (Qair / 24 / DiffuserNumber)^(-SOTEb) * DiffuserDepth^(SOTEc)
-```
-
-此处 `Qair` 为 DataSet 输入的 m³/d，单头小时风量为 `Qair / 24 / DiffuserNumber`；计算端 Flow 转为 m³/s 后，对应使用 `Flow * 3600 / DiffuserNumber`。
+已知供气量（m³/d）时选 **AirPump**，已知参考氧传质系数（d⁻¹）时选 **KLaPump**。在**列表 → 泵**中点击泵名编辑参数，在 **Flow** 中填写时间序列，再把泵连接到接收的 CSTR。[曝气泵指南](./Pumps.mdx)逐项说明两类泵的字段、SOTE 曲线拟合及同一参考 KLa 如何供给多个池体。
 
 ### Inflows 和测量数据
 
@@ -97,8 +105,7 @@ Tank 弹窗的 `Environment` 视图也提供相同的分区切换。
 关闭详情或列表会保留已提交的修改，最后统一保存 DataSet 或 Project。
 只读版本可查看列表和详情、导出 CSV。Project 内嵌的 DataSet 编辑器也提供这些入口。
 Tank 改名时，其温度序列及分区温度序列随之改名；删除 Tank 时同步移除这些序列。
-温度在 Forward Euler 求解器的 Pump 和直接 KLa 曝气中用于修正饱和溶解氧浓度，
-Pump 还使用 `θ` 修正传氧系数。`BioModel.Matrix.Rate` 也可直接引用内置符号 `T`，
+在前向欧拉求解中，接收池选择淡水或 BSM2 模型时，水温参与计算饱和溶解氧浓度。AirPump 和 KLaPump 各用自己的 `θ` 修正传氧系数。`BioModel.Matrix.Rate` 也可直接引用内置符号 `T`，
 按当前 Tank 和当前时刻的水温计算动力学修正，见 [BioModel 编辑：水温 T](../BioModel/Edit.mdx#rate-temperature)。
 
 本地 `DataSet.xlsx` 中可添加同名可选工作表。第一行填写 Tank 名称，第二行填写环境指标标识 `T`，第三行开始填写时间和温度。
@@ -147,12 +154,21 @@ Pump 还使用 `θ` 修正传氧系数。`BioModel.Matrix.Rate` 也可直接引�
 先稳态后动态计算在动态阶段恢复原始温度序列。
 
 某个 Tank 或分区没有可用的 `T` 序列时（包括上述回退规则），曝气计算和 Rate 中的 `T` 默认水温为 20 ℃，与填写恒定 20 ℃的结果一致。
-Pump 和直接 KLa 曝气均使用该温度的清水饱和浓度（约 9.09 mg/L）；
-Pump 另乘 Tank 的 β，传氧系数的温度修正乘数为 1。
+在默认淡水模型中，20 ℃ 下的清水饱和浓度约为 9.09 mg O₂/L。AirPump 路径还会乘以接收池的 β。
 
 #### 饱和溶解氧的水温修正 {#do-temperature}
 
-**SIMPO** 根据各 Tank 的池内水温 $T$（未提供时为 20 ℃），使用 [USGS WQ.2011.03 方程 7](https://water.usgs.gov/water-resources/memos/documents/WQ.2011.03.pdf) 中的 Benson–Krause 公式计算清水饱和溶解氧浓度。当前采用淡水、1 atm 条件，支持的水温范围为 0–40 ℃。令绝对温度 $T_K = T + 273.15$，则：
+在 DataSet 流程图中打开接收曝气的 CSTR，按模拟目的选择**溶解氧饱和模型**（`SaturationModel`）。这个设置决定计算氧传递时使用的饱和浓度。
+
+| 模拟目的 | 在 CSTR 中怎么填 | 饱和浓度如何确定 |
+| --- | --- | --- |
+| 普通污水厂模拟 | 通常保留默认的**淡水（Freshwater）**。有池内水温记录时，在**环境（Environment）**中填写 `T`。 | 随该池水温计算清水饱和浓度。使用 AirPump 时，将清水值乘以该池的 β 系数。使用 KLaPump 时直接采用清水值。 |
+| 复现 BSM2 | 选 **BSM2**。 | 根据接收池水温直接采用 BSM2 基准公式的结果，无需另填饱和浓度或用 β 修正结果。 |
+| 复现本教程的 8 个 BSM1 案例 | 在 Tank3、Tank4、Tank5 选择**恒定（Constant）**，将**饱和溶解氧浓度**（`SaturationValue`）填为 **8 mg O₂/L**。 | 水温改变时仍保持 8 mg O₂/L。 |
+
+只有选择**恒定**时才需填写饱和溶解氧浓度，允许值为大于或等于 0 的有限数。
+
+在默认淡水模型下，**SIMPO** 根据各 Tank 的池内水温 $T$（未提供时为 20 ℃），使用 [USGS WQ.2011.03 方程 7](https://water.usgs.gov/water-resources/memos/documents/WQ.2011.03.pdf) 中的 Benson–Krause 公式计算清水饱和溶解氧浓度。当前采用淡水、1 atm 条件，支持的水温范围为 0–40 ℃。令绝对温度 $T_K = T + 273.15$，则：
 
 $$
 S_{O2,sat}(T) = \exp\left(
@@ -166,25 +182,21 @@ $$
 
 公式结果的单位为 mg O₂/L；20 ℃时约为 9.09 mg O₂/L，30 ℃时约为 7.558796 mg O₂/L。标准参考浓度 $S_{O2,sat,std}$ 固定使用数值表中 20 ℃对应的完整值 **9.092426042885567 mg O₂/L**，不随 Tank 水温变化。未提供温度时的清水饱和浓度也使用同一数值。
 
-Pump 曝气使用 $\beta S_{O2,sat}(T)-S_{O2}$ 作为传质推动力，直接 KLa 曝气使用 $S_{O2,sat}(T)-S_{O2}$。空气含氧量参考值保持为 0.279 kg O₂/m³，因此 Pump 计算中的换算系数统一为 $279/S_{O2,sat,std}\approx30.68488$；计算使用完整精度。
+在淡水模型下，AirPump 曝气使用 $\beta S_{O2,sat}(T)-S_{O2}$ 作为传质推动力，直接 KLa 曝气使用 $S_{O2,sat}(T)-S_{O2}$。空气含氧量参考值保持为 0.279 kg O₂/m³，因此 Pump 计算中的换算系数统一为 $279/S_{O2,sat,std}\approx30.68488$；计算使用完整精度。
 
 为减少重复计算，SIMPO 将 0–40 ℃范围内、每隔 0.01 ℃的 4001 个饱和浓度值离线计算后固化为随软件分发的数值表。启动时直接加载已有数值，生成 Fortran 计算代码时嵌入相同常量，不在启动时重新计算这张表。当前水温正好对应这些温度点时，直接使用表内结果；其他温度（如 20.123 ℃）仍按上述公式计算，不取整，也不在饱和浓度表中插值。此规则同样适用于动态插值得到的水温和稳态平均水温。
 
 #### 传氧系数的水温修正 {#oxygen-transfer-temperature}
 
-Pump 的 `θ` 用于将 20℃参考传氧系数修正到接收 Tank 的水温：
+每台泵按温度系数 $\theta$ 将参考传氧系数修正到接收池的水温 $T$。AirPump 的参考温度为 20°C，KLaPump 使用泵上配置的 `TRef`，默认值为 20°C。
 
 $$
-K_La(T) = K_La(20)\,\theta^{T-20}
+K_La(T) = K_La(T_{ref})\,\theta^{T-T_{ref}}
 $$
 
-计算中将 $\theta^{T-20}$ 乘在 Pump 的传氧速率上，位于整个浓度差 $\beta S_{O2,sat}(T)-S_{O2}$ 外侧。
-同一 Pump 连接多个 Tank 时，各 Tank 分别取自己的温度。稳态使用各 Tank 的平均温度，动态使用当前采样或插值温度。
-1.024 是常用经验起始值，应结合曝气设备和试验数据校准，参见 [EPA 传氧设备评估资料](https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=20007I08.TXT)。
+温度修正乘数作用于氧浓度差前的传氧系数。同一台泵连接多个池时，各池分别使用自己的水温。稳态计算取池内平均温度，动态计算取当前采样或插值温度，未提供水温时取 20°C。温度系数和计算出的修正乘数均须为有限正数。温度系数缺省或留空时取 1。常用经验起始值为 1.024，应结合设备和试验数据校准。[EPA 传氧设备评估资料](https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=20007I08.TXT)
 
-`θ` 必须为有限正数，且在支持温度范围内的修正乘数也须为有限正数。
-设为 1 可关闭这项修正；旧表缺列、空白值或 Tank 未提供 `T` 时，修正乘数均为 1。
-直接填写的 Tank `KLa` 保持原值，不套用 Pump 的 θ。BioModel 的动力学温度修正由 [Rate 中的 T 表达式](../BioModel/Edit.mdx#rate-temperature)定义，不使用 Pump 的 θ。
+Assessment 中的 `Tank3.KLa` 读取所有相连曝气泵对 Tank3 合计的实际传氧系数，单位为 d⁻¹。BioModel 的动力学温度修正另由 [Rate 中的 T 表达式](../BioModel/Edit.mdx#rate-temperature)定义。
 
 #### 由传氧系数反推风量 {#airflow-from-kla}
 
@@ -201,8 +213,9 @@ $$
 
 ### Flows
 
-Flow 时间序列包含 `Time` 和 `Flow`，Flow 单位固定为 `m3/d`。可以使用 Unit、
-Step Add、行编辑和 CSV 导入/导出功能维护。
+Flow 表为每条命名输入保存时间和数值。例如 BSM1 的内回流 `Q_a` 用 m³/d，KLaPump 的 `KLa_5` 用 d⁻¹，即使时间轴显示小时也一样。可用 Step Add、行编辑或 CSV 维护数据。
+
+**闭环怎么填？** 保留名称及其管线连接，在第 0 时刻填写有效数值，例如 0。此后若只需一个恒定占位值，后续数值可以留空。启用 Controller 时，每个内部计算步都用执行器的实际输出覆盖该操纵量。DataSet 的 Flow 图展示配置输入，运行时的实际值见计算结果中的控制器或运行时输入记录。移除控制回路后，应把该列及 Project 中相应的初始流量设成希望执行的开环值。
 
 ### Connections
 
@@ -214,10 +227,268 @@ Connections 包含 `From`、`Flow` 和 `Into`：
 
 保存前请在 Flowchart 中检查方向和连接端点。
 
+<span id="control-loop" />
+
+### 控制器 {#controller}
+
+XLSX 的 `Controller` 工作表有 13 列。一行将一个测量指标、一个连续 PI 控制器与一个独立 Flow 相连。DataSet JSON 同样用 `Controller` 保存这些行，用 `ControllerConfig` 保存 PI 初始状态、传感器噪声通道等内部配置。Project 中的 DataSet 也使用这两个字段。
+
+在流程图选择**新建控制器**。悬浮在 PI 卡片上可见四侧端口。从测量池或进水点连到卡片，再从卡片连到一个独立的 Flow 或 KLa。可按管线布局选择端口方位。[控制器指南](./Controller.mdx)按三个页签讲解填写步骤，并以溶解氧回路演示如何在 Project 中试调。
+
+在「列表 → 控制器」点击加号，可直接在表格和流程图中新建控制器草稿。点击名称打开详情。可以用右侧搜索框或列筛选查找控制器，勾选多行后点击工具栏的垃圾桶可批量删除。
+
+按住 Shift，从 Tank 或 Inflow 图形内部想要的位置拖到控制器输入端，即可从该点起线。已有绿线可以直接拖动测量起点，不用按 Shift。分层沉淀池按所选层确定测点。水流线和绿色信号线共用连线工具：悬浮在线上，拖动线段手柄可平移，双击线段可新增折点；拖动折点可移动，双击折点可删除。绿线的删除按钮断开该端的控制绑定，流程管道不受影响。保存 DataSet 后会保留布局。
+
+| 字段 | 含义与填写规则 |
+|---|---|
+| `Name` | 可修改的唯一名称。重命名时 Dash 保留控制器的内部 ID。 |
+| `SensorPreset` | 下表列出的六种 BSM 预设之一；不开放 Custom 或 Ideal Sensor。 |
+| `SensorLocation` | 测量模拟浓度的位置，填写唯一的 Tank 或 Inflow 名称。 |
+| `SensorTarget` | `Target.Symbol` 中的水质浓度指标，由配套 Solution 的 Target 转换关系计算。 |
+| `SensorUpperLimit` | 传感器量程上限，须为大于 `SensorLowerLimit` 的有限数，单位与被测 Target 一致。 |
+| `ControllerSetpoint` | 固定设定值，须在 `SensorLowerLimit` 到 `SensorUpperLimit` 之间（含两端），单位与测量值相同。 |
+| `ControllerGain` | 有符号的比例增益，单位为操纵量单位/测量单位；误差采用设定值减测量值。 |
+| `ControllerIntegralTime` | 正数，PI 积分时间，单位固定为 day。 |
+| `ControllerTrackingTime` | 正数，抗积分饱和跟踪时间，单位固定为 day；不是微分时间。 |
+| `ControlHandle` | 被调节的独立命名 Flow，可为水 Q、空气 Q 或 KLa，不限于 BSM 的 28 个操作项。 |
+| `HandleLowerLimit` | 操纵量的非负静态下限，单位与对应 Flow 一致。 |
+| `HandleUpperLimit` | 操纵量的静态上限，不小于下限；Q 使用流量单位，KLa 使用 `/d`。 |
+| `SensorLowerLimit` | 量程下限，为有限数，单位与被测 Target 相同。该列位于表尾，留空或旧表缺少该列时按 0 处理。 |
+
+例如 `SensorLocation=Tank5`、`SensorTarget=S_O2`、`ControllerSetpoint=2`、`ControlHandle=KLa_5`，表示根据测得的 DO 调节氧传递。配套 BSM1 闭环模板已填好两个默认回路的 PI 参数。更换位置、指标或操纵对象后，可能需要重新整定；不能因为都是 Q，就认为同一套增益适用于所有回路。
+
+每个 Flow 只能由一个控制器调节。例如可以直接连接排泥支路 `Qw`。标有 `Qin+Qr` 的连接表示计算所得的流量，需要选中希望调节的独立 Flow 所在的支路。当一台泵只对应一个操纵量时，也可以直接连接这台泵。Tank 与 Inflow 的名称须能唯一定位测量点。在「操纵量」页签选择可用的独立 Flow 即可更换控制器输出。更换后若单位发生变化，应核对操纵量范围与 PI 整定参数。
+
+`Controller` 工作表只保留表头时表示开环。旧版 12 列 `Controller` 或 `ControlLoop` 工作表，以及使用 `ControlLoop`、`ControlLoopConfig` 字段的旧 JSON 均可读取。再次保存合并表格式的数据集时使用 `Controller`、`ControllerConfig`。更早的四表格式也有名为 `Controller` 的工作表，SIMPO 按其中的 `Type`、`IntegralTime` 等模块字段识别旧格式，并读取配套 Sensor 和 Actuator。每个工作簿使用一种控制格式。
+
+#### 在 Project 中试调 PI
+
+积分时间和跟踪时间按天输入。编辑器同时显示等效的分钟数或小时数。例如 BSM1 溶解氧控制器使用 0.002 d（2.88 分钟）和 0.001 d（1.44 分钟）。增益旁会显示操纵量单位与测量单位的比值。控制器名称下方的说明给出测量值偏离设定值一个单位时比例项对控制指令的贡献。
+
+在可编辑的 Project 中打开控制器，选择试调时长并点击「试调」。本地开发时，后端直接运行 SimpoClient 源码。使用正式版时，请允许浏览器打开本机安装的 SimpoClient。若错过提示，可在等待期间点击「打开 SimpoClient」。已安装的客户端需要支持控制器试调，并与 Dash 连接同一后端。
+
+试调面板会提示正在准备计算文件。求解开始后，面板显示当前阶段，进度条按本次计划运行的模拟次数和已完成的求解步数更新。有结果可查看时，进度达到 100%。
+
+试调使用弹窗里的控制器和最近保存的 BioModel、DataSet 与 Solution。若同时修改了池容、进水或初态，请先保存这些工艺改动。基线和闭环验证均采用动态前向欧拉法，并使用项目选定的动态输入插值方式。
+
+「估算全部 PI 参数」会重新估算增益、积分时间和跟踪时间。「试调」保留已填的 PI 参数，只估算空白项。PI 参数齐全时，直接比较已保存的 PI 与正在编辑的参数。新建控制器以开环工作点为参照。
+
+估算时，SimpoClient 将外部输入固定在模拟起点的值，将选定手柄固定在工作点，并暂停传感器噪声。连续两个模拟日满足稳定判据后，从同一状态做两次试验，一次保持手柄不变，另一次小幅改变手柄。SIMC 根据两条测量曲线之差估算比例增益和积分时间，SIMPO 单独估算跟踪时间。预热最多 60 个模拟日，与试调观察窗独立。如果工况未稳定或阶跃响应太弱，面板会给出原因。得到候选值后，再恢复项目原始初态、动态输入和噪声进行闭环验证。
+
+同时查看目标值与设定值的偏差以及执行器输出的变化幅度。点击「采用估算值」将候选值填回编辑器，应用控制器并保存 Project 后生效。点击「保存为待整定草稿」会保存图上的连接和已经填写的字段，补齐 PI 参数并应用后才参与模拟。
+
+[BSM1 控制器试调案例](../../CaseStudy/BSM1/Setup.mdx#controller-trial)给出了操作示例和 SIMC 整定法的原始文献。
+
+#### 预设与内部配置
+
+| `SensorPreset` | 响应过程 | 测量输出 |
+|---|---|---|
+| `BSM_Class_A` | 二阶，T90 = 1 min | 连续 |
+| `BSM_Class_B0` | 八阶，T90 = 10 min | 连续 |
+| `BSM_Class_B1` | 八阶，T90 = 10 min | 每 5 min 采样并保持 |
+| `BSM_Class_C0` | 八阶，T90 = 20 min | 连续 |
+| `BSM_Class_C1` | 八阶，T90 = 20 min | 每 5 min 采样并保持 |
+| `BSM_Class_D` | 无连续滞后环节 | 每 30 min 采样，延迟一个采样周期后保持 |
+
+预设决定探头响应和测量采样方式。每个探头的噪声来源在 Controller 弹窗中选择，随工作簿内部配置一起保存。
+
+没有已保存内部配置的新回路采用明确的 SIMPO 默认策略：连续 PI、启用抗积分饱和，Bias 与 PI 初态为 0，Sensor 初态为 0，Actuator 为理想响应且输入倍率为 1。这是带版本的初始化规则，不是由 BSM 类别或 Flow 类型推断出来的设备特性。迁移已有 BSM1 案例时优先保留原配置：Q_a 执行器仍为一阶 Lag，KLa_5 仍为四分钟响应的二阶 Lag，原 Bias、PI 状态与执行器初值均保留。
+
+XLSX 将内部配置保存在文档属性 `SimpoControllerConfig` 中，旧属性 `SimpoControlLoopConfig` 仍可读取。API 在 DataSet detail 的 `ControllerConfig` 中保存同一份配置。编辑和传递已保存工作簿时应保留这些信息。只复制可见列重新建表会创建新回路，不能带走原动态和初始状态。重命名时保留控制器 ID 和接线。更换已保存参考回路的测点或操纵量时，请在控制器弹窗核对替换后的初始设置。
+
+选择 BSM 预定义噪声时，内置 `builtin:BSM` 提供覆盖 0–14 天的 25 个独立通道。已有 BSM1 回路保留原通道。更长的模拟可以关闭噪声、选择固定种子的随机噪声，或使用覆盖全程的预定义序列。
+
+本次不启用 `FlowSplit`。该表有数据时会拒绝运行；`Controller` 本身不负责求解或校验各分流支路的流量守恒。
+
+### Sensor：测量模型与计算示例 {#sensor}
+
+在**控制器 → 传感器**中选择测点、Target、预设、量程和噪声。传感器读取当前模拟的工艺值，再按响应特性、噪声和量程算出送给 PI 的读数。**实测（Measured）**表保存用于对照模拟结果的观测数据。下文推导弹窗中**固定设置**所对应的测量模型。[传感器字段与各类预设](./Controller.mdx#sensor)
+
+#### 连续测量、响应时间与噪声间隔 {#sensor-timing}
+
+连续传感器一直响应当前输入。它保留内部状态，不会等一次响应“完成”后才处理下一个值。每个有效求解步使用当前真值推进一次状态；为了写出结果而重复读取输出，不会额外推进状态。
+
+| 时间概念 | 含义 |
+|---|---|
+| 求解步长 $\Delta t$ | 数值积分前进的时间，由求解器确定；不一定固定 |
+| `T90` | 阶跃输入后，读数完成变化量 90% 所需的时间 |
+| 测量采样间隔 | 由预设确定：A/B0/C0 连续，B1/C1 每 5 min，D 每 30 min 并延迟一个周期 |
+| 噪声更新间隔 | BSM 预定义噪声为 1 分钟，随机噪声可设置。探头的测量间隔由预设决定。 |
+| 结果输出间隔 | 结果文件保存点的间隔，不决定传感器更新频率 |
+
+BSM 默认的 Class A、B0 是连续模型；B1、C1 则另有离散输出采样保持。当前 `Controller` 的六种 `SensorPreset` 已按对应类别展开这些规则。[BSM1 技术报告，第 7 节](https://assets.pubpub.org/pdihltqg/01603112315958.pdf)
+
+内部 Sensor 的 `T90`、`SampleTime` 单位固定为 **day**，不随 `Unit.Time` 改变。例如一分钟内部保存为 `0.0006944444444444444`。下面为了便于理解，统一用秒推导，此时 $t$、$\Delta t$ 和 $\tau$ 都使用秒。
+
+#### 非理想传感器的通用方程 {#sensor-equations}
+
+对包含连续滞后的类别，设当前真实浓度为 $C(t)$，内部 `DelayOrder` 为 $n$。用 $n$ 个相同的一阶惯性环节串联表示响应过程；Class D 使用离散延迟，不套用这个连续串联公式：
+
+$$
+\frac{dx_1}{dt}=\frac{C(t)-x_1}{\tau},\qquad
+\frac{dx_k}{dt}=\frac{x_{k-1}-x_k}{\tau},\quad k=2,\ldots,n
+$$
+
+$x_1,\ldots,x_n$ 是内部数学状态，$x_n$ 是叠加噪声之前的读数。单级时间常数由总响应时间换算：
+
+$$
+\tau=\frac{T_{90}}{c_n}
+$$
+
+| 阶数 $n$ | 换算系数 $c_n$ |
+|---:|---:|
+| 1 | $\ln 10$ |
+| 2 | 3.89 |
+| 8 | 11.7724 |
+
+最终输出为：
+
+$$
+y(t)=\min\left(y_{\max},\max\left(y_{\min},x_n(t)+\sigma\eta(t)\right)\right)
+$$
+
+其中 $\sigma$ 为噪声标准差，单位与被测变量相同。$\eta(t)$ 为选定的噪声序列。对 `Controller`，$y_{\min}$ 和 $y_{\max}$ 分别为 `SensorLowerLimit` 和 `SensorUpperLimit`。BSM 预定义噪声取 $\sigma=0.025(y_{\max}-y_{\min})$，选择「随机」可编辑标准差、更新间隔与种子。标准差默认取量程跨度的 2.5%，默认每分钟更新，系统自动生成并保存种子。关闭噪声时取零。三种方式均保留探头的响应、采样和量程。
+
+#### DO 从 2 跳到 4 mg/L 的实际例子 {#sensor-step-example}
+
+假设一个 Class A 探头此前已在 DO=2 mg/L 下稳定运行，因此 $x_1(0)=x_2(0)=2$。第 0 秒，真实 DO 跳到 4 mg/L 并保持。取 `T90=1 min`、`DelayOrder=2`、量程为 0–10 mg/L；仅在这个解析示例中忽略噪声，以单独观察响应：
+
+$$
+\tau=\frac{60}{3.89}\approx15.424\ \mathrm{s}
+$$
+
+这里的初态为 2 是为了演示已经稳定工作的探头。**新建控制器的 Sensor 初态从 0 开始，初始规则保存在内部配置中，不是用户填写列**；因此直接从零状态启动会有另外一段启动响应。
+
+先求第一级：
+
+$$
+\frac{dx_1}{dt}=\frac{4-x_1}{\tau}
+\quad\Longrightarrow\quad
+x_1(t)=4+Ae^{-t/\tau}
+$$
+
+由 $x_1(0)=2$ 得 $A=-2$，于是：
+
+$$
+x_1(t)=4-2e^{-t/\tau}
+$$
+
+把它代入第二级方程并移项：
+
+$$
+\frac{dx_2}{dt}+\frac{x_2}{\tau}
+=\frac{4}{\tau}-\frac{2}{\tau}e^{-t/\tau}
+$$
+
+两边乘以积分因子 $e^{t/\tau}$，左边成为乘积的导数：
+
+$$
+\frac{d}{dt}\left(e^{t/\tau}x_2\right)
+=\frac{4}{\tau}e^{t/\tau}-\frac{2}{\tau}
+$$
+
+从 0 到 $t$ 积分，并代入 $x_2(0)=2$：
+
+$$
+e^{t/\tau}x_2(t)-2
+=4\left(e^{t/\tau}-1\right)-\frac{2t}{\tau}
+$$
+
+整理得到读数：
+
+$$
+y(t)=x_2(t)=4-2\left(1+\frac{t}{\tau}\right)e^{-t/\tau}
+$$
+
+| 变化后时间 | 真实 DO（mg/L） | Sensor 读数（mg/L） |
+|---:|---:|---:|
+| 0 秒 | 4.000 | 2.000 |
+| 10 秒 | 4.000 | 2.276 |
+| 20 秒 | 4.000 | 2.744 |
+| 30 秒 | 4.000 | 3.158 |
+| 60 秒 | 4.000 | 3.800 |
+| 120 秒 | 4.000 | 3.993 |
+
+表中数值由上述连续方程的解析解计算，不是一次 SIMPO 仿真的输出记录。第 60 秒读数约为 $2+0.9(4-2)=3.8$；这表示响应完成了变化量的 90%，而不是第一次到达测量时刻。
+
+换算系数 3.89 也来自这个解。把剩余差距设为 10%：
+
+$$
+\frac{4-y(T_{90})}{4-2}
+=\left(1+\frac{T_{90}}{\tau}\right)e^{-T_{90}/\tau}=0.1
+$$
+
+令 $a=T_{90}/\tau$，数值求解 $(1+a)e^{-a}=0.1$ 得 $a\approx3.89$，所以 $\tau=T_{90}/3.89$。串联响应模型见[传感器与执行器技术报告，第 3.1 节](https://assets.pubpub.org/8d7w4rqs/51603224743168.pdf)。
+
+#### 求解器如何逐步更新 {#sensor-numerical-update}
+
+当前闭环使用 Forward Euler。在时刻 $t_k$ 读取真值 $C_k$，用接受的步长 $\Delta t$ 同时推进两级状态：
+
+$$
+x_{1,k+1}=x_{1,k}+\frac{\Delta t}{\tau}(C_k-x_{1,k})
+$$
+
+$$
+x_{2,k+1}=x_{2,k}+\frac{\Delta t}{\tau}(x_{1,k}-x_{2,k})
+$$
+
+右侧都使用本步开始时的旧状态，不能先更新 $x_1$ 再把新值代入同一步的 $x_2$。在上述初态下，假设某一步为 1 秒，第一次更新得到 $x_1\approx2.129667$、$x_2=2$；第二次更新得到 $x_2\approx2.008407$。这是数值近似，与连续解有步长误差；求解器并非固定使用 1 秒。
+
+如果真实 DO 在第 20 秒又变为 3 mg/L，该时刻起方程就使用新输入，内部状态继续演化，无需等到第 60 秒再处理。此后不能继续套用“输入始终为 4”的上述解析式。
+
+#### 噪声来源与长时间模拟 {#sensor-noise}
+
+打开 **Controllers → Sensor → 噪声来源**。普通新建探头默认关闭噪声，BSM1 参考模板指定预定义通道。有仪表数据时可选择随机噪声，填写标准差、更新间隔和种子。
+
+| 噪声来源 | 行为 |
+|---|---|
+| `none` | 不叠加噪声 |
+| `random` | 按 `SampleTime` 生成标准正态随机数，乘以 `NoiseStd`；点间保持，固定 `NoiseSeed` 可重复生成 |
+| `predefined` | 从 `NoiseFile` 读取 `NoiseColumn`，乘以 `NoiseStd`；点间线性插值 |
+
+例如 DO 探头的标准差为 0.05 mg/L，每 10 秒更新噪声。在 Dash 中选择随机噪声，间隔填写 0.16666667 分钟，种子填写 42。假设某次抽样得到 $z=0.4$，探头响应后的读数为 3 mg/L，限幅前的读数为
+
+$$
+3+0.05\times0.4=3.02\ \mathrm{mg/L}
+$$
+
+这是抽样值的示意，不是声称 Seed=42 会首先产生 0.4；当前随机噪声从 0 开始，到第一次噪声更新事件才抽样。噪声点间保持时，传感器的动态状态仍在每个有效求解步更新。
+
+导入的显式 Sensor 配置也可以引用自定义预定义序列。自定义文件需在计算环境可访问，采用无表头、空白分隔的数值文本：第一列为从 0 开始的 day 时间，至少两个点，等间隔与 `SampleTime` 一致；`NoiseColumn` 从 1 开始选择数值列，0 是时间列。所有数值必须有限。程序会乘以 `NoiseStd`，但不会自动归一化自定义数据；将其用作标准化噪声时，应自行准备相应序列，不要直接把包含过程变化的现场浓度记录当作噪声。
+
+旧 `builtin:BSM1` 资源覆盖 0–14 天，包含 DO 和 NOx 两列。新配置选用 BSM 预定义噪声时，可用同样时间范围的 25 通道资源。普通 AAO 模拟若持续 100 天，可关闭噪声或按固定间隔生成随机噪声。选择预定义序列时，数据须覆盖整个模拟时段。
+
+标准化的合成噪声可以用于不同工艺的对照实验，其适用性不由 BSM、AAO 等工艺名称决定；响应特征、噪声幅度和时间特征应与拟模拟的仪表相符。给多个独立探头使用不同的随机种子或噪声列，可以避免人为引入完全相同的噪声。
+
+#### BSM 类别与具体仪表参数 {#sensor-bsm-presets}
+
+迁移的 BSM1 默认闭环在内部保留以下两套传感器配置；用户在合并表中填写回路名称，无需另外填写 Sensor 名称：
+
+| 参数 | `SEN_Tank5_DO` | `SEN_Tank2_NOx` |
+|---|---:|---:|
+| 类别 | Class A | Class B0 |
+| T90 | 1 min | 10 min |
+| DelayOrder | 2 | 8 |
+| 测量方式 | 连续 | 连续 |
+| 量程 | 0–10 mg O₂/L | 0–20 mg N/L |
+| NoiseStd | 0.25 mg O₂/L | 0.50 mg N/L |
+| 噪声网格 | 1 min | 1 min |
+| 内置噪声列 | 1 | 2 |
+
+Class A/B0 规定动态特征，测量对象、安装位置和量程并非仅凭类别就能确定。噪声标准差默认取量程跨度的 2.5%。BSM1 默认 DO 量程为 0–10，因此得到 $10\times0.025=0.25$。[BSM1 技术报告，第 7.2–7.3 节](https://assets.pubpub.org/pdihltqg/01603112315958.pdf)
+
+选择 `BSM_Class_A` 时，探头使用一分钟的二阶响应。各预设定义相应的连续或离散输出规则。为每个探头指定 `SensorLocation`、`SensorTarget` 以及量程上下限。BSM 预定义噪声按量程跨度计算幅度。
+
+### 评估 {#自定义绩效指标}
+
+在**列表 → 评估**中定义动态模拟后要计算的指标。例如，若出水流量 `Qe` 以 m³/d 计，出水浓度 `Eff.COD` 以 mg/L 计，`Mean(Qe * Eff.COD / 1000)` 就是日均 COD 排放负荷，单位为 kg/d。使用时选本厂实际的流量和 Target 名称。[评估字段、公式示例及 BSM1 预设](./Assessment.mdx)
+
+也可在 `Environment` 后的可选工作表 `Assessment` 中填写，列依次为 `Name`、`Unit`、`StartDay`、`EndDay`、`Formula`。结果工作簿的 `PerformanceMetrics` 表保存计算值。
+
 ### Flowchart
 
-`Add` 菜单可以创建 Tanks、Pumps、Inflows、Outflows、Wasted、Flows、Connections
-和 Targets。`List` 菜单可以打开各表和 Unit。Tools 包含 Fit、Grid、Layout、PNG
+`Add` 菜单可以创建 Tanks、Pumps、Inflows、Outflows、Wasted、Flows、Connections、
+Controllers 和 Targets。`List` 菜单可以打开各表和 Unit。Tools 包含 Fit、Grid、Layout、PNG
 Export、缩放/平移和全屏编辑。
 
 ### 其它操作

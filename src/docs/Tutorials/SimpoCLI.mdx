@@ -301,6 +301,9 @@ complete command directory.
 | Command | Purpose | Required scope |
 | --- | --- | --- |
 | [`calculate`](./SimpoCLI/calculate) | Prepare a calculation and start SimpoClient | `calculate` |
+| [`trial-controller`](./SimpoCLI/trial-controller) | Test or estimate PI parameters on a saved Project | `calculate` (also `read` for `--wait`) |
+| [`get-controller-trial`](./SimpoCLI/trial-controller) | Read a trial’s stage, progress and result | `read` |
+| [`stop-controller-trial`](./SimpoCLI/trial-controller) | Cancel a Controller trial by its trial ID | `calculate` |
 | [`get-calculation-status`](./SimpoCLI/get-calculation-status) | Read current calculation status | `calculate` |
 | [`get-calculation-result`](./SimpoCLI/get-calculation-result) | Select and page saved result series, balance summaries, diagnostics, and details | `read` |
 | [`stop-calculation`](./SimpoCLI/stop-calculation) | Stop a calculation and matching local processes | `calculate` |

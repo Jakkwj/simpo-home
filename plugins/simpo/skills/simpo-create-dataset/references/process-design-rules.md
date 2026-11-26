@@ -83,19 +83,25 @@ preliminary operating assumption rather than a calculated fact.
 Separate carbon oxidation, nitrification demand, denitrification credit, and
 other material oxygen terms. Record the assumed alpha, beta, transfer
 efficiency, diffuser depth, and safety/design factors used to convert oxygen
-demand to air flow. The DataSet Pump row stores the SOTE correlation
+demand to air flow. The DataSet AirPump row stores the SOTE correlation
 coefficients; a default such as `SOTEa=0.3`, `SOTEb=0`, `SOTEc=0` is an explicit
 design assumption, not manufacturer data. Record the receiving Tank's water
 temperature in `Environment`, the Pump's θ, and their evidence/defaults using
 the `dataset-json-format` reference. Water-temperature correction of saturation
 and transfer does not convert actual air-meter volumes to a standard gas-flow
 basis; record the Qair measurement basis separately. Do not confuse Pump θ with
-a BioModel kinetic coefficient or apply it again to direct KLa inputs.
+a BioModel kinetic coefficient. KLaPump applies its own θ once at TRef, using
+the receiving Tank's temperature. Direct Tank.KLa is no longer supported;
+offline migration uses θ=1 to preserve a previously uncorrected coefficient. When a source supplies KLa directly, preserve its /d
+basis in Flow through KLaPump rather than inventing air flow or SOTE values.
+Record the Tank SaturationModel and its evidence; BSM1 uses Constant 8 mg O₂/L
+and θ=1. Do not infer real blower power from KLa alone.
 
 ### Settling
 
-For `Point Settling`, store the two compartment volumes as
-`[outlet_volume, blanket_volume]` and a `SettlingFactor` between 0 and 1. Explain
+For `PointSettlingTank`, store OutletVolume and BlanketVolume separately, with
+a `SettlingFactor` between 0 and 1. The legacy unified Tank format stores
+`[outlet_volume, blanket_volume]`. Explain
 the assumed split and factor. Do not claim a detailed clarifier design from this
 simplified representation.
 

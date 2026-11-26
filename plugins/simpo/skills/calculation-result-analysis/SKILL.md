@@ -1,6 +1,6 @@
 ---
 name: calculation-result-analysis
-description: "Analyze saved SIMPO simulation, sensitivity, uncertainty, and estimation results, including Mass Balance and Reaction Analysis. Use to explain trends, compare observations, inspect Composition/Component/Target accounting, or diagnose saved balance differences and concentration anomalies. Read-only; status-only queries and calculation preparation do not need this skill."
+description: "Interpret saved SIMPO simulation, sensitivity, uncertainty, and estimation results. Use for Assessment metrics, controller response, benchmark WNSE, comparisons with observations, Mass Balance and Reaction Analysis, including Composition/Component/Target accounting. This workflow reads existing results."
 ---
 
 <!-- BEGIN SHARED WORKFLOW -->
@@ -51,6 +51,15 @@ description: "Analyze saved SIMPO simulation, sensitivity, uncertainty, and esti
 - **不确定性**：先确认分位数/区间的概率含义、采样信息及有效样本。报告范围、随时间变化及宽度。预测区间、置信区间和输入取值范围不能互换；缺少分位定义或有效样本信息时说明限制，不推断概率覆盖率。
 - **参数估计**：读取实际目标函数、权重、拟合参数、约束/边界、收敛或优化过程和对应预测数据。报告边界附近参数、残差方向及拟合局限。优化器结束不代表全局最优；校准数据上的拟合不等于独立验证。只对完整对齐的有效配对计算误差，并注明样本数和定义；观测方差为零时 R² 无定义，观测为零时不使用 MAPE。
 
+## BSM1 基准复核
+
+先明确要比较哪两次运行。复现精度要匹配同一天气、同一控制策略的 MATLAB 和 SIMPO 结果。研究控制效果时，才将同一天气的开环与闭环配对。八个基准项目的 `Measured` 是 MATLAB 参考轨迹。核对时间单位、采样时刻和沉淀层号，SIMPO 从池底向上编号。
+
+- **Assessment**。使用本次报告保存的公式、单位和窗口。01/02 是 500 天恒定进水启动轨迹，评估第 493–500 天。03/04 晴天、05/06 雨天、07/08 暴雨评估第 7–14 天。检查 SP 时，把日均排泥和全厂固体库存变化分开。八个案例用 `Change(库存, -1)` 仅将期末库存往前取一个保存点，期初值、排泥积分和七天分母保持原窗口。天气案例最后取第 13 天 23:45，启动案例取第 499 天 20:00。其他项目按其实际公式和采样间隔处理。SP 的修正会传递到使用它的 OCI，水质曲线的 WNSE 单独从报告读取。
+- **WNSE**。八个项目对 15 个位置各 14 条水质曲线等权评分，共 210 条，包括画图时隐藏的曲线。步长容差是运行设置，比较各档结果时固定参考、采样和权重。晴天的 15 条 `S_I` 曲线几乎恒定，NSE 对微小误差敏感，结合原单位下的最大绝对差或 RMSE 解释。若另算仅含波动曲线的平均 NSE，单列筛选条件和条数。
+- **控制器**。逐时对齐过程真实值、传感器读数、设定值、PI 指令和执行器实际输出。Dash 的控制器结果表覆盖完整保存轨迹，按时间求过程绝对误差均值和触限占比，累计相邻实际输出的绝对变化量。BSM1 工作组第 7–14 天的操纵量统计使用限幅后的 PI 指令。试调指标只覆盖选定的试调窗口。比较时先确定信号、计算方法和时窗。
+- **误差定位**。例如第二周 AE 有差异，先按保存公式用各池的体积和池内实际 KLa 复核差额。再按相同时间顺序核对溶解氧读数、PI 指令、执行器输出和该池 KLa，必要时查看泵贡献及温度修正。周均 KLa 能量化 AE 的差额。确定最初偏离的环节需要两边可比较的逐时记录或单因素对照。若差异集中在暴雨的某几条记录，可先对齐该层 TSS 的峰值时刻和幅度，再核对颗粒组成对同层 `X_BH` 的影响。
+
 ## 平衡与反应分析
 
 用户询问 Mass Balance、Reaction Analysis、Composition/Component/Target 收支、动态累计差异、约束补偿或异常汇总时，先按执行适配加载 [平衡分析规则](references/balance-analysis.md)。仅查询状态或下载原始结果不需要加载此参考。
@@ -85,6 +94,24 @@ pickle files. Do not install or update the user's CLI/Skills implicitly.
   `get-biomodel`, or `get-dataset` commands for the actual linked IDs. Read only
   relevant fields from their JSON. Runtime Variable values come from
   `get-project-variables`; analysis does not call `set-project-variable`.
+
+## Assessment and closed-loop results
+
+Use `simpo get-calculation-result PROJECT_ID --engine SIM` with the options
+for the quantity requested. Replace `NAME` with the controller's saved name.
+
+| Quantity | Options | What to read |
+| --- | --- | --- |
+| Assessment | `--report --section performance_metrics` | Read the row's `Value`, `Unit`, `StartDay`, `EndDay`, `Formula` and `Error`. An evaluation error leaves the value unavailable. |
+| Weighted NSE | `--report --section NSE.Weighted` | Read the complete value. Some reports store the score as a string, so `--limit 1` returns just its first character. |
+| Process response and handle | `--section controllers.controllers.NAME.records` | Compare `TrueValue` and `MeasuredValue` with `Setpoint`. Compare the limited command `Output` with `ActuatorOutput` for a single actuator. Read the sibling `field_units` and `configuration.outputs` when interpreting branches. |
+| BSM1 controller statistics | `--section controllers.metrics.NAME` | When present, `IAE`, `ISE` and `MVMean` use the benchmark window on days 7–14. |
+| Effective aeration | `--section runtime_inputs.tank_aeration` | Select the tank's `Tank`, `Time`, `Volume` and `KLa` records for AE. Use `runtime_inputs.aeration` for individual pump contributions and `runtime_inputs.signals` for the named input's `RawValue` and `EffectiveValue`. |
+
+For Uncertainty and Estimation, check the selected engine for its saved
+best-solution controller traces under the same `controllers.controllers` path.
+For a completed PI trial use `simpo get-controller-trial PROJECT_ID TRIAL_ID`
+to read its window, status and baseline/candidate metrics when available.
 
 ## Balance views in the existing result command
 

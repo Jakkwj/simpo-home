@@ -2,15 +2,15 @@
   "schema_version": 2,
   "name": "simpo-create-project",
   "target": "cli-public",
-  "rules_version": "2",
-  "version": "1.0.3",
-  "workflow_sha256": "42f9c25f955417a97e937d3969dab6c8735b6b3f31ae8c082dcaba7a8343c971",
-  "adapter_sha256": "f8612a28ae778b1a8217c5d445682eff31c9fd46e90dfd993b7637dd6df5c08d",
+  "rules_version": "3",
+  "version": "1.1.1",
+  "workflow_sha256": "9790b4c2fbc4d16ff3bd032e0feb56b6bec93c2868b46f8c33e06f6c035b1bc5",
+  "adapter_sha256": "b03bba8d803f4845bed703b35a4c31447aee64bad37c3cafc134f2611c089852",
   "files": {
-    "SKILL.md": "c116073c4f1cfd37b7f59f5a4122896ee97f066ec7ad45c2857680743aff8912",
+    "SKILL.md": "99b1a86ebe35e2d0198f83abbf5022cc122d25e4cf08a9fb2b8b3ecd4fbd5dc7",
     "agents/openai.yaml": "e119261c48852c7a6cd0844ffabd226c2b823c471248d13bf2c85c327fb7a0b3",
     "references/figure-digitization.md": "128d4fca4e27294ddf5a5b713c917048c1fbcda5b53a0906c463245e7b851154",
-    "references/paper-reproduction-workflow.md": "db795ba4333fdc10e5be054a61b09d4dbe508a011ec24acc905f993cf942f79e",
+    "references/paper-reproduction-workflow.md": "858cc0205929401ee7fccfcd15d6f651ab261df222202ad64d045dc78169731d",
     "references/paper-to-resources.md": "bd8c72abf8a74d2ec49acc01eccbf3b755e9700ebe9ed268d68b224b2f92e953"
   }
 }

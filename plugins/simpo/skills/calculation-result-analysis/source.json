@@ -2,12 +2,12 @@
   "schema_version": 2,
   "name": "calculation-result-analysis",
   "target": "cli-public",
-  "rules_version": "4",
-  "version": "1.0.3",
-  "workflow_sha256": "c657aafc8a7857accd73787b567708cbc2c9b63cff5170914231e0cdb660db99",
-  "adapter_sha256": "ca324ef1fefc9cf6a1c0f8d66d8bd1e7ad8c23881082cc838b914c9377bc3497",
+  "rules_version": "5",
+  "version": "1.1.1",
+  "workflow_sha256": "43330b58017d0d078b7b9d8baf132e128651cafefd57ba70e7318f5ed28527ae",
+  "adapter_sha256": "1235d819a2d822ab781d510b063aed8cac72a64998f0077cbeedbab53a16ce6c",
   "files": {
-    "SKILL.md": "8dcb9456cd759ad30a0de27dc1d748c168fbc28949183df47b425502e229c132",
+    "SKILL.md": "e896f51a581785daf01d2a1d2f50fa22414b2ec274b0c65f9a00e44e437a59e4",
     "references/balance-analysis.md": "529e95f84230e77dc8f569828cca7b76c9762436b52c9aa66eb6895a58a847fb"
   }
 }

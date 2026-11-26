@@ -1,0 +1,194 @@
+---
+title: Configure and run BSM1
+sidebar_label: Configuration and runs
+description: Explore the eight BSM1 Projects in SimpoDash, trace oxygen transfer and PI feedback on the flowsheet, and reproduce a saved simulation.
+---
+
+import projectLinks from '@site/src/data/bsm1ProjectLinks.json';
+
+# Configure and run BSM1
+
+In this exercise you will run a 14-day simulation twice. First supply a fixed oxygen-transfer coefficient and let the oxygen concentration in Tank5 respond to the incoming wastewater. Then let a controller adjust aeration as it tries to hold the oxygen concentration at 2 g O₂/m³. Keep the <a href={projectLinks['03'] + '?result=simulation&tank=Tank5&target=S_O2'}>saved open-loop Tank5 oxygen chart</a> and the <a href={projectLinks['04'] + '?result=simulation&tank=Tank5&target=S_O2'}>saved closed-loop Tank5 oxygen chart</a> available for comparison.
+
+## Make a working copy of the plant {#create}
+
+1. Sign in to SimpoDash and open <a href={projectLinks['03'] + '?view=detail'}>03 · Dry, open loop</a>. Copy the **Project** using **Clone** in the Detail toolbar. Give it a name you have not used for a Project, BioModel or DataSet, such as `BSM1_Dry_Open_Practice`. The clone includes the linked BioModel, DataSet and Solution.
+2. Open your copy in **Personal Projects**. Check the **Draft** label beside its name. The public version remains available in its own tab as the reference for this exercise.
+3. Open **Detail**. The three views below answer different questions about the same simulation. For the first run, work with the values already saved in the copy.
+
+| View in Detail | Question it answers | What to find in case 03 |
+| --- | --- | --- |
+| **BioModel** | What reactions can happen in the water? | ASM1 defines components such as dissolved oxygen, `S_O2`, and reactions that consume oxygen. |
+| **DataSet** | Where do those reactions happen, and what enters the plant? | Five biological reactors, a ten-layer settler, an influent and two aeration pumps. The DataSet also holds the MATLAB time series used for comparison. |
+| **Solution** | Where does the simulation start, and how are its outputs compared? | **Variable** holds initial values, **Conversion** maps model components to the DataSet targets, and **Weight** sets the comparison weights. The plants start with water and sludge already in the tanks. |
+
+If you edit a project input, use **Parse** in Detail to validate it and save the Draft before calculating. [Cloning a public Project](../../Tutorials/Project/Create.mdx)
+
+## Exercise 1 · Reproduce the dry open loop {#first-run}
+
+1. **Check the two kinds of input.** In **Detail → DataSet**, open the flowsheet’s **List → Flows** and select `Q_0`. At time 0 h it shows **21,477 m³/d**. Close the table and open **List → Inflows → Inflow1**. At the same time, influent ammonium (`S_NH`) is about **30.25 g N/m³**. The first number is the flow rate at that instant, expressed per day. The second gives the mass of ammonium nitrogen per cubic metre of that water.
+2. **Trace the equipment.** Follow the process line from `Inflow1` to `Tank1`, through `Tank5` and into `Tank6`. Follow the upper outlet of Tank6 to `Outflow`. Above Tank5 the separate `KLaPump5` connection supplies `KLa_5 = 84` d⁻¹. Open **List → Controllers**. An empty list is expected in case 03. The influent keeps changing while this aeration coefficient stays fixed.
+3. **Set up the run.** In your Draft, open **Calculation → Console**, choose the **Simulation** task and select **General**. Use the settings below for this first reproduction. The console uses Forward Euler for these cases.
+
+   | Group | Field | Value for the exercise |
+   | --- | --- | --- |
+   | Execution & Inputs | Execution Mode | Dynamic |
+   | Execution & Inputs | Dynamic Input Interpolation Method | Linear |
+   | Solver & Performance | Step Tolerance (%) | 5 |
+   | Solver & Performance | Resolution Rate (%) | 100 |
+
+   The first run on this computer normally works with **Run & Output → Recalculate** switched off. SimpoClient runs the solver if it has no matching local result or if inputs or settings have changed. Switch it on when you want to repeat an identical run from scratch.
+
+4. **Start and check the time axis.** Click **Start** and follow the prompt to open SimpoClient if one appears. Once the run finishes, open **Calculation → Simulation**. The dynamic run spans **0–336 h**, with one result every **0.25 h (15 minutes)**. That gives 1,345 times including the starting point. These times are already supplied by the cloned case.
+5. **Read one result before looking at a score.** In the chart selectors choose **Tank → Tank5 → S_O2**. Hover at **168 h** (day 7). The **Predicted** oxygen concentration is about **0.469 g O₂/m³** in the saved 5% run. **Measured** is the MATLAB reference included with the case. Then click the chart-shaped **Assessment** button at the bottom of the Simulation report card. Hovering over the icon shows its name. Find **AE** and click its name to expand the formula. For days **7–14**, aeration used **3,341.39 kWh/d** on average. The chart gives an instantaneous concentration and the assessment gives a weekly average of an energy rate. Use the same time and units when checking your own copy.
+
+## Exercise 2 · Close the two feedback loops {#closed-loop}
+
+1. Open <a href={projectLinks['04'] + '?view=detail'}>04 · Dry, closed loop</a> and clone it separately, for example as `BSM1_Dry_Closed_Practice`. Its influent matches case 03. Case 04 carries the starting sludge concentrations, instrument states and recycle conditions from its own closed-loop conditioning run.
+2. In **Detail → DataSet → List → Controllers**, open `BSM1_KLa5`. Read the three tabs in order. **Sensor** measures `Tank5.S_O2`. **PI Controller** compares that reading with **2 g O₂/m³**. **Control Handle** sends the resulting command to `KLa_5`, within **0–360 d⁻¹**. Follow `BSM1_Qintr` in the same way, from nitrate in Tank2 to the internal recycle `Q_a`. The lines are visible on the flowsheet when **Tools → Signals** is on.
+3. Run case 04 with the same console values as in exercise 1, keeping its saved controller settings. In **Calculation → Simulation**, return to **Tank → Tank5 → S_O2** at **168 h**. Now the prediction is about **1.962 g O₂/m³**, close to the setpoint. A controller responding to changing loads with a noisy sensor takes time to correct an error, so the trajectory can cross the setpoint.
+4. Open **Assessment** and compare **AE** over the same week. It rose to **3,698.35 kWh/d**. In this pair, feedback brought Tank5 closer to the oxygen setpoint at the sampled hour and used more aeration energy over the week. Compare **EQ** and **PE** alongside **AE** before drawing a conclusion about the whole plant. [Read the seven indicators](./Assessment.mdx)
+
+To explain the change at 168 h, look at what reached the plant. In case 03, `KLa_5` stayed at **84 d⁻¹** and `Q_a` at **55,338 m³/d**. In case 04 their effective values at that hour were about **161.77 d⁻¹** and **13,116.54 m³/d**. The two named inputs have zero values in case 04’s saved Flow table because the controllers supply them at runtime. The controller’s actuator output gives the aeration actually delivered at that time.
+
+**Try replacing the closed-loop inputs.** In a copy of case 04, keep the two Flow names, connections and timestamps, the controller settings and initial states. Replace the zero entries with the open-loop values of **55,338 m³/d** and **84 d⁻¹**, respectively. Across the same 14 days, water quality, applied handle values and all seven Assessment metrics match the run with zeros. To configure the loops, one row at time zero with a value of zero suffices for each handle. Clearing the first value of either series fails DataSet validation.
+
+## Repeat the exercise under another influent {#other-cases}
+
+| Which cases to open | What to keep and what to check |
+| --- | --- |
+| <a href={projectLinks['01']}>01 · Constant, open</a> and <a href={projectLinks['02']}>02 · Constant, closed</a> | Keep **Dynamic**. Follow the plant through 500 days of constant influent to its steady endpoint. Choose Tank2 nitrate and Tank5 oxygen at day 500, then inspect the last seven days (493–500) in Assessment. The ideal sensors in 02 are appropriate to this startup. |
+| <a href={projectLinks['05']}>05 · Rain, open</a> and <a href={projectLinks['06']}>06 · Rain, closed</a> | Use each case’s supplied inputs and initial state. Inspect the change in `Q_0` during the rain, then compare effluent TSS in the top layer (`Tank6_10`) over the same period. |
+| <a href={projectLinks['07']}>07 · Storm, open</a> and <a href={projectLinks['08']}>08 · Storm, closed</a> | Follow the two short storms in `Q_0`, then inspect `Tank6_4.X_BH` during hours 262–263. For the step-tolerance experiment, change only Step Tolerance in a copy of 07 and keep the result times at 100% resolution. [Compare the storm peak](./Results.mdx) |
+
+## Inspect the settler and the oxygen supply {#aeration}
+
+`Tank1` and `Tank2` are 1,000 m³ anoxic reactors. `Tank3`–`Tank5` are 1,333 m³ aerated reactors. All five have constant volume. Open `Tank6` on the flowsheet. Its **Takacs Settling** configuration has 10 layers, a surface area of 1,500 m², a height of 4 m and feed layer **6**. SIMPO numbers layers from the bottom up. Effluent leaves the top layer `Tank6_10`. Return sludge `Q_r` and waste sludge `Q_w` leave the bottom layer `Tank6_1`. The internal recycle `Q_a` returns from `Tank5` to `Tank1`.
+
+Check the geometry against the volumes in the Project. Tank6 holds $1{,}500 \times 4 = 6{,}000$ m³. Each of its ten layers is 0.4 m deep and holds 600 m³. In the Tank6 detail, select **Measured** and change the layer to 10 to inspect the reference for the effluent. Select layer 1 to inspect the bottom sludge. The conical flowsheet icon shows the layer order. The model uses the same area for every layer.
+
+**Keep ten layers and feed layer 6 when reproducing BSM1.** When creating a settler for another plant, SIMPO accepts 3–10 layers. The feed needs at least one layer above it and one below it. A ten-layer settler can feed layers 2–9, while a three-layer settler feeds layer 2. Dividing the total depth by the number of layers gives the 0.4 m layer depth in this case.
+
+**Keep the layers in place during a storm and let the solver adjust its internal step.** Faster flow or thinner layers can carry a change in water or solids into an adjacent layer sooner. The Forward Euler solver calculates an upper time-step limit for each layer from the water flow and settling flux, then takes the smallest of those limits. Many internal steps can fit between successive 15-minute output records. [Time-step constraint and worked example](../../Tutorials/DataSet/Edit.mdx#takacs-step)
+
+**KLaPump takes a volumetric oxygen-transfer coefficient in d⁻¹.** On the DataSet flowsheet, follow the two lines from `KLaPump34` and the line from `KLaPump5`. Open the named Flow on each line to inspect its time series. All eight cases use these three connections.
+
+| From | Flow | Into | Open-loop input |
+| --- | --- | --- | ---: |
+| `KLaPump34` | `KLa_34` | `Tank3` | 240 d⁻¹ |
+| `KLaPump34` | `KLa_34` | `Tank4` | 240 d⁻¹ |
+| `KLaPump5` | `KLa_5` | `Tank5` | 84 d⁻¹ |
+
+Each reactor connected to `KLa_34` receives the full 240 d⁻¹. KLa inputs share the time-and-value column layout of water flows in `Flow`. The coefficient enters the oxygen-transfer calculation. Only water streams enter the hydraulic balance. Times use `Unit.Time = hour`. All cases fix `Q_r = 18446` and `Q_w = 385 m³/d`. Open loop also fixes `Q_a = 55338 m³/d`. In closed loop, the two controllers supply the effective values of `Q_a` and `KLa_5`.
+
+In the pump details both pumps use `θ = 1` and `TRef = 20` °C. In a general project, the reference coefficient is multiplied by $\theta^{T-T_{ref}}$ at each receiving tank's temperature. Setting θ to 1 makes the coefficient temperature-independent in these cases. **The BSM1 dissolved oxygen saturation concentration is set on the receiving reactor** by opening the CSTR details for Tank3, Tank4 or Tank5. Choose **Oxygen Saturation Model → Constant** and enter **8 mg O₂/L** as the **Saturation Value**. In the workbook these are `CSTRTank.SaturationModel = Constant` and `SaturationValue = 8`. To check the fixed d⁻¹ unit for KLa, open **List → Unit** on the flowsheet. For example, if `Tank5` in open loop has 2 g O₂/m³ of DO, the instantaneous transfer rate is $84(8-2)=504$ g O₂/(m³·d). An Assessment formula can read the named input `KLa_5` or use `Tank5.KLa` for the effective combined coefficient at the tank, as in the aeration energy calculation. [Compare saturation settings for typical plants, BSM2 and BSM1](../../Tutorials/DataSet/Edit.mdx#do-temperature)
+
+## Mixed inlet response at Tank1 {#mixed-inlet}
+
+`Tank1` receives the external influent `Q_0`, internal recycle `Q_a` and return sludge `Q_r`. The BSM1 MATLAB/Simulink implementation used here applies a first-order lag to the combined inlet ahead of the first reactor. In all eight cases open **Tank1 → CSTR details → Mixed Inlet Response** and check that **First-order lag** has a **Time Constant** of **8.64 seconds**. `Tank2`–`Tank5` use instantaneous mixing. This feature uses constant-volume hydraulics and the Forward Euler solver. For a simple example, suppose combined inlet flow jumps from 90,000 to 100,000 m³/d and stays there. After 8.64 seconds the flow reaching the reactor is about 96,320 m³/d. It has already begun to change and continues towards 100,000. Linear interpolation specifies the input between two recorded samples. The lag governs how Tank1 responds to that input.
+
+The filter acts on **total liquid flow** and **each component's mass load**. The equations below sum the incoming streams and update the two filtered quantities for component $j$.
+
+$$
+Q_{in}=\sum_i Q_i,\qquad L_{j,in}=\sum_i Q_i C_{j,i},\qquad
+\tau\frac{dQ_f}{dt}=Q_{in}-Q_f,\qquad
+\tau\frac{dL_{j,f}}{dt}=L_{j,in}-L_{j,f}.
+$$
+
+Use consistent time units for $t$ and $\tau$. The reactor receives filtered flow $Q_f$ and component load $L_{j,f}$. Following a sustained step in the incoming total flow, the filtered flow completes about 63% of the change in one time constant. The outlet of `Tank1` and downstream branches carrying the remaining flow respond accordingly. Use `Branch("Tank6_10", "Outflow")` when the actual effluent flow is needed for a dynamic effluent-load calculation.
+
+When reproducing a public case, keep Tank1’s startup settings. For a new CSTR, SIMPO initializes the inlet automatically from the feed and recycles at the start of the simulation.
+
+## How the two controllers work {#controller}
+
+Each controller reads one simulated water-quality target at a particular location. Its sensor supplies a reading, the PI compares that reading with the setpoint, and its actuator adjusts one independent handle. A line labelled `Q_0+Q_r` carries a calculated flow. Bind the controller to a single named handle such as `Q_a`. To reproduce the reference, retain the supplied bindings and initialization. To draw the same connections in a new diagram, select **New Controller**, drag the measurement location to the controller and drag its output to the desired flow or KLa connection. Open the controller and complete **Sensor**, **PI Controller** and **Control Handle**, then apply and save.
+
+| Field in `Controller` | Nitrate and internal recycle | Dissolved oxygen and aeration |
+| --- | --- | --- |
+| `Name` | `BSM1_Qintr` | `BSM1_KLa5` |
+| `SensorPreset` | `BSM_Class_B0` | `BSM_Class_A` |
+| `SensorLocation`, `SensorTarget` | `Tank2`, `S_NO` | `Tank5`, `S_O2` |
+| `SensorLowerLimit`, `SensorUpperLimit` | 0–20 g N/m³ | 0–10 g O₂/m³ |
+| `ControllerSetpoint` | 1 g N/m³ | 2 g O₂/m³ |
+| `ControllerGain` | 10,000 (m³/d)/(g N/m³) | 25 (d⁻¹)/(g O₂/m³) |
+| `ControllerIntegralTime`, `ControllerTrackingTime` | 0.025 d, 0.015 d | 0.002 d, 0.001 d |
+| `ControlHandle` | `Q_a` | `KLa_5` |
+| `HandleLowerLimit`, `HandleUpperLimit` | 0–92,230 m³/d | 0–360 d⁻¹ |
+
+For example, a DO reading of 1.8 at a setpoint of 2 gives an error of $2-1.8=0.2$ g O₂/m³. The proportional contribution is $25\times0.2=5$ d⁻¹. The PI adds the bias, integral state and anti-windup correction. Command limits and the actuator response then determine the actual `KLa_5`. Integral time sets how quickly a persistent error accumulates. Tracking time sets how quickly the anti-windup correction follows the limited command when an output limit is reached. Enter both in **days**, including when the DataSet time unit is hours. Use the supplied gains and times for reproduction. Controller trial is available for exploring other tunings. [Sensor, PI and trial documentation](../../Tutorials/DataSet/Edit.mdx#controller)
+
+Look at the actual signals at hour 168 in case 04. The simulated tank DO was **1.962 g O₂/m³**, while the sensor read **2.215 g O₂/m³** after its response and noise were applied. The PI acted on the sensor reading, so its error was about $2-2.215=-0.215$ g O₂/m³. Its aeration command was **154.51 d⁻¹**. The actuator was still responding and delivered **161.77 d⁻¹**. In the water-quality chart, **Measured** labels the MATLAB comparison series. The sensor reading belongs to the feedback loop inside this simulation.
+
+**Case 02 and cases 04/06/08 differ in their instrumentation and initialization.** The 500-day closed-loop startup in case 02 uses ideal noise-free sensors, a first-order internal-recycle actuator and direct application of the tank 5 aeration command. The feedback in cases 04, 06 and 08 follows the sensor and actuator dynamics.
+
+- The continuous Class B0 nitrate sensor has a 10-minute 90% response time and noise standard deviation of 0.50 g N/m³. The corresponding values for the continuous Class A DO sensor are 1 minute and 0.25 g O₂/m³.
+- Both sensors update at internal integration steps. The BSM1 noise source provides values every minute from day 0 through day 14, with DO on channel 1 and nitrate on channel 2. The DataSet’s 15-minute `Measured` series contains the MATLAB comparison trajectory. The simulated plant provides the live feedback.
+- In the closed-loop Projects, open either controller and expand **Fixed Settings** on the Sensor and PI Controller tabs and **Fixed Actuator Settings** on the Control Handle tab. The visible presets and gains in cases 02 and 04 match, but the Projects preserve different instrument dynamics and initial states. The sensor reading drives the PI, the limits bound its command, and the actuator determines the input that reaches the plant.
+
+### Which inputs may a BSM1 control strategy change? {#control-handles}
+
+A *control handle* is the quantity the strategy can change. In the default nitrate loop, for example, the sensor measures nitrate in Tank2, the PI aims for 1 g N/m³, and its handle is the **internal recycle flow** `Q_a`. Table 15 lists the allowable range of each handle. Counting the numbered reactors separately gives **28 entries**. The benchmark’s default closed loop uses two of them, `Q_a` and `KLa_5`. [BSM1 report, §7.4 and Table 15 (printed p. 29)](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=30)
+
+![SimpoDash case 04 controller list. Tank2 nitrate controls Q_a, and Tank5 oxygen controls KLa_5.](/img/bsm1/dry-closed-controllers-en.png)
+
+In <a href={projectLinks['04'] + '?view=detail'}>case 04</a>, open **DataSet → List → Controllers**. Read the last column for the two handles already wired in this Project. The setpoints in the adjacent column are concentrations. Use the table below to find the corresponding *command limits* in m³/d or d⁻¹.
+
+| Handle in Table 15 | Count | Range for each | What the plant changes |
+| --- | ---: | --- | --- |
+| $Q_a$ | 1 | 0–92,230 m³/d | Internal recycle of mixed liquor from the last reactor. |
+| $Q_r$ | 1 | 0–36,892 m³/d | Settled sludge returned from the clarifier to the reactors. |
+| $Q_w$ | 1 | 0–1,844.6 m³/d | Sludge wasted from the clarifier underflow. |
+| $K_La_i$, reactors 1–5 | 5 | 0–360 d⁻¹ | Aeration intensity in each reactor. Zero switches off oxygen transfer from aeration in that reactor. |
+| $q_{EC,i}$, reactors 1–5 | 5 | 0–5 m³/d | External carbon feed to each reactor. The benchmark feed contains 400,000 g COD/m³ of readily biodegradable substrate. |
+| $f_{Qin,i}$, reactors 1–5 | 5 | 0–1 | Fraction of the plant influent delivered to each reactor. |
+| $f_{Qa,i}$, reactors 1–5 | 5 | 0–1 | Fraction of the internal recycle delivered to each reactor. |
+| $f_{Qr,i}$, reactors 1–5 | 5 | 0–1 | Fraction of the return sludge delivered to each reactor. |
+
+The first three maxima are respectively 5, 2 and 0.1 times the **stabilization influent flow of 18,446 m³/d**. Each set of five fractions must sum to **1 at every instant**. For example, if the influent is 10,000 m³/d and its fractions are 0.7, 0.3, 0, 0, 0, reactors 1 and 2 receive 7,000 and 3,000 m³/d. Raising the second share to 0.4 requires reducing the first to 0.6 if the others stay at zero.
+
+**Using the table in Dash.** For the default oxygen loop, select `KLa_5` as **Control Handle** and enter **0** and **360** as its limits. The PI gain and time settings depend on the measurement and process response. To try another strategy, first represent the physical input in the DataSet. Independent reactor aeration needs its own KLa signal (the supplied cases share `KLa_34` between Tank3 and Tank4). Carbon dosing needs an Inflow with the specified substrate concentration and a named dosing Flow. For a split, configure branch flows that add up to the parent flow; entering 0 and 1 as limits on a single Controller does not enforce that sum. [Set up a Controller in the DataSet](../../Tutorials/DataSet/Controller.mdx#handle)
+
+### Try the aeration controller in the dry-weather case {#controller-trial}
+
+The two PI controllers saved in case 04 reproduce the benchmark tuning. To see what a change in gain does to aeration, open **DataSet** in a draft of **case 04, dry weather in closed loop**. Choose **List → Controllers**, select `BSM1_KLa5` and open **PI Controller → Controller Trial**. This loop measures `Tank5.S_O2`, targets 2 g O₂/m³ and adjusts `KLa_5`. Save any changes to the influent, reactor volumes or initial conditions that you want to include. Select a **6 h** trial window and open SimpoClient if Dash prompts you.
+
+| What do you want to test? | Button | Example in case 04 |
+| --- | --- | --- |
+| How do my PI settings perform? | **Run trial** | Change gain from 25 to 20 and keep integral time at 0.002 d and tracking time at 0.001 d. With all three fields filled, the trial directly compares gain 20 with the saved gain of 25. If you clear only integral time, the trial estimates that field and keeps the other two values. |
+| What settings does SIMPO estimate for this loop? | **Estimate all PI values** | Request a fresh gain, integral time and tracking time for the current `Tank5.S_O2` → `KLa_5` loop, even with all three fields filled. The editor keeps its current values while the trial runs. |
+
+**Read the result.** The upper plot shows simulated reactor DO against its setpoint. The lower plot shows the applied `KLa_5`. **Saved PI** and **Trial** use the same project inputs, current setpoint and limits. When the PI settings match, only Saved PI is shown. A smaller **Mean absolute process error** means DO stayed closer to 2 g O₂/m³ on average. Check **Total handle movement** and **Time at limit** alongside it to see how much the aeration command changed and how often it was limited by 0 or 360 d⁻¹. To keep a validated estimate, click **Use estimated values**, then **Apply**, and save the Project. Viewing the trial alone leaves the benchmark settings in place.
+
+To repeat the gain-20 comparison from a terminal, run `simpo trial-controller PROJECT_ID BSM1_KLa5 --gain 20 --wait` with your saved case 04 Draft ID. Use `--integral-time auto` to estimate just that value, or `--estimate-all` to estimate all three. [Controller trials with SimpoCLI](../../Tutorials/SimpoCLI/trial-controller.mdx)
+
+#### How SIMC estimates PI settings from a step test
+
+A step test runs when you request an estimate. SimpoClient holds the external inputs at their initial values, turns off sensor noise and holds the selected handle at its operating point while the plant settles. Two runs then start from that same state. One holds aeration constant and the other applies a small step. SIMPO fits a first-order model with a time delay to the **difference between the two sensor readings**. The fit gives the process gain $k$ (the steady change in DO divided by the aeration step), the time constant $\tau$ and the delay $\theta$. This warm-up is independent of the 6, 24 or 72 h trial window.
+
+SIMPO calculates proportional gain $K_c$ and integral time $T_i$ using **Sigurd Skogestad’s SIMC tuning rules**. For a first-order process and a chosen closed-loop response time $\tau_c$, the rules are
+
+$$
+K_c=\frac{\tau}{k(\tau_c+\theta)},\qquad T_i=\min\bigl(\tau,\,4(\tau_c+\theta)\bigr).
+$$
+
+The source is Sigurd Skogestad (2003), *Simple analytic rules for model reduction and PID controller tuning*, *Journal of Process Control* 13, 291–309, Table 1, first-order process. [DOI](https://doi.org/10.1016/S0959-1524(02)00062-8) · [Author’s full text](https://skoge.folk.ntnu.no/publications/2003/tuningPID/finalpaper.pdf)
+
+**How SIMPO applies the rule.** With $\Delta t$ equal to the sampling interval on the fitted curve, SIMPO selects $\tau_c=\max(\tau/2,\,\theta,\,2\Delta t)$. It estimates the anti-windup tracking time $T_t$ separately as $\max(T_i/2,\,\Delta t)$. All times here are in days. SIMPO then restores the original project state, dynamic influent and configured sensor noise to check the candidate in closed loop. If the DO response is too weak to identify, the fit is poor or the candidate materially worsens tracking, the panel explains why and retains the entered values. Check the measurement, handle and limits, or enter a complete set and compare it with **Run trial**.
+
+## Match the simulation clock to the comparison window {#run}
+
+| Setting | 01/02, constant-influent startup | 03–08, dynamic weather |
+| --- | --- | --- |
+| Execution mode | **Dynamic**, integrate 500 days from the supplied initial state and retain the approach to steady state. | **Dynamic**, initialize from the end of the corresponding open- or closed-loop 14-day dry-weather pre-run, then run 14 days of the selected weather. |
+| Input interpolation | **Linear**. Constant influent has the same value between samples. | **Linear** between adjacent input samples. |
+| Solver and resolution | **Forward Euler, 100%**. Save one point every 4 hours, giving 3,001 points including both endpoints. | **Forward Euler, 100%**. Save one point every 15 minutes, giving 1,345 points including both endpoints. |
+| Assessment window | Days 493–500, the final week of steady operation. | Days 7–14, the second week of the dynamic benchmark. |
+| Closing sludge inventory for SP | `Change(inventory, -1)` uses the sample at day 499, 20:00 (4 hours back). | The same formula uses day 13, 23:45 (15 minutes back), matching the BSM1 working group’s script. |
+
+Here, `inventory` stands for the sum of volume times TSS over all reactors and settler layers in the SP formula. The offset counts saved samples. The initial inventory still comes from the first sample, and the waste flow is integrated over the full seven days. Enable **Recalculate** in the Console when repeating these runs from an older saved result.
+
+**Linear is the Dynamic Input Interpolation Method in the Project console.** In case 03, for example, `Q_0` is 21,477 m³/d at hour 0 and approximately 21,474 m³/d at hour 0.25. Linear supplies about **21,475.5 m³/d** at hour 0.125. Previous would still supply 21,477. This option interpolates `Flow`, `Inflow` and any temperature inputs. Each feedback loop uses calculated process values. Since all eight trajectories use Dynamic execution, the steady-state input averaging option does not enter the calculation. [Dynamic input interpolation](../../Tutorials/Project/Calculation.mdx)
+
+**Step tolerance and the output interval are separate settings.** In Dash's **Step Tolerance (%)** field, enter `5` to reproduce the updated 5% runs, `0.1` for 0.1%, or `0.01` for 0.01%. The corresponding solver fractions are `0.05`, `0.001` and `0.0001`. With output resolution at 100%, a tighter tolerance allows finer internal integration while retaining the same observation times for direct comparison. See the [eight-case tolerance comparison](./Results.mdx) to choose the precision for a benchmark run.
+
+After the run, open **Calculation → Simulation**. Select a location and target to compare the **Predicted** trajectory against **Measured** at the same times. For example, select Tank5 and `S_O2` in case 04 to inspect the controlled oxygen concentration, then open **Assessment** and read the aeration energy over days 7–14. If the curves disagree from the first sample, check the starting state and input interpolation. If they diverge only during the storm peak in a few settler layers, compare integration tolerances. [Assessment calculations](./Assessment.mdx) · [Storm comparison](./Results.mdx)

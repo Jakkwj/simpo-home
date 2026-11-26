@@ -1,0 +1,207 @@
+---
+title: BSM1 reproduction results
+sidebar_label: Reproduction results
+description: Compare eight SIMPO trajectories with the BSM1 MATLAB implementation, reproduce the NSE calculation and inspect the storm-event error in the settler.
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import projectLinks from '@site/src/data/bsm1ProjectLinks.json';
+import Case04Comparison from '@site/src/components/BSM1/Case04Comparison';
+
+# BSM1 reproduction results
+
+Two comparisons answer different questions. **How closely does SIMPO reproduce BSM1?** Compare SIMPO and MATLAB values for the same tank, substance and sample time within one case. **What does feedback control change?** Compare two SIMPO cases that receive the same weather inputs. Start with one dissolved oxygen reading in Tank5, then extend the comparison to the full time series and the whole plant.
+
+The BSM1 report gives effluent and operating indices such as EQ and OCI. The NSE scores below were calculated for this SIMPO reproduction against trajectories from the supplied BSM1 Simulink models run in MATLAB R2024b. The MATLAB runs used `ode15s` for the two 500-day simulations and `ode45` for the six weather runs, with relative tolerance $10^{-5}$ and absolute tolerance $10^{-8}$. The separate Assessment comparison gives the published benchmark values. [BSM1 report, appendices 4–5](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=40) · [Assessment results and formulas](./Assessment.mdx)
+
+## Find the Tank5 oxygen reading at day 7 {#first-comparison}
+
+1. In case 03, open **Calculation → Simulation**. Use the three selectors above the chart to choose **Tank → Tank5 → S_O2**. This Target is dissolved oxygen (DO) in the tank, in g O₂/m³, numerically equal to mg O₂/L. You can also open <a href={projectLinks['03'] + '?result=simulation&tank=Tank5&target=S_O2'}>the Tank5 oxygen chart for case 03</a> directly.
+2. Locate **Measured** and **Predicted** in the legend. For these eight cases, Measured holds the concentration exported from MATLAB and Predicted holds the SIMPO calculation. If the two series overlap, use the legend to show them one at a time. Restore both and hover at the same sample time to read the values. The weather cases use **hours** on this axis, so seven elapsed days correspond to $7\times24=168$ h.
+3. At 168 h, compare the readings with the table. In case 03, SIMPO is about **0.0000074 g O₂/m³** below MATLAB. Open <a href={projectLinks['04'] + '?result=simulation&tank=Tank5&target=S_O2'}>the same Tank5 chart for case 04</a> and find the reading close to 2 at this time. The table gives values from the saved 5% Step Tolerance runs. Dash may round them to fewer decimals.
+
+| Tank5 dissolved oxygen at 168 h | 03 · Dry, open loop | 04 · Dry, closed loop |
+| --- | ---: | ---: |
+| Measured, MATLAB (g O₂/m³) | 0.4690170 | 1.9618049 |
+| Predicted, SIMPO (g O₂/m³) | 0.4690096 | 1.9616945 |
+
+**Read down one column** to see how closely the two implementations agree at this instant. **Read across the predicted row** to see how the two operating strategies change oxygen in the same tank. Follow the two curves below to see how that difference changes over the next 24 hours.
+
+![Tank5 dissolved oxygen from 168 to 192 hours. The dry open-loop case starts at 0.469, peaks near 3.39 and falls again. The closed-loop case starts at 1.962 and fluctuates around 2 g O₂/m³.](/img/bsm1/dry-tank5-oxygen-day7-en.png)
+
+The chart follows the **Predicted** row of the table. Both curves are SIMPO predictions, one for case 03 and one for case 04. Each has 97 samples taken 15 minutes apart. The circle and square mark the readings at 168 h. The dotted line marks the case 04 oxygen setpoint of 2 g O₂/m³. To assess agreement with MATLAB, return to the paired Measured and Predicted series within one case.
+
+To see how effluent quality and operating cost changed over a week, compare EQ and OCI for days 7–14 in the two Projects. [Compare plant performance](./Assessment.mdx#run)
+
+### How did the controller hold Tank5 near its oxygen setpoint? {#controller-results}
+
+The public case 04 Project contains the full 14-day controller traces from the new 5% step-tolerance run. The charts below zoom in on **hours 168–192** (97 samples at 15-minute intervals). <a href={projectLinks['04'] + '?result=simulation'}>Open case 04</a> · [Simulation settings](./Setup.mdx#create)
+
+In **Calculation → Simulation**, select **Controller** in the first menu and **BSM1_KLa5** in the second. The third menu switches between **Process Response** and **Control Handle**. The tabs below show those two views from the public result.
+
+From any chart, select **Controller metrics** in the toolbar at the bottom of the **Report**, after **Assessment**. The dialog lists every controller with saved results for the run, showing its recorded time range, mean absolute process error, total handle movement and time at limit.
+
+<Tabs>
+<TabItem value="response" label="Process Response">
+
+![Tank5 dissolved oxygen, sensor reading and setpoint, hours 168–192 of case 04.](/img/bsm1/dry-closed-controller-oxygen-en.png)
+
+</TabItem>
+<TabItem value="handle" label="Control Handle">
+
+![PI command and applied Tank5 aeration coefficient over the same 24 hours.](/img/bsm1/dry-closed-controller-oxygen-handle-en.png)
+
+</TabItem>
+</Tabs>
+
+At **180 h**, Tank5 dissolved oxygen is **1.929 g O₂/m³** in **Process Response** and the sensor reads **1.657 g O₂/m³**. Sensor response time and noise contribute to the difference. The PI compares the reading with the **2 g O₂/m³** setpoint. In **Control Handle** the command at the same time is **226.44 d⁻¹** and the applied `KLa_5` is **217.17 d⁻¹**.
+
+Switch to **BSM1_Qintr**. At 180 h, Tank2 nitrate nitrogen is **0.491 g N/m³**, the sensor reads **0.718 g N/m³** and the setpoint is **1 g N/m³**. In **Control Handle** the recycle command is **34,742 m³/d** and the actual `Q_a` flow from Tank5 to Tank1 is about **38,948 m³/d**.
+
+<Tabs>
+<TabItem value="response" label="Process Response">
+
+![Tank2 nitrate nitrogen, sensor reading and setpoint, hours 168–192 of case 04.](/img/bsm1/dry-closed-controller-nitrate-en.png)
+
+</TabItem>
+<TabItem value="handle" label="Control Handle">
+
+![PI command and applied internal recycle flow over the same 24 hours.](/img/bsm1/dry-closed-controller-nitrate-handle-en.png)
+
+</TabItem>
+</Tabs>
+
+### Compare the same closed-loop run in MATLAB and SIMPO {#closed-loop-comparison}
+
+To reproduce the SIMPO column, clone **04 · Dry, closed loop** and open **Calculation → Console**. Under **Forward Euler**, change **Step Tolerance (%)** from `5` to `0.01` and run Simulation. Both runs use the same influent, initial state, PI settings, Linear interpolation and Tank1 inlet lag. The controller plots above show the new public 5% run. The table uses the separate 0.01% run.
+
+Read each row across. For the two controllers, both columns use **days 0–14** (1,345 samples, 15 minutes apart). The error compares the true process value with its setpoint. Movement sums the absolute changes in the applied handle. Time at limit includes a clipped PI command or a handle at its limit. Error and time at limit are weighted by elapsed time as in the Dash Report. The seven Assessment rows use **days 7–14**. The MATLAB column uses the R2024b trajectory for the controllers and the benchmark’s `perf_plant.m` output for Assessment.
+
+<Case04Comparison />
+
+<a href={useBaseUrl('/files/bsm1/Case04Comparison.csv')}>Download all 13 metrics with their windows and unrounded differences (CSV)</a>.
+
+Relative difference is `100 × (SIMPO − MATLAB) / MATLAB`, calculated before rounding. Both EC values are zero, so its relative difference is undefined. Tightening the tolerance reduced the relative difference in the oxygen loop’s cumulative KLa movement from **0.33422% to 0.02166%**. Both loops give the same time at limit at the saved sampling times.
+
+**How much does the inventory sample matter?** Both case 04 assessments use the day 13, 23:45 closing sludge inventory and count wasting through day 14, 00:00. SIMPO expresses this with `Change(inventory, -1)`. At the same 0.01% tolerance, after aligning the inputs and the closing sample, the SP difference from MATLAB went from **−0.03284 to +0.00129 kg SS/d**. A unit change in SP carries a weight of five in OCI. [See the inventory term](./Assessment.mdx#inventory).
+
+### Read the final effluent at the top of the settler {#effluent-chart}
+
+Open <a href={projectLinks['04'] + '?result=simulation&tank=Tank6_10&target=TSS'}>case 04 · effluent suspended solids</a>. In **Calculation → Simulation**, choose **Tank → Tank6_10 → TSS**. `Tank6_10` is the top layer supplying the plant outlet. Click **Inflow1** in the legend to hide the influent and read the effluent on its own concentration scale.
+
+![SimpoDash case 04. Top-layer effluent TSS over 14 days, with MATLAB reference points and the SIMPO prediction line.](/img/bsm1/dry-closed-effluent-tss-en.png)
+
+Each dot is a MATLAB reference value stored under **Measured**. The **Predicted** line is SIMPO’s result. Over the 336-hour dry-weather run they nearly overlap, including at the recurring peaks around 17–18 g SS/m³. This chart gives the concentration at each time. EQ combines several effluent concentrations with the discharge flow over an evaluation window. [Read the Assessment report](./Assessment.mdx#run)
+
+### Compare all effluent targets in one view {#effluent-all}
+
+Open the <a href={projectLinks['06'] + '?result=simulation&tank=Tank6_10&target=All'}>effluent chart for case 06, rain with feedback</a>. Select **Tank → Tank6_10 → All**. To match the screenshot, hide both the measured and predicted series for `S_I` (soluble inert organic matter), then hide the legend. The chart overlays the SIMPO concentrations and MATLAB reference samples for the other 13 effluent targets over 14 days.
+
+![Case 06 in Dash, rain with feedback. The Report displays a rounded weighted NSE of 1.0. The Tank6_10 All chart shows SIMPO effluent concentrations and MATLAB reference samples.](/img/bsm1/rain-closed-effluent-all-en.png)
+
+In this screenshot of the 5% rerun, the project WNSE is **0.99999746**. The Report on the left rounds it to **1.0**. It uses all 210 water-quality curves, including the hidden `S_I` series. Select a single target to see its unit and fit. The dry closed-loop run in case 04 scores **0.98095**. [Why the dry-weather score is lower](#dry-weather-wnse)
+
+## WNSE for the eight cases {#wnse}
+
+**WNSE (weighted NSE)** summarizes how closely a Project’s water-quality curves match MATLAB. The closer to 1, the better the overall match. Open a case and select **All** in the Tank chart’s Target menu under **Calculation → Simulation** to see its score. All eight public cases use a **5% step tolerance**.
+
+| Case | Previous 5% run | Updated 5% run |
+| --- | ---: | ---: |
+| <a href={projectLinks['01'] + '?result=simulation'}>01 · Steady state, open loop</a> | 0.999999605 | 0.999999606 |
+| <a href={projectLinks['02'] + '?result=simulation'}>02 · Steady state, closed loop</a> | 0.999969981 | 0.999969980 |
+| <a href={projectLinks['03'] + '?result=simulation'}>03 · Dry, open loop</a> | 0.986079057 | 0.986079148 |
+| <a href={projectLinks['04'] + '?result=simulation'}>04 · Dry, closed loop</a> | 0.980946771 | 0.980946767 |
+| <a href={projectLinks['05'] + '?result=simulation'}>05 · Rain, open loop</a> | 0.999949105 | 0.999949125 |
+| <a href={projectLinks['06'] + '?result=simulation'}>06 · Rain, closed loop</a> | 0.999997459 | 0.999997457 |
+| <a href={projectLinks['07'] + '?result=simulation'}>07 · Storm, open loop</a> | 0.998395722 | 0.998395978 |
+| <a href={projectLinks['08'] + '?result=simulation'}>08 · Storm, closed loop</a> | 0.999997574 | 0.999997575 |
+
+Both runs use the same 210 equally weighted water-quality curves. The updated weather cases place every flow and influent sample on its 900-second grid. At the same 5% tolerance, WNSE rose slightly in 5 cases and fell slightly in 3. The largest change was about **+2.56 × 10⁻⁷** in case 07. Dash can round scores close to 1 to 1. The final inventory offset only changes Assessment, so it has no effect on water-quality trajectories or WNSE.
+
+### WNSE at different step tolerances {#tolerance}
+
+Each percentage in the header is the **step tolerance** set before a run. Each cell is the resulting **WNSE**. Only the tolerance changed across the four tests. All scores were recalculated with the same 210 curves and Project weights. The extra decimal places show, for example, how tightening the open-loop storm case from 5% to 0.1% raised its WNSE from **0.99839598** to **0.99999090**.
+
+| Case | 5% tolerance | 0.1% tolerance | 0.02% tolerance | 0.01% tolerance |
+| --- | ---: | ---: | ---: | ---: |
+| 01 · Steady state, open loop | 0.99999961 | 0.99999991 | 0.99999994 | 0.99999995 |
+| 02 · Steady state, closed loop | 0.99996998 | 0.99999983 | 0.99999996 | 0.99999997 |
+| 03 · Dry, open loop | 0.98607915 | 0.98615233 | 0.98619558 | 0.98620280 |
+| 04 · Dry, closed loop | 0.98094677 | 0.98094993 | 0.98095220 | 0.98095234 |
+| 05 · Rain, open loop | 0.99994913 | 0.99998601 | 0.99999820 | 0.99999939 |
+| 06 · Rain, closed loop | 0.99999746 | 0.99999872 | 0.99999986 | 0.99999996 |
+| 07 · Storm, open loop | 0.99839598 | 0.99999090 | 0.99999892 | 0.99999964 |
+| 08 · Storm, closed loop | 0.99999758 | 0.99999890 | 0.99999989 | 0.99999997 |
+
+Tightening the tolerance from 5% to 0.1% roughly doubled the number of internal solver steps in the six weather cases. [Solver settings](./Setup.mdx#run)
+
+### Why do cases 03 and 04 still score around 0.98 at 0.01% tolerance? {#dry-weather-wnse}
+
+Of the 210 dry-weather curves, 15 track soluble inert organic matter (`S_I`), one in each of the five reactors and ten settler layers. All stay near **30 g COD/m³** throughout the 14 days. NSE divides the sum of squared prediction errors by the sum of squared deviations of the reference from its mean. Around 30 g COD/m³, even taking the mean can introduce a difference in the last digit stored by the computer. If the reference has only that much numerical variation, dividing by its tiny sum of squares magnifies roundoff. A tighter step tolerance refines the time integration. The stored concentrations still have the same numerical precision.
+
+| 0.01% tolerance, 1,345 samples per curve | Locations with a roundoff-sized `S_I` difference | Maximum absolute `S_I` difference | Mean NSE of the other 195 curves |
+| --- | --- | ---: | ---: |
+| 03 · Dry, open loop | Tank1 | 1.42 × 10⁻¹⁴ g COD/m³ | 0.99999586 |
+| 04 · Dry, closed loop | Tank3, Tank4, and settler layers 6 and 10 | 3.55 × 10⁻¹⁵ g COD/m³ | 0.99999995 |
+
+In case 03, Tank1’s `S_I` alone accounts for about **0.01379** of the gap to a perfect WNSE of 1. In case 04 the four `S_I` curves together cost about **4/210 = 0.01905** points, bringing WNSE to **0.98095**. The third column gives the corresponding concentration errors in physical units. Among the curves with a varying reference, the lowest NSE in 03 is **0.99990620** for `X_BH` in settler layer 3. In 04 it is **0.99999898** for DO in Tank5. The tolerance table above keeps all 210 curves at their original weights. <a href={useBaseUrl('/files/bsm1/NSE_by_series.csv')}>Errors by curve</a> · <a href={useBaseUrl('/files/bsm1/NSE_summary.csv')}>Full WNSE and group statistics</a>.
+
+### Checks from the saved 5% cases
+
+| Quantity | Open loop | Closed loop |
+| --- | ---: | ---: |
+| Day 500, Tank2 nitrate N (g N/m³) | 3.66197 | 1.00000 |
+| Day 500, Tank5 dissolved oxygen (g O₂/m³) | 0.49094 | 2.00000 |
+| Day 500, top-layer effluent TSS (g SS/m³) | 12.49695 | 12.50163 |
+
+The closed-loop endpoints reach the nitrate and oxygen setpoints. In all three open-loop weather runs the effective `Q_a` and `KLa_5` matched the fixed reference values at every sample. Across the three closed-loop weather runs, the lowest sensor-reading NSE was **0.99999236** and the lowest effective-handle NSE was **0.99999184** over the full run or the assessment week. When an actuator has a lag, compare the effective flow at the plant with the effective flow in the reference. Compare the PI command and sensor reading with their respective MATLAB signals.
+
+## Calculate NSE for a single curve {#score}
+
+1. Match case, location, target, unit and timestamp. Each case compares **13 ASM1 components plus TSS**, at five reactors and ten settler layers, giving 210 curves in total. SIMPO counts layers upwards from the bottom. In the MATLAB export, layer 1 is at the top, so `Tank6_1` pairs with MATLAB layer 10. Under BSM1's settler model, reconstruct a layer's particulate concentration from its TSS and the particulate-to-TSS ratio in the current settler feed.
+2. Use the MATLAB reference in the DataSet's **Measured** table and the simulation's **Predicted** trajectory. For cases 01–02 compare the entire approach to steady state, with constant influent and 3,001 samples taken every four hours from day 0 to day 500. For cases 03–08 compare 1,345 samples taken every 15 minutes from day 0 to day 14. To examine the dynamic assessment week, select the 673 samples from day 7 to day 14 inclusive.
+3. For each curve, let $y_i$ be the MATLAB value, $p_i$ the SIMPO prediction and $\bar y$ the mean MATLAB value over the selected window. Use the formula below to calculate the Nash–Sutcliffe efficiency for that curve.
+
+$$
+\mathrm{NSE}=1-\frac{\sum_i (p_i-y_i)^2}{\sum_i (y_i-\bar y)^2}.
+$$
+
+**Try it with three actual samples.** In case 03, read three consecutive values of `Tank5.S_O2` starting at 168 h. The concentrations below are in g O₂/m³. The table rounds the readings for display and the calculation uses the original precision.
+
+| Time (h) | Measured | Predicted | Prediction minus reference |
+| ---: | ---: | ---: | ---: |
+| 168.00 | 0.4690170 | 0.4690096 | −0.0000074 |
+| 168.25 | 0.4663545 | 0.4663674 | +0.0000129 |
+| 168.50 | 0.4614744 | 0.4615023 | +0.0000279 |
+
+The mean of the three reference readings is 0.4656153. Squaring and summing the differences in the last column gives a numerator of about $0.996\times10^{-9}$. Squaring each reference reading’s difference from the reference mean and summing gives a denominator of about $2.926\times10^{-5}$. The three-point NSE is **0.9999660**. Using all 1,345 samples to calculate the mean and both sums gives the full-run value of **0.99999906**. Zooming the chart to these 30 minutes leaves the saved full-run score on the report.
+
+**How do I interpret it?** With a varying reference, an unrounded NSE of 1 means the paired values agree exactly. Zero means the total squared prediction error equals the error of using the reference mean at every time. A negative value means the prediction has greater squared error. A single steady-state endpoint or a perfectly flat reference window has a zero denominator. Report the absolute difference $|p-y|$ in concentration units for a final value. To assess the entire approach to steady state, use the 3,001 samples spanning the run.
+
+<a href={useBaseUrl('/files/bsm1/NSE_summary.csv')}>Download scores and internal step counts by case and window (CSV)</a> · <a href={useBaseUrl('/files/bsm1/NSE_by_series.csv')}>Download NSE, RMSE and maximum error by location and target (CSV)</a>.
+
+## Why case 07 is sensitive to the time step
+
+At hour 262.75 of the storm run, the settler feed flow was about 78,363 m³/d in both models. Both also assigned almost the same conversion factor, **0.77875 g COD per g SS**, from layer TSS to active heterotrophic biomass (`X_BH`). For **layer 4 TSS**, MATLAB gave **862.50 g SS/m³**, while the saved 5% SIMPO run gave **632.42 g SS/m³**. Multiplying the 230.08 g SS/m³ gap by 0.77875 accounts for the **179.17 g COD/m³** gap in `X_BH`.
+
+![Open-loop storm in settler layer 4. The 5% SIMPO run peaks one sample early. At 0.01% the points follow the MATLAB peak.](/img/bsm1/settler-storm-xbh.png)
+
+The plotted samples are 15 minutes apart. The highest point during this event was at hour **262.25** in the saved run and **262.50** in MATLAB. The points at 262.25, 262.50 and 262.75 h contributed **96.81%** of this curve's full-run squared error. The settler limits downward solids flux below the feed by the smaller of the adjacent layers' settling fluxes. During a rapid change in flow, small differences in the layer concentrations before the peak can grow as solids move between layers.
+
+Holding the input grid fixed and tightening the tolerance from 5% to 0.1% moved the sampled layer 4 peak to 262.50 h. Full-run `Tank6_4.X_BH` NSE rose from **0.970459** to **0.999865**. At 0.01% the largest error on this curve was **0.402 g COD/m³**. The top-layer effluent TSS already had NSE **0.999906** at 5%.
+
+To locate this discrepancy in Dash, open <a href={projectLinks['07'] + '?result=simulation&tank=Tank6_4&target=X_BH'}>the case 07 layer 4 biomass chart</a> and zoom to 262–263 h. In the tank menu, `Tank6` combines the layers and `Tank6_4` selects only the fourth layer from the bottom. Switch the Target to **TSS**, then select **Tank6_10 → TSS** to check the top effluent layer at the same time. Holding the influent and tank parameters fixed while shortening the internal step brings the simulated peak closer to the MATLAB reference. Establishing the actual peak in a physical clarifier would require measured data from that layer.
+
+## Check your own reproduction {#review}
+
+| Where does the difference appear? | What to check next |
+| --- | --- |
+| The first sample already differs | Match loop mode, tank or layer, initial state and time units. Each weather case starts from its own conditioning run. |
+| Peaks diverge when the influent changes | Check the weather input, Linear interpolation and Tank1’s first-order lag setting (8.64 s). Compare both trajectories at the same time. |
+| Differences appear in closed loop | Pair true tank concentration, noisy sensor reading, PI command and effective handle with the corresponding MATLAB signals in turn. |
+| A few settler layers differ in the storm | Keep the inputs fixed and change only Step Tolerance. Record the time, magnitude and layer of the largest difference. Check the top effluent layer separately. |
+| Traces agree closely, but SP or OCI differs | Check the evaluation dates, units and final sludge inventory sample. [Compare the day 14 inventory endpoints](./Assessment.mdx#inventory) |
+
+For your own case, record one concentration difference at a named time, one NSE with its location and window, and one Assessment value with its unit and evaluation dates. These three entries let another reader check a sample, the full curve and plant performance separately.

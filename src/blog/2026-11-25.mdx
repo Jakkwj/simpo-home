@@ -1,0 +1,72 @@
+---
+slug: SIMPO-blog-2026-11-25
+title: "SIMPO 1.8.0 Released: BSM1 Simulation"
+tags: [SIMPO]
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Case04Comparison from '@site/src/components/BSM1/Case04Comparison';
+import DynamicAssessmentComparison from '@site/src/components/BSM1/DynamicAssessmentComparison';
+
+:::info
+**SIMPO**, initiated by Professor Jiang Feng's team at the School of Environmental Science and Engineering, Sun Yat-sen University, is a platform for code-free modelling and sharing of wastewater treatment processes. See the [SIMPO 1.8.0 changelog](/changelog/SIMPO%20Client/2026#2026-11-25).
+:::
+
+When influent flow and composition change, how does dissolved oxygen feedback affect effluent quality and energy use?
+
+**SIMPO 1.8.0** adds support for **Benchmark Simulation Model No. 1 (BSM1)**. BSM1 defines a reference activated sludge plant, influent scenarios, and performance indicators. In SimpoDash, you can compare open-loop and closed-loop operation under the same influent conditions.
+
+![BSM1 closed-loop flowsheet in SimpoDash, showing five reactors, a secondary clarifier, recycle lines, and two PI control loops.](/img/bsm1/flowsheet.png)
+
+## Build and compare BSM1 scenarios
+
+- **Takacs Settling Tank** supports 3 to 10 layers. BSM1 uses 10 layers to model settling in its secondary clarifier.
+- **KLa Pump** takes the volumetric oxygen transfer coefficient directly, in d⁻¹. [See the BSM1 aeration setup](/docs/CaseStudy/BSM1/Setup#aeration).
+- **Controller** connects a sensor, a PI controller, and a control handle. In BSM1, nitrate in Tank2 controls the internal recycle, and dissolved oxygen in Tank5 controls aeration. [See both control loops](/docs/CaseStudy/BSM1/Setup#controller).
+- **Assessment** calculates BSM1 indicators such as effluent quality (EQ) and the overall cost index (OCI), and supports custom metrics. [Compare the dry-weather assessment reports](/docs/CaseStudy/BSM1/Assessment#first-assessment).
+
+The [BSM1 case study](/docs/CaseStudy/BSM1#projects) includes eight public projects covering open-loop and closed-loop operation with constant, dry-weather, rain, and storm influent. You can inspect saved results or sign in and clone a project to rerun it.
+
+## Read the closed-loop results
+
+In **case 06, rain with feedback**, the **Tank6_10 → All** chart compares the SIMPO effluent predictions with MATLAB reference samples for 14 days. The screenshot of the 5% rerun hides `S_I` and the legend. The **Weighted NSE** uses all 210 water-quality curves, including `S_I`. The run scores **0.99999746**, which Dash displays as **1.0** in the Report on the left. [Open the rain case and follow the chart steps](/docs/CaseStudy/BSM1/Results#effluent-all).
+
+![Case 06 in Dash, rain with feedback. The Report displays a rounded weighted NSE of 1.0 beside the Tank6_10 All chart of effluent predictions and MATLAB reference samples.](/img/bsm1/rain-closed-effluent-all-en.png)
+
+The tabs show the public case 04 controller charts from the new 5% run, zoomed to **hours 168–192**. At hour 180 the Tank5 oxygen sensor reads **1.66 g O₂/m³** against a setpoint of **2**. In **Control Handle**, the corresponding command is **226.44 d⁻¹** and the oxygen transfer coefficient applied is **217.17 d⁻¹**. [Read both controller plots and reproduce them in Dash](/docs/CaseStudy/BSM1/Results#controller-results).
+
+<Tabs>
+<TabItem value="response" label="Process Response">
+
+![Tank5 dissolved oxygen, sensor reading and setpoint, hours 168–192 of case 04.](/img/bsm1/dry-closed-controller-oxygen-en.png)
+
+</TabItem>
+<TabItem value="handle" label="Control Handle">
+
+![PI command and applied Tank5 aeration coefficient over the same 24 hours.](/img/bsm1/dry-closed-controller-oxygen-handle-en.png)
+
+</TabItem>
+</Tabs>
+
+## How closely does SIMPO reproduce the MATLAB results? {#closed-loop-comparison}
+
+We reran **case 04, dry weather with feedback**, lowering SIMPO’s **Step Tolerance from 5% to 0.01%**. The oxygen controller plots above use the new case 04 run at 5%. The table compares the tighter run with MATLAB R2024b under the same plant and input conditions. Controller metrics cover the full **14 days**, with one sample every 15 minutes. Plant Assessment covers **days 7–14**.
+
+<Case04Comparison />
+
+At 0.01% Step Tolerance, the largest relative controller difference is **0.02281%**, for the mean absolute process error in the oxygen loop. Both assessments now use the day 13, 23:45 inventory through `Change(inventory, -1)`. After aligning the input times and closing sample, the SP difference changed from **−0.03284** to **+0.00129 kg SS/d**. Wasting still covers all seven days. [Check the method and WNSE for all eight cases](/docs/CaseStudy/BSM1/Results#wnse).
+
+### Plant Assessment across all six dynamic cases, days 7–14 {#dynamic-assessment}
+
+Each row compares one plant metric under the same weather and control strategy. **MATLAB R2024b** and **SIMPO (0.01%)** are the two reruns. The 2008 report gives the originally published figure, and **SIMPO (5%)** is the result saved in Dash. EQ is in kg pollution units/d, SP in kg SS/d, AE, PE and ME in kWh/d, and EC in kg COD/d. OCI is a cost index.
+
+**Difference and explanation** uses the unrounded SIMPO (0.01%) result minus MATLAB R2024b. A positive value means SIMPO is higher. Rows that round to zero show only the difference. [How the effluent, sludge and controllers were checked](/docs/CaseStudy/BSM1/Assessment#diagnosis)
+
+<DynamicAssessmentComparison />
+
+For case 07 (storm, open loop), the printed EQ is **8197.7197**. MATLAB R2024b gives **8021.7327** and SIMPO at 0.01% gives **8021.7848**, a difference of **+0.0521 kg pollution units/d**. [Reference versions and metric definitions](/docs/CaseStudy/BSM1/Assessment#reference).
+
+## Flowchart and chart improvements
+
+The DataSet flowchart now supports undo and redo. Large result charts render faster after fixes to how scatter points were drawn and how changes to chart data were tracked.

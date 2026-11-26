@@ -13,9 +13,8 @@ sidebar_label: create-dataset
 
 - Token scope：`write`
 - 名称为 1 至 230 个字符，且不能与当前账户的 Draft DataSet 重名。
-- JSON 必须包含 `Unit`、`Target`、`Tank`、`Pump`、`Measured`、`Inflow`、
-  `Flow` 和 `Connection` 数组。
-- `Unit`、`Target`、`Tank`、`Connection` 必须包含表头；其余四张表可以是空数组。
+- 提供带表头的 `Unit`、`Target`、`Connection`，以及至少一张带表头的池体表，如 `CSTRTank`、`TakacsSettlerTank` 或原有的 `Tank`。
+- 提供 `Measured`、`Inflow`、`Flow` 数组，可按需留空。曝气设备使用 `AirPump` 或 `KLaPump`。
 - `Environment` 可选；没有温度采样时可省略或写为 `[]`。
 
 ## 命令格式
@@ -55,8 +54,8 @@ simpo create-dataset InfluentData --json ./DataSet.json --async
 }
 ```
 
-这只是片段：应合并到完整的 DataSet `detail` 对象中，保留八张必填表。
-`Tank1` 和 `Tank2` 必须已在 `Tank` 中定义。时间使用 `Unit.Time`；各序列从时间 `0`
+将这个片段合并到完整的 DataSet `detail` 对象中，并保留已有表格。
+`Tank1` 和 `Tank2` 必须是已定义的池体。时间使用 `Unit.Time`；各序列从时间 `0`
 开始，时间须为有限、非负数且严格递增，温度须为 **0–40 ℃** 的有限数值。
 只有一个时间 `0` 的值表示恒温；每个 `(Tank, Environment)` 组合必须唯一。
 点沉淀池分区使用 `Clarifier_Outlet` 和 `Clarifier_Blanket`，优先读取分区序列，
@@ -74,22 +73,28 @@ simpo create-dataset InfluentData --json ./DataSet.json --async
 }
 ```
 
-省略 `Unit.T` 时默认使用摄氏度。Pump 曝气的第六列为传氧温度系数 `θ`：
+省略 `Unit.T` 时默认使用摄氏度。以下两张泵表可以按工艺需要分别使用。
 
 ```json
 {
-  "Pump": [
-    {"0": "Name", "1": "Type", "2": "SOTEa", "3": "SOTEb", "4": "SOTEc", "5": "θ"},
-    {"0": "Pump1", "1": "Air", "2": 0.3259, "3": 0.3142, "4": 0.2567, "5": 1.024}
+  "AirPump": [
+    {"0": "Name", "1": "SOTEa", "2": "SOTEb", "3": "SOTEc", "4": "θ"},
+    {"0": "Blower", "1": 0.3259, "2": 0.3142, "3": 0.2567, "4": 1.024}
+  ],
+  "KLaPump": [
+    {"0": "Name", "1": "θ", "2": "TRef"},
+    {"0": "KLaPump5", "1": 1, "2": 20}
   ]
 }
 ```
 
-请填写适用于实际 Pump 的系数；上述数值仅用于说明格式。Dashboard 新建 Pump 默认
-填写 `1.024`；`θ` 缺失或留空时使用 `1`，保持未修正的传氧系数，但不会关闭饱和溶解氧的温度修正；
-直接填写的 Tank `KLa` 不使用 Pump 的 `θ`。公式见
-[DataSet 温度校准](../DataSet/Edit.mdx#do-temperature)，计算取值规则见
-[`calculate` 的温度输入说明](./calculate#temperature-input)。
+AirPump 以 20℃ 为参考温度，KLaPump 使用自己的 `TRef`（默认为 20℃）。每个接收池按自己的水温进行修正。两种泵的 `θ` 留空均取 1。
+
+## BSM1 工艺设置 {#bsm1}
+
+- 用 `Flow` 定义单位为 d⁻¹ 的输入 `KLa_5`，在 `Connection` 中将 `KLaPump5` 通过该输入连到 Tank5。基准案例的 CSTR 使用 `SaturationModel=Constant` 和 `SaturationValue=8` mg/L。
+- 五个反应池中仅 Tank1 使用 `InletLagSeconds=8.64`。十层 `TakacsSettlerTank` 的进水层为第 6 层，层号从下往上数。
+- `Controller` 的每一行定义一个 PI 回路。保留 `ControllerConfig` 中的传感器噪声、控制器标识和初态。Assessment 指标定义使用 JSON 键 `PerformanceMetric`，表头为 `Name, Formula, Unit, StartDay, EndDay`。起止日可留空。[八个 BSM1 项目的设置](../../CaseStudy/BSM1/Setup.mdx)
 
 ## 返回结果
 

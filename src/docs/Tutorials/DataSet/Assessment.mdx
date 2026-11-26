@@ -1,0 +1,60 @@
+---
+title: Edit plant assessment metrics
+sidebar_label: Assessment
+description: Define assessment metrics in the Dash DataSet editor, select signals and time windows, and check the results of a dynamic simulation.
+---
+
+# Edit plant assessment metrics
+
+To find out how many kilograms of COD a plant discharged per day last week, you need the **effluent flow, effluent COD concentration and evaluation period**. In the DataSet flowchart, open **List → Assessment**. Each row defines one such calculation. A dynamic simulation of the linked Project returns one value per metric.
+
+## Enter your first metric {#first-metric}
+
+This example uses a plant with a final tank named `Eff`, a water-quality Target named `COD` and a named effluent Flow `Qe`. Choose the corresponding names from your own DataSet. Open an editable draft and select **Custom metric**.
+
+| Dialog field | Example | What to enter |
+| --- | --- | --- |
+| Metric * | `EffCODLoad` | Give the metric a unique name. Other formulas can reference its result by this name. |
+| Unit * | `kg COD/d` | Enter the unit of the calculated result. The field labels the result. Include any conversion factors in the formula. Use `-` for a dimensionless result. |
+| Start Day | `7` | First simulation day to evaluate. Leave blank to start at the first dynamic result. Enter days even when the Project time axis uses hours. |
+| End Day | `14` | Last simulation day to evaluate. It must follow the start and lie within the dynamic result. Leave both bounds blank to use the entire run. |
+| Formula * | `Mean(Qe * Eff.COD / 1000)` | Type `Mean`, the flow name or the tank name, use ↑, ↓ and Enter to insert suggestions, and complete the parentheses and operators. The formula must return a single value. |
+
+Here flow is in m³/d and COD is in mg/L (numerically equal to g/m³). Multiplying them gives g COD/d. Divide by 1000 to get kg COD/d, then average over time. Suppose the first 6 hours have a flow of 100 m³/d at 80 mg/L, and the next 18 hours have 200 m³/d at 50 mg/L. The rates are 8 and 10 kg COD/d. The daily mean is **(8 × 6 + 10 × 18) / 24 = 9.5 kg COD/d**. To find the total discharge over the entire window, replace `Mean` with `Integral` and enter `kg COD` as the unit. If all seven days repeat this pattern, the total is **66.5 kg COD**.
+
+Select **Apply**, then **Parse** to validate and save the DataSet. Save the Project if you are editing its embedded DataSet. Run **Calculation → Simulation**. Open **Assessment** after **Balance Analysis** in the report toolbar. Select a metric name to expand its formula and check the value, unit and evaluation window. Run the simulation again after editing a definition to get the updated result.
+
+![Example of the report view. In the dry closed-loop BSM1 case, seven metrics are evaluated over days 7–14.](/img/bsm1/dry-closed-assessment-en.png)
+
+The screenshot shows the saved **BSM1 case 04** report. A Project containing the custom example above will show **EffCODLoad** with its own value, unit and time window in the same columns.
+
+## Select signals and functions {#signals}
+
+The editor inserts each reference as a colored label. Match the spelling and capitalization shown in the suggestions.
+
+| Quantity | Example | Meaning |
+| --- | --- | --- |
+| Water quality at a location | `Eff.COD`, `Tank6_10.TSS` | Choose a location and a Target. For settler effluent, choose the zone or layer that supplies the outlet connection. |
+| Named flow or KLa input | `Q_w`, `KLa_5` | Read the effective named signal applied during the run. Water and air flows use m³/d. A KLaPump input uses d⁻¹. |
+| Tank or layer volume | `Tank1.Volume`, `Tank6_1.Volume` | Volume in m³. For example, `Change(Tank1.Volume * Tank1.TSS / 1000)` gives the change in sludge inventory in kg when TSS is in g/m³. |
+| Actual oxygen transfer coefficient in a tank | `Tank5.KLa` | Combines contributions from the aeration pumps serving the tank, including configured temperature corrections, in d⁻¹. Choose the named input to inspect the signal sent to a pump. [Aeration pumps](./Pumps.mdx) |
+| Actual water flow between endpoints | `Branch("Tank6_10", "Outflow")` | Enter the source followed by the destination. Parallel connections in that direction are summed. Branch signals are recorded and offered when at least one CSTR has mixed inlet lag enabled. |
+| Another assessment result | `5 * SP + AE + PE + 3 * EC + ME` | Define the input metrics first, then reference their names. Use the same window for all referenced metrics and avoid circular references. Distinct metric and Flow names make direct references unambiguous. |
+
+In a standalone DataSet, select a Target for water quality. The editor inside a Project can also offer Components from its linked BioModel.
+
+| Function | What it calculates |
+| --- | --- |
+| `Mean(x)`, `Integral(x)` | Time-weighted average and time integral in days, respectively. Each saved sample applies until the next sample. |
+| `First(x)`, `Last(x)`, `Change(x)` | Value at the start, value at the end, and end minus start over the evaluation window. |
+| `Change(x, -1)` | Subtract the opening value from the value one saved output sample before the closing record. The integer offset can be `0` (equivalent to `Change(x)`), `-1`, `-2`, and so on. The metric reports an error if the offset crosses the start of the evaluation window. |
+| `Min(x)`, `Max(x)` | With one argument, take the minimum or maximum over the window. With two arguments, compare values at each sample, for example `Mean(Max(Eff.COD, 30))`. |
+| `If(condition, value_if_true, value_if_false)` | Test each sample. For example, `100 * Mean(If(Eff.COD > 50, 1, 0))` gives the percentage of time COD exceeds 50 mg/L. Enter `%` as the unit. |
+
+## Common metrics and BSM1 presets {#presets}
+
+**Common metrics** offers EQ (effluent quality), SP (sludge for disposal), AE, PE and ME (aeration, pumping and mixing energy), EC (external carbon) and OCI (operational cost index). For a general plant, select the measures you need. Dash fills in a name and suggested unit. Write the formula using the plant’s discharge boundary, equipment power or dosing records. For example, enter `0` for EC when you know the plant adds no external carbon. If dosing is unknown, add the metric when measurements become available.
+
+**Add BSM1 set (7)** appears when the tanks, flows, aeration pumps, connections, Targets and units match the standard BSM1 layout. It adds missing definitions with the default ASM1 coefficients and a day 7–14 window, preserving existing entries with the same names. In this layout, adding OCI alone also adds its missing cost inputs. To reproduce the 500-day constant-influent cases, set all the windows to days 493–500. The case study walks through the seven formulas and their saved results. [BSM1 assessment example](../../CaseStudy/BSM1/Assessment.mdx#run)
+
+If the report says the window is outside the result, check the dates covered by the dynamic simulation. For a missing signal, check the connection direction, layer number and Target. Entering `Eff.COD` alone gives a time series. Choose `Mean(Eff.COD)`, `Max(Eff.COD)` or another aggregation that answers the question.

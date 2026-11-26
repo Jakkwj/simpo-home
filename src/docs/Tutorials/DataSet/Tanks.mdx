@@ -1,0 +1,58 @@
+---
+title: CSTR and Takacs Settling
+description: Enter reactor and settler geometry, aeration settings, layer connections and observations in a DataSet draft.
+---
+
+A **CSTR** represents a completely mixed tank. Its outlet has the same concentration as the water in the tank. Choose **Takacs Settling** for a clarifier when you need a solids concentration at each depth, for example to compare suspended solids in the effluent with the return sludge. In a DataSet draft, use **Detail → New Tank** on the flowchart, or open **List → Tanks** and click **+**. Click a tank to open its details. After editing, close the dialog and use **Parse** to validate and save the DataSet.
+
+## CSTR fields {#cstr}
+
+Choose **New Tank → CSTR**, then open the tank. The saturation model and value are stored as `SaturationModel` and `SaturationValue` on this receiving tank.
+
+| Field | What to enter |
+| --- | --- |
+| Name | Give the tank a unique identifier such as `Tank3`. Start with a letter and use letters, numbers or single underscores. The name identifies this location in connections, measurements and formulas. |
+| Volume (m³) | Enter the initial working volume of water. Use the plant’s operating volume, for example **1,333** for BSM1 Tank3. An initially empty variable-volume tank can start at zero. |
+| BioCalculated | Turn on to apply the Project BioModel’s reactions in this tank. Turn off for a tank used solely to mix and transport its contents. |
+| Constant Volume | Turn on for a fixed water volume and balance the liquid flows entering and leaving. Turn off when the accumulated difference between inflow and outflow should change the tank volume. |
+| Diffuser Number | With an AirPump, enter the number of submerged diffusers sharing the supplied airflow. Use a nonnegative integer. |
+| Diffuser Depth (m) | With an AirPump, enter the submergence of the diffusers below the water surface. Positive depth and diffuser count are both needed to calculate transfer from airflow. Direct KLaPump input works with both fields set to zero. |
+| Alpha Factor (α) | With an AirPump, enter the ratio of the transfer coefficient in process water to that in clean water, from 0 to 1. A value of 1 applies the clean-water transfer coefficient. |
+| Beta Factor (β) | With an AirPump and the **Freshwater** saturation model, enter the ratio of saturation concentration in process water to that in clean water, from 0 to 1. For example, 0.95 multiplies the clean-water saturation by 0.95. |
+| Oxygen Saturation Model | Use **Freshwater** for a typical plant, **BSM2** to reproduce BSM2 and **Constant** to reproduce BSM1. [Settings for each case and when β applies](./Edit.mdx#do-temperature) |
+| Saturation Value (mg O₂/L) | Available for **Constant**. Enter a finite number of 0 or greater. Use **8** for the aerated BSM1 tanks. Saturation is the concentration used to calculate oxygen transfer. A controller’s DO setpoint is entered in the controller. |
+| Mixed Inlet Response | **Instantaneous** applies the sum of all incoming liquid flows and their component loads immediately. **First-order lag** makes the delivered flow and loads follow changes gradually. Use Forward Euler and constant-volume hydraulics for a Project with inlet lag. |
+| Time Constant (s) | **Instantaneous** shows 0. For **First-order lag**, enter a positive time in seconds. After one time constant, the delivered flow has covered about 63% of a sustained step. BSM1’s MATLAB implementation uses **8.64 s** at Tank1 and instantaneous mixing at Tank2–Tank5. |
+
+**Try BSM1 Tank5.** Set Volume to **1,333 m³**, enable BioCalculated and Constant Volume, and select **Constant** saturation at **8 mg O₂/L**. Connect the KLaPump through `KLa_5`. If its effective coefficient is **84 d⁻¹** and tank DO is **2 mg O₂/L**, the oxygen-transfer term at that instant is **84 × (8 − 2) = 504 mg O₂/(L·d)**. This is the aeration contribution. The BioModel and the incoming and outgoing water also affect the subsequent DO concentration.
+
+SIMPO initializes a new CSTR from the feed and recycles at the start of the simulation. If an existing tank shows an **Initial state** button beside **Time Constant**, choose **Saved reference** to continue a pre-run or **Initial mixed feed** to start from the current feed. [Tank1 settings in BSM1](../../CaseStudy/BSM1/Setup.mdx#mixed-inlet)
+
+In **Measured**, enter each Target value under its own unit, with the time in the DataSet time unit. The time-zero row holds initial observations and subsequent rows hold later measurements. Enter the observations you have. Check the simulation’s initial component concentrations in **Project → Solution → Variable**. A Target used as an initial constraint needs a measurement at time zero. To supply water temperature, switch to **Environment** and enter `T` in °C. Temperature-based saturation calculations use **20 °C** for a tank without a temperature series. [Temperature and saturation options](./Edit.mdx#do-temperature)
+
+## Takacs Settling fields {#takacs}
+
+1. In **List → Targets**, identify the Target for total suspended solids (TSS). Set its **StandardTarget** to **Total Suspended Solids**. The calculation requires one such Target and a corresponding **Solution → Conversion** entry in the Project to express TSS from the BioModel components.
+2. Choose **New Tank → Takacs Settling → 10 layers** to reproduce BSM1. Other layouts can use **3–10** equal-depth layers. Choose the count when creating the tank. Reopening the tank lets you edit its dimensions and feed layer while keeping the count fixed.
+3. Enter the geometry and settling parameters below. The example values are those of the ten-layer BSM1 configuration. For another clarifier, use its working dimensions and settling parameters based on tests of its sludge.
+
+| Field | Example | Meaning and entry |
+| --- | ---: | --- |
+| Name | `Tank6` | Use the same naming rules as for a CSTR. Each numbered layer has its own location within this tank. |
+| BioCalculated | Off | BSM1 models hydraulic transport and settling here. Enable reactions only when the intended clarifier model includes BioModel reactions. |
+| Constant Volume | `True` | Read-only. Water depth stays fixed during the simulation. The `ConstantVolume` column in the `TakacsSettlerTank` worksheet exports as `TRUE`. Importing `FALSE` gives an error. |
+| Area (m²) | 1500 | Horizontal surface area of the water. Enter a finite positive value. All layers have this same area. |
+| Total height (m) | 4 | Working water depth. Enter a finite positive value. Layer thickness equals height divided by layer count. |
+| Volume (m³) | 6000 | Read-only, calculated as area × height. To change the volume, edit the area or depth. Each of these ten layers holds 600 m³ and is 0.4 m thick. |
+| Layer count | 10 | Fixed at creation. Layer 1 is the bottom and layer 10 is the top in this example. |
+| Feed layer (from bottom) | 6 | Choose an integer from **2** to **layer count − 1** so there is at least one layer above and below the feed. A three-layer tank feeds layer 2. |
+| V0Max (m/d) | 250 | Upper limit on calculated solids settling velocity. |
+| V0 (m/d) | 474 | Velocity scale in the double-exponential settling equation. V0Max caps the result of the equation, so V0 can exceed V0Max. |
+| Rh (m³/g SS) | 0.000576 | Hindered-settling coefficient. It governs how settling slows in concentrated sludge. |
+| Rp (m³/g SS) | 0.00286 | Flocculent-settling coefficient. It shapes the settling-velocity curve at low solids concentrations. |
+| Fns | 0.00228 | Non-settleable fraction of the incoming TSS. Enter a fraction from 0 to 1. For feed at 3,000 g SS/m³, the example gives 6.84 g SS/m³ of non-settleable solids. |
+| Xt (g SS/m³) | 3000 | Threshold for settling flux in the clarification zone. If the layer receiving settling solids exceeds Xt, transfer is limited by the smaller flux of the two adjacent layers. |
+
+All six settling parameters must be finite and nonnegative. SIMPO checks that the derived layer thickness and volume are finite and positive. Faster flow and thinner layers can require shorter internal integration steps. The Forward Euler solver applies that limit automatically. [Layer thickness, flow and time step](./Edit.mdx#takacs-step)
+
+**Connect and check the layers.** Connect the upstream reactor to the settler’s inlet. SIMPO directs this flow to the chosen feed layer. In BSM1, connect the **top** (`Tank6_10`) to Outflow and the **bottom** (`Tank6_1`) to the return-sludge and waste-sludge branches. In the tank dialog, choose **Measured**, then the adjacent **layer** selector. Select **Layer 10** to enter or inspect effluent observations and **Layer 1** for bottom sludge. Enter observations in the layer where each sample was taken. Check the model’s initial component values for each layer in **Project → Solution → Variable**. The inverted shape on the flowchart shows the layer order. The calculation uses the same horizontal area for every layer. [Check the BSM1 layout and results](../../CaseStudy/BSM1/Setup.mdx)

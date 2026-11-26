@@ -19,6 +19,9 @@ description.
   or metal-phosphate precipitation is material.
 - Prefer **ASM3** for carbon and nitrogen treatment without material phosphorus
   modeling.
+- For **BSM1**, use the benchmark ASM1 BioModel, its 13 component Targets
+  and the derived `TSS` series when reproducing the eight reference cases.
+  The standard oxygen and solids Targets in those cases are `S_O2` and `TSS`.
 - Honor a user-selected compatible BioModel. When it uses different component
   symbols, derive the Target rows from that model rather than silently mixing
   standard ASM symbols.

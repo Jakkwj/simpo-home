@@ -12,6 +12,7 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
 // PlugFlow Reactor                        :c4c, after c6, 60d
 // Sewer Reactor                           :c4e, after c4d, 90d
 // CFD Algorithm                           :c7, after c5a, 60d
+// Automatic Evaluation                    :c4a04, after BioFilm, 60d
 
 <Mermaid
   chart={`gantt
@@ -37,14 +38,14 @@ import { Mermaid } from "mdx-mermaid/Mermaid";
 
     CLI                                     :done, LI, after c4StedayState, 2026-10-05
     SCE-UA                                  :done, SCE-UA, after c4StedayState, 2026-10-05
-    BSM1                                    :BMS1, after SCE-UA, 30d
-    ε-NSGA-II                               :ε-NSGA-II, after SCE-UA, 30d
-    BSM2                                    :BMS2, after BMS1, 30d
+    BSM1                                    :done, BMS1, after SCE-UA, 2026-11-25
+    ε-NSGA-II                               :NSGA-II, after BMS1, 30d
+    BSM2                                    :BMS2, after NSGA-II, 30d
     BioFilm Reactor                         :BioFilm, after BMS2, 30d
 
 
-    Automatic Evaluation                    :c4a04, after BioFilm, 60d
-    Standardized Repositories               :c5Repositories, after c4a04, 30d
+
+    Standardized Repositories               :c5Repositories, after BioFilm, 30d
     Standardized Rate                       :c5Rate, after c5Repositories, 30d
     Automatic Construct BioModel            :c5, after c5Rate, 30d
 

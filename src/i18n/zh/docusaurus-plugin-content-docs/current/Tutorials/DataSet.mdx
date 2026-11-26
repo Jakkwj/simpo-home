@@ -5,6 +5,8 @@ import config from '@generated/docusaurus.config'
 
 
 DataSet 用于存放测量数据和流程图。
+
+闭环测量模型见 [Sensor：计算原理、推导与 DO 数值示例](./DataSet/Edit.mdx#sensor)，其中说明了响应时间、测量量程、噪声间隔及长时间模拟的处理方式。`Controller` 工作表的最后一列为 `SensorLowerLimit`，旧表缺少该列时按 0 处理。
 {/* ，包含 Targets、Tanks、时间序列测量数据、Flows、Pumps 以及各对象之间的 Connections */}
 
 :::tip 流程图
@@ -125,7 +127,7 @@ Detail 页面包含 Flowchart、Targets、Tanks 和 Links 视图。以下表格�
 Targets 是测量变量，也是 DataSet 与 BioModel Components 之间的连接对象。表格包含 `Symbol`、`Unit`、`StandardTarget`、`Name` 和 `Description`。
 
 - `Symbol` 和 `Unit` 必填。Symbol 必须以字母开头，只能使用字母、数字和下划线，不能连续使用下划线。
-- Symbol 必须唯一，不能与保留字或 DataSet 中的其他名称冲突。
+- Symbol 必须唯一，不能与 DataSet 中的其他名称或保留字冲突。`Volume` 和 `KLa` 都是保留字，匹配时不区分大小写。
 - 普通 Target 的 `StandardTarget` 留空；曝气使用的唯一溶解氧 Target 设为 `Dissolved Oxygen`；稳态 SRT 使用的唯一 TSS Target 设为 `Total Suspended Solids`。每种标准用途最多只能出现一次。
 - 导入时仍兼容带布尔 `Oxygen`/`TSS` 列的旧文件，并自动转换为 `StandardTarget`；此后保存和导出只使用新的五列格式。
 - 使用添加、复制、删除和排序按钮维护表格。按住 `Ctrl` 或 `Shift` 点击可以选择多行并执行批量操作。

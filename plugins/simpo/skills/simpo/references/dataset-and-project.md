@@ -26,17 +26,49 @@ and only the tables relevant to the user's request. A JSON DataSet contains the
 complete editable detail object returned by `get-dataset`; updates are parsed
 before saving and rebuild Projects that use the Draft.
 
-### Water temperature and Environment
+### Typed Tank/Pump tables and water temperature
 
-The detail object keeps the eight required tables (`Unit`, `Target`, `Tank`,
-`Pump`, `Measured`, `Inflow`, `Flow`, `Connection`), with optional `Environment`
-and `jointGraphJson`. Use the existing `--json` create/update commands; there is
-no separate temperature command or `--temperature` option. Preserve Environment
-when replacing the full detail, including when editing an unrelated table.
+The base tables are `Unit`, `Target`, `Measured`, `Inflow`, `Flow`, and
+`Connection`. Include at least one tank row across `CSTRTank`,
+`PointSettlingTank`, `TakacsSettlerTank` or legacy `Tank`. Include `AirPump`
+and `KLaPump` when the process uses them. Preserve optional `Environment`, `Controller`,
+`ControllerConfig`, `PerformanceMetric` and `jointGraphJson` when present.
+Legacy `Tank` and Air `Pump` tables remain
+readable. Use the existing `--json` create/update commands; there is no separate
+temperature or KLa command. Preserve all existing tables when replacing the
+full detail, including when editing an unrelated field. A supporting backend
+and calculation package are needed; do not drop new tables to fit an old server.
+
+Types come from the table names, without a repeated Type column. AirPump uses
+`Name | SOTEa | SOTEb | SOTEc | θ`; KLaPump uses `Name | θ | TRef`. Legacy and
+typed Pump rows merge only when names are unique; empty/header-only optional
+tables cannot mask populated ones. Do not duplicate Tanks in legacy/type tables.
+In the `CSTRTank` JSON table, set `InletLagSeconds` to a positive time
+constant to filter the combined liquid flow and each incoming component's mass
+load. Zero means instantaneous mixing. The eight BSM1 cases use 8.64 s at
+Tank1. The workbook exposes this choice as `MixedInletResponse` and
+`TimeConstant` (seconds). Its `OxygenSaturationModel` and `SaturationValue`
+columns correspond to JSON `SaturationModel` and `SaturationValue`.
+Linear input interpolation is a separate calculation option. Preserve reviewed
+BioCalculated and ConstantVolume choices. Direct Tank.KLa input fields are rejected, including zero.
+Migrate old files offline to new copies using Flow plus KLaPump and θ=1
+when preserving the prior uncorrected coefficient.
+
+Takács tables keep one physical tank with LayerCount internal layers.
+`ConstantVolume` must be true. Volume is Area times Height (`Total Height`
+in the worksheet).
+LayerCount is a strict integer 3…10 and FeedLayer is 2…N−1. The upper
+bound of 10 is the current product support limit, not a physical settling limit; BSM templates
+retain the official 10-layer discretization.
+Connection.Into uses its physical name and FeedLayer, while From uses explicit
+`Name_1` (bottom) through `Name_N` (top). BSM1 uses 10 layers and feed layer 6
+counted from the bottom. Do not turn the layers into independent physical Tanks.
 
 Add the sixth Unit column after Height as `"5":"T"` in the header and
 `"5":"℃"` in its value row. Temperature is fixed to Celsius (`°C` and `degC`
 are also accepted); legacy files without this column default to Celsius.
+The optional seventh JSON column is `"6":"KLa"` with value `"6":"/d"`.
+The Unit worksheet shows Flow fixed to m³/d and KLa fixed to /d.
 Use this as the `Environment` value inside a complete DataSet detail:
 
 ```json
@@ -48,7 +80,8 @@ Use this as the `Environment` value inside a complete DataSet detail:
 ]
 ```
 
-Tank names must exist; settler zone names are `Name_Outlet` / `Name_Blanket`.
+Tank names must exist; point-settler zone names are `Name_Outlet` /
+`Name_Blanket`, and Takács layer names are `Name_1` through `Name_N`.
 Each `(Tank, Environment)` pair is unique. Each series' first valid value is at
 time 0, times increase strictly within its block in `Unit.Time`, and values are
 finite numbers from 0 to 40°C. Different blocks may have independent times;
@@ -57,16 +90,130 @@ or the old `Property` table/header. `T` and `t` are reserved user-defined names,
 including Tank names. Omitted or empty Environment uses 20°C; an unspecified
 settler zone first falls back to its parent Tank series.
 
-Pump's public sixth column is `"5":"θ"`, after SOTEc. It maps to internal
-`ThetaFactor` (also accepted as a legacy header). Missing or blank θ defaults
-to **1**; the web editor's new-Pump starting value is **1.024**, not an automatic
-parser default. Use source/test evidence to set it. θ must be finite and
-positive and keep `θ**(T-20)` finite and positive over 0–40°C.
-It corrects Pump transfer using the receiving Tank's water temperature; direct
-KLa inputs do not use Pump θ. Both aeration paths use temperature-dependent
-freshwater saturation at 1 atm, with a 20°C reference of
-9.092426042885567 mg O₂/L. This water-temperature input does not correct the
-air-meter gas-volume basis or implement pressure/ORP inputs.
+Pump's public `θ` maps to internal `ThetaFactor` (also accepted as a legacy
+header). Missing or blank θ defaults to **1**; use source/test evidence for an
+explicit value such as 1.024. θ must be finite and positive and produce finite,
+positive multipliers over 0–40°C. AirPump uses `θ**(T-20)` and has no TRef
+field. KLaPump uses `θ**(T-TRef)` with TRef defaulting to 20°C. Each receiving
+Tank uses its own water temperature; omitted T still means 20°C, so KLaPump
+applies `θ**(20-TRef)`.
+
+CSTR `SaturationModel` is Freshwater (default), Constant or BSM2. Freshwater
+uses the existing relation at 1 atm, with a 20°C value of
+9.092426042885567 mg O₂/L; only AirPump also multiplies by Tank BetaFactor.
+Constant requires a finite nonnegative SaturationValue in mg O₂/L. Constant
+and BSM2 return final effective saturation and do not multiply Beta again.
+Classic BSM1 uses fixed biological parameters, Constant saturation 8 and
+KLaPump θ=1, with no dynamic temperature state or required temperature series.
+BSM2 transfer can use TRef=15 and θ=1.024 plus the BSM2 saturation relation;
+this is not the full BSM2 thermal model. Water-temperature input does not
+correct the air-meter gas-volume basis or implement pressure/ORP inputs.
+
+KLaPump values are Flow time series in **/d**, independent of Unit.Time;
+volume-flow signals remain m3/d. Connection stays `From | Flow | Into`, with
+the KLaPump name as From and a CSTR as Into. Its Flow entry must be one named
+signal, without an expression or constant. One signal can drive several Tanks
+at its full value, without splitting it by volume; shared KLaPumps must agree
+on TRef. A signal cannot also be hydraulic/air volume flow. Each Tank can
+receive one KLaPump connection. The receiving tank must use a single aeration
+method. In Assessment expressions, `Tank5.KLa` reads the effective coefficient
+computed for that tank. It is distinct from the named input signal `KLa_5`.
+KLa is excluded from hydraulic, HRT/SRT and air-volume statistics.
+
+### Controllers
+
+Each row of the current `Controller` table binds a measurement at
+`SensorLocation` to a continuous PI controller and its named Flow or KLa
+handle. JSON and Excel use the same table name and columns.
+
+```text
+Name | SensorPreset | SensorLocation | SensorTarget | SensorUpperLimit |
+ControllerSetpoint | ControllerGain | ControllerIntegralTime | ControllerTrackingTime |
+ControlHandle | HandleLowerLimit | HandleUpperLimit | SensorLowerLimit
+```
+
+`SensorLowerLimit` defaults to zero on older 12-column rows. The sensor range
+must contain the setpoint. The six instrument presets are `BSM_Class_A`,
+`BSM_Class_B0`, `BSM_Class_B1`, `BSM_Class_C0`, `BSM_Class_C1` and
+`BSM_Class_D`. Integral and tracking times use days even for hourly inputs.
+
+Preserve the companion `ControllerConfig` when editing a full detail. It
+carries controller identity, per-sensor noise, PI initialization and actuator
+settings. The BSM reference noise spans days 0–14 at one-minute intervals.
+The dynamic benchmark uses that sequence. The 500-day closed-loop startup
+uses ideal noise-free sensing. Other cases can use random noise, retaining
+its seed, standard deviation and update interval, or choose no noise.
+Excel stores it in the `SimpoControllerConfig` document property. For an
+open-loop DataSet the table can be empty. The previous compact JSON keys
+`ControlLoop` and `ControlLoopConfig` are accepted on input.
+
+### Assessment definitions
+
+In a DataSet JSON passed to the CLI, use `detail.PerformanceMetric` from the
+read response as the table to edit, then submit the complete detail object.
+Its canonical header is `Name | Formula | Unit | StartDay | EndDay`. Dash and
+the workbook call the feature **Assessment**. The current worksheet order is
+`Name | Unit | StartDay | EndDay | Formula`. Provide a unique name, scalar
+formula and unit for each metric. Blank endpoints use the corresponding
+boundary of the saved trajectory, and supplied endpoints use simulation days.
+
+For example, `Mean(0.004 * Q_a + 0.008 * Q_r + 0.05 * Q_w)` computes the
+BSM1 pumping energy (PE) in kWh/d. `5 * SP + AE + PE + 3 * EC + ME` uses
+metrics evaluated for the same window to obtain OCI. Use
+`Branch("Tank6_10", "Outflow")` for the recorded physical effluent flow in the
+dynamic benchmark. `Tank6_10.TSS` reads a Target, `Tank3.Volume` reads tank
+volume and `Tank3.KLa` reads the effective oxygen-transfer coefficient. Use
+case-sensitive function names such as `Mean`, `Integral`, `Change` and `If`.
+
+`Change(x)` and `Change(x, 0)` subtract the opening value from the closing
+value. `Change(x, -1)` uses the previous saved output sample for the closing
+value and keeps the opening value. An offset must be 0 or a negative integer
+that leaves the closing sample inside the window. BSM1 SP applies `-1` to
+the whole-plant sludge inventory. That moves the endpoint back 15 minutes
+in cases 03–08 and 4 hours in cases 01–02. The wasting term and averaging
+period still span the full seven days.
+
+### Earlier module-based DataSets
+
+A `Controller` table with PI-only headers such as `Type` and `Setpoint` belongs
+to the earlier split format. Preserve its `Sensor`, `Actuator` and signal
+connections together when updating it. The following rules apply to those files.
+
+SignalConnection uses the standard two columns `From | To`, containing module
+names. Optional `FromPort` and `ToPort` columns preserve explicit port choices;
+when omitted, ports are inferred only when the module types identify a unique
+supported connection. Current connections are Sensor.Output to
+Controller.Measurement and Controller.Output to Actuator.Input. A controller
+may drive several actuators. Each Actuator has optional `InputGain` (default 1,
+finite and positive), applied to its incoming command before actuator response
+and limits; its InitialValue and limits remain in actuator-output units.
+SignalConnection has no Gain field. Controller.Gain remains the PI parameter.
+Module names are globally unique. Sensor declares its location in separate
+`Tank` and `Component` columns; Component is a BioModel component symbol.
+Actuator.Target is a named Flow. Controller no longer repeats either endpoint
+or Sensor/Actuator names. Each input has one source, each Flow has one writer;
+shared sensors share state, while actuators keep independent state. Current PI
+has fixed Setpoint and SampleTime=0; dynamic setpoints, feedforward, cascade
+and MPC are not implemented. Sensor noise is explicitly none/random/predefined;
+BSM1 requires NoiseFile=builtin:BSM1, NoiseColumn=1 (DO) or 2 (nitrate). KLa Bias, output, limits and actuator initial/output
+values are /d at TRef; temperature correction follows the actuator. KLa lower
+limits and actuator initial values must be finite and nonnegative. Existing
+control time parameters remain in days. Fully controlled Flow inputs cannot
+also be selected for estimation. Runtime control replaces only the effective
+current input, preserving the original samples. KLaPump and closed-loop
+calculations require Forward Euler.
+
+For offline migration, write a new workbook and retain the source. Rename old
+ControlConnection to SignalConnection and move each Controller-to-Actuator
+edge Gain to that actuator's InputGain. Preserve explicit ports. Reject mixed
+old/new connection tables, non-unit Sensor-to-Controller Gain, or simultaneous
+non-default edge Gain and InputGain; do not guess whether to multiply them.
+The split-table template protocol is `signal-connections-v3`, with
+`sensor_source_format=split-tank-component`. Older Sensor.Source values remain
+readable and are split at the last dot; new workbooks contain Tank and Component
+instead of Source. If both formats are supplied, a populated Tank/Component
+pair must be complete and agree with Source. Reject conflicts or partially
+filled pairs rather than selecting a definition silently.
 
 For the complete schema and scientific rules, use `simpo-create-dataset`'s
 `dataset-json-format` reference when available. See
@@ -183,10 +330,22 @@ mode.
 When a Project is later calculated, `Solution.Variable.Value` is the runtime
 baseline for `Inflow` and `Flow`. The backend additively shifts each complete
 series from its DataSet `time=0` value (`Inflow` first resolves and applies its
-selected Conversion expression), clips negative values, and converts Flow to
-`m3/s`.
+selected Conversion expression), clips negative values, and converts volume
+Flow to `m3/s` and KLa Flow to `/s`. Every new KLa signal needs its matching
+Solution Variable row; preserve /d in public Value/bounds and synchronize its
+initial value deliberately when migrating an existing Solution.
 `Measured` is not shifted; it remains the original observation series. See
 [Calculation commands](calculation.md) for the formulas and an example.
+
+When inspecting calculated aeration, use the `runtime_inputs` result, also
+saved as `Result__RuntimeInputs__.json` and Excel RuntimeInputs/Aeration/
+TankAeration tables. `signals` distinguishes RawValue from EffectiveValue with
+Kind/Unit; `aeration` records source/reference KLa, final corrected KLa, water
+temperature and saturation; `tank_aeration` provides per-Tank transfer. KLa is
+/d, saturation mg O₂/L and modeled oxygen transfer kg O₂/d. Respect the status,
+units and output-time sampling metadata. If runtime evidence is unavailable,
+report that absence instead of treating raw input as closed-loop output or
+inferring real blower power from KLa alone.
 
 The default Solution only provides identity mappings for Targets whose symbols
 match BioModel Components. For aggregate Targets such as `COD`, `TIN`, `TN`,

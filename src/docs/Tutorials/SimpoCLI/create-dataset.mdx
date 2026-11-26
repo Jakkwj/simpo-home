@@ -14,10 +14,8 @@ the supplied complete DataSet detail during the same create operation.
 
 - Token scope: `write`
 - The name must be 1 to 230 characters and unique among the account's Draft DataSets.
-- JSON must contain `Unit`, `Target`, `Tank`, `Pump`, `Measured`, `Inflow`,
-  `Flow`, and `Connection` arrays.
-- `Unit`, `Target`, `Tank`, and `Connection` must contain their header rows.
-  The other four tables may be empty arrays.
+- Supply `Unit`, `Target`, `Connection` and at least one tank table with header rows. A typed table such as `CSTRTank` or `TakacsSettlerTank`, or the existing `Tank` table, satisfies the tank requirement.
+- Supply `Measured`, `Inflow` and `Flow` arrays, which may be empty. Use `AirPump` or `KLaPump` when the plant has aeration equipment.
 - `Environment` is optional; omit it or use `[]` when there are no temperature samples.
 
 ## Syntax
@@ -61,8 +59,8 @@ Tank names in the first row, `T` in the second, then time/value rows. For exampl
 }
 ```
 
-This is a fragment: merge it into the complete DataSet `detail` object, preserving
-the eight required tables. `Tank1` and `Tank2` must exist in `Tank`. Time uses
+Merge this fragment into the complete DataSet `detail` object and retain the
+existing tables. `Tank1` and `Tank2` must identify existing tanks. Time uses
 `Unit.Time`; each series starts at time `0`, with strictly increasing, finite,
 non-negative times and finite temperatures from **0 to 40°C**. One sample at `0`
 defines a constant temperature. Each `(Tank, Environment)` pair must be unique.
@@ -81,24 +79,28 @@ Include the fixed temperature unit as the sixth `Unit` column:
 }
 ```
 
-An omitted `Unit.T` defaults to Celsius. For Pump aeration, the sixth Pump column
-is the oxygen-transfer temperature factor `θ`:
+An omitted `Unit.T` defaults to Celsius. Include the pump tables that apply to the plant.
 
 ```json
 {
-  "Pump": [
-    {"0": "Name", "1": "Type", "2": "SOTEa", "3": "SOTEb", "4": "SOTEc", "5": "θ"},
-    {"0": "Pump1", "1": "Air", "2": 0.3259, "3": 0.3142, "4": 0.2567, "5": 1.024}
+  "AirPump": [
+    {"0": "Name", "1": "SOTEa", "2": "SOTEb", "3": "SOTEc", "4": "θ"},
+    {"0": "Blower", "1": 0.3259, "2": 0.3142, "3": 0.2567, "4": 1.024}
+  ],
+  "KLaPump": [
+    {"0": "Name", "1": "θ", "2": "TRef"},
+    {"0": "KLaPump5", "1": 1, "2": 20}
   ]
 }
 ```
 
-Use coefficients appropriate to your Pump; the values above only illustrate the
-format. New Pumps in the Dashboard start at `1.024`; a missing or blank `θ`
-uses `1`, preserving the uncorrected transfer coefficient. This does not disable temperature correction of saturated dissolved
-oxygen, and direct Tank `KLa` does not use Pump `θ`. See the
-[DataSet temperature equations](../DataSet/Edit.mdx#do-temperature) and
-[`calculate` input handling](./calculate#temperature-input).
+AirPump uses a 20°C reference. KLaPump uses its own `TRef`, which defaults to 20°C. The transfer correction uses each receiving tank’s temperature. Blank `θ` defaults to 1 for either pump.
+
+## BSM1 plant settings {#bsm1}
+
+- Define `KLa_5` as a Flow in d⁻¹. Connect `KLaPump5` through it to Tank5 in `Connection`. The benchmark CSTRs use `SaturationModel=Constant` and `SaturationValue=8` mg/L.
+- Of the five reactors only Tank1 uses `InletLagSeconds=8.64`. The ten-layer `TakacsSettlerTank` receives its feed at layer 6, counting from the bottom.
+- Each `Controller` row defines one PI loop. Preserve `ControllerConfig` for sensor noise, identifiers and initial states. Write Assessment definitions under the JSON key `PerformanceMetric`, with the header `Name, Formula, Unit, StartDay, EndDay`. The two day bounds are optional. [Settings for the eight BSM1 Projects](../../CaseStudy/BSM1/Setup.mdx)
 
 ## Result
 

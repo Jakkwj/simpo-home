@@ -1,0 +1,10 @@
+{
+  "01": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_01_OpenLoop_Steady/id/548/did/530",
+  "02": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_02_ClosedLoop_Steady/id/549/did/531",
+  "03": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_03_OpenLoop_Dry/id/546/did/532",
+  "04": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_04_ClosedLoop_Dry/id/547/did/533",
+  "05": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_05_OpenLoop_Rain/id/550/did/534",
+  "06": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_06_ClosedLoop_Rain/id/551/did/535",
+  "07": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_07_OpenLoop_Storm/id/552/did/536",
+  "08": "http://127.0.0.1:9000/dashboard/projects/public/name/BSM1_08_ClosedLoop_Storm/id/553/did/537"
+}

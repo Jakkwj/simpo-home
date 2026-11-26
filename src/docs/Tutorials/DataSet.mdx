@@ -5,6 +5,8 @@ import config from '@generated/docusaurus.config'
 
 
 DataSet stores the measured data and process layout.
+
+For closed-loop measurement dynamics, see [Sensor: equations, derivation, and a worked DO example](./DataSet/Edit.mdx#sensor). It explains response time, measurement range, noise timing, and long simulation runs. The last column of the Controller worksheet, `SensorLowerLimit`, defaults to zero for earlier workbooks.
 {/* used by a SIMPO Project. */}
 {/* It contains targets, tanks, time-series measurements, flows, pumps, and the connections between them. */}
 
@@ -125,7 +127,7 @@ Changing the time unit updates the time index labels in tank measurements, inflo
 Targets are the measured variables that connect a DataSet to the BioModel components. The table contains `Symbol`, `Unit`, `StandardTarget`, `Name`, and `Description`.
 
 - `Symbol` and `Unit` are required. A symbol must start with a letter, use only letters, numbers, and underscores, and must not contain consecutive underscores.
-- Symbols must be unique and must not conflict with a reserved word or another DataSet name.
+- Symbols must be unique and must not conflict with another DataSet name or a reserved word. Reserved words include `Volume` and `KLa` in all letter cases.
 - `StandardTarget` is empty for an ordinary target. Select `Dissolved Oxygen` for the one dissolved-oxygen target used by aeration, or `Total Suspended Solids` for the one TSS target used by steady-state SRT calculation. Each standard role can occur at most once.
 - Older files with Boolean `Oxygen`/`TSS` columns are accepted during import and normalized to `StandardTarget`; subsequent saves and exports use only the new five-column format.
 - Use the add, copy, delete, and sort controls to maintain the table. Hold `Ctrl` or `Shift` while clicking to select multiple rows for batch operations.

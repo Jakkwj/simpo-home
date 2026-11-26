@@ -1,0 +1,44 @@
+---
+id: trial-controller
+title: 在已保存的项目上试调 PI 参数
+sidebar_label: trial-controller
+---
+
+在自己的 Project 草稿中，用已保存的 Controller 名称或固定 ID 选中回路。CLI 使用已保存的设定值、传感器、操纵量、BioModel、DataSet 和 Solution。动态输入沿用最近一次已保存 Simulation 报告中的插值方式，缺省为 `previous`。Dash 的「试调」还会读取当前 Controller 弹窗里正在编辑的设置。
+
+## 选择要试调的参数
+
+以 BSM1 晴天闭环案例为例，`BSM1_KLa5` 控制 Tank5 的溶解氧。将 `PROJECT_ID` 替换为自己克隆的草稿 ID。以下三条命令各运行一次六小时试调。
+
+```bash
+simpo trial-controller PROJECT_ID BSM1_KLa5 --gain 20 --window-hours 6 --wait
+simpo trial-controller PROJECT_ID BSM1_KLa5 --integral-time auto --wait
+simpo trial-controller PROJECT_ID BSM1_KLa5 --estimate-all --wait
+```
+
+| 选项 | 本例如何试调 |
+| --- | --- |
+| `--gain 20` | 比较增益 20 与已保存的增益 25，积分时间和跟踪时间沿用已保存的值。 |
+| `--integral-time auto` | 只估算积分时间，沿用已保存的增益和跟踪时间。对应 Dash 中只清空「积分时间」再点「试调」。 |
+| `--estimate-all` | 重新估算三项参数，对应「估算全部 PI 参数」。使用该选项时省略三个单项参数选项。 |
+
+`--gain`、`--integral-time`、`--tracking-time` 均可填数值或 `auto`，省略的选项沿用保存值。积分时间和跟踪时间均以**天**为单位。`--window-hours` 可选 6、24 或 72 小时，默认 6 小时。
+
+请求估算时，SIMPO 先固定输入，使工艺达到稳定工况，再根据阶跃响应，按 Skogestad 的 SIMC 规则求增益与积分时间。跟踪时间由 SIMPO 单独估算，最后回到原来的动态输入验证候选参数。[BSM1 试调案例与 SIMC 公式](../../CaseStudy/BSM1/Setup.mdx#controller-trial)
+
+## 查看进度与结果
+
+启动和取消需要 Token 的 `calculate` 权限，查询进度以及使用 `--wait` 等待结果还需要 `read` 权限。开发环境由后端在开发机上直接从源码启动计算进程。正式环境由 CLI 启动命令所在电脑上安装的 SimpoClient。试调计算内核支持 Linux 和 Windows。
+
+`--wait` 将阶段和进度写到标准错误，将最终 JSON 写到标准输出。省略 `--wait` 可让试调继续运行，记下返回的 `trialId`，便可在另一终端查询或取消。等待超时后仍可凭该 ID 查询。
+
+要先预留试调，可添加 `--prepare-only` 并省略 `--wait`。在 120 秒内移除 `--prepare-only`、按相同的试调设置再次执行，即可启动预留的试调。启动时可加上 `--wait`。
+
+```bash
+simpo get-controller-trial PROJECT_ID TRIAL_ID
+simpo stop-controller-trial PROJECT_ID TRIAL_ID
+```
+
+任务完成后查看 `result.status`。若为 `inconclusive`，`result.reason` 会说明无法推荐参数的原因，例如操纵量阶跃引起的测量变化太小。有候选参数时，可对比试调前后的平均绝对过程误差、操纵量总变化量和触及限值的时间占比。试调结果是临时数据，采纳时需自行将参数应用到 Controller 并保存项目。已保存的模拟结果会保留。
+
+以上述晴天闭环案例为例，6 小时的 `--estimate-all` 试调返回了 `worse_tracking`，溶解氧平均绝对误差从 0.0983 增至 0.2456 g O₂/m³。改用 `--window-hours 24 --estimate-all` 后，试调给出了候选参数，增益为 81.34，积分时间为 0.00744 d，跟踪时间为 0.00372 d。在相同的 24 小时内，已保存参数的误差仍较小，为 0.0917 g O₂/m³，候选参数为 0.1043 g O₂/m³。决定是否采纳时，应比较两组参数在同一时段的表现。

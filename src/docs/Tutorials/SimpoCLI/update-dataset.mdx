@@ -45,6 +45,8 @@ The successful response keeps the same DataSet `id` and includes
 Stored Simulation, Sensitivity, Uncertainty, and Estimation results in those
 Projects are marked as requiring recalculation.
 
+When updating a BSM1 case, retrieve the complete `detail` with `get-dataset` and edit only the fields you want to change. This preserves the case’s startup settings, sensor noise and assessment window. [BSM1 plant settings](./create-dataset#bsm1)
+
 ## Updating temperature
 
 Add or edit `Environment` in the complete `detail`, using the

@@ -58,6 +58,16 @@ simpo calculate 706 --engine SCEUA \
 simpo calculate 706 --no-launch
 ```
 
+## 复算 BSM1
+
+使用个人 Draft 的 Project ID。八个案例均使用 Dynamic，包括两个需要保留 500 天趋稳轨迹的恒定进水案例。
+
+```bash
+simpo calculate PROJECT_ID --engine SIM --execution-mode dynamic --input-interpolation linear --step-tolerance 0.05 --resolution-rate 1 --wait
+```
+
+`0.05` 对应 Dash 步长容差 **5%**。如果需要比较更细的内部步长，**0.1%** 填 `0.001`，**0.01%** 填 `0.0001`。维持输出分辨率 `1`（100%），方便按原采样时间与 MATLAB 配对。计算完成后，通过报告查询读取七项 Assessment 或项目加权 NSE。[读取 BSM1 报告](./get-calculation-result#report)
+
 ## 计算引擎
 
 `--engine` 区分大小写，默认值为 `SIM`。

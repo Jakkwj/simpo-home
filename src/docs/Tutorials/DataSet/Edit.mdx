@@ -13,12 +13,21 @@ to Personal DataSets when an editable Draft is needed.
 The Detail page contains Flowchart, Targets, Tanks, and Links. The following
 editing operations apply to a Draft.
 
+| What do you want to set up? | Guide |
+| --- | --- |
+| Mix water, model reactions and aeration, or set the inlet response | [CSTR fields and example](./Tanks.mdx#cstr) |
+| Size a clarifier, choose its layers and enter settling parameters | [Takacs Settling fields and layer connections](./Tanks.mdx#takacs) |
+| Supply air from diffuser data or enter a reference KLa directly | [AirPump and SOTE fitting](./Pumps.mdx#airpump) · [KLaPump and temperature correction](./Pumps.mdx#klapump) |
+| Use a sensor reading to adjust a flow or oxygen transfer | [Connect and configure a PI controller](./Controller.mdx) |
+| Calculate effluent loads, energy use or another performance measure | [Enter and check an Assessment metric](./Assessment.mdx) |
+
 ### Unit
 
 In the web editor, open `Unit` from the Flowchart `List` menu:
 
 - `Time`: `day`, `hour`, `minute`, or `second`; this is the only editable unit.
-- `Flow`: fixed to `m3/d`.
+- Volumetric flow uses **m³/d** for water and for air supplied to an AirPump.
+- `KLa` uses **d⁻¹** (`/d`). This is a read-only entry in the Unit dialog. The solver identifies a named KLa signal from its KLaPump connection. The workbook needs no extra column in the `Unit` sheet.
 - `Volume`: fixed to `m3`.
 - `Area`: fixed to `m2`.
 - `Height`: fixed to `m`.
@@ -40,16 +49,17 @@ Targets connect measured variables to BioModel Components. The table contains
 - `Symbol` and `Unit` are required.
 - A Symbol starts with a letter and uses only letters, numbers, and underscores;
   consecutive underscores are not allowed.
-- Symbols must be unique and cannot conflict with reserved words or other
-  DataSet names.
+- Choose a symbol distinct from other DataSet names and reserved words.
+  `Volume` and `KLa` are reserved in all letter cases. `KLa_34` is a valid signal name.
 - Leave `StandardTarget` empty for ordinary targets. Use `Dissolved Oxygen` for
-  the aeration target or `Total Suspended Solids` for the TSS target used in
-  steady-state SRT calculation. Each value can be assigned to at most one Target.
+  the aeration target or `Total Suspended Solids` for the TSS target used by
+  Takacs Settling and steady-state SRT calculations. Each value can be assigned to at most one Target.
 
 ### Tanks
 
 The tank list contains `Name`, `Type`, `BioCalculated`, `Volume`, and
-`Constant Volume`. Types are `CSTR` and `Point Settling`.
+`Constant Volume`. Select the tank to edit its fields. The [CSTR guide](./Tanks.mdx#cstr)
+covers mixing and aeration. The [Takacs Settling guide](./Tanks.mdx#takacs) covers geometry, settling parameters and layer measurements.
 
 - CSTR tanks can enable biochemical calculations and constant volume.
 - Point Settling tanks contain `Outlet` and `Blanket`; their Settling Factor is
@@ -60,32 +70,29 @@ The tank list contains `Name`, `Type`, `BioCalculated`, `Volume`, and
   Factor`, and `Beta Factor`. Diffuser Number and Depth cannot be negative;
   Alpha and Beta range from 0 to 1.
 
+In the CSTR dialog, **Time constant** shows 0 s and is disabled when **Mixed inlet response** is **Instantaneous**. Select **First-order lag** to edit it. If the workbook includes a reference initial state, use the settings button in the time constant field to choose the initial state. The filter acts once on the combined liquid flow and component loads entering this tank. The BSM1 MATLAB setup uses 8.64 s at the first reactor. **Instantaneous** corresponds to a blank or zero `InletLagSeconds` in the workbook.
+
+Use constant-volume hydraulics with the Forward Euler solver. At a splitter, specify the branch that takes the remaining flow after the prescribed branches are supplied. The BSM1 MATLAB reference templates include the inlet filter's initial flow and loads. For a new plant, the solver initializes the filter from its mixed feed at the start of the simulation.
+
+#### Choosing Takacs settling layers
+
+In the flowchart, select **New Tank → Takacs Settling** and choose 3–10 layers. The **Tanks** list offers the same choices under **+**. The layer count stays fixed when you reopen the tank. BSM1 uses ten layers with the feed at layer 6. Other counts start with the feed nearest 60% of the layer count, counting from the bottom. You can change the feed to any interior layer. A three-layer tank feeds layer 2.
+
+In the tank dialog, use the layer selector immediately after **Measured** to view or edit that layer’s initial values and measurements. Layer 1 is at the bottom. For an eight-layer tank named `Tank6`, the top layer corresponds to `Tank6_8` in the workbook and outlet connections. Imported whole-tank observations appear as a separate option.
+
+#### How flow and layer thickness limit the time step {#takacs-step}
+
+Surface area and total depth must be finite and positive. Dividing total depth by the number of layers gives the thickness of each layer. Multiplying that thickness by the area gives the layer volume. Both derived values must also be finite and positive. The model imposes no separate minimum or maximum thickness in metres. For a given total depth, increasing the layer count makes each layer thinner.
+
+The Forward Euler solver applies a **CFL stability limit** at each step. In each layer, it adds the hydraulic speed and the characteristic speed of the settling flux. If the largest of these sums is $u$ (m/d) and the layer thickness is $h$ (m), the settler limits the time step to $0.8h/u$ days. SIMPO uses a built-in safety factor of 0.8. Hydraulic speed is the total settler feed divided by area at the feed layer. The layers above use the effluent flow and those below use the underflow, each divided by area. The settling contribution depends on the solids concentration and the slope of the settling curve.
+
+For example, with 0.4 m layers and an illustrative $u=300$ m/d, the maximum step allowed by the settler is $0.8\times 0.4/300\times 86{,}400=92.16$ seconds. If $u$ doubles to 600 m/d, that upper limit falls to 46.08 seconds. Reaction rates, inlet lag and upcoming sample times can shorten the actual step further. The storm cases still save results every 15 minutes. [BSM1 storm and layer comparison](../../CaseStudy/BSM1/Results.mdx)
+
+The model also applies a minimum when calculating the **settling flux between layers**. At each internal interface below the feed, downward settling is limited by the smaller of the fluxes the two layers can carry. At an interface above the feed, the receiving layer’s TSS determines which rule applies. At or below the concentration threshold `Xt`, the upper layer supplies the flux. Above the threshold, the smaller of the two layer fluxes applies.
+
 ### Pumps
 
-Pumps are used for aeration calculations. The pump list contains `Name`,
-`Type`, `SOTEa`, `SOTEb`, `SOTEc`, and `θ`. In XLSX files,
-`θ` is the sixth column, after `SOTEc`. The UI and XLSX use `θ`, which maps
-to the internal `ThetaFactor` field. Older `ThetaFactor` headers are still accepted.
-θ is the aeration system's gas–liquid mass-transfer temperature coefficient,
-using the receiving Tank's water temperature. New Pumps start at 1.024;
-adjust it using equipment test data. Missing columns or blank values in older data default to 1.
-See [Water-Temperature Correction of the Oxygen-Transfer Coefficient](#oxygen-transfer-temperature) for the equation.
-
-`Fit SOTE Curve` uses:
-
-- `Qd (m3/h/Diffuser)`
-- `Diffuser Depth (m)`
-- `SOTE (%)`
-
-Curve data supports CSV import/export. Enter percentages such as 14.1 in
-`SOTE (%)`; the fitted equation uses the fraction 0.141. After valid rows are
-entered, fit the curve to calculate its coefficients:
-
-```text
-SOTE = SOTEa * (Qair / 24 / DiffuserNumber)^(-SOTEb) * DiffuserDepth^(SOTEc)
-```
-
-Here, `Qair` is the DataSet input in m³/d, so hourly air flow per diffuser is `Qair / 24 / DiffuserNumber`. Once Flow is converted internally to m³/s, the equivalent expression is `Flow * 3600 / DiffuserNumber`.
+Choose **AirPump** for a measured air supply (m³/d) or **KLaPump** for a reference oxygen-transfer coefficient (d⁻¹). In **List → Pumps**, select the pump name to edit its settings. Assign its time series in **Flow** and connect the pump to the receiving CSTR. The [aeration pump guide](./Pumps.mdx) explains each field, how to fit a SOTE curve, and how to use one reference KLa for several tanks.
 
 ### Inflows and measured data
 
@@ -117,9 +124,7 @@ the list and details and exporting CSV. The DataSet editor embedded in a Project
 provides the same entries.
 Renaming a Tank also renames its temperature series and any zone series;
 deleting a Tank removes all of these series.
-Temperature corrects saturated dissolved oxygen concentration in Pump and direct KLa
-aeration with the Forward Euler solver. Pump aeration also uses `θ` to
-correct the oxygen-transfer coefficient. `BioModel.Matrix.Rate` can also reference
+With the Forward Euler solver, tank temperature enters the Freshwater and BSM2 saturation models. AirPump and KLaPump each use their own `θ` to correct the transfer coefficient. `BioModel.Matrix.Rate` can also reference
 the built-in symbol `T` for kinetic corrections using the current Tank's water
 temperature at the current time; see [Edit a BioModel: Water Temperature T](../BioModel/Edit.mdx#rate-temperature).
 
@@ -160,7 +165,7 @@ as described in the Unit settings above. Input must satisfy these rules:
 For dynamic calculations, the Project's `dynamic_input_interpolation_method`
 selects the sampling method for all series. `previous` switches to each new value
 at its timestamp; `linear` interpolates between each column's actual valid samples.
-Saturated concentration and Rates containing `T` are then calculated from the resulting temperature.
+Temperature-dependent saturation models and Rates containing `T` use the resulting temperature.
 Other Tanks' sampling times do not alter that column's interpolation trend.
 Like Flow/Inflow events, temperature input events limit the integration step so
 it cannot cross the next update time. At that time, the solver refreshes
@@ -184,14 +189,21 @@ dynamic calculation restores the original temperature series for the dynamic pha
 
 For a Tank or zone without an applicable `T` series, including the fallback above,
 aeration calculations and `T` in Rates assume a water temperature of 20°C,
-giving the same result as a constant 20°C input. Pump and direct KLa aeration both
-use the clean-water saturated concentration at this temperature (approximately
-9.09 mg/L). Pump aeration additionally applies the Tank's β, and the temperature
-multiplier for the oxygen-transfer coefficient is 1.
+giving the same result as a constant 20°C input. The default Freshwater model gives a clean-water saturation concentration of about 9.09 mg O₂/L at this temperature. AirPump aeration also applies the receiving tank’s β.
 
 #### Water-Temperature Correction of Saturated Dissolved Oxygen {#do-temperature}
 
-**SIMPO** uses each Tank's water temperature $T$ (20°C when omitted) and the Benson–Krause equation in [USGS WQ.2011.03, Equation 7](https://water.usgs.gov/water-resources/memos/documents/WQ.2011.03.pdf) to calculate the saturated dissolved oxygen concentration in clean water. The current calculation assumes freshwater at 1 atm and supports water temperatures from 0 to 40°C. With absolute temperature $T_K = T + 273.15$:
+Open the CSTR receiving aeration on the DataSet flowsheet. Choose the **Oxygen Saturation Model** (`SaturationModel`) according to the purpose of the simulation. It sets the saturation concentration used to calculate oxygen transfer.
+
+| Simulation | What to enter in the CSTR | How SIMPO obtains the saturation concentration |
+| --- | --- | --- |
+| A typical wastewater treatment plant | Keep the default **Freshwater** model. If you have tank water temperatures, enter `T` under **Environment**. | SIMPO calculates clean-water saturation at the receiving tank’s temperature. With an AirPump, it multiplies this value by the tank’s β factor. With a KLaPump, it uses the clean-water value directly. |
+| Reproducing BSM2 | Select **BSM2**. | SIMPO uses the BSM2 benchmark equation at the receiving tank’s temperature. The equation gives the final concentration without a separate saturation input or β correction. |
+| Reproducing the eight BSM1 cases in this tutorial | In Tank3, Tank4 and Tank5, select **Constant** and enter **8 mg O₂/L** for **Saturation Value** (`SaturationValue`). | Saturation stays at 8 mg O₂/L as the water temperature changes. |
+
+Only **Constant** requires a Saturation Value. Enter a finite number of 0 or greater.
+
+With **Freshwater**, SIMPO uses each Tank's water temperature $T$ (20°C when omitted) and the Benson–Krause equation in [USGS WQ.2011.03, Equation 7](https://water.usgs.gov/water-resources/memos/documents/WQ.2011.03.pdf) to calculate the saturated dissolved oxygen concentration in clean water. The current calculation assumes freshwater at 1 atm and supports water temperatures from 0 to 40°C. With absolute temperature $T_K = T + 273.15$:
 
 $$
 S_{O2,sat}(T) = \exp\left(
@@ -205,33 +217,21 @@ $$
 
 The result is in mg O₂/L: approximately 9.09 mg O₂/L at 20°C and 7.558796 mg O₂/L at 30°C. The standard reference concentration $S_{O2,sat,std}$ uses the full stored value at 20°C, **9.092426042885567 mg O₂/L**, regardless of the Tank's water temperature. The clean-water saturated concentration also uses this value when temperature is omitted.
 
-Pump aeration uses $\beta S_{O2,sat}(T)-S_{O2}$ as the mass-transfer driving force, while direct KLa aeration uses $S_{O2,sat}(T)-S_{O2}$. The reference oxygen content of air remains 0.279 kg O₂/m³, so the conversion coefficient in the Pump calculation is consistently $279/S_{O2,sat,std}\approx30.68488$; calculations use full precision.
+With the Freshwater model, AirPump aeration uses $\beta S_{O2,sat}(T)-S_{O2}$ as the mass-transfer driving force, while direct KLa aeration uses $S_{O2,sat}(T)-S_{O2}$. The reference oxygen content of air remains 0.279 kg O₂/m³, so the conversion coefficient in the Pump calculation is consistently $279/S_{O2,sat,std}\approx30.68488$; calculations use full precision.
 
 To reduce repeated calculations, SIMPO ships a fixed table of 4,001 saturated concentrations calculated offline from 0 to 40°C at intervals of 0.01°C. Startup loads the stored values, and generated Fortran calculation code embeds the same constants; the table is not recalculated at startup. When the current water temperature exactly matches one of these temperature points, it uses the stored result. Other temperatures, such as 20.123°C, are evaluated using the equation above, without rounding the temperature or interpolating in the saturation table. The same rule applies to water temperatures obtained by dynamic interpolation and steady-state averaging.
 
 #### Water-Temperature Correction of the Oxygen-Transfer Coefficient {#oxygen-transfer-temperature}
 
-The Pump's `θ` corrects the oxygen-transfer coefficient
-at the 20°C reference temperature to the receiving Tank's water temperature:
+Each pump's temperature factor $\theta$ adjusts its reference oxygen-transfer coefficient to the receiving tank's water temperature $T$. AirPump uses a reference temperature of 20°C. KLaPump uses its `TRef`, which defaults to 20°C.
 
 $$
-K_La(T) = K_La(20)\,\theta^{T-20}
+K_La(T) = K_La(T_{ref})\,\theta^{T-T_{ref}}
 $$
 
-The calculation multiplies the Pump's oxygen-transfer rate by $\theta^{T-20}$,
-outside the complete concentration difference $\beta S_{O2,sat}(T)-S_{O2}$.
-When a Pump connects to multiple Tanks, each Tank uses its own temperature.
-Steady-state calculations use each Tank's average temperature; dynamic calculations
-use its current sampled or interpolated temperature.
-1.024 is a common empirical starting value and should be calibrated using equipment
-and test data; see the [EPA oxygen-transfer device evaluation report](https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=20007I08.TXT).
+This multiplier scales the transfer coefficient in front of the oxygen concentration difference. Each receiving tank uses its own average temperature at steady state and its current sampled or interpolated temperature in a dynamic simulation. A tank with no temperature series uses 20°C. The factor and its multiplier must be finite and positive. A blank or omitted factor defaults to 1. A commonly used starting value is 1.024. Calibrate it against the equipment and test data. [EPA oxygen-transfer device evaluation report](https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=20007I08.TXT).
 
-`θ` must be finite and positive, and its correction multiplier must also
-remain finite and positive throughout the supported temperature range.
-Set it to 1 to disable this correction. A missing column, a blank value, or a Tank
-without `T` gives a multiplier of 1.
-Directly supplied Tank `KLa` values remain unchanged and do not use the Pump's θ.
-BioModel kinetic temperature corrections are defined by [expressions using T in Rate](../BioModel/Edit.mdx#rate-temperature), independently of the Pump's θ.
+Assessment reads the combined contribution of the pumps supplying Tank3 as `Tank3.KLa` in d⁻¹. BioModel kinetic temperature corrections are defined separately in [expressions using T in Rate](../BioModel/Edit.mdx#rate-temperature).
 
 #### Deriving Air Flow from the Oxygen-Transfer Coefficient {#airflow-from-kla}
 
@@ -248,8 +248,9 @@ Here, $Qair$ is in m³/d, $k_La^{(d)}$ is in $d^{-1}$, and $S_{O2,sat,std}$ uses
 
 ### Flows
 
-A flow time series contains `Time` and `Flow`, with `Flow` fixed to `m3/d`.
-Maintain it with Unit, Step Add, row editing, and CSV import/export controls.
+Each named Flow has a time column and a value column. For example, BSM1 internal recycle `Q_a` uses m³/d and the KLaPump signal `KLa_5` uses d⁻¹, including when the time axis is in hours. Maintain the series with Step Add, row editing or CSV import/export.
+
+**What goes in a controlled Flow?** Keep the name and its connections. Supply a valid value at time zero, such as 0. Later values can be left blank when a single constant placeholder suffices. While the Controller operates, its actuator supplies the effective value at each internal simulation step. The DataSet Flow plot shows the configured input. Read the controller or runtime input records for the values applied during a run. After removing a loop, set that series and its corresponding Project initial flow to the intended open-loop values.
 
 ### Connections
 
@@ -261,10 +262,343 @@ Connections contain `From`, `Flow`, and `Into`:
 
 Check the direction and endpoints in the Flowchart before saving.
 
+<span id="control-loop" />
+
+### Controllers {#controller}
+
+The `Controller` worksheet has thirteen editable columns. Each row connects one
+measured Target to a continuous PI controller and one independent Flow.
+DataSet JSON uses the same `Controller` name for these rows. The accompanying
+`ControllerConfig` holds their saved internal settings, including the PI
+initial states and sensor noise channels. A Project's DataSet uses the same keys.
+
+On the flowchart, choose **New Controller**. Hover over the PI card to see its four ports. Connect a Tank or Inflow to the card and the card to an independent Flow or KLa. The four sides let you lay out the two signal lines. The [Controller guide](./Controller.mdx) walks through the three tabs, an oxygen-control example and a trial in a Project.
+
+In **List → Controllers**, the plus button adds a draft to the list and flowchart. Select its name to edit it. Use the search box or column filters to find a controller. To remove several controllers, select their checkboxes and use the toolbar trash button.
+
+To start a measurement connection at a specific spot, hold Shift and drag from that point inside the Tank or Inflow to the controller input. You can drag the measurement endpoint of an existing signal directly, without holding Shift. For a layered settler the selected layer identifies the measurement. Water flow lines and green signal lines share the same editing tools. Hover over a line to reveal its handles. Drag a segment handle to shift the segment, double-click the line to insert a bend, and drag or double-click a bend to move or remove it. The remove button on a green line disconnects that control binding; it leaves the hydraulic pipe in place. Save the DataSet to keep the layout.
+
+| Field | Meaning |
+|---|---|
+| `Name` | Unique editable name. Dash preserves the controller’s internal ID when you rename it. |
+| `SensorPreset` | One of the six fixed BSM presets listed below. Custom and Ideal Sensor presets are not exposed. |
+| `SensorLocation` | Unique Tank or Inflow name at which the simulated concentration is measured. |
+| `SensorTarget` | Water-quality concentration indicator from `Target.Symbol`, evaluated through the paired Solution's Target conversion. |
+| `SensorUpperLimit` | Finite upper limit of the sensor range in Target units. It must be greater than `SensorLowerLimit`. |
+| `ControllerSetpoint` | Fixed reference value, between `SensorLowerLimit` and `SensorUpperLimit`, inclusive, in the same measurement unit. |
+| `ControllerGain` | Signed proportional gain: handle unit divided by measurement unit. The error is setpoint minus measurement. |
+| `ControllerIntegralTime` | Positive PI integral time, in days. |
+| `ControllerTrackingTime` | Positive anti-windup tracking time, in days; this is not a derivative time. |
+| `ControlHandle` | Independent named Flow manipulated by the loop: liquid Q, air Q, or KLa. This is not a fixed list of 28 BSM handles. |
+| `HandleLowerLimit` | Nonnegative static lower limit in the handle's unit. |
+| `HandleUpperLimit` | Static upper limit, at least the lower limit. Q uses its flow unit; KLa uses `/d`. |
+| `SensorLowerLimit` | Finite lower limit of the sensor range in Target units. This final column defaults to 0 when blank or absent. |
+
+For example, `SensorLocation=Tank5`, `SensorTarget=S_O2`,
+`ControllerSetpoint=2`, and `ControlHandle=KLa_5` use measured dissolved oxygen
+to adjust oxygen transfer. The supplied BSM1 closed-loop workbook contains both
+default PI tuning sets. A different location, Target, or handle may need different
+tuning; sharing a flow unit does not make the original gains universally valid.
+
+Each handle has one writer. For example, a connection labeled `Qw` can be
+controlled directly. A connection labeled `Qin+Qr` has a calculated flow;
+select a branch that represents the independent Flow you want to control.
+Dropping on a pump is also supported when the pump represents a single handle.
+Tank and Inflow names must resolve uniquely. In the **Control Handle** tab, choose an available named Flow to change the controller output. Check the handle limits and PI tuning when its unit changes.
+
+Keeping just the column headings selects open-loop operation. SIMPO also imports
+earlier twelve-column worksheets named `Controller` or `ControlLoop` and accepts the former
+JSON keys `ControlLoop` and `ControlLoopConfig`. Saving a compact DataSet writes
+`Controller` and `ControllerConfig`. The older module-based
+format uses a `Controller` sheet with columns such as `Type` and `IntegralTime`.
+SIMPO identifies that format from its header and reads it together with its
+Sensor and Actuator modules. Use one control format per workbook.
+
+#### Trying PI settings in a Project
+
+Enter the integral and tracking times in days. The editor also displays their
+equivalent in minutes or hours. For example, the BSM1 oxygen controller uses
+0.002 d (2.88 min) and 0.001 d (1.44 min). The gain shows the handle unit per
+measurement unit. The note below the controller name explains the proportional response to a one-unit error.
+
+In an editable Project, open the controller, choose a trial duration and click
+**Run trial**. In local development, the backend starts SimpoClient directly from
+source. In production, allow the browser to open SimpoClient on your computer.
+If you miss the prompt, click **Open SimpoClient** while the trial is waiting.
+The installed client needs Controller trial support and the same backend as Dash.
+
+The trial panel shows when the calculation files are being prepared. During
+simulation, it displays the current stage and progress based on completed solver
+steps across the planned runs. It reaches 100% when the result is available.
+
+The simulation combines the controller in the editor with the
+last saved BioModel, DataSet and Solution. Save pending process changes first
+when they belong in the experiment. Baseline and validation runs use dynamic
+Forward Euler and the Project's selected input interpolation method.
+
+**Estimate all PI values** requests estimates for gain, integral time and tracking time together, even when those fields contain values. Use **Run trial** to keep the values you have entered and estimate only those left blank. With complete PI settings, compare the entered tuning with the saved PI. A new
+controller uses its open-loop operating command for comparison. To estimate
+missing parameters, enter the measurement, setpoint, handle and limits, and
+leave the unknown PI fields blank.
+
+During estimation, SimpoClient holds external inputs at their initial values,
+holds the selected handle at the operating point and switches off sensor noise.
+After two consecutive stable simulated days, it starts two runs from the same
+state. One holds the handle constant and the other applies a small step. SIMC
+uses the response difference to estimate gain and integral time. SIMPO derives
+tracking time separately. Warm-up can use up to 60 simulated days independently
+of the trial window. If the plant fails to settle or the response is too weak,
+the panel explains why. A candidate is checked in closed loop from the original
+Project state with the dynamic inputs and sensor noise restored.
+
+Compare the Target against the setpoint and inspect the actuator output. A smaller
+tracking error can require more movement of the handle. **Use estimated values**
+copies a candidate into the editor. Apply the controller and save the Project to
+keep it. **Save as untuned draft** retains an unfinished controller in the diagram
+with its bindings and entered settings. It becomes active once the tuning is
+complete and applied.
+
+The [BSM1 controller trial](../../CaseStudy/BSM1/Setup.mdx#controller-trial) gives a worked example and the original reference for SIMC tuning.
+
+#### Presets and internal configuration
+
+| `SensorPreset` | Response | Measurement output |
+|---|---|---|
+| `BSM_Class_A` | Two stages, T90 = 1 min | Continuous |
+| `BSM_Class_B0` | Eight stages, T90 = 10 min | Continuous |
+| `BSM_Class_B1` | Eight stages, T90 = 10 min | Sample and hold every 5 min |
+| `BSM_Class_C0` | Eight stages, T90 = 20 min | Continuous |
+| `BSM_Class_C1` | Eight stages, T90 = 20 min | Sample and hold every 5 min |
+| `BSM_Class_D` | No continuous lag stages | Sample every 30 min; one-sample delay, then hold |
+
+The preset sets the Sensor response and measurement interval. Select the noise source for each Sensor in its Controller dialog. The standard deviation, update interval and seed are editable when **Random** is selected. The default standard deviation is 2.5% of the sensor span, the update interval is one minute, and a seed is generated and saved with the controller. The workbook stores this choice in the Controller configuration.
+
+New loops without saved internal configuration use the explicit SIMPO default:
+continuous PI with anti-windup, zero Bias and PI initial states, zero Sensor
+initial states, and an ideal Actuator with unit input gain. This is a versioned
+initialization policy, not a rule inferred from the BSM class or handle type.
+Migrated BSM1 workbooks preserve their existing configuration instead: the
+Q_a Actuator retains its first-order lag, KLa_5 retains its two-stage, four-minute
+response, and the original Bias, PI states, and Actuator initial values remain.
+
+The workbook carries this configuration in the `SimpoControllerConfig` document
+property. SIMPO also reads the former property `SimpoControlLoopConfig`.
+The API preserves it as `ControllerConfig` in DataSet detail. Keep it when
+editing or transferring a saved workbook. Copying only the visible
+columns creates fresh loops and does not transfer saved dynamics or initial
+states. Renaming preserves the controller ID and its connections. When changing a saved reference measurement or handle, review the replacement settings in the Controller editor.
+
+The BSM predefined resource supplies 25 independent noise channels over days 0–14. Saved BSM1 reference loops retain their original channels. For longer runs, choose no noise, configure seeded random noise, or supply a predefined sequence covering the full run.
+
+`FlowSplit` is not part of this upgrade. A populated `FlowSplit` table is
+rejected; `Controller` does not calculate or validate branch-flow conservation.
+
+### Sensor {#sensor}
+
+In **Controllers → Sensor**, choose the measurement location, Target, preset, range and noise. The sensor reads the current simulated process value. Its response, noise and range determine the reading sent to the PI. The **Measured** table holds observations for comparing the simulation with reference data. The equations below describe the settings shown under **Fixed Settings**. [Sensor fields and presets](./Controller.mdx#sensor)
+
+#### Response dynamics and the measured value
+
+For a non-ideal Sensor, let $C(t)$ be the current process concentration and
+$n$ be `DelayOrder`. The model uses $n$ identical first-order stages in series:
+
+$$
+\frac{dx_1}{dt}=\frac{C(t)-x_1}{\tau},\qquad
+\frac{dx_i}{dt}=\frac{x_{i-1}-x_i}{\tau},\quad i=2,\ldots,n.
+$$
+
+The internal states $x_i$ represent the response delay; they are not additional
+water-quality Components. `T90` is the time to complete 90% of a step response,
+starting from a previously settled reading. It is not the time taken to process
+one measurement before starting the next. The stage time constant is:
+
+$$
+\tau=\frac{T90}{c_n},\qquad
+c_1=\ln 10,\quad c_2\approx3.89,\quad c_8\approx11.7724.
+$$
+
+After the final stage, add noise and apply the measurement range:
+
+$$
+y(t)=\operatorname{clip}\!\left(x_n(t)+\sigma\eta(t),L,U\right)
+=\min\!\left(U,\max\!\left(L,x_n(t)+\sigma\eta(t)\right)\right).
+$$
+
+For `Controller`, $L$ and $U$ are `SensorLowerLimit` and `SensorUpperLimit`. The BSM predefined source sets $\sigma=0.025(U-L)$. Random noise uses the instrument standard deviation in Target units, and turning noise off sets $\sigma=0$. The probe response and sampling remain active in every mode. Internal Sensor times use days. The response equations below use seconds.
+
+#### Continuous measurement and the different time intervals
+
+Continuous measurement means the dynamic states keep following the changing
+input. A new change starts influencing the first stage immediately; the Sensor
+does not wait for an earlier response to finish. BSM Class A and B0 use this
+continuous model. Classes with discrete measurements require a separate sample
+and hold operation, as described in [the BSM sensor report, Sections 2 and 3](https://assets.pubpub.org/8d7w4rqs/51603224743168.pdf).
+
+| Time quantity | Meaning in the current implementation |
+|---|---|
+| Accepted solver step | Advances the process and Sensor dynamic states. Its numerical step size is not an instrument sampling period. |
+| `T90` | Sets response speed. A 60-second T90 does not mean one reading every 60 seconds. |
+| Measurement sampling interval | Preset-defined: continuous for A/B0/C0, 5 min for B1/C1, 30 min with one-sample delay for D. |
+| Noise update interval | One minute for BSM predefined noise, configurable for random noise. Probe sampling follows its preset. |
+| Result output interval | Controls saved result points; saving an output does not advance the Sensor state again. |
+
+For example, with a Forward Euler step of $\Delta t=1$ second, both stages use
+their values at the **start** of the step:
+
+$$
+x_1^{k+1}=x_1^k+\frac{\Delta t}{\tau}(C^k-x_1^k),\qquad
+x_2^{k+1}=x_2^k+\frac{\Delta t}{\tau}(x_1^k-x_2^k).
+$$
+
+The second equation uses $x_1^k$, not the newly calculated $x_1^{k+1}$.
+One second is only an illustrative step size; SIMPO does not impose it as a
+fixed Sensor interval. More frequent result output does not create additional
+physical measurements or make the response faster.
+
+#### Worked example: dissolved oxygen rises from 2 to 4 mg/L
+
+Assume that the Sensor has already settled at 2 mg/L, so
+$x_1(0)=x_2(0)=2$. At $t=0$, the true DO rises to 4 mg/L and remains there.
+Use two stages, `T90` = 60 seconds, and a range of 0–10 mg/L. For this analytical
+example only, omit the noise term to isolate the response dynamics.
+The current runtime initializes Sensor states at **zero**; the initial values
+of 2 here describe a previously settled Sensor, not an XLSX initial-state setting.
+
+The time constant is $\tau=60/3.89\approx15.424$ seconds. First solve the
+first stage by substituting $u=x_1-4$:
+
+$$
+\frac{dx_1}{dt}=\frac{4-x_1}{\tau}
+\quad\Longrightarrow\quad
+\frac{du}{dt}=-\frac{u}{\tau},\qquad u(0)=-2.
+$$
+
+Thus $u(t)=-2e^{-t/\tau}$ and:
+
+$$
+x_1(t)=4-2e^{-t/\tau}.
+$$
+
+Substitute this result into the second-stage equation:
+
+$$
+\frac{dx_2}{dt}+\frac{x_2}{\tau}
+=\frac{4}{\tau}-\frac{2}{\tau}e^{-t/\tau}.
+$$
+
+Multiply both sides by the integrating factor $e^{t/\tau}$. The left side is
+now the derivative of a product:
+
+$$
+\frac{d}{dt}\left(e^{t/\tau}x_2\right)
+=\frac{4}{\tau}e^{t/\tau}-\frac{2}{\tau}.
+$$
+
+Integrate from 0 to $t$ and use $x_2(0)=2$:
+
+$$
+e^{t/\tau}x_2(t)-2=4\left(e^{t/\tau}-1\right)-\frac{2t}{\tau}.
+$$
+
+Divide by $e^{t/\tau}$ to obtain the reading. No clipping occurs in this example:
+
+$$
+y(t)=x_2(t)=4-2\left(1+\frac{t}{\tau}\right)e^{-t/\tau}.
+$$
+
+| Time after the change (s) | True DO (mg/L) | Sensor reading (mg/L) |
+|---:|---:|---:|
+| 0 | 4.000 | 2.000 |
+| 10 | 4.000 | 2.276 |
+| 20 | 4.000 | 2.744 |
+| 30 | 4.000 | 3.158 |
+| 60 | 4.000 | 3.800 |
+| 120 | 4.000 | 3.993 |
+
+These are rounded **analytical values**, not saved SIMPO simulation results.
+Numerical integration approximates the continuous solution. For example, the
+one-second Euler steps above give $x_1\approx2.12967$, $x_2=2$ after the first
+step, then $x_2\approx2.00841$ after the second step.
+
+The factor 3.89 also follows from the solution. At $T90$, 10% of the original
+gap remains. Setting $a=T90/\tau$ gives:
+
+$$
+\frac{4-y(T90)}{4-2}=(1+a)e^{-a}=0.1,
+\qquad a\approx3.89.
+$$
+
+Consequently, the reading after 60 seconds is approximately
+$2+0.9(4-2)=3.8$ mg/L. If the true DO instead changes to 3 mg/L at 20 seconds,
+the model starts responding to that input at 20 seconds from its existing states.
+It does not wait until 60 seconds; the constant-input solution above then stops
+applying to the later interval.
+
+#### Noise in BSM1 and other treatment plants
+
+Open **Controllers → Sensor → Noise source**. Ordinary new Sensors start with noise off. The BSM1 reference template specifies predefined noise. Choose random noise for an instrument with a known standard deviation and update interval. For example, for a DO probe with a standard deviation of 0.05 mg/L and a 10-second noise interval, enter:
+
+```text
+NoiseSource = random
+NoiseStd    = 0.05
+Update interval (min) = 10 / 60 (enter 0.16666667)
+NoiseSeed   = 42
+```
+
+If a sample happens to be $\eta=0.4$ and the delayed reading is 3 mg/L,
+the reading before clipping is $3+0.05\times0.4=3.02$ mg/L. This sample is
+illustrative, not a prediction of the first value generated with seed 42.
+Between random-noise updates, the noise value is held while the Sensor dynamics
+continue. Choose the noise magnitude and interval from instrument or plant data.
+
+An imported explicit Sensor configuration can use a custom predefined file accessible to the
+calculation environment. Use whitespace-separated numeric text without a header:
+column 0 is time in days, starting at 0, and subsequent columns are noise values.
+`NoiseColumn` selects a noise column numbered from 1. Supply at least two points
+on a uniform grid matching `SampleTime`. Values are multiplied by `NoiseStd`;
+SIMPO does not normalize the file automatically. Use a dimensionless sequence
+with the intended statistics, rather than raw plant measurements that include
+actual process changes. Predefined noise is linearly interpolated between points.
+
+The legacy `NoiseFile=builtin:BSM1` selects a particular predefined resource. The standard
+BSM noise convention uses a one-minute grid; its purpose is repeatable benchmark
+comparisons, rather than reproducing the noise of a particular real instrument.
+See [the official sensor report, pages 4–5](https://assets.pubpub.org/8d7w4rqs/51603224743168.pdf).
+The two-channel BSM1 resource covers days 0–14. Selecting BSM predefined noise for a new binding uses the 25-channel `builtin:BSM` resource over the same interval. Random noise on a fixed update grid and sensors with noise off can run for the full duration of a 100-day case.
+
+#### BSM presets and their measurement ranges
+
+The default BSM1 configuration specifies the following two Sensors. The response
+models and benchmark settings are described in [the BSM1 report, Section 7](https://assets.pubpub.org/pdihltqg/01603112315958.pdf).
+
+| Parameter | DO in Tank5 | NOx in Tank2 |
+|---|---|---|
+| Class | A | B0 |
+| Measurement mode | Continuous | Continuous |
+| `T90` | 1 min | 10 min |
+| `DelayOrder` | 2 | 8 |
+| Measurement range | 0–10 mg O₂/L | 0–20 mg N/L |
+| `NoiseStd` | 0.25 mg O₂/L | 0.50 mg N/L |
+| Noise grid interval | 1 min | 1 min |
+
+A standard BSM class specifies response characteristics; it does not select the
+Sensor name, Tank, measured variable, or measurement range. The complete default
+BSM1 configuration specifies these additional settings. Retain the prescribed
+settings when reproducing that benchmark; document any customized assumptions.
+In `Controller`, `SensorPreset=BSM_Class_A` does set the one-minute, two-stage
+response. The six presets also define continuous or discrete output behavior.
+Choose the location, Target and measurement range for the individual probe. BSM predefined noise uses the upper limit minus the lower limit to set its amplitude.
+
+### Assessment {#custom-performance-metrics}
+
+Open **List → Assessment** to define the quantities to report after a dynamic run. For example, `Mean(Qe * Eff.COD / 1000)` calculates the mean effluent COD load in kg/d when the outlet flow `Qe` is in m³/d and the Target `Eff.COD` is in mg/L. Use the flow and Target names in your own DataSet. [Assessment fields, formula examples and BSM1 presets](./Assessment.mdx)
+
+For workbook entry, the optional `Assessment` sheet follows `Environment` and uses `Name`, `Unit`, `StartDay`, `EndDay` and `Formula`. The result workbook records calculated values under `PerformanceMetrics`.
+
 ### Flowchart
 
 The `Add` menu creates Tanks, Pumps, Inflows, Outflows, Wasted objects, Flows,
-Connections, and Targets. The `List` menu opens each table and Unit. Tools
+Connections, Controllers and Targets. The `List` menu opens each table and Unit. Tools
 include Fit, Grid, Layout, PNG Export, zoom/pan, and fullscreen editing.
 
 ### Other actions

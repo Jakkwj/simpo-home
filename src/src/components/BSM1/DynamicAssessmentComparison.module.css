@@ -1,0 +1,10 @@
+.comparison {
+  --ifm-table-cell-padding: 0.5rem 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.comparison .analysis {
+  min-width: 16rem;
+  text-align: start;
+  line-height: 1.5;
+}

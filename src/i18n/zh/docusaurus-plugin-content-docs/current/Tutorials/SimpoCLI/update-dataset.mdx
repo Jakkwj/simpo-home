@@ -40,6 +40,8 @@ DataSet ID 保持不变；返回的 `affectedProjectCount` 是本次重建的关
 `--api-token TOKEN` 和 `--base-url URL`。异步路径与同步路径使用同一个后端解析、
 自动 `changeValueDataSet` 映射和关联 Project 重建逻辑。
 
+更新 BSM1 案例时，用 `get-dataset` 读取完整的 `detail`，只修改本次要调整的字段。这样可以保留案例的启动设置、传感器噪声和评估窗口。[BSM1 工艺设置](./create-dataset#bsm1)
+
 ## 更新温度
 
 在完整 `detail` 中添加或修改 `Environment`，使用

@@ -34,7 +34,8 @@ directly; the CLI and backend enforce the required scopes:
 
 - `read`: list/read BioModels, DataSets, Projects, Project Variables, and calculation results;
 - `write`: create/update/sync/release BioModels, DataSets, and Projects, and update Project Variables;
-- `calculate`: prepare, inspect, and stop calculations.
+- `calculate`: prepare, inspect, and stop calculations and start or stop PI
+  controller trials. Use `read` to retrieve a controller trial and its result.
 
 ## CLI and Skills updates
 
@@ -50,13 +51,20 @@ simpo skills update --target codex
 ```
 
 Use `--target claude` for Claude Code local-directory Skills. Installing
-`simpo-create-project` includes all three dependencies. Omitted names install
-all four or update installed Skills. All four Skills share an independent `X.Y.Z`
-bundle version, starting at `1.0.0`, which requires CLI 0.1.9 or later. Upgrade
-older CLIs first. CLI compatibility is declared separately; legacy
+`simpo-create-project` selects all available public Skills in that bundle,
+including `calculation-result-analysis` in the five-Skill bundle. Without
+names, `install` installs the available Skills and `update` starts with the
+installed Skills and their dependencies. The public Skills share an independent
+`X.Y.Z` bundle version. CLI compatibility is declared separately; legacy
 `X.Y.Z-skills.N` installations remain recognizable by the newer CLI. Neither
 update operation needs an API Token. Old CLIs lacking these commands require a
 downloaded installer first.
+
+Controller trials require a CLI build exposing `trial-controller`. Saved
+Assessment reports require `get-calculation-result --report`. If an option
+is rejected, check that command's help on the installed CLI. A Skills update
+updates instructions only. The local CLI build and the selected backend
+must both support the requested operation.
 
 Linux CLI updates use sudo/dpkg. Windows returns `scheduled` while a detached
 installer waits for the CLI to exit; UAC may appear. Read the returned

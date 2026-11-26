@@ -34,10 +34,7 @@ or another trusted API response.
 | `--api-token TOKEN` | configured Token | Complete Token override |
 | `--base-url URL` | packaged environment URL | Backend override for this request |
 
-The response includes `detail`, which can contain the DataSet tables such as
-`Unit`, `Target`, `Tank`, `Pump`, `Measured`, `Environment`, `Inflow`, `Flow`, `Connection`,
-and `JointGraphJson` when present. It also includes the saved name lists,
-units, parsed-state flag, counts, and version metadata.
+The response includes names, units, parse status and the full `detail`. BSM1 cases use typed equipment tables such as `CSTRTank`, `TakacsSettlerTank` and `KLaPump`. Closed-loop settings are in `Controller` and `ControllerConfig`, Assessment definitions in `PerformanceMetric`, and diagram layout in `jointGraphJson`.
 
 `Environment` contains the saved temperature samples, not a resampled series.
 To edit temperature, extract `detail` from this response, retain all tables, and

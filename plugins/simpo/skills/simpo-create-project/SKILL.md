@@ -1,12 +1,16 @@
 ---
 name: simpo-create-project
-description: "Reproduce a wastewater-treatment SCI paper as linked SIMPO BioModel, DataSet, and Project Drafts, then optionally run a reviewed simulation, uncertainty-analysis, and estimation loop. Use when extracting equations and process data, identifying calibration or validation figures, digitizing missing experimental series, auditing provisional values, comparing simulations with published figures, or diagnosing why a model cannot be reproduced."
+description: "Reproduce a wastewater-treatment paper or benchmark such as BSM1 in SIMPO. Use when building linked BioModel, DataSet and Project Drafts from a paper, reproducing a reference Project, digitizing calibration or validation data, comparing against published results, or diagnosing discrepancies. Supports reviewed simulation, uncertainty analysis and estimation."
 ---
 
 <!-- BEGIN SHARED WORKFLOW -->
 # Create a SIMPO Project from a paper
 
-Use this Skill for an end-to-end paper reproduction workflow. It is an
+For an existing benchmark Project, use its saved inputs and the specified
+reference version. When a rerun is requested, use an editable Draft and follow
+the benchmark comparison in [the reproduction workflow](references/paper-reproduction-workflow.md).
+
+For a paper-to-Project reproduction, this Skill is an
 orchestrator: it reuses the Paper mode of `simpo-create-biomodel` and
 `simpo-create-dataset`, including their Formula, Composition, Ionization, DataSet schema,
 figure-digitization, and validation rules. It adds paper-level figure roles,
@@ -35,13 +39,14 @@ When building a BioModel, read and apply the available
 `simpo-create-biomodel` Skill and its linked Composition/Ionization references.
 When building a DataSet, read and apply the available `simpo-create-dataset`
 Skill and its paper-extraction reference. This Skill owns orchestration only.
-Load the companion `simpo-create-biomodel` and `simpo-create-dataset` Skills.
 If a required companion is missing,
 identify it before the affected step; do not silently replace its rules.
 
 ## Required inputs
 
-- A readable paper PDF and supplementary files when the paper refers to them.
+- For extraction from a paper, a readable paper and relevant supplementary
+  files. For a benchmark rerun, the source Project/version and the reference
+  trajectories or published Assessment values for the requested comparison.
 - A unique name for each requested BioModel, DataSet, and Project, or permission
   to derive names from the paper title.
 - Authorized access to the selected execution environment when creation is
@@ -77,8 +82,10 @@ the missing evidence.
    and excluded figures. Use [figure digitization](references/figure-digitization.md)
    together with the DataSet Skill's paper-extraction audit. Require a reviewed
    CSV or JSON and preserve calibration, uncertainty, and series provenance for
-   every series used in a DataSet. Do not use a published model line as a
-   measurement.
+   every series used in a DataSet. For a benchmark implementation comparison
+   such as BSM1, a reference simulation may occupy `Measured` for alignment.
+   Identify it as model-generated data. Empirical validation requires actual
+   observations.
 5. **Build the BioModel through its Paper mode.** Apply the available
    `simpo-create-biomodel` Skill and all of its linked references to extract
    Components, Parameters, Matrix, Formula, Composition, and Ionization. Do not duplicate
@@ -94,9 +101,10 @@ the missing evidence.
    audit hydraulic balance, and put the figure/evidence audit in each DataSet
    Description.
    Keep environmental T out of Component/Parameter and Solution.Variable/
-   Conversion/Constraint. Temperature correction belongs in BioModel Rate;
-   document source reference temperatures, Tank/zone mapping, and any 20°C
-   fallback. Use the BioModel analysis rules for the runtime/static boundary.
+   Conversion/Constraint. Temperature corrections for biological kinetics belong
+   in BioModel Rate. For oxygen transfer, retain Pump θ, the KLaPump reference
+   temperature and the receiving CSTR's saturation model. Document the source,
+   Tank/zone mapping and any 20°C fallback.
 7. **Create one or more Projects.** After the required Drafts are successful,
    verify every ID, name, ownership, state, privacy, and version. Create a
    Project for each BioModel/DataSet pairing or model variant needed for a
@@ -333,3 +341,21 @@ interpolation choices to `--input-interpolation previous|linear` and
 A `--wait` timeout does not stop the client or calculation; never combine
 `--wait` with `--no-launch`. On an ambiguous write result, query the corresponding
 resource list with pagination before retrying.
+
+For a BSM1 comparison starting from a Public case, use SimpoDash to clone
+the matching Project when an editable copy is needed. Use the owned Draft ID
+with the CLI. For example, after recording the 5% baseline, rerun the same
+case at 0.01% and read its two types of comparison result:
+
+```bash
+simpo calculate PROJECT_ID --engine SIM --execution-mode dynamic --ode-solver Forward_Euler --input-interpolation linear --resolution-rate 1 --step-tolerance 0.0001 --force-recalculate --wait
+simpo get-calculation-result PROJECT_ID --engine SIM --report --section NSE.Weighted
+simpo get-calculation-result PROJECT_ID --engine SIM --report --section performance_metrics
+```
+
+For a closed loop, inspect the saved controls with
+`--engine SIM --section controllers.controllers.BSM1_KLa5.records --limit 10`
+on `get-calculation-result`. If the user requests a new tuning experiment,
+follow the `simpo` Skill's Controller trial workflow. Keep the candidate and
+its trial window separate from the published PI settings and the seven-day
+Assessment.

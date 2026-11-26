@@ -1,0 +1,106 @@
+---
+title: A beginner’s guide to the BSM1 activated sludge plant
+sidebar_label: BSM1
+description: Follow the water, sludge and aeration on a SimpoDash flowsheet, then use eight public Projects to learn how to run and compare the BSM1 benchmark.
+---
+
+import projectLinks from '@site/src/data/bsm1ProjectLinks.json';
+
+# Reproducing BSM1 in SimpoDash
+
+Imagine running a wastewater treatment plant when the morning influent rises and the microorganisms consume more oxygen. Will yesterday's aeration setting keep dissolved oxygen near its target? If you adjust aeration using a sensor, how much will the effluent improve, and how much electricity will it take?
+
+**Benchmark Simulation Model No. 1 (BSM1)** gives you a repeatable experiment. It specifies a virtual plant, influent, models and evaluation rules, along with a control strategy you can use for comparison. **Activated Sludge Model No. 1 (ASM1)** is the part that describes how microorganisms consume organic matter, transform nitrogen and use oxygen. **SimpoDash** is the interface you will use to examine the plant, run the SIMPO simulation and compare results. [BSM1 report, sections 1–2 and figure 1](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf)
+
+## Which settings matter when reproducing BSM1? {#benchmark-settings}
+
+If you cloned a public Project, use the table to check the saved settings. **The 8 mg O₂/L saturation concentration is a BSM1 benchmark condition. The 8.64-second lag at Tank1 reproduces the MATLAB/Simulink implementation used in this tutorial.** Each choice has a separate basis when modelling a real plant.
+
+| Where to look in Dash | Settings in the eight BSM1 cases | How to choose for your own plant |
+| --- | --- | --- |
+| **DataSet → Tank1 → Mixed Inlet Response** | Select **First-order lag** and enter **8.64 s**. The lag acts on the combined liquid flow and component loads from the influent, internal recycle and return sludge. Tank2–Tank5 use **Instantaneous**. [Tank1 example](./BSM1/Setup.mdx#mixed-inlet) | Choose instantaneous mixing if the model delivers the mixed feed directly to the reactor. If that inlet needs a dynamic response, use plant data to determine the time constant. |
+| **DataSet → CSTR → Oxygen Saturation Model** | Choose **Constant** and enter **8 mg O₂/L**. Check the aerated tanks, Tank3–Tank5, in particular. The **2 mg O₂/L** used in closed-loop Tank5 is the controller’s DO setpoint. [Reactor settings](./BSM1/Setup.mdx#aeration) | Decide whether saturation should follow water temperature. For the freshwater temperature relationship, choose **Freshwater** and supply tank temperatures. Choose **Constant** for a known fixed saturation concentration. |
+| **DataSet → aeration pumps and Flows** | Use **KLaPump** to supply the oxygen-transfer coefficient directly in **d⁻¹**. Both pumps use **θ = 1**, so the coefficient has no temperature correction. Tank3 and Tank4 each receive the full 240 d⁻¹. Tank5 receives 84 d⁻¹ in open loop and a controller-adjusted value in closed loop. [Pump connections](./BSM1/Setup.mdx#aeration) | Choose the pump from the available measurements. Use KLaPump for a known KLa, or AirPump to calculate transfer from airflow (m³/d) and diffuser performance. |
+| **DataSet → List → Controllers** | **Open-loop cases 01, 03, 05 and 07** have an empty controller list. Internal recycle `Q_a` stays at 55,338 m³/d and tank 5 aeration `KLa_5` at 84 d⁻¹. **Closed-loop cases 02, 04, 06 and 08** use two PIs. Tank2 nitrate `S_NO` controls `Q_a` at a nitrate setpoint of **1 g N/m³**. Tank5 dissolved oxygen `S_O2` controls `KLa_5` at a DO setpoint of **2 g O₂/m³**. Keep the saved PI parameters to reproduce the cases. [Settings for both loops](./BSM1/Setup.mdx#controller) | Match the measurement, setpoint and manipulated equipment to the plant’s control strategy. A pump running at a fixed setting can take a direct input. |
+| **Controller → Sensor → Noise Source** | In **04, 06 and 08**, select **BSM1** for both sensors. Nitrate uses **BSM Class B0**, with a noise standard deviation of **0.50 g N/m³**. DO uses **BSM Class A**, with **0.25 g O₂/m³**. The reference sequence has one sample per minute from day 0 through day 14. The 500-day startup in **02** uses ideal sensors. Dash shows **BSM1 (inactive)** and the measurement noise is zero. Open-loop cases need no sensor noise settings. | Choose **Random** with the instrument’s noise standard deviation to model field measurements, or **Off** for noise-free readings. |
+| **Calculation → Console → Dynamic Input Interpolation Method** | Choose **Linear** to interpolate influent flow and concentrations between timestamps. Dry, rain and storm inputs vary with time. The constant influents in cases 01 and 02 retain their values. [Interpolation example](./BSM1/Setup.mdx#run) | Choose Linear when a smooth transition between samples is a reasonable assumption. **Previous** represents a pump or dosing command held until the next adjustment. |
+| **Calculation → Console → execution and output** | Use **Dynamic**, **Forward Euler** and **100% Resolution Rate** for all eight cases. Set **Step Tolerance to 5%** to reproduce the saved reports. Cases 01 and 02 run dynamically for 500 days to follow the approach to steady state. Cases 03–08 start from their respective pre-run states and run for 14 days. [Solver settings](./BSM1/Setup.mdx#run) | Choose a steady endpoint or a dynamic simulation according to the question. For trajectory comparisons, retain output times that match the measurements, then tighten the step tolerance to check numerical convergence. |
+| **DataSet → Assessment → Start Day / End Day** | For performance metrics such as EQ and OCI, use **days 7–14** in cases 03–08 and **days 493–500** in cases 01 and 02. Both windows cover the final week. [Assessment windows](./BSM1/Assessment.mdx#run) | Select the plant’s reporting period and use the same window for strategies you intend to compare. |
+| **DataSet → Assessment → SP (sludge production)** | `Change(inventory, -1)` moves only the **closing sludge inventory** back one saved sample, then subtracts the opening inventory. To match the BSM1 MATLAB assessment script, weather cases 03–08 go back **15 minutes** to 23:45 on day 13. Steady cases 01 and 02 use the same convention on their **4-hour** output grid, taking the inventory at 20:00 on day 499. Sludge wasting still accumulates over all 7 days, and the daily average uses 7 as its divisor. [Worked inventory example](./BSM1/Assessment.mdx#inventory) | If your plant records its closing inventory at the end of the reporting period, use `Change(inventory)` for closing minus opening inventory. |
+
+**How closely does SIMPO match MATLAB?** Open **Calculation → Simulation** and select **All** in the Tank chart’s Target menu to see the Project’s **WNSE (weighted NSE)**. The closer the score is to 1, the closer the overall match between the simulated and reference water-quality curves. For example, case 03 (dry weather, open loop) scores **0.98608**. [WNSE for all eight cases](./BSM1/Results.mdx#wnse)
+
+For a first visit, open <a href={projectLinks['04'] + '?view=detail'}>04 · Dry, closed loop</a> and go to **Detail → DataSet**. Match the flowsheet on screen to the picture below. You can follow the water and trace both control signals in the public Project before running a simulation yourself.
+
+## Follow the water through the plant {#plant}
+
+![Closed-loop SimpoDash flowsheet. Water travels left to right through five reactors and a settler. Two recycles run below, aeration pumps sit above, and green dashed lines carry two PI signals.](/img/bsm1/flowsheet.png)
+
+1. **Follow Inflow1 on the left to Tank2.** Wastewater brings organic matter and nitrogen into Tank1 at a flow called `Q_0`. Tank1 and Tank2 are anoxic reactors. Microorganisms can use organic matter to convert nitrate from the returning water into nitrogen gas. This is **denitrification**.
+2. **Continue from Tank3 to Tank5.** These three reactors receive oxygen through aeration. Microorganisms use oxygen to break down organic matter. Another group oxidizes ammonia nitrogen to nitrate, a process called **nitrification**. A line from Tank5 runs underneath the plant back to Tank1. Labelled `Q_a`, this internal recycle carries nitrate-rich mixed liquor back to the anoxic zone. You can now see where the nitrate in step 1 comes from.
+3. **Follow the other stream from Tank5 to Tank6.** Tank6 is the secondary settler. Its feed contains water and sludge. Particles settle, and clarified water leaves the top for **Outflow**. The model divides this tank into ten layers, numbered from the bottom up in SIMPO. The feed enters layer 6, `Tank6_10` is the effluent layer, and `Tank6_1` is the bottom layer.
+4. **Follow the sludge leaving the bottom of Tank6.** Return sludge `Q_r` carries microorganisms back to Tank1 to maintain the biomass in the reactors. A smaller stream, `Q_w`, takes excess sludge out to **Wasted**. To tell the two recycles apart, start at their origins. `Q_a` leaves Tank5 carrying mixed liquor. `Q_r` leaves the settler bottom carrying concentrated sludge.
+
+**Check the flows with one calculation.** In case 01, steady open loop, influent `Q_0` is 18,446 m³/d, internal recycle `Q_a` is 55,338 m³/d and return sludge `Q_r` is 18,446 m³/d. Tank1 receives their sum, **92,230 m³/d**. Now draw a boundary around the whole plant. Both recycles stay inside it. At steady state, 385 m³/d leaves through the waste line, so the final effluent flow is **18,446 − 385 = 18,061 m³/d**. This is how a pipe inside the plant can carry several times the external influent flow. <a href={projectLinks['01'] + '?view=detail'}>Inspect the layout in case 01</a>.
+
+### Read the symbols on the diagram and plots
+
+| Quantity | How to read it | Where to look |
+| --- | --- | --- |
+| `Q_0`, `Q_a`, `Q_r`, `Q_w` (m³/d) | Volume of liquid passing through that line per day. | Follow the endpoints to identify influent, internal recycle, return sludge and waste sludge. |
+| `Tank2.S_NO` (g N/m³) | Mass of nitrogen in nitrate and nitrite per cubic metre of water in Tank2. The control loop calls this the nitrate reading. | Tank2 contains the nitrate measurement point. |
+| `Tank5.S_O2` (g O₂/m³) | Dissolved oxygen (DO) concentration in Tank5. A concentration of 2 g O₂/m³ equals 2 mg O₂/L. | The feedback loop aims for DO near 2. The 8 g O₂/m³ in the reactor settings is the saturation concentration used to calculate oxygen transfer. |
+| `KLa_5` (d⁻¹) | Oxygen-transfer coefficient for aeration. When DO is below saturation, a larger coefficient transfers oxygen faster under otherwise equal conditions. | Find KLaPump5 above Tank5. This input affects oxygen supply. Use the water streams for a hydraulic balance. |
+| `Tank6_10.TSS` (g SS/m³) | Total suspended solids concentration in the top layer, in grams of suspended solids per cubic metre of effluent. | Select the top layer for effluent quality. Select the bottom layer to examine return and waste sludge. |
+
+### What makes a loop open or closed?
+
+Open <a href={projectLinks['03'] + '?view=detail'}>03 · Dry, open loop</a> alongside 04. They use the same dry-weather influent series. In case 03, internal recycle `Q_a` stays at **55,338 m³/d** and the Tank5 aeration coefficient `KLa_5` at **84 d⁻¹**. The flow and composition of the influent still change throughout the day, so Tank5 DO varies even with fixed settings. This is **open-loop** operation.
+
+In case 04, follow the green dashed lines. A **sensor** supplies a reading. A **PI controller** compares it with the setpoint. Its output drives an actuator to adjust the associated handle. As the water quality changes, the sensor measures the effect of that adjustment, closing the **feedback loop**.
+
+| Follow this reading | Setpoint | Which handle changes? |
+| --- | ---: | --- |
+| Tank2 nitrate nitrogen `S_NO` | 1 g N/m³ | `BSM1_Qintr` adjusts the internal recycle flow `Q_a`. |
+| Tank5 dissolved oxygen `S_O2` | 2 g O₂/m³ | `BSM1_KLa5` adjusts the aeration coefficient `KLa_5`. |
+
+If the DO sensor reads 1.8 g O₂/m³, it is 0.2 below target. The proportional part of the PI calls for more aeration. Any error that persists also contributes to the integral part. How far DO then rises depends on the oxygen demand of the microorganisms and the incoming wastewater load. In case 04, open **Calculation → Simulation**, select Tank5 and `S_O2`, and see how the concentration varies around its target. [Inspect the two loops and try a PI setting](./BSM1/Setup.mdx#controller)
+
+## Open the eight SimpoDash Projects {#projects}
+
+Choose a row first. Comparing the two columns in that row shows the effect of feedback with the same influent conditions. Comparing dry, rain and storm cases within one column shows how a given operating strategy responds to different disturbances. Each case name opens its Public Project in Dash.
+
+| Influent | Open-loop Project | Closed-loop Project | Run length · output interval | Assessment window |
+| --- | --- | --- | --- | --- |
+| Constant | <a href={projectLinks['01']}>01 · Steady, open loop</a> | <a href={projectLinks['02']}>02 · Steady, closed loop</a> | 0–500 d · 4 h | Days 493–500 |
+| Dry weather | <a href={projectLinks['03']}>03 · Dry, open loop</a> | <a href={projectLinks['04']}>04 · Dry, closed loop</a> | 0–14 d · 15 min | Days 7–14 |
+| Prolonged rain | <a href={projectLinks['05']}>05 · Rain, open loop</a> | <a href={projectLinks['06']}>06 · Rain, closed loop</a> | 0–14 d · 15 min | Days 7–14 |
+| Two storms | <a href={projectLinks['07']}>07 · Storm, open loop</a> | <a href={projectLinks['08']}>08 · Storm, closed loop</a> | 0–14 d · 15 min | Days 7–14 |
+
+Cases 01 and 02 hold the influent constant and retain 3,001 samples as the plant approaches steady state over 500 days. Case 02 uses ideal measurements. By day 500, the two controlled concentrations reach about **1 g N/m³** and **2 g O₂/m³** in their respective tanks. Each weather case retains 1,345 samples and starts from the end of its open- or closed-loop dry-weather conditioning run. Even the dry-weather influent has daily variation. The three closed-loop weather cases also use the BSM1 reference sensor noise.
+
+## Read and reproduce a saved run {#run-the-case-in-simpo}
+
+| Learning step | What to do in Dash | How to check your work |
+| --- | --- | --- |
+| 1. Read a saved simulation | In **03 → Calculation → Simulation**, view predicted and reference `S_O2` in Tank5. | **Predicted** is the SIMPO calculation. In these Projects, **Measured** holds the MATLAB reference trajectory. The feedback controller takes its reading from the simulated plant. |
+| 2. Rerun a case yourself | Sign in and **Clone** the Public Project to a personal Draft. In **Calculation → Console**, choose **Simulation**, **Dynamic** and **Linear**. Set **Step Tolerance (%)** to **5** and output resolution to **100%**. | Case 03 covers 0–336 h (14 days). After the run, open **Assessment** for days 7–14. Average aeration energy AE should be about **3341.39 kWh/d**. [Step-by-step reproduction and settings](./BSM1/Setup.mdx#create) |
+| 3. Check what changed with feedback | Open **Assessment** for cases 03 and 04, match the evaluation windows, and compare effluent and energy. | In the same week, closing the loops lowered EQ from **6690.33 to 6123.11 kg pollution units/d**. Pumping energy fell, aeration energy rose, and OCI increased from **16148.04 to 16382.42**. [Work through both reports](./BSM1/Assessment.mdx#first-assessment) |
+| 4. Check how closely SIMPO reproduces MATLAB | Within one case, pair SIMPO and MATLAB for the same tank, target and sample times. | For example, check whether their Tank5 DO curves rise and fall together in case 04. An NSE of 1 means all sampled values match. Then examine the plant-wide scores and the local discrepancy during a storm. [Compare the eight reproductions](./BSM1/Results.mdx) |
+
+## Find the settings on the flowsheet
+
+| Start here | A question you can answer |
+| --- | --- |
+| KLaPumps above Tank3, Tank4 and Tank5 | When Tank3 and Tank4 share one input, what coefficient reaches each tank? [KLaPump and oxygen transfer](./BSM1/Setup.mdx#aeration) |
+| Tank1 → Mixed Inlet Response | What does an 8.64 s response time mean where the three incoming streams meet? [Mixed inlet and hydraulic lag](./BSM1/Setup.mdx#mixed-inlet) |
+| Calculation → Dynamic input interpolation | What flow does SIMPO use between two influent samples? [Linear interpolation and solver settings](./BSM1/Setup.mdx#run) |
+| Tank5 PI controller → Controller Trial | How can you compare DO and aeration commands after changing gain? [Case 04 trial and the SIMC source](./BSM1/Setup.mdx#controller-trial) |
+
+Start with <span id="eq--how-much-pollution-leaves-in-the-effluent">[EQ (effluent pollution load)](./BSM1/Assessment.mdx#eq)</span> to assess the week's discharge. To explain why <span id="oci--what-does-better-effluent-quality-cost-to-achieve">[OCI (overall cost index)](./BSM1/Assessment.mdx#oci)</span> changes between open and closed loop, compare <span id="sp--how-much-sludge-does-the-plant-produce-for-disposal">[SP (sludge disposal)](./BSM1/Assessment.mdx#sp)</span>, <span id="ae--how-much-electricity-does-aeration-require-per-day">[AE (aeration)](./BSM1/Assessment.mdx#ae)</span>, <span id="pe--how-much-energy-do-the-three-pumped-streams-use">[PE (pumping)](./BSM1/Assessment.mdx#pe)</span>, <span id="ec--how-much-external-carbon-does-the-plant-dose-each-day">[EC (external carbon)](./BSM1/Assessment.mdx#ec)</span> and <span id="me--which-reactors-require-mechanical-mixing-and-when">[ME (mixing)](./BSM1/Assessment.mdx#me)</span> individually.
+
+## Reference versions {#compare-with-the-published-benchmark}
+
+The **2008 BSM1 report** defines the performance measures and publishes open- and closed-loop MATLAB/Simulink indices. The **R2019b release** supplies the models, three weather inputs and reference results. For this reproduction the release models were run in **MATLAB R2024b** to produce the trajectories used in the point-by-point NSE comparison. Check the reference edition when reading open-loop storm effluent loads in particular, since the editions give different values. [2008 report, appendices 4–5](https://www2.iea.lth.se/publications/Reports/LTH-IEA-7229.pdf#page=40) · [Official BSM1 model release](https://github.com/wwtmodels/Benchmark-Simulation-Models/releases/tag/BSM1_vR2019b)
+
+The IWA Task Group developed BSM1. Ulf Jeppsson, Christian Rosen and colleagues at IEA, Lund University, developed the MATLAB/Simulink implementation used here. For publications using the Lund implementation, the release includes the requested credit in `Documents/BSM1_agreement_LU.pdf`. [IWA working group release and accompanying documents](https://github.com/wwtmodels/Benchmark-Simulation-Models/releases/tag/BSM1_vR2019b)

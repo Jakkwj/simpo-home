@@ -58,7 +58,18 @@ const sidebars = {
           collapsed: true,
           items: [
             'Tutorials/DataSet/Create',
-            'Tutorials/DataSet/Edit',
+            {
+              type: 'category',
+              label: 'Edit',
+              key: 'Tutorials/DataSet/Edit',
+              link: { type: 'doc', id: 'Tutorials/DataSet/Edit' },
+              items: [
+                'Tutorials/DataSet/Tanks',
+                'Tutorials/DataSet/Pumps',
+                'Tutorials/DataSet/Controller',
+                'Tutorials/DataSet/Assessment',
+              ],
+            },
           ],
         },
         {
@@ -223,6 +234,7 @@ const sidebars = {
           collapsed: true,
           items: [
             'Tutorials/SimpoCLI/calculate',
+            'Tutorials/SimpoCLI/trial-controller',
             'Tutorials/SimpoCLI/get-calculation-status',
             'Tutorials/SimpoCLI/get-calculation-result',
             'Tutorials/SimpoCLI/stop-calculation',
@@ -383,6 +395,16 @@ const sidebars = {
       },
       items: [
         // 'Case Study/ASM1',
+        {
+          type: 'category',
+          label: 'BSM1',
+          link: { type: 'doc', id: 'CaseStudy/BSM1' },
+          items: [
+            'CaseStudy/BSM1/Setup',
+            'CaseStudy/BSM1/Assessment',
+            'CaseStudy/BSM1/Results',
+          ],
+        },
 
         {
           type: 'category',

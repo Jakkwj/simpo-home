@@ -22,6 +22,20 @@ Useful options are `--engine ENGINE`, `--section PATH`, `--offset N`, `--limit N
 `--base-url URL`. Saved Balance results additionally support `--view`,
 `--dimension`, `--key`, and `--tank` through the same command.
 
+## Read Assessment and weighted NSE {#report}
+
+Use `--report` to read the saved calculation report. List the available sections for the engine before retrieving individual metrics.
+
+```bash
+simpo get-calculation-result PROJECT_ID --engine SIM --report
+simpo get-calculation-result PROJECT_ID --engine SIM --report --section performance_metrics
+simpo get-calculation-result PROJECT_ID --engine SIM --report --section NSE.Weighted
+```
+
+`performance_metrics` contains each metric’s formula, unit, time window and value or evaluation error. The response confirms `source` as `report`. Page using `--offset` and `--limit`. `NSE.Weighted` is the score saved using the Project’s weights. The BSM1 case study also calculates a separate mean NSE over curves with measurable variation. [BSM1 reproduction results](../../CaseStudy/BSM1/Results.mdx)
+
+To inspect individual samples, omit `--report` and select a result series such as `Tank5.Predicted.S_O2`. If a controller trace was saved, page through `controllers.controllers.BSM1_KLa5.records` to compare `MeasuredValue`, `Output` and `ActuatorOutput`. List sections with `--engine SIM` to see which traces that run contains.
+
 ## Read raw results
 
 Read a large result progressively:
@@ -53,8 +67,7 @@ with a larger offset while `hasNext` is true. If a page is still too large,
 reduce `--limit` or select a deeper `--section` path. Use `--output` so a terminal
 or chat does not need to hold the result page.
 
-The command reads stored result JSON only; it does not expose the internal
-Project pickle. The backend still checks ownership and the Token's read scope.
+Reading a result or report requires an owned Project and a Token with read scope.
 
 ## Raw result response
 
