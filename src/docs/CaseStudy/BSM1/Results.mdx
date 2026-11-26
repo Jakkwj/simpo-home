@@ -8,6 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import projectLinks from '@site/src/data/bsm1ProjectLinks.json';
+import publicWnse from '@site/src/data/bsm1PublicWnse.json';
 import Case04Comparison from '@site/src/components/BSM1/Case04Comparison';
 
 # BSM1 reproduction results
@@ -101,26 +102,28 @@ Open the <a href={projectLinks['06'] + '?result=simulation&tank=Tank6_10&target=
 
 ![Case 06 in Dash, rain with feedback. The Report displays a rounded weighted NSE of 1.0. The Tank6_10 All chart shows SIMPO effluent concentrations and MATLAB reference samples.](/img/bsm1/rain-closed-effluent-all-en.png)
 
-In this screenshot of the 5% rerun, the project WNSE is **0.99999746**. The Report on the left rounds it to **1.0**. It uses all 210 water-quality curves, including the hidden `S_I` series. Select a single target to see its unit and fit. The dry closed-loop run in case 04 scores **0.98095**. [Why the dry-weather score is lower](#dry-weather-wnse)
+The public case 06 report displays a WNSE of **{publicWnse['06']}**. Hiding `S_I` in the legend changes only the plot. The public dry closed-loop report for case 04 displays **{publicWnse['04']}**. [Scores for all eight public projects](#wnse)
 
 ## WNSE for the eight cases {#wnse}
 
-**WNSE (weighted NSE)** summarizes how closely a Project’s water-quality curves match MATLAB. The closer to 1, the better the overall match. Open a case and select **All** in the Tank chart’s Target menu under **Calculation → Simulation** to see its score. All eight public cases use a **5% step tolerance**.
+**WNSE (weighted NSE)** measures overall agreement between the project’s water-quality curves and the MATLAB reference. Open a case and select **All** in the Tank chart’s Target menu under **Calculation → Simulation** to check the public report score. The first score column gives the value at the precision saved in each public v1 report. All three columns use a **5% step tolerance**.
 
-| Case | Previous 5% run | Updated 5% run |
-| --- | ---: | ---: |
-| <a href={projectLinks['01'] + '?result=simulation'}>01 · Steady state, open loop</a> | 0.999999605 | 0.999999606 |
-| <a href={projectLinks['02'] + '?result=simulation'}>02 · Steady state, closed loop</a> | 0.999969981 | 0.999969980 |
-| <a href={projectLinks['03'] + '?result=simulation'}>03 · Dry, open loop</a> | 0.986079057 | 0.986079148 |
-| <a href={projectLinks['04'] + '?result=simulation'}>04 · Dry, closed loop</a> | 0.980946771 | 0.980946767 |
-| <a href={projectLinks['05'] + '?result=simulation'}>05 · Rain, open loop</a> | 0.999949105 | 0.999949125 |
-| <a href={projectLinks['06'] + '?result=simulation'}>06 · Rain, closed loop</a> | 0.999997459 | 0.999997457 |
-| <a href={projectLinks['07'] + '?result=simulation'}>07 · Storm, open loop</a> | 0.998395722 | 0.998395978 |
-| <a href={projectLinks['08'] + '?result=simulation'}>08 · Storm, closed loop</a> | 0.999997574 | 0.999997575 |
+| Case | Public project report | Local run before time correction | Local run after time correction |
+| --- | ---: | ---: | ---: |
+| <a href={projectLinks['01'] + '?result=simulation'}>01 · Steady state, open loop</a> | {publicWnse['01']} | 0.999999605 | 0.999999606 |
+| <a href={projectLinks['02'] + '?result=simulation'}>02 · Steady state, closed loop</a> | {publicWnse['02']} | 0.999969981 | 0.999969980 |
+| <a href={projectLinks['03'] + '?result=simulation'}>03 · Dry, open loop</a> | {publicWnse['03']} | 0.986079057 | 0.986079148 |
+| <a href={projectLinks['04'] + '?result=simulation'}>04 · Dry, closed loop</a> | {publicWnse['04']} | 0.980946771 | 0.980946767 |
+| <a href={projectLinks['05'] + '?result=simulation'}>05 · Rain, open loop</a> | {publicWnse['05']} | 0.999949105 | 0.999949125 |
+| <a href={projectLinks['06'] + '?result=simulation'}>06 · Rain, closed loop</a> | {publicWnse['06']} | 0.999997459 | 0.999997457 |
+| <a href={projectLinks['07'] + '?result=simulation'}>07 · Storm, open loop</a> | {publicWnse['07']} | 0.998395722 | 0.998395978 |
+| <a href={projectLinks['08'] + '?result=simulation'}>08 · Storm, closed loop</a> | {publicWnse['08']} | 0.999997574 | 0.999997575 |
 
-Both runs use the same 210 equally weighted water-quality curves. The updated weather cases place every flow and influent sample on its 900-second grid. At the same 5% tolerance, WNSE rose slightly in 5 cases and fell slightly in 3. The largest change was about **+2.56 × 10⁻⁷** in case 07. Dash can round scores close to 1 to 1. The final inventory offset only changes Assessment, so it has no effect on water-quality trajectories or WNSE.
+At report precision, only cases 03 and 04 differ from the corrected local runs. The differences are in the nearly constant `S_I` curves. In case 03, the public report gives Tank1 an NSE of `0.0` and the local report gives `−1.8966`. In case 04, the public report records `nan` (undefined NSE) for `S_I` in Tank3, Tank4, Tank6_6 and Tank6_10. The local report gives `0.0` for all four.
 
-### WNSE at different step tolerances {#tolerance}
+The two local columns show the effect of aligning flow and influent samples to the 900-second grid. WNSE rose slightly in five cases and fell slightly in three. The largest change was about **+2.56 × 10⁻⁷** in case 07.
+
+### Local WNSE at different step tolerances {#tolerance}
 
 Each percentage in the header is the **step tolerance** set before a run. Each cell is the resulting **WNSE**. Only the tolerance changed across the four tests. All scores were recalculated with the same 210 curves and Project weights. The extra decimal places show, for example, how tightening the open-loop storm case from 5% to 0.1% raised its WNSE from **0.99839598** to **0.99999090**.
 
@@ -137,7 +140,7 @@ Each percentage in the header is the **step tolerance** set before a run. Each c
 
 Tightening the tolerance from 5% to 0.1% roughly doubled the number of internal solver steps in the six weather cases. [Solver settings](./Setup.mdx#run)
 
-### Why do cases 03 and 04 still score around 0.98 at 0.01% tolerance? {#dry-weather-wnse}
+### Why do the local runs for cases 03 and 04 score around 0.98 at 0.01% tolerance? {#dry-weather-wnse}
 
 Of the 210 dry-weather curves, 15 track soluble inert organic matter (`S_I`), one in each of the five reactors and ten settler layers. All stay near **30 g COD/m³** throughout the 14 days. NSE divides the sum of squared prediction errors by the sum of squared deviations of the reference from its mean. Around 30 g COD/m³, even taking the mean can introduce a difference in the last digit stored by the computer. If the reference has only that much numerical variation, dividing by its tiny sum of squares magnifies roundoff. A tighter step tolerance refines the time integration. The stored concentrations still have the same numerical precision.
 
@@ -176,11 +179,11 @@ $$
 | 168.25 | 0.4663545 | 0.4663674 | +0.0000129 |
 | 168.50 | 0.4614744 | 0.4615023 | +0.0000279 |
 
-The mean of the three reference readings is 0.4656153. Squaring and summing the differences in the last column gives a numerator of about $0.996\times10^{-9}$. Squaring each reference reading’s difference from the reference mean and summing gives a denominator of about $2.926\times10^{-5}$. The three-point NSE is **0.9999660**. Using all 1,345 samples to calculate the mean and both sums gives the full-run value of **0.99999906**. Zooming the chart to these 30 minutes leaves the saved full-run score on the report.
+The mean of the three reference readings is 0.4656153. Squaring and summing the differences in the last column gives a numerator of about $0.996\times10^{-9}$. Squaring each reference reading’s difference from the reference mean and summing gives a denominator of about $2.926\times10^{-5}$. The three-point NSE is **0.9999660**. Using all 1,345 samples gives **0.99999906** before rounding. The public report displays **1.0** for this Tank5 oxygen curve, including when the chart is zoomed to these 30 minutes.
 
 **How do I interpret it?** With a varying reference, an unrounded NSE of 1 means the paired values agree exactly. Zero means the total squared prediction error equals the error of using the reference mean at every time. A negative value means the prediction has greater squared error. A single steady-state endpoint or a perfectly flat reference window has a zero denominator. Report the absolute difference $|p-y|$ in concentration units for a final value. To assess the entire approach to steady state, use the 3,001 samples spanning the run.
 
-<a href={useBaseUrl('/files/bsm1/NSE_summary.csv')}>Download scores and internal step counts by case and window (CSV)</a> · <a href={useBaseUrl('/files/bsm1/NSE_by_series.csv')}>Download NSE, RMSE and maximum error by location and target (CSV)</a>.
+<a href={useBaseUrl('/files/bsm1/NSE_summary.csv')}>Download local tolerance-study scores and internal step counts by case and window (CSV)</a> · <a href={useBaseUrl('/files/bsm1/NSE_by_series.csv')}>Download local tolerance-study NSE, RMSE and maximum error by location and target (CSV)</a>.
 
 ## Why case 07 is sensitive to the time step
 

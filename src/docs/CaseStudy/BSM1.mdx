@@ -5,6 +5,7 @@ description: Follow the water, sludge and aeration on a SimpoDash flowsheet, the
 ---
 
 import projectLinks from '@site/src/data/bsm1ProjectLinks.json';
+import publicWnse from '@site/src/data/bsm1PublicWnse.json';
 
 # Reproducing BSM1 in SimpoDash
 
@@ -28,7 +29,7 @@ If you cloned a public Project, use the table to check the saved settings. **The
 | **DataSet → Assessment → Start Day / End Day** | For performance metrics such as EQ and OCI, use **days 7–14** in cases 03–08 and **days 493–500** in cases 01 and 02. Both windows cover the final week. [Assessment windows](./BSM1/Assessment.mdx#run) | Select the plant’s reporting period and use the same window for strategies you intend to compare. |
 | **DataSet → Assessment → SP (sludge production)** | `Change(inventory, -1)` moves only the **closing sludge inventory** back one saved sample, then subtracts the opening inventory. To match the BSM1 MATLAB assessment script, weather cases 03–08 go back **15 minutes** to 23:45 on day 13. Steady cases 01 and 02 use the same convention on their **4-hour** output grid, taking the inventory at 20:00 on day 499. Sludge wasting still accumulates over all 7 days, and the daily average uses 7 as its divisor. [Worked inventory example](./BSM1/Assessment.mdx#inventory) | If your plant records its closing inventory at the end of the reporting period, use `Change(inventory)` for closing minus opening inventory. |
 
-**How closely does SIMPO match MATLAB?** Open **Calculation → Simulation** and select **All** in the Tank chart’s Target menu to see the Project’s **WNSE (weighted NSE)**. The closer the score is to 1, the closer the overall match between the simulated and reference water-quality curves. For example, case 03 (dry weather, open loop) scores **0.98608**. [WNSE for all eight cases](./BSM1/Results.mdx#wnse)
+**How closely does SIMPO match MATLAB?** Open **Calculation → Simulation** and select **All** in the Tank chart’s Target menu to see the Project’s **WNSE (weighted NSE)**. The closer the score is to 1, the closer the overall match between the simulated and reference water-quality curves. For example, case 03 (dry weather, open loop) scores **{publicWnse['03']}**. [WNSE for all eight cases](./BSM1/Results.mdx#wnse)
 
 For a first visit, open <a href={projectLinks['04'] + '?view=detail'}>04 · Dry, closed loop</a> and go to **Detail → DataSet**. Match the flowsheet on screen to the picture below. You can follow the water and trace both control signals in the public Project before running a simulation yourself.
 

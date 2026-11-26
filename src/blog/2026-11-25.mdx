@@ -5,6 +5,7 @@ tags: [SIMPO]
 ---
 
 import Tabs from '@theme/Tabs';
+import publicWnse from '@site/src/data/bsm1PublicWnse.json';
 import TabItem from '@theme/TabItem';
 import Case04Comparison from '@site/src/components/BSM1/Case04Comparison';
 import DynamicAssessmentComparison from '@site/src/components/BSM1/DynamicAssessmentComparison';
@@ -30,7 +31,7 @@ The [BSM1 case study](/docs/CaseStudy/BSM1#projects) includes eight public proje
 
 ## Read the closed-loop results
 
-In **case 06, rain with feedback**, the **Tank6_10 → All** chart compares the SIMPO effluent predictions with MATLAB reference samples for 14 days. The screenshot of the 5% rerun hides `S_I` and the legend. The **Weighted NSE** uses all 210 water-quality curves, including `S_I`. The run scores **0.99999746**, which Dash displays as **1.0** in the Report on the left. [Open the rain case and follow the chart steps](/docs/CaseStudy/BSM1/Results#effluent-all).
+In **case 06, rain with feedback**, the **Tank6_10 → All** chart compares the SIMPO effluent predictions with MATLAB reference samples for 14 days. The screenshot of the 5% rerun hides `S_I` and the legend. The public report on the left displays a **weighted NSE of {publicWnse['06']}**. The legend selection does not affect the score. [Open the rain case and follow the chart steps](/docs/CaseStudy/BSM1/Results#effluent-all).
 
 ![Case 06 in Dash, rain with feedback. The Report displays a rounded weighted NSE of 1.0 beside the Tank6_10 All chart of effluent predictions and MATLAB reference samples.](/img/bsm1/rain-closed-effluent-all-en.png)
 

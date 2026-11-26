@@ -5,6 +5,7 @@ description: 从一张流程图认识活性污泥、内回流和曝气，在八�
 ---
 
 import projectLinks from '@site/src/data/bsm1ProjectLinks.json';
+import publicWnse from '@site/src/data/bsm1PublicWnse.json';
 
 # 在 SimpoDash 中复现 BSM1
 
@@ -28,7 +29,7 @@ import projectLinks from '@site/src/data/bsm1ProjectLinks.json';
 | **DataSet → Assessment → 起始日／结束日** | 比较 EQ、OCI 等绩效指标时，03–08 用**第 7–14 天**，01、02 用**第 493–500 天**，均为各自最后一周。[查看评估窗口](./BSM1/Assessment.mdx#run) | 按实际考核周期选择起止日。比较两个运行方案时，使用相同的评价时段。 |
 | **DataSet → Assessment → SP（污泥产量）** | `Change(库存, -1)` 只将**期末污泥库存**回退一条结果记录，再减去期初库存。为复现 BSM1 的 MATLAB 评估脚本，天气案例 03–08 回退 **15 分钟**，取第 13 天 23:45。稳态案例 01、02 沿用这个取法，按各自的输出间隔回退 **4 小时**，取第 499 天 20:00。排泥量仍累计整整 7 天，日均值仍除以 7。[用实际库存理解这个偏移](./BSM1/Assessment.mdx#inventory) | 如果按评估结束时刻盘点污泥，用 `Change(库存)`，即期末库存减期初库存。 |
 
-**怎么看复现得好不好？** 打开 **计算 → 模拟**，在池体图的指标菜单选 **All（全部）**，看整个项目的 **WNSE（加权 NSE）**。越接近 1，SIMPO 的水质曲线与 MATLAB 参考曲线整体越吻合。例如，案例 03 晴天开环的 WNSE 是 **0.98608**。[查看八个案例的 WNSE](./BSM1/Results.mdx#wnse)
+**怎么看复现得好不好？** 打开 **计算 → 模拟**，在池体图的指标菜单选 **All（全部）**，看整个项目的 **WNSE（加权 NSE）**。越接近 1，SIMPO 的水质曲线与 MATLAB 参考曲线整体越吻合。例如，案例 03 晴天开环的 WNSE 是 **{publicWnse['03']}**。[查看八个案例的 WNSE](./BSM1/Results.mdx#wnse)
 
 第一次学习时，先打开<a href={projectLinks['04'] + '?view=detail'}>04 · 晴天闭环</a>，进入 **Detail（详情）→ DataSet**，把流程图与下图对照。下面先追踪一股污水，再读一个控制回路。这个阶段直接看公开项目即可。
 

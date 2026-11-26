@@ -130,7 +130,7 @@ The report weights sludge for disposal by **5**, external carbon by **3** and ea
 
 ## Six dynamic cases, days 7–14 {#dynamic}
 
-Read across each row to compare one metric under the same weather and control strategy. **MATLAB R2024b** uses the working group’s model and assessment script. The **SIMPO** columns use the same input times and SP formula at two step tolerances. For example, the MATLAB EQ for case 04 is **6123.0182**. Tightening the SIMPO tolerance from 5% to 0.01% changes it from **6123.1051** to **6123.0277 kg pollution units/d**.
+Read across each row to compare one metric under the same weather and control strategy. **MATLAB R2024b** uses the working group’s model and assessment script. The **SIMPO (5%)** column gives the saved Assessment from each public v1 Project. The **SIMPO (0.01%)** column comes from a separate run with the same input times and SP formula. For example, the MATLAB EQ for case 04 is **6123.0182**. Tightening the SIMPO tolerance from 5% to 0.01% changes it from **6123.1051** to **6123.0277 kg pollution units/d**.
 
 **Difference and explanation** uses the unrounded SIMPO (0.01%) result minus MATLAB R2024b. A positive value means SIMPO is higher. Rows that round to zero show only the difference. [How the causes were checked](#diagnosis)
 
@@ -180,7 +180,7 @@ On the dry open-loop MATLAB trajectory, total plant solids fell from 24,167.611 
 
 ## Two constant-influent cases, days 493–500 {#steady}
 
-The published steady-state appendices give the final plant state. This additional check compares all seven metrics over the final week at the Project step tolerance of 5% with an independent calculation from the R2024b trajectories. Each window has **43 timestamps and 42 four-hour intervals**, so the closing inventory for `Change(inventory, -1)` is at 20:00 on day 499 and the opening inventory is at 00:00 on day 493. [Source model and steady-state reference files](https://github.com/wwtmodels/Benchmark-Simulation-Models/releases/tag/BSM1_vR2019b)
+The published steady-state appendices give the final plant state. This additional check compares all seven metrics from the public v1 Projects over the final week at 5% step tolerance with an independent calculation from the R2024b trajectories. Each window has **43 timestamps and 42 four-hour intervals**, so the closing inventory for `Change(inventory, -1)` is at 20:00 on day 499 and the opening inventory is at 00:00 on day 493. [Source model and steady-state reference files](https://github.com/wwtmodels/Benchmark-Simulation-Models/releases/tag/BSM1_vR2019b)
 
 | Metric | Unit | 01 Open, SIMPO | 01 Open, MATLAB | 02 Closed, SIMPO | 02 Closed, MATLAB |
 | --- | --- | ---: | ---: | ---: | ---: |

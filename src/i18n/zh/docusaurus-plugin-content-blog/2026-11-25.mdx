@@ -4,6 +4,7 @@ title: SIMPO 1.8.0 发布：支持 BSM1（Benchmark Simulation Model No. 1）
 tags: [SIMPO]
 ---
 import Tabs from '@theme/Tabs';
+import publicWnse from '@site/src/data/bsm1PublicWnse.json';
 import TabItem from '@theme/TabItem';
 import config from '@generated/docusaurus.config'
 import Case04Comparison from '@site/src/components/BSM1/Case04Comparison';
@@ -51,7 +52,7 @@ import DynamicAssessmentComparison from '@site/src/components/BSM1/DynamicAssess
 
 ## 用 Assessment 对照出水与能耗
 
-下图来自**案例 06 雨天闭环**本次 5% 容差复算，展示二沉池顶层 `Tank6_10` 的出水。**全部（All）**图叠加了 14 天的 SIMPO 预测曲线与 MATLAB 参考点。图中隐藏了 `S_I` 和图例，项目评分仍使用全部 210 条水质曲线。这次复算的**加权 NSE 为 0.99999746**，左侧报告舍入显示为 **1.0**。[打开雨天案例并查看读图步骤](/zh/docs/CaseStudy/BSM1/Results#effluent-all)
+下图来自**案例 06 雨天闭环**本次 5% 容差复算，展示二沉池顶层 `Tank6_10` 的出水。**全部（All）**图叠加了 14 天的 SIMPO 预测曲线与 MATLAB 参考点。图中隐藏了 `S_I` 和图例。公开项目的报告显示**加权 NSE 为 {publicWnse['06']}**，图例选择不影响评分。[打开雨天案例并查看读图步骤](/zh/docs/CaseStudy/BSM1/Results#effluent-all)
 
 ![案例 06 雨天闭环的 Dash 结果页。左侧报告将加权 NSE 显示为 1.0，右侧 Tank6_10 图叠加了出水预测曲线和 MATLAB 参考点。](/img/bsm1/rain-closed-effluent-all-zh.png)
 
