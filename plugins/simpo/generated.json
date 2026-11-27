@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "target": "cli-public",
-  "version": "1.1.1",
+  "version": "1.1.3",
   "files": {
-    "release.json": "ed5779701d161f024be1fd8142f11518ac11ef94da19c3768a88c9c9b8b69220",
+    "release.json": "695b40f5e92ef84a7e0ac4478ffebe90bed0409d10d435306814405a41db017c",
     "skills/calculation-result-analysis/SKILL.md": "e896f51a581785daf01d2a1d2f50fa22414b2ec274b0c65f9a00e44e437a59e4",
     "skills/calculation-result-analysis/references/balance-analysis.md": "529e95f84230e77dc8f569828cca7b76c9762436b52c9aa66eb6895a58a847fb",
-    "skills/calculation-result-analysis/source.json": "0229b74007a965f4f8f51b9b1d37cc109f847753f675aef4e0587427a7a75c0c",
+    "skills/calculation-result-analysis/source.json": "c89ae33374c7c25fb4c3cf81d2e944bf62b125eec605eb0186ce1ea122f1a7ba",
     "skills/simpo-create-biomodel/SKILL.md": "0bc42ec674abd3f811cff6a43444027366edbcf670ec0b2540f425005fd3d375",
     "skills/simpo-create-biomodel/agents/openai.yaml": "1bb9d3d1e6a80f778a5283515ef835500bec6a6dd02582284ffd0e2d66d00fd2",
     "skills/simpo-create-biomodel/references/biomodel-analysis-rules.md": "eec2c42d5f2e1d92ec9f3f9d3fca0a6dca55712c4ce76ca5fddd9c92f4e34b34",
     "skills/simpo-create-biomodel/references/composition-derivation.md": "5853554dab3ae66148d1ec3c7309f5e6ebd1d5382e16abc4f6c3bc970f58fc5a",
     "skills/simpo-create-biomodel/references/ionization-derivation.md": "f55f485a54b56638dfa56b2f93482ae146c3f78fcc18ce6e8b7dd37f56358374",
-    "skills/simpo-create-biomodel/source.json": "d55ea89b8f6977bd46550be95ded14812a293d10ba1ea6a0c18b433706bc903e",
+    "skills/simpo-create-biomodel/source.json": "5681c768fca69fbd356772769984971b07e2f16571b847d7bbaacdf1211ba44c",
     "skills/simpo-create-dataset/SKILL.md": "906270edfee7d58edd1ba673b5bc41ef2c297a2becdc2071d62922f20e51a869",
     "skills/simpo-create-dataset/agents/openai.yaml": "366b4fefde8b5f47d78ac4b05f8d792194f85103e279d9f4a130bdd83bc2c380",
     "skills/simpo-create-dataset/references/dataset-json-format.md": "3f7a1fdebc7ebd3cb559b57a5b179eff2c047df0c5ef873a74bb7c23a45ee3c1",
@@ -21,13 +21,13 @@
     "skills/simpo-create-dataset/references/process-design-rules.md": "1d0cb531165e94ccce70732d8e63957940052490f6aea1281b883fc71f6a055b",
     "skills/simpo-create-dataset/scripts/import_digitized_series.py": "ea7a64231e0267ec4c5b95ac21d334b2be3bdf08efd208f177d513de9829ee05",
     "skills/simpo-create-dataset/scripts/prepare_paper_figures.py": "991868bf050fdc46eeaaff1fc008c3e1dd04d649c82572c786a69802e1c8334a",
-    "skills/simpo-create-dataset/source.json": "3c90bb476267ac0afc8e8a3e1b8f2f41e1d64b4ec950006001e3f9a905f9c723",
+    "skills/simpo-create-dataset/source.json": "2b925feec2d7cb4dc4d0dbc1a6bb7dd3d6531a1a44a78efa42c315386e174d59",
     "skills/simpo-create-project/SKILL.md": "99b1a86ebe35e2d0198f83abbf5022cc122d25e4cf08a9fb2b8b3ecd4fbd5dc7",
     "skills/simpo-create-project/agents/openai.yaml": "e119261c48852c7a6cd0844ffabd226c2b823c471248d13bf2c85c327fb7a0b3",
     "skills/simpo-create-project/references/figure-digitization.md": "128d4fca4e27294ddf5a5b713c917048c1fbcda5b53a0906c463245e7b851154",
     "skills/simpo-create-project/references/paper-reproduction-workflow.md": "858cc0205929401ee7fccfcd15d6f651ab261df222202ad64d045dc78169731d",
     "skills/simpo-create-project/references/paper-to-resources.md": "bd8c72abf8a74d2ec49acc01eccbf3b755e9700ebe9ed268d68b224b2f92e953",
-    "skills/simpo-create-project/source.json": "47dce56736ac89b2f8df5569a400675deb74ff44ac822bcfabdfb39e7abc847e",
+    "skills/simpo-create-project/source.json": "1079b95d9a1f1b43a3fefa727c9d7207e691b8dd4426f9309e1d19d2438ddeeb",
     "skills/simpo/SKILL.md": "4f1b63b90603d1e45a70db37be585ee49087697168b66844de1238b9e21d9e03",
     "skills/simpo/agents/openai.yaml": "68fa2a8df16a6af2de3135e785c4e80354e0579aef8a481a761728819aadda3c",
     "skills/simpo/references/biomodel.md": "4e745c536e61c9a5da3071599de56c4614bd63775ea1d47fb83f79437b6b384b",
@@ -35,6 +35,6 @@
     "skills/simpo/references/dataset-and-project.md": "0d4521aa5ae81abc61bfe32e15f213d9989afc2c13464c433cbbb5373dbe6fc3",
     "skills/simpo/references/operations.md": "d54abade3cce054283021e2dc6289bbdab07fba7085e59569b515e086559ca7e",
     "skills/simpo/references/token-and-cli.md": "9aa70acb6577f54f188593ec62a5dd516ed6067f9083a628ad15e550dabf8367",
-    "skills/simpo/source.json": "55fa8b728044ee0442ddc952bacc56237f370bded0b1212344fc2e969bd594b1"
+    "skills/simpo/source.json": "06df2fc6f583601f7fe3bda6b7852e7c9140851864e081036a6d8aafc8a49a53"
   }
 }

@@ -3,7 +3,7 @@
   "name": "simpo",
   "target": "cli-public",
   "rules_version": "3",
-  "version": "1.1.1",
+  "version": "1.1.3",
   "workflow_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "adapter_sha256": "9174f2ef1edbdf760c7c1618e67e83939f84904f02a5df70533a8b3369391868",
   "files": {
